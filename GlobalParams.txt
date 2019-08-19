@@ -1,0 +1,22 @@
+# Paths to relevant files
+- RefSeq_Filepath: ./RefSeqs.csv
+- ForwardReads_Filepath: /
+- ReverseReads_Filepath: /
+
+# Run in troubleshoot mode?
+- ts_mode: False
+
+# How many processors? If 'None', uses all.
+- n_jobs: 1
+
+# Quality score cutoff
+- q_cutoff: 30
+
+# Alignment quality cutoff
+- alignment_cutoff: 0.5
+
+# Output location
+- OutputLocation: ./Output
+
+# Global Parameters
+- id_regex: (.+):(.+):(.+):(.+):(.+):(.+):(.+) ([0-9]):([A-Za-z]):([0-9]):(.+)
