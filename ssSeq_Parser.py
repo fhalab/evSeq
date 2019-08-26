@@ -213,4 +213,4 @@ for plate in plates:
     df_full['AlignmentFrequency'] = np.round(df_full['AlignmentFrequency'].values, 2)
 
     # Save
-    df_full.to_csv(file_output+"/{}_MaxInfo.csv".format(plate.name))
+    df_full.to_csv(file_output+"/{}_MaxInfo.csv".format(plate.name), index=False)
