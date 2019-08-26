@@ -3,6 +3,7 @@ import numpy as np
 import pickle
 from tqdm import tqdm
 from multiprocessing import Pool
+import gzip
 
 # Import ssSeq modules
 from ssSeq.GlobalSetup import *
@@ -11,8 +12,23 @@ import ssSeq.Classes as ss_utils
 # Ignore divide by 0
 np.seterr(invalid="ignore")
 
+# First check if file paths are gzipped or not
+gzipped_f = True if ForwardReads_Filepath[-2:] == 'gz' else False
+gzipped_r = True if ReverseReads_Filepath[-2:] == 'gz' else False
+
+# Assign proper parser
+if gzipped_f:
+    forward_parser = gzip.open(ForwardReads_Filepath, "rt")
+else:
+    forward_parser = open(ForwardReads_Filepath, "r")
+
+if gzipped_r:
+    reverse_parser = gzip.open(ReverseReads_Filepath, "rt")
+else:
+    reverse_parser = open(ReverseReads_Filepath, "r")
+
 # Loop over the forward file and start building objects
-with open(ForwardReads_Filepath, "r") as f:
+with forward_parser as f:
 
     # Load the file to memory and count how many lines are in it
     file_list = list(f)
@@ -56,7 +72,7 @@ with open(ForwardReads_Filepath, "r") as f:
 uids = set(id_to_pair.keys())
 
 # Loop over the reverse file and append partners to each file
-with open(ReverseReads_Filepath, "r") as f:
+with reverse_parser as f:
 
     # Load the file to memory
     file_list = list(f)
