@@ -1,9 +1,12 @@
 # Load the parser utils file and other modules
 import numpy as np
+import pandas as pd
 import pickle
 from tqdm import tqdm
 from multiprocessing import Pool
 import gzip
+import os
+import os.path
 
 # Import ssSeq modules
 from ssSeq.GlobalSetup import *
@@ -190,3 +193,24 @@ for i, plate in enumerate(plates):
 if ts_mode:
     with open(output_location + "/Pickles/pickles.pkl", "wb") as f:
         pickle.dump([orphans, failed_wells, plates], f)
+
+# Output a more concise final summary for each plate
+for plate in plates:
+
+    # Find output location of Variant Info
+    file_output = os.path.join(output_location, "Summaries")
+
+    # Get full Variant Info for current plate
+    df = pd.read_csv(file_output+"/{}_VariantInfo.csv".format(plate.name))
+
+    # Find the max value for Alignment Frequency for each well
+    df_max = df.groupby('Well')['AlignmentFrequency'].max()
+
+    # Merge with full DataFrame
+    df_full = df.merge(df_max)
+
+    # Round for easier reading
+    df_full['AlignmentFrequency'] = np.round(df_full['AlignmentFrequency'].values, 2)
+
+    # Save
+    df_full.to_csv(file_output+"/{}_MaxInfo.csv".format(plate.name))
