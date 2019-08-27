@@ -204,7 +204,7 @@ for plate in plates:
     df = pd.read_csv(file_output+"/{}_VariantInfo.csv".format(plate.name))
 
     # Find the max value for Alignment Frequency for each well
-    df_max = df.groupby('Well')['AlignmentFrequency'].max()
+    df_max = df.groupby('Well')[['Well', 'AlignmentFrequency']].max().reset_index(drop=True)
 
     # Merge with full DataFrame
     df_full = df.merge(df_max)
