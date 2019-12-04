@@ -13,17 +13,23 @@ hv.renderer('bokeh')
 #### Heatmap ####
 def generate_sequencing_heatmap(df, plate, hm_output_file):
     """Saves a heatmap html generated from from ssSeq data."""
+    
+    # generate a holoviews plot
     hm = make_heatmap(df, title=plate)
     
+    # render the plot using bokeh and save to html file
     hv.renderer('bokeh').save(hm, hm_output_file)
 
 def stretch_color_levels(data, center, cmap):
     """Stretch a color map so that its center is at `center`. Taken
-    from hw4.2 solutions to 2019 bebi103a, probably with permission.
+    from hw4.2 solutions to 2019 bebi103a, probably with permission. 
+    This is best for centering divergent color maps.
     """
+    # don't allow a color map with only one color
     if len(cmap) == 1:
         raise RuntimeError("Must have `len(cmap)` > 1.")
         
+    # check that the center passed is within the data
     if not 0 < center < max(data):
         raise ValueError('Must have min(data) < center < max(data).')
     
@@ -49,6 +55,7 @@ def make_heatmap(df, title):
     # logseqdepth heatmap
     cmap = list(reversed(cc.CET_D9))
 
+    # generate the heatmap
     hm = hv.HeatMap(
         df,
         ['Column', 'Row'],
@@ -67,6 +74,8 @@ def make_heatmap(df, title):
     
     # Patrick did this, don't @ me
     # @Kadina 
+    # @@Patrick
+    # function to bin the alignment frequencies into more relevant groupings
     def bin_align_freq(value):
         if value > 0.99:
             bin_vals = '0.99+'
@@ -76,6 +85,8 @@ def make_heatmap(df, title):
             bin_vals = '0.95-0.98'
         if value <= 0.95 and value > 0.9:
             bin_vals = '0.90-0.95'
+        
+        # anything below 0.9 should really be discarded
         if value <= 0.9:
             bin_vals = '<0.90'
 
@@ -86,14 +97,24 @@ def make_heatmap(df, title):
     colors = bokeh.palettes.Plasma5
     cmap = {bin: color for bin, color in zip(bins, colors)}
     
+    # apply binning function to the AlignmentFrequency
     df['AlignmentFrequencyBinned'] = df['AlignmentFrequency'].apply(bin_align_freq)
     
-    # alignment frequency heamap
+    # alignment frequency heatmap for edges around wells
     boxes = hv.Points(
         df.sort_values(['AlignmentFrequency'], ascending=False),
         ['Column', 'Row'],
         'AlignmentFrequencyBinned'
-    ).opts(**opts)
+    ).opts(
+        **opts,
+        marker='square',
+        line_color='AlignmentFrequencyBinned',
+        cmap=cmap,
+        line_width=7,
+        fill_alpha=0,
+        line_alpha=1,
+        legend_position = 'right',
+        size=62)
     
     # residue labels
     labels = hv.Labels(
@@ -102,6 +123,7 @@ def make_heatmap(df, title):
         'VariantCombo'
     ).opts(**opts)
     
+    # return formatted final plot
     return (hm*boxes*labels).opts(frame_height=550, 
                                   frame_width=550 * 3 // 2, 
                                   border=50,

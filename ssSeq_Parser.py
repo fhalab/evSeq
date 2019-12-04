@@ -236,6 +236,7 @@ for plate in plates:
     # Save
     df_full.to_csv(file_output+"/{}_MaxInfo.csv".format(plate.name), index=False)
     
+    # if imports succeeded earlier make the heatmap for each plate
     if viz_packages:
 
         # Generate heatmap
@@ -247,18 +248,22 @@ qual_output = os.path.join(output_location, "Qualities/")
 if not os.path.isdir(qual_output):
     os.mkdir(qual_output)
 
+# save the forward read qualities
 mean_f_qual_scores = [int(np.mean(seq_pair.f_qual_scores)) for seq_pair in seq_pairs]
 f_qual_counts = np.unique(mean_f_qual_scores, return_counts=True)
 np.save(qual_output+"ForwardReadQuals", f_qual_counts)
 del(mean_f_qual_scores)
 
+# save the reverse read qualities
 mean_r_qual_scores = [int(np.mean(seq_pair.r_qual_scores)) for seq_pair in seq_pairs]
 r_qual_counts = np.unique(mean_r_qual_scores, return_counts=True)
 np.save(qual_output+"ReverseReadQuals", r_qual_counts)
 del(mean_r_qual_scores)
 
+# if imports succeeded earlier plot the quality scores
 if viz_packages:
 
+    # generate quality score histogram
     counts = (f_qual_counts, r_qual_counts)
     generate_read_qual_chart(counts, qual_output+'ReadQualPlot.html')
     
