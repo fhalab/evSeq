@@ -10,7 +10,8 @@ import os.path
 
 # Import ssSeq modules
 from ssSeq.GlobalSetup import *
-from ssSeq.viz_functions import *
+from ssSeq.viz_functions import (generate_sequencing_heatmap,
+                                 generate_read_qual_chart)
 import ssSeq.Classes as ss_utils
 
 # Try to import plotting tools
@@ -21,10 +22,6 @@ try:
     import colorcet as cc
     import bokeh.io
     hv.extension('bokeh')
-    hv.renderer('bokeh')
-    
-    import bokeh.io
-    from bokeh.layouts import row
 
     viz_packages = True
 
@@ -241,8 +238,10 @@ for plate in plates:
     
     if viz_packages:
 
-    df_full.to_csv(file_output+"{}_MaxInfo.csv".format(plate.name), index=False)
-    
+        # Generate heatmap
+        hm_output_file = file_output+"/{}_SequencingHeatmap".format(plate.name)
+        generate_sequencing_heatmap(df_full, plate.name, hm_output_file)
+
 # Get read qualities
 qual_output = os.path.join(output_location, "Qualities/")
 if not os.path.isdir(qual_output):
@@ -259,38 +258,9 @@ np.save(qual_output+"ReverseReadQuals", r_qual_counts)
 del(mean_r_qual_scores)
 
 if viz_packages:
-    
-    # Generate heatmap
-    hm_output_file = file_output+"/{}_SequencingHeatmap".format(plate.name)
-    generate_sequencing_heatmap(df_full, plate.name, hm_output_file)
-    
-    # Define plotting function
-    def plot_read_qual(counts):
 
-        # Plot
-        p = hv.Histogram(counts).opts(
-            xlabel='Mean quality score of sequence',
-            ylabel='Counts',
-            xlim=(0, 40),
-            height=300,
-            width=400,
-            yformatter='%f',
-        )
-
-        return p
+    counts = (f_qual_counts, r_qual_counts)
+    generate_read_qual_chart(counts, qual_output+'ReadQualPlot.html')
     
-    # Plot forward and reverse counts
-    p_f = hv.render(plot_read_qual(f_qual_counts).opts(title='Forward Read Quality'))
-    p_r = hv.render(plot_read_qual(r_qual_counts).opts(title='Reverse Read Quality'))
     
-    # Combine into single chart
-    p = row(p_f, p_r)
-
-    # Output as html
-    try:
-        bokeh.io.output_file(qual_output+'ReadQualPlot.html')
-        bokeh.io.save(p)
     
-    # Save can fail in many ways, not worried about naked exception
-    except:
-        pass
