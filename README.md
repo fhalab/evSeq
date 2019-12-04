@@ -9,6 +9,8 @@ Any kind of next-gen sequence analysis is computationally intensive. Analyzing a
 ## Required Packages:
 - Anaconda default distribution
 - Biopython (conda install -c anaconda biopython)
+### Visualizing the sequencing with a heatmap
+If you would like an HTML file with a visual summary of the sequencing depth and alignment frequency of each well you will also need Bokeh, Colorcet, and Holoviews. If these packages are not installed the rest of the processing should not be affected, you will simply not return this file.
 
 ## Setting up a run:
 ### RefSeqs.csv

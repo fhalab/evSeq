@@ -10,23 +10,31 @@ import os.path
 
 # Import ssSeq modules
 from ssSeq.GlobalSetup import *
+from ssSeq.viz_functions import *
 import ssSeq.Classes as ss_utils
 
 # Try to import plotting tools
 try:
-    import bokeh.io
-    from bokeh.layouts import row
-
-    import holoviews as hv
     
-    bokeh.io.output_notebook()
+    # imports required for proper heatmap generation
+    import holoviews as hv
+    import colorcet as cc
+    import bokeh.io
     hv.extension('bokeh')
     hv.renderer('bokeh')
     
-    plot = True
+    import bokeh.io
+    from bokeh.layouts import row
 
+    viz_packages = True
+
+# Print warning, but allow parser to function w/o heatmap generator
 except ImportError:
-    plot = False
+    
+    print('Cannot import packages for generating heatmap, make sure you have the proper packages installed \n')
+    print('Heatmap generation requires Bokeh, Holoviews, and Colorcet')
+
+    viz_packages = False
 
 # Ignore divide by 0
 np.seterr(invalid="ignore")
@@ -226,9 +234,13 @@ for plate in plates:
     df_full = df.merge(df_max)
 
     # Round for easier reading
-    df_full['AlignmentFrequency'] = np.round(df_full['AlignmentFrequency'].values, 2)
+    df_full['AlignmentFrequency'] = np.round(df_full['AlignmentFrequency'].values, 3)
 
     # Save
+    df_full.to_csv(file_output+"/{}_MaxInfo.csv".format(plate.name), index=False)
+    
+    if viz_packages:
+
     df_full.to_csv(file_output+"{}_MaxInfo.csv".format(plate.name), index=False)
     
 # Get read qualities
@@ -246,7 +258,11 @@ r_qual_counts = np.unique(mean_r_qual_scores, return_counts=True)
 np.save(qual_output+"ReverseReadQuals", r_qual_counts)
 del(mean_r_qual_scores)
 
-if plot is True:
+if viz_packages:
+    
+    # Generate heatmap
+    hm_output_file = file_output+"/{}_SequencingHeatmap".format(plate.name)
+    generate_sequencing_heatmap(df_full, plate.name, hm_output_file)
     
     # Define plotting function
     def plot_read_qual(counts):
