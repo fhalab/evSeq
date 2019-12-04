@@ -12,6 +12,22 @@ import os.path
 from ssSeq.GlobalSetup import *
 import ssSeq.Classes as ss_utils
 
+# Try to import plotting tools
+try:
+    import bokeh.io
+    from bokeh.layouts import row
+
+    import holoviews as hv
+    
+    bokeh.io.output_notebook()
+    hv.extension('bokeh')
+    hv.renderer('bokeh')
+    
+    plot = True
+
+except ImportError:
+    plot = False
+
 # Ignore divide by 0
 np.seterr(invalid="ignore")
 
@@ -198,7 +214,7 @@ if ts_mode:
 for plate in plates:
 
     # Find output location of Variant Info
-    file_output = os.path.join(output_location, "Summaries")
+    file_output = os.path.join(output_location, "Summaries/")
 
     # Get full Variant Info for current plate
     df = pd.read_csv(file_output+"/{}_VariantInfo.csv".format(plate.name))
@@ -213,4 +229,52 @@ for plate in plates:
     df_full['AlignmentFrequency'] = np.round(df_full['AlignmentFrequency'].values, 2)
 
     # Save
-    df_full.to_csv(file_output+"/{}_MaxInfo.csv".format(plate.name), index=False)
+    df_full.to_csv(file_output+"{}_MaxInfo.csv".format(plate.name), index=False)
+    
+# Get read qualities
+qual_output = os.path.join(output_location, "Qualities/")
+if not os.path.isdir(qual_output):
+    os.mkdir(qual_output)
+
+mean_f_qual_scores = [int(np.mean(seq_pair.f_qual_scores)) for seq_pair in seq_pairs]
+f_qual_counts = np.unique(mean_f_qual_scores, return_counts=True)
+np.save(qual_output+"ForwardReadQuals", f_qual_counts)
+del(mean_f_qual_scores)
+
+mean_r_qual_scores = [int(np.mean(seq_pair.r_qual_scores)) for seq_pair in seq_pairs]
+r_qual_counts = np.unique(mean_r_qual_scores, return_counts=True)
+np.save(qual_output+"ReverseReadQuals", r_qual_counts)
+del(mean_r_qual_scores)
+
+if plot is True:
+    
+    # Define plotting function
+    def plot_read_qual(counts):
+
+        # Plot
+        p = hv.Histogram(counts).opts(
+            xlabel='Mean quality score of sequence',
+            ylabel='Counts',
+            xlim=(0, 40),
+            height=300,
+            width=400,
+            yformatter='%f',
+        )
+
+        return p
+    
+    # Plot forward and reverse counts
+    p_f = hv.render(plot_read_qual(f_qual_counts).opts(title='Forward Read Quality'))
+    p_r = hv.render(plot_read_qual(r_qual_counts).opts(title='Reverse Read Quality'))
+    
+    # Combine into single chart
+    p = row(p_f, p_r)
+
+    # Output as html
+    try:
+        bokeh.io.output_file(qual_output+'ReadQualPlot.html')
+        bokeh.io.save(p)
+    
+    # Save can fail in many ways, not worried about naked exception
+    except:
+        pass
