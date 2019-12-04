@@ -64,6 +64,8 @@ def make_heatmap(df, title):
             **opts,
             colorbar=True,
             cmap=cmap,
+            xmarks=100,
+            ymarks=100,
             clipping_colors={'NaN': '#DCDCDC'},
             color_levels=stretch_color_levels(df['logseqdepth'], np.log(10), cmap),
             colorbar_opts=dict(
@@ -94,7 +96,8 @@ def make_heatmap(df, title):
     
     # Bin alignment frequencies for easier viz
     bins = ['0.99+','0.98-0.99','0.95-0.98','0.90-0.95','<0.90']
-    colors = bokeh.palettes.Plasma5
+    # colors = bokeh.palettes.Plasma5
+    colors = ['#337D1F','#94CD35','#FFC300','#FF5733','#C62C20']
     cmap = {bin: color for bin, color in zip(bins, colors)}
     
     # apply binning function to the AlignmentFrequency
@@ -109,8 +112,9 @@ def make_heatmap(df, title):
         **opts,
         marker='square',
         line_color='AlignmentFrequencyBinned',
+        line_join='miter',
         cmap=cmap,
-        line_width=7,
+        line_width=8,
         fill_alpha=0,
         line_alpha=1,
         legend_position = 'right',
