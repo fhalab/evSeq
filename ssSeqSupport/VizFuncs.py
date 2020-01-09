@@ -54,6 +54,13 @@ def MakeHeatmap(df, title):
     
     # logseqdepth heatmap
     cmap = list(reversed(cc.CET_D9))
+    
+    # Set the center
+    center = np.log(10)
+    
+    # Adjust if it is greater than max of data (avoids ValueError)
+    if max(df['logseqdepth']) < center:
+        center = df['logseqdepth'].median()
 
     # generate the heatmap
     hm = hv.HeatMap(
@@ -63,11 +70,11 @@ def MakeHeatmap(df, title):
         ).opts(
             **opts,
             colorbar=True,
-            cmap=cmap,
+            cmap=StretchColorLevels(df['logseqdepth'], center, cmap),
             xmarks=100,
             ymarks=100,
             clipping_colors={'NaN': '#DCDCDC'},
-            color_levels=StretchColorLevels(df['logseqdepth'], np.log(10), cmap),
+            color_levels=cmap,
             colorbar_opts=dict(
                 title='LogSeqDepth',
                 background_fill_alpha=0
