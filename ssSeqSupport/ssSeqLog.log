@@ -1,0 +1,865 @@
+
+    
+
+
+    20200108-134414
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/pf-lib1_S129_L001_R1_001.fastq
+    fastq_r: TestData/pf-lib1_S129_L001_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-134414 
+    
+    20200108-134641
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/pf-lib1_S129_L001_R1_001.fastq
+    fastq_r: TestData/pf-lib1_S129_L001_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-134641 
+    
+    
+    20200108-134807
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/pf-lib1_S129_L001_R1_001.fastq
+    fastq_r: TestData/pf-lib1_S129_L001_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-134807 
+    
+Error Encountered: The reverse file is neither a fastq nor fastq.gz file.
+    
+    20200108-134953
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/pf-lib1_S129_L001_R1_001.fastq
+    fastq_r: TestData/pf-lib1_S129_L001_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-134953 
+    
+Error Encountered: The reverse file is neither a fastq nor fastq.gz file.
+    
+    20200108-135233
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/pf-lib1_S129_L001_R1_001.fastq
+    fastq_r: TestData/pf-lib1_S129_L001_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-135233 
+    
+    
+    20200108-135456
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/pf-lib1_S129_L001_R1_001.fastq
+    fastq_r: TestData/pf-lib1_S129_L001_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-135456 
+    
+Error Encountered: Could not match forward and reverse files. Make sure they have appropriate names.
+    
+    20200108-140307
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/pf-lib1_S129_L001_R1_001.fastq
+    fastq_r: TestData/pf-lib1_S129_L001_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-140307 
+    
+Identified Seq File Pairs:Forward Reads: TestData/pf-lib1_S129_L001_R1_001.fastq 	 Reverse Reads: TestData/pf-lib1_S129_L001_R2_001.fastq
+Unmatched Files in Folder:
+    
+    20200108-140431
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/pf-lib1_S129_L001_R1_001.fastq
+    fastq_r: TestData/pf-lib1_S129_L001_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-140431 
+    
+Identified Seq File Pairs:Forward Reads: TestData/pf-lib1_S129_L001_R1_001.fastq 	 Reverse Reads: TestData/pf-lib1_S129_L001_R2_001.fastq
+Unmatched Files in Folder:
+    
+    20200108-141310
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/pf-lib1_S129_L001_R1_001.fastq
+    fastq_r: TestData/pf-lib1_S129_L001_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-141310 
+    
+Identified Seq File Pairs:Forward Reads: TestData/pf-lib1_S129_L001_R1_001.fastq 	 Reverse Reads: TestData/pf-lib1_S129_L001_R2_001.fastq
+Unmatched Files in Folder:
+    
+    20200108-141630
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/pf-lib1_S129_L001_R1_001.fastq
+    fastq_r: TestData/pf-lib1_S129_L001_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-141630 
+    
+Identified Seq File Pairs:Forward Reads: TestData/pf-lib1_S129_L001_R1_001.fastq 	 Reverse Reads: TestData/pf-lib1_S129_L001_R2_001.fastq
+Unmatched Files in Folder:
+    
+    20200108-141916
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/pf-lib1_S129_L001_R1_001.fastq
+    fastq_r: TestData/pf-lib1_S129_L001_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-141916 
+    
+Identified Seq File Pairs:Forward Reads: TestData/pf-lib1_S129_L001_R1_001.fastq 	 Reverse Reads: TestData/pf-lib1_S129_L001_R2_001.fastq
+Unmatched Files in Folder:
+    
+    20200108-142012
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/pf-lib1_S129_L001_R1_001.fastq
+    fastq_r: TestData/pf-lib1_S129_L001_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-142012 
+    
+Identified Seq File Pairs:Forward Reads: TestData/pf-lib1_S129_L001_R1_001.fastq 	 Reverse Reads: TestData/pf-lib1_S129_L001_R2_001.fastq
+Unmatched Files in Folder:
+    
+    20200108-142040
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/pf-lib1_S129_L001_R1_001.fastq
+    fastq_r: TestData/pf-lib1_S129_L001_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-142040 
+    
+Identified Seq File Pairs:Forward Reads: TestData/pf-lib1_S129_L001_R1_001.fastq 	 Reverse Reads: TestData/pf-lib1_S129_L001_R2_001.fastq
+Unmatched Files in Folder:
+    
+    20200108-142316
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/pf-lib1_S129_L001_R1_001.fastq
+    fastq_r: TestData/pf-lib1_S129_L001_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-142316 
+    
+Identified Seq File Pairs:Forward Reads: TestData/pf-lib1_S129_L001_R1_001.fastq 	 Reverse Reads: TestData/pf-lib1_S129_L001_R2_001.fastq
+Unmatched Files in Folder:
+    
+    20200108-142425
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/pf-lib1_S129_L001_R1_001.fastq
+    fastq_r: TestData/pf-lib1_S129_L001_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-142425 
+    
+Identified Seq File Pairs:Forward Reads: TestData/pf-lib1_S129_L001_R1_001.fastq 	 Reverse Reads: TestData/pf-lib1_S129_L001_R2_001.fastq
+Unmatched Files in Folder:
+    
+    20200108-142828
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/pf-lib1_S129_L001_R1_001.fastq
+    fastq_r: TestData/pf-lib1_S129_L001_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-142828 
+    
+Identified Seq File Pairs:Forward Reads: TestData/pf-lib1_S129_L001_R1_001.fastq 	 Reverse Reads: TestData/pf-lib1_S129_L001_R2_001.fastq
+Unmatched Files in Folder:
+    
+    20200108-143341
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/pf-lib1_S129_L001_R1_001.fastq
+    fastq_r: TestData/pf-lib1_S129_L001_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-143341 
+    
+Identified Seq File Pairs:Forward Reads: TestData/pf-lib1_S129_L001_R1_001.fastq 	 Reverse Reads: TestData/pf-lib1_S129_L001_R2_001.fastq
+Unmatched Files in Folder:The identified read length for this run was: ModeResult(mode=array([151]), count=array([402238]))
+    
+    20200108-144117
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/pf-lib1_S129_L001_R1_001.fastq
+    fastq_r: TestData/pf-lib1_S129_L001_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-144117 
+    
+Identified Seq File Pairs:Forward Reads: TestData/pf-lib1_S129_L001_R1_001.fastq 	 Reverse Reads: TestData/pf-lib1_S129_L001_R2_001.fastq
+Unmatched Files in Folder:The identified read length for this run was: ModeResult(mode=array([151]), count=array([402238]))
+    
+    20200108-144920
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/pf-lib1_S129_L001_R1_001.fastq
+    fastq_r: TestData/pf-lib1_S129_L001_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-144920 
+    
+Identified Seq File Pairs:Forward Reads: TestData/pf-lib1_S129_L001_R1_001.fastq 	 Reverse Reads: TestData/pf-lib1_S129_L001_R2_001.fastq
+Unmatched Files in Folder:The identified read length for this run was: ModeResult(mode=array([151]), count=array([402238]))
+    
+    20200108-151832
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/pf-lib1_S129_L001_R1_001.fastq
+    fastq_r: TestData/pf-lib1_S129_L001_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-151832 
+    
+Identified Seq File Pairs:Forward Reads: TestData/pf-lib1_S129_L001_R1_001.fastq 	 Reverse Reads: TestData/pf-lib1_S129_L001_R2_001.fastq
+Unmatched Files in Folder:The identified read length for this run was: ModeResult(mode=array([151]), count=array([402238]))
+    
+    20200108-152137
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/pf-lib1_S129_L001_R1_001.fastq
+    fastq_r: TestData/pf-lib1_S129_L001_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-152137 
+    
+Identified Seq File Pairs:Forward Reads: TestData/pf-lib1_S129_L001_R1_001.fastq 	 Reverse Reads: TestData/pf-lib1_S129_L001_R2_001.fastq
+Unmatched Files in Folder:The identified read length for this run was: ModeResult(mode=array([151]), count=array([402238]))
+    
+    20200108-152918
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1.fastq
+    fastq_r: TestData/Test_R2.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-152918 
+    
+Identified Seq File Pairs:Forward Reads: TestData/Test_R1.fastq 	 Reverse Reads: TestData/Test_R2.fastq
+Unmatched Files in Folder:The identified read length for this run was: ModeResult(mode=array([151]), count=array([5357]))
+Error Encountered: Cannot find 'IndexMap.csv' in ssSeq/ssSeqSupport/
+    
+    20200108-153052
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1.fastq
+    fastq_r: TestData/Test_R2.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-153052 
+    
+Identified Seq File Pairs:Forward Reads: TestData/Test_R1.fastq 	 Reverse Reads: TestData/Test_R2.fastq
+Unmatched Files in Folder:The identified read length for this run was: ModeResult(mode=array([151]), count=array([5357]))
+Error Encountered: Cannot find 'IndexMap.csv' in ssSeq/ssSeqSupport/
+    
+    20200108-153309
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1.fastq
+    fastq_r: TestData/Test_R2.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-153309 
+    
+Identified Seq File Pairs:Forward Reads: TestData/Test_R1.fastq 	 Reverse Reads: TestData/Test_R2.fastq
+Unmatched Files in Folder:The identified read length for this run was: ModeResult(mode=array([151]), count=array([5357]))
+    
+    20200108-153525
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1.fastq
+    fastq_r: TestData/Test_R2.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-153525 
+    
+Identified Seq File Pairs:Forward Reads: TestData/Test_R1.fastq 	 Reverse Reads: TestData/Test_R2.fastq
+Unmatched Files in Folder:The identified read length for this run was: ModeResult(mode=array([151]), count=array([5357]))
+    
+    20200108-153713
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1.fastq
+    fastq_r: TestData/Test_R2.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-153713 
+    
+Identified Seq File Pairs:Forward Reads: TestData/Test_R1.fastq 	 Reverse Reads: TestData/Test_R2.fastq
+Unmatched Files in Folder:The identified read length for this run was: [151]
+    
+    20200108-153808
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1.fastq
+    fastq_r: TestData/Test_R2.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-153808 
+    
+Identified Seq File Pairs:Forward Reads: TestData/Test_R1.fastq 	 Reverse Reads: TestData/Test_R2.fastq
+Unmatched Files in Folder:The identified read length for this run was: 151
+    
+    20200108-153921
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1.fastq
+    fastq_r: TestData/Test_R2.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-153921 
+    
+Identified Seq File Pairs:Forward Reads: TestData/Test_R1.fastq 	 Reverse Reads: TestData/Test_R2.fastq
+Unmatched Files in Folder:The identified read length for this run was: 151
+    
+    20200108-154226
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1.fastq
+    fastq_r: TestData/Test_R2.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-154226 
+    
+Identified Seq File Pairs:Forward Reads: TestData/Test_R1.fastq 	 Reverse Reads: TestData/Test_R2.fastq
+Unmatched Files in Folder:The identified read length for this run was: 151
+    
+    20200108-154431
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1.fastq
+    fastq_r: TestData/Test_R2.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-154431 
+    
+Identified Seq File Pairs:Forward Reads: TestData/Test_R1.fastq 	 Reverse Reads: TestData/Test_R2.fastq
+Unmatched Files in Folder:The identified read length for this run was: 151
+    
+    20200108-154552
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1.fastq
+    fastq_r: TestData/Test_R2.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-154552 
+    
+Identified Seq File Pairs:Forward Reads: TestData/Test_R1.fastq 	 Reverse Reads: TestData/Test_R2.fastq
+Unmatched Files in Folder:The identified read length for this run was: 151
+    
+    20200108-154639
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1.fastq
+    fastq_r: TestData/Test_R2.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-154639 
+    
+Identified Seq File Pairs:Forward Reads: TestData/Test_R1.fastq 	 Reverse Reads: TestData/Test_R2.fastq
+Unmatched Files in Folder:The identified read length for this run was: 151
+    
+    20200108-154802
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1.fastq
+    fastq_r: TestData/Test_R2.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-154802 
+    
+Identified Seq File Pairs:Forward Reads: TestData/Test_R1.fastq 	 Reverse Reads: TestData/Test_R2.fastq
+Unmatched Files in Folder:The identified read length for this run was: 151
+    
+    20200108-155407
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1.fastq
+    fastq_r: TestData/Test_R2.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-155407 
+    
+    
+    20200108-155445
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1.fastq
+    fastq_r: TestData/Test_R2.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-155445 
+    
+Identified Seq File Pairs:Forward Reads: TestData/Test_R1.fastq 	 Reverse Reads: TestData/Test_R2.fastq
+Unmatched Files in Folder:The identified read length for this run was: 151
+    
+    20200108-155522
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1.fastq
+    fastq_r: TestData/Test_R2.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-155522 
+    
+Identified Seq File Pairs:Forward Reads: TestData/Test_R1.fastq 	 Reverse Reads: TestData/Test_R2.fastq
+Unmatched Files in Folder:The identified read length for this run was: 151
+    
+    20200108-155953
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1.fastq
+    fastq_r: TestData/Test_R2.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-155953 
+    
+Error Encountered: Could not match forward and reverse files. Make sure they have appropriate names.
+    
+    20200108-160110
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1.fastq
+    fastq_r: TestData/Test_R2.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-160110 
+    
+Error Encountered: Could not match forward and reverse files. Make sure they have appropriate names.
+    
+    20200108-160240
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1_001.fastq
+    fastq_r: TestData/Test_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-160240 
+    
+Error Encountered: Could not match forward and reverse files. Make sure they have appropriate names.
+    
+    20200108-160256
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1_001.fastq
+    fastq_r: TestData/Test_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-160256 
+    
+Error Encountered: Could not match forward and reverse files. Make sure they have appropriate names.
+    
+    20200108-160313
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1_001.fastq
+    fastq_r: TestData/Test_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-160313 
+    
+Error Encountered: Could not match forward and reverse files. Make sure they have appropriate names.
+    
+    20200108-160331
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1_001.fastq
+    fastq_r: TestData/Test_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-160331 
+    
+Error Encountered: Could not match forward and reverse files. Make sure they have appropriate names.
+    
+    20200108-160546
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1_001.fastq
+    fastq_r: TestData/Test_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-160546 
+    
+Error Encountered: Could not match forward and reverse files. Make sure they have appropriate names.
+    
+    20200108-165318
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1_001.fastq
+    fastq_r: TestData/Test_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-165318 
+    
+    
+    20200108-165340
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/Test_R1_001.fastq
+    fastq_r: TestData/Test_R2_001.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-165340 
+    
+Identified Seq File Pairs:Forward Reads: TestData/Test_R1_001.fastq 	 Reverse Reads: TestData/Test_R2_001.fastq
+Unmatched Files in Folder:The identified read length for this run was: 151
+    
+    20200108-165553
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/TestFolder/
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-165553 
+    
+Error Encountered: No fastq or fastq.gz files found in target folder.
+    
+    20200108-165731
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/TestFolder/
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-165731 
+    
+Error Encountered: Could not match forward and reverse files. Make sure they have appropriate names.
+    
+    20200108-165852
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/TestFolder/
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-165852 
+    
+    
+    20200108-170856
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/TestFolder/
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-170856 
+    
+Identified Seq File Pairs:Forward Reads: TestData/TestFolder/Test_R1_001.fastq 	 Reverse Reads: TestData/TestFolder/Test_R2_001.fastq
+Unmatched Files in Folder:The identified read length for this run was: 151
+    
+    20200108-174700
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/TestCompetition/
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-174700 
+    
+Identified Seq File Pairs:Forward Reads: TestData/TestCompetition/OLD_S165_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/OLD_S165_L001_R2_001.fastq.gzForward Reads: TestData/TestCompetition/KEJ_S163_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/KEJ_S163_L001_R2_001.fastq.gzForward Reads: TestData/TestCompetition/BJW_S162_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/BJW_S162_L001_R2_001.fastq.gzForward Reads: TestData/TestCompetition/PJA_S164_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/PJA_S164_L001_R2_001.fastq.gz
+Unmatched Files in Folder:TestData/TestCompetition/OLD_S165_L001_I1_001.fastq.gzTestData/TestCompetition/BJW_S162_L001_I2_001.fastq.gzTestData/TestCompetition/KEJ_S163_L001_I1_001.fastq.gzTestData/TestCompetition/PJA_S164_L001_I2_001.fastq.gzTestData/TestCompetition/BJW_S162_L001_I1_001.fastq.gzTestData/TestCompetition/KEJ_S163_L001_I2_001.fastq.gzTestData/TestCompetition/OLD_S165_L001_I2_001.fastq.gzTestData/TestCompetition/PJA_S164_L001_I1_001.fastq.gzThe identified read length for this run was: 151
+    
+    20200108-175514
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/TestCompetition/
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-175514 
+    
+Identified Seq File Pairs:Forward Reads: TestData/TestCompetition/OLD_S165_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/OLD_S165_L001_R2_001.fastq.gzForward Reads: TestData/TestCompetition/KEJ_S163_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/KEJ_S163_L001_R2_001.fastq.gzForward Reads: TestData/TestCompetition/BJW_S162_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/BJW_S162_L001_R2_001.fastq.gzForward Reads: TestData/TestCompetition/PJA_S164_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/PJA_S164_L001_R2_001.fastq.gz
+Unmatched Files in Folder:TestData/TestCompetition/OLD_S165_L001_I1_001.fastq.gzTestData/TestCompetition/BJW_S162_L001_I2_001.fastq.gzTestData/TestCompetition/KEJ_S163_L001_I1_001.fastq.gzTestData/TestCompetition/PJA_S164_L001_I2_001.fastq.gzTestData/TestCompetition/BJW_S162_L001_I1_001.fastq.gzTestData/TestCompetition/KEJ_S163_L001_I2_001.fastq.gzTestData/TestCompetition/OLD_S165_L001_I2_001.fastq.gzTestData/TestCompetition/PJA_S164_L001_I1_001.fastq.gzThe identified read length for this run was: 151
+    
+    20200108-183034
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/TestFolder/
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-183034 
+    
+Identified Seq File Pairs:Forward Reads: TestData/TestFolder/Test_R1_001.fastq 	 Reverse Reads: TestData/TestFolder/Test_R2_001.fastq
+Unmatched Files in Folder:The identified read length for this run was: 151
+    
+    20200108-183318
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/TestFolder/
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-183318 
+    
+Identified Seq File Pairs:Forward Reads: TestData/TestFolder/Test_R1_001.fastq 	 Reverse Reads: TestData/TestFolder/Test_R2_001.fastq
+Unmatched Files in Folder:The identified read length for this run was: 151
+    
+    20200108-183821
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/TestFolder/
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-183821 
+    
+Identified Seq File Pairs:Forward Reads: TestData/TestFolder/Test_R1_001.fastq 	 Reverse Reads: TestData/TestFolder/Test_R2_001.fastq
+Unmatched Files in Folder:The identified read length for this run was: 151
+    
+    20200108-184016
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/TestFolder/
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-184016 
+    
+Identified Seq File Pairs:Forward Reads: TestData/TestFolder/Test_R1_001.fastq 	 Reverse Reads: TestData/TestFolder/Test_R2_001.fastq
+Unmatched Files in Folder:The identified read length for this run was: 151
+    
+    20200108-184051
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/TestFolder/
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-184051 
+    
+Identified Seq File Pairs:Forward Reads: TestData/TestFolder/Test_R1_001.fastq 	 Reverse Reads: TestData/TestFolder/Test_R2_001.fastq
+Unmatched Files in Folder:The identified read length for this run was: 151
+    
+    20200108-184333
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/TestCompetition/
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-184333 
+    
+Identified Seq File Pairs:Forward Reads: TestData/TestCompetition/OLD_S165_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/OLD_S165_L001_R2_001.fastq.gzForward Reads: TestData/TestCompetition/KEJ_S163_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/KEJ_S163_L001_R2_001.fastq.gzForward Reads: TestData/TestCompetition/BJW_S162_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/BJW_S162_L001_R2_001.fastq.gzForward Reads: TestData/TestCompetition/PJA_S164_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/PJA_S164_L001_R2_001.fastq.gz
+Unmatched Files in Folder:TestData/TestCompetition/OLD_S165_L001_I1_001.fastq.gzTestData/TestCompetition/BJW_S162_L001_I2_001.fastq.gzTestData/TestCompetition/KEJ_S163_L001_I1_001.fastq.gzTestData/TestCompetition/PJA_S164_L001_I2_001.fastq.gzTestData/TestCompetition/BJW_S162_L001_I1_001.fastq.gzTestData/TestCompetition/KEJ_S163_L001_I2_001.fastq.gzTestData/TestCompetition/OLD_S165_L001_I2_001.fastq.gzTestData/TestCompetition/PJA_S164_L001_I1_001.fastq.gzThe identified read length for this run was: 151
+    
+    20200108-184752
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/TestCompetition/
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-184752 
+    
+Identified Seq File Pairs:Forward Reads: TestData/TestCompetition/OLD_S165_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/OLD_S165_L001_R2_001.fastq.gzForward Reads: TestData/TestCompetition/KEJ_S163_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/KEJ_S163_L001_R2_001.fastq.gzForward Reads: TestData/TestCompetition/BJW_S162_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/BJW_S162_L001_R2_001.fastq.gzForward Reads: TestData/TestCompetition/PJA_S164_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/PJA_S164_L001_R2_001.fastq.gz
+Unmatched Files in Folder:TestData/TestCompetition/OLD_S165_L001_I1_001.fastq.gzTestData/TestCompetition/BJW_S162_L001_I2_001.fastq.gzTestData/TestCompetition/KEJ_S163_L001_I1_001.fastq.gzTestData/TestCompetition/PJA_S164_L001_I2_001.fastq.gzTestData/TestCompetition/BJW_S162_L001_I1_001.fastq.gzTestData/TestCompetition/KEJ_S163_L001_I2_001.fastq.gzTestData/TestCompetition/OLD_S165_L001_I2_001.fastq.gzTestData/TestCompetition/PJA_S164_L001_I1_001.fastq.gzThe identified read length for this run was: 151
+    
+    20200108-190810
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: TestData/TestCompetition/
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq_Parser/ssSeq_Output/20200108-190810 
+    
+Identified Seq File Pairs:Forward Reads: TestData/TestCompetition/OLD_S165_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/OLD_S165_L001_R2_001.fastq.gzForward Reads: TestData/TestCompetition/KEJ_S163_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/KEJ_S163_L001_R2_001.fastq.gzForward Reads: TestData/TestCompetition/BJW_S162_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/BJW_S162_L001_R2_001.fastq.gzForward Reads: TestData/TestCompetition/PJA_S164_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/PJA_S164_L001_R2_001.fastq.gz
+Unmatched Files in Folder:TestData/TestCompetition/OLD_S165_L001_I1_001.fastq.gzTestData/TestCompetition/BJW_S162_L001_I2_001.fastq.gzTestData/TestCompetition/KEJ_S163_L001_I1_001.fastq.gzTestData/TestCompetition/PJA_S164_L001_I2_001.fastq.gzTestData/TestCompetition/BJW_S162_L001_I1_001.fastq.gzTestData/TestCompetition/KEJ_S163_L001_I2_001.fastq.gzTestData/TestCompetition/OLD_S165_L001_I2_001.fastq.gzTestData/TestCompetition/PJA_S164_L001_I1_001.fastq.gz

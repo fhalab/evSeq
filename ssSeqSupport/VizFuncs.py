@@ -11,16 +11,16 @@ hv.renderer('bokeh')
 
 
 #### Heatmap ####
-def generate_sequencing_heatmap(df, plate, hm_output_file):
+def GenerateSequencingHeatmap(df, plate, hm_output_file):
     """Saves a heatmap html generated from from ssSeq data."""
     
     # generate a holoviews plot
-    hm = make_heatmap(df, title=plate)
+    hm = MakeHeatmap(df, title=plate)
     
     # render the plot using bokeh and save to html file
     hv.renderer('bokeh').save(hm, hm_output_file)
 
-def stretch_color_levels(data, center, cmap):
+def StretchColorLevels(data, center, cmap):
     """Stretch a color map so that its center is at `center`. Taken
     from hw4.2 solutions to 2019 bebi103a, probably with permission. 
     This is best for centering divergent color maps.
@@ -38,7 +38,7 @@ def stretch_color_levels(data, center, cmap):
     
     return list(np.linspace(center-dist, center+dist, len(cmap)+1))
 
-def make_heatmap(df, title):
+def MakeHeatmap(df, title):
     """Generates a heatmap from ssSeq data using Holoviews with bokeh backend."""
     
     # Create necessary Row and Column values and sort
@@ -67,7 +67,7 @@ def make_heatmap(df, title):
             xmarks=100,
             ymarks=100,
             clipping_colors={'NaN': '#DCDCDC'},
-            color_levels=stretch_color_levels(df['logseqdepth'], np.log(10), cmap),
+            color_levels=StretchColorLevels(df['logseqdepth'], np.log(10), cmap),
             colorbar_opts=dict(
                 title='LogSeqDepth',
                 background_fill_alpha=0
@@ -134,13 +134,13 @@ def make_heatmap(df, title):
                                   show_legend=True)
 
 #### Read quality chart ####
-def generate_read_qual_chart(counts, path):
+def GenerateReadQualChart(counts, path):
     """Makes histograms of read qualities and saves to designated location."""
     # Unpack
     f_qual_counts, r_qual_counts = counts
 
-    p_f = plot_read_qual(f_qual_counts).opts(title='Forward Read Quality')
-    p_r = plot_read_qual(r_qual_counts).opts(title='Reverse Read Quality')
+    p_f = PlotReadQual(f_qual_counts).opts(title='Forward Read Quality')
+    p_r = PlotReadQual(r_qual_counts).opts(title='Reverse Read Quality')
     
     # Render to bokeh and combine into single chart
     p = row(
@@ -149,15 +149,10 @@ def generate_read_qual_chart(counts, path):
     )
 
     # Output as html
-    try:
-        bokeh.io.output_file(path)
-        bokeh.io.save(p)
-    
-    # Save can fail in many ways, not worried about naked exception
-    except:
-        pass
+    bokeh.io.output_file(path)
+    bokeh.io.save(p)
 
-def plot_read_qual(counts):
+def PlotReadQual(counts):
     """Given an array, creates a holoviews histogram."""
     p = hv.Histogram(counts).opts(
         xlabel='Mean quality score of sequence',

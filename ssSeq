@@ -1,0 +1,54 @@
+#!/usr/bin/env python
+## Add shebang to force use of predefined conda environment
+if __name__=="__main__":
+
+    # Import relevant modules
+    import argparse
+    import os
+    from time import strftime
+    
+    # Import relevant modules from ssSeqSupport.
+    from ssSeqSupport import LogInit
+    from ssSeqSupport import RunssSeq
+    from ssSeqSupport import NCpus
+    
+    # Instantiate argparser
+    parser = argparse.ArgumentParser()
+
+    # Add required arguments
+    parser.add_argument("refseq", help = "csv containing reference sequences.")
+    parser.add_argument("folder", help = "Folder containing fastq files, or just forward fastq file.")
+    parser.add_argument("--fastq_r", help = "Reverse fastq file.",
+                        required = False, default = "")
+    parser.add_argument("--analysis_only", help = "Perform quality analysis only.",
+                        required = False, action = "store_true")
+    parser.add_argument("--detailed_refseq", help = "Different reference sequences by well.",
+                        required = False, action = "store_true")
+    parser.add_argument("--jobs", help = "Processors used for multiprocessing.",
+                        required = False, dest = "jobs",
+                        default = NCpus - 1, type = int)
+    parser.add_argument("--troubleshoot", action = "store_true", 
+                        help = "Run in troubleshoot mode if set", required = False)
+    parser.add_argument("--read_length", help = "fastq read lengths. Calculated if not specified.",
+                        required = False, type = int, default = None)
+    parser.add_argument("--q_cutoff", help = "Quality score filter by average read quality.",
+                        required = False, default = 30, type = int)
+    parser.add_argument("--alignment_filter", help = "Filter for alignment scores.",
+                        required = False, default = 0.5, type = float)
+
+    # Parse the arguments
+    CLArgs = vars(parser.parse_args())
+        
+    # Identify the cwd and start time and add to the "CLArgs" dict. Also create an
+    # output directory from the two and add this to CLArgs as well.
+    cwd = os.getcwd()
+    datetime = strftime("%Y%m%d-%H%M%S")
+    output_dir = os.path.join(cwd, "ssSeq_Output", datetime)
+    CLArgs.update({"datetime": datetime, "output": output_dir})
+    
+    # Log CLArgs
+    LogInit(CLArgs)    
+
+    # Run ssSeq
+    RunssSeq(CLArgs)
+    
