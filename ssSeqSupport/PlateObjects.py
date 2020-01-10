@@ -738,7 +738,7 @@ class Plate():
         hm_output_file = os.path.join(args["output"],
                                       "Platemaps/{}-{}_SequencingHeatmap".format(self._name,
                                                                                  combo_ind))
-        # GenerateSequencingHeatmap(df_full, self._name, hm_output_file)
+        GenerateSequencingHeatmap(df_full, self._name, hm_output_file)
 
         # Save summary info
         summary_info.to_csv(summary_dir+"/{}-{}_SummaryInfo.csv".format(self._name,
