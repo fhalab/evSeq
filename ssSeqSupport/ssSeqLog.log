@@ -863,3 +863,376 @@ Unmatched Files in Folder:TestData/TestCompetition/OLD_S165_L001_I1_001.fastq.gz
     
 Identified Seq File Pairs:Forward Reads: TestData/TestCompetition/OLD_S165_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/OLD_S165_L001_R2_001.fastq.gzForward Reads: TestData/TestCompetition/KEJ_S163_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/KEJ_S163_L001_R2_001.fastq.gzForward Reads: TestData/TestCompetition/BJW_S162_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/BJW_S162_L001_R2_001.fastq.gzForward Reads: TestData/TestCompetition/PJA_S164_L001_R1_001.fastq.gz 	 Reverse Reads: TestData/TestCompetition/PJA_S164_L001_R2_001.fastq.gz
 Unmatched Files in Folder:TestData/TestCompetition/OLD_S165_L001_I1_001.fastq.gzTestData/TestCompetition/BJW_S162_L001_I2_001.fastq.gzTestData/TestCompetition/KEJ_S163_L001_I1_001.fastq.gzTestData/TestCompetition/PJA_S164_L001_I2_001.fastq.gzTestData/TestCompetition/BJW_S162_L001_I1_001.fastq.gzTestData/TestCompetition/KEJ_S163_L001_I2_001.fastq.gzTestData/TestCompetition/OLD_S165_L001_I2_001.fastq.gzTestData/TestCompetition/PJA_S164_L001_I1_001.fastq.gz
+    
+    20200109-130941
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Bruce Wittman - 12262019/
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-130941 
+    
+Identified Seq File Pairs:Forward Reads: Validation/Bruce Wittman - 12262019/PJA_S164_L001_R1_001.fastq 	 Reverse Reads: Validation/Bruce Wittman - 12262019/PJA_S164_L001_R2_001.fastqForward Reads: Validation/Bruce Wittman - 12262019/KEJ_S163_L001_R1_001.fastq 	 Reverse Reads: Validation/Bruce Wittman - 12262019/KEJ_S163_L001_R2_001.fastqForward Reads: Validation/Bruce Wittman - 12262019/BJW_S162_L001_R1_001.fastq 	 Reverse Reads: Validation/Bruce Wittman - 12262019/BJW_S162_L001_R2_001.fastqForward Reads: Validation/Bruce Wittman - 12262019/OLD_S165_L001_R1_001.fastq 	 Reverse Reads: Validation/Bruce Wittman - 12262019/OLD_S165_L001_R2_001.fastq
+Unmatched Files in Folder:Validation/Bruce Wittman - 12262019/BJW_S162_L001_I1_001.fastqValidation/Bruce Wittman - 12262019/KEJ_S163_L001_I2_001.fastqValidation/Bruce Wittman - 12262019/PJA_S164_L001_I2_001.fastqValidation/Bruce Wittman - 12262019/BJW_S162_L001_I2_001.fastqValidation/Bruce Wittman - 12262019/OLD_S165_L001_I2_001.fastqValidation/Bruce Wittman - 12262019/KEJ_S163_L001_I1_001.fastqValidation/Bruce Wittman - 12262019/PJA_S164_L001_I1_001.fastqValidation/Bruce Wittman - 12262019/OLD_S165_L001_I1_001.fastqThe identified read length for this run was: 151
+    
+    20200109-131326
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Bruce Wittman - 12262019/
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-131326 
+    
+Identified Seq File Pairs:Forward Reads: Validation/Bruce Wittman - 12262019/PJA_S164_L001_R1_001.fastq 	 Reverse Reads: Validation/Bruce Wittman - 12262019/PJA_S164_L001_R2_001.fastqForward Reads: Validation/Bruce Wittman - 12262019/KEJ_S163_L001_R1_001.fastq 	 Reverse Reads: Validation/Bruce Wittman - 12262019/KEJ_S163_L001_R2_001.fastqForward Reads: Validation/Bruce Wittman - 12262019/BJW_S162_L001_R1_001.fastq 	 Reverse Reads: Validation/Bruce Wittman - 12262019/BJW_S162_L001_R2_001.fastqForward Reads: Validation/Bruce Wittman - 12262019/OLD_S165_L001_R1_001.fastq 	 Reverse Reads: Validation/Bruce Wittman - 12262019/OLD_S165_L001_R2_001.fastq
+Unmatched Files in Folder:Validation/Bruce Wittman - 12262019/BJW_S162_L001_I1_001.fastqValidation/Bruce Wittman - 12262019/KEJ_S163_L001_I2_001.fastqValidation/Bruce Wittman - 12262019/PJA_S164_L001_I2_001.fastqValidation/Bruce Wittman - 12262019/BJW_S162_L001_I2_001.fastqValidation/Bruce Wittman - 12262019/OLD_S165_L001_I2_001.fastqValidation/Bruce Wittman - 12262019/KEJ_S163_L001_I1_001.fastqValidation/Bruce Wittman - 12262019/PJA_S164_L001_I1_001.fastqValidation/Bruce Wittman - 12262019/OLD_S165_L001_I1_001.fastqThe identified read length for this run was: 151
+    
+    20200109-133031
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos0_R1_test.fastq
+    fastq_r: Validation/Set1/Pos0_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-133031 
+    
+Identified Seq File Pairs:Forward Reads: Validation/Set1/Pos0_R1_test.fastq 	 Reverse Reads: Validation/Set1/Pos0_R2_test.fastq
+Unmatched Files in Folder:The identified read length for this run was: 150
+    
+    20200109-134625
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos0_R1_test.fastq
+    fastq_r: Validation/Set1/Pos0_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-134625 
+    
+Identified Seq File Pairs:Forward Reads: Validation/Set1/Pos0_R1_test.fastq 	 Reverse Reads: Validation/Set1/Pos0_R2_test.fastq
+Unmatched Files in Folder:The identified read length for this run was: 150
+    
+    20200109-135302
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos0_R1_test.fastq
+    fastq_r: Validation/Set1/Pos0_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-135302 
+    
+Identified Seq File Pairs:Forward Reads: Validation/Set1/Pos0_R1_test.fastq 	 Reverse Reads: Validation/Set1/Pos0_R2_test.fastq
+Unmatched Files in Folder:The identified read length for this run was: 150
+    
+    20200109-135444
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos0_R1_test.fastq
+    fastq_r: Validation/Set1/Pos0_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-135444 
+    
+Identified Seq File Pairs:Forward Reads: Validation/Set1/Pos0_R1_test.fastq 	 Reverse Reads: Validation/Set1/Pos0_R2_test.fastq
+Unmatched Files in Folder:The identified read length for this run was: 150
+    
+    20200109-140203
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos0_R1_test.fastq
+    fastq_r: Validation/Set1/Pos0_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-140203 
+    
+Identified Seq File Pairs:Forward Reads: Validation/Set1/Pos0_R1_test.fastq 	 Reverse Reads: Validation/Set1/Pos0_R2_test.fastq
+Unmatched Files in Folder:The identified read length for this run was: 150
+    
+    20200109-141221
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos0_R1_test.fastq
+    fastq_r: Validation/Set1/Pos0_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-141221 
+    
+Identified Seq File Pairs:Forward Reads: Validation/Set1/Pos0_R1_test.fastq 	 Reverse Reads: Validation/Set1/Pos0_R2_test.fastq
+Unmatched Files in Folder:The identified read length for this run was: 150
+Error Encountered: No variable sites detected in one of the forward or reverse reference sequences.
+    
+    20200109-141244
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos1_R1_test.fastq
+    fastq_r: Validation/Set1/Pos1_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-141244 
+    
+Identified Seq File Pairs:Forward Reads: Validation/Set1/Pos1_R1_test.fastq 	 Reverse Reads: Validation/Set1/Pos1_R2_test.fastq
+Unmatched Files in Folder:The identified read length for this run was: 150
+    
+    20200109-142529
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos3/Pos3_R1_test.fastq
+    fastq_r: Validation/Set1/Pos3/Pos3_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-142529 
+    
+Identified Seq File Pairs:Forward Reads: Validation/Set1/Pos3/Pos3_R1_test.fastq 	 Reverse Reads: Validation/Set1/Pos3/Pos3_R2_test.fastq
+Unmatched Files in Folder:The identified read length for this run was: 150
+    
+    20200109-142556
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos2/Pos2_R1_test.fastq
+    fastq_r: Validation/Set1/Pos2/Pos2_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-142556 
+    
+Identified Seq File Pairs:Forward Reads: Validation/Set1/Pos2/Pos2_R1_test.fastq 	 Reverse Reads: Validation/Set1/Pos2/Pos2_R2_test.fastq
+Unmatched Files in Folder:The identified read length for this run was: 150
+    
+    20200109-151452
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos1_R1_test.fastq
+    fastq_r: Validation/Set1/Pos1_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-151452 
+    
+Error Encountered: The file or folder does not exist: Validation/Set1/Pos1RefSeqs.csv
+    
+    20200109-151744
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos1_R1_test.fastq
+    fastq_r: Validation/Set1/Pos1_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-151744 
+    
+Error Encountered: The file or folder does not exist: Validation/Set1/Pos1RefSeqs.csv
+    
+    20200109-151807
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos1/Pos1_R1_test.fastq
+    fastq_r: Validation/Set1/Pos1_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-151807 
+    
+Error Encountered: The file or folder does not exist: Validation/Set1/Pos1RefSeqs.csv
+    
+    20200109-151826
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos1/Pos1_R1_test.fastq
+    fastq_r: Validation/Set1/Pos1/Pos1_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-151826 
+    
+Identified Seq File Pairs:Forward Reads: Validation/Set1/Pos1/Pos1_R1_test.fastq 	 Reverse Reads: Validation/Set1/Pos1/Pos1_R2_test.fastq
+Unmatched Files in Folder:The identified read length for this run was: 150
+    
+    20200109-151931
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos2/Pos2_R1_test.fastq
+    fastq_r: Validation/Set1/Pos2/Pos2_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-151931 
+    
+Identified Seq File Pairs:Forward Reads: Validation/Set1/Pos2/Pos2_R1_test.fastq 	 Reverse Reads: Validation/Set1/Pos2/Pos2_R2_test.fastq
+Unmatched Files in Folder:The identified read length for this run was: 150
+    
+    20200109-152026
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos3/Pos3_R1_test.fastq
+    fastq_r: Validation/Set1/Pos3/Pos3_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-152026 
+    
+Identified Seq File Pairs:Forward Reads: Validation/Set1/Pos3/Pos3_R1_test.fastq 	 Reverse Reads: Validation/Set1/Pos3/Pos3_R2_test.fastq
+Unmatched Files in Folder:The identified read length for this run was: 150
+    
+    20200109-160130
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos1/Pos1_R1_test.fastq
+    fastq_r: Validation/Set1/Pos1/Pos1_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-160130 
+    
+Identified Seq File Pairs:Forward Reads: Validation/Set1/Pos1/Pos1_R1_test.fastq 	 Reverse Reads: Validation/Set1/Pos1/Pos1_R2_test.fastq
+Unmatched Files in Folder:The identified read length for this run was: 150
+    
+    20200109-162312
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos1/Pos1_R1_test.fastq
+    fastq_r: Validation/Set1/Pos1/Pos1_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-162312 
+    
+Identified Seq File Pairs:Forward Reads: Validation/Set1/Pos1/Pos1_R1_test.fastq 	 Reverse Reads: Validation/Set1/Pos1/Pos1_R2_test.fastq
+Unmatched Files in Folder:The identified read length for this run was: 150
+    
+    20200109-162705
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos1/Pos1_R1_test.fastq
+    fastq_r: Validation/Set1/Pos1/Pos1_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-162705 
+    
+Identified Seq File Pairs:Forward Reads: Validation/Set1/Pos1/Pos1_R1_test.fastq 	 Reverse Reads: Validation/Set1/Pos1/Pos1_R2_test.fastq
+Unmatched Files in Folder:The identified read length for this run was: 150
+    
+    20200109-162937
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos1/Pos1_R1_test.fastq
+    fastq_r: Validation/Set1/Pos1/Pos1_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-162937 
+    
+Identified Seq File Pairs:Forward Reads: Validation/Set1/Pos1/Pos1_R1_test.fastq 	 Reverse Reads: Validation/Set1/Pos1/Pos1_R2_test.fastq
+Unmatched Files in Folder:The identified read length for this run was: 150
+    
+    20200109-163602
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos1/Pos1_R1_test.fastq
+    fastq_r: Validation/Set1/Pos1/Pos1_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-163602 
+    
+Identified Seq File Pairs:Forward Reads: Validation/Set1/Pos1/Pos1_R1_test.fastq 	 Reverse Reads: Validation/Set1/Pos1/Pos1_R2_test.fastq
+Unmatched Files in Folder:The identified read length for this run was: 150
+    
+    20200109-165444
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos1/Pos1_R1_test.fastq
+    fastq_r: Validation/Set1/Pos1/Pos1_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-165444 
+    
+Identified Seq File Pairs:Forward Reads: Validation/Set1/Pos1/Pos1_R1_test.fastq 	 Reverse Reads: Validation/Set1/Pos1/Pos1_R2_test.fastq
+Unmatched Files in Folder:The identified read length for this run was: 150
+    
+    20200109-170832
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos1/Pos1_R1_test.fastq
+    fastq_r: Validation/Set1/Pos1/Pos1_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-170832 
+    
+Identified Seq File Pairs:Forward Reads: Validation/Set1/Pos1/Pos1_R1_test.fastq 	 Reverse Reads: Validation/Set1/Pos1/Pos1_R2_test.fastq
+Unmatched Files in Folder:The identified read length for this run was: 150
+    
+    20200109-171117
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Validation/Set1/Pos1/Pos1_R1_test.fastq
+    fastq_r: Validation/Set1/Pos1/Pos1_R2_test.fastq
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200109-171117 
+    
+Identified Seq File Pairs:Forward Reads: Validation/Set1/Pos1/Pos1_R1_test.fastq 	 Reverse Reads: Validation/Set1/Pos1/Pos1_R2_test.fastq
+Unmatched Files in Folder:The identified read length for this run was: 150

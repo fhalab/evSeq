@@ -100,7 +100,11 @@ def FindNNN(reference_sequence):
     found_in_3 = True if N_found % 3 == 0 else False
     
     # Confirm that N was found in codon format
-    codon_format = latest_N and found_in_3
+    codon_format = in_series and found_in_3
+    
+    # If there are no variable sites, then throw an error
+    if len(var_sites) == 0:
+        LogError("No variable sites detected in one of the forward or reverse reference sequences.")
     
     # Return the variable sites, the number of variable sites, and whether or 
     # not N was included in codon-format (multiples of 3 in series) 

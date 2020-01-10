@@ -249,6 +249,7 @@ class Well():
             # Create a series of tests
             poor_alignment = False
             check_combo = True
+            bad_codon_found = False
 
             # Analyze the forward and reverse alignments
             for i, alignment in enumerate((f_alignment, r_alignment)):
@@ -259,11 +260,11 @@ class Well():
                                                           alignment_cutoff,
                                                           q_cutoff)
 
-                # If the alignment did not meet the alignment score cutoff, continue
+                # If the alignment did not meet the alignment score cutoff, 
+                # record it as a bad alignment
                 if alignment_output is None:
                     poor_alignment = True
-                    continue
-
+                    
                 # Otherwise, unpack the alignment results
                 (temp_insertions,
                  temp_deletions,
@@ -295,7 +296,6 @@ class Well():
 
                 # Add to the amino acid count matrix and compare the translation to the
                 # reference
-                bad_codon_found = False
                 for k, aa_read in enumerate(alignment_translation.translation[:ref_seq.trans_length]):
 
                     # Add to the amino acid count matrix if it is not a low quality
@@ -308,9 +308,12 @@ class Well():
                         continue
                     aa_counts[i][k, AaToInd[aa_read]] += 1
 
-                # If either of the reads failed for any reason, break the loop.
+                # If the forward reads failed for any reason, continue. If the 
+                # # reverse reads failed for any reason, break the loop.
                 # We can't make combination data without both reads.
-                if bad_codon_found or not check_combo:
+                if (bad_codon_found or not check_combo) and i == 0:
+                    continue
+                elif (bad_codon_found or not check_combo) and i == 1:
                     break
 
                 # Identify the highest possible reference and the number of variable

@@ -23,4 +23,6 @@ Positional arguments:
  - --alignment_filter: A fraction of the maximum possible alignment score below which an alignment is discarded. This flag is used for eliminating off-target sequencing reads (e.g. from primer dimer). The default is 0.5, and it must vary between 0 and 1.
     
 ### RefSeqs.csv
-Your reference sequences should be passed in to ssSeq as a csv file with the headers "PlateName", "IndexPlate", and "ReferenceSequence". An example csv file can be found in the ssSeq home directory. "PlateName" is a user-specified nickname for the plate in question. "IndexPlate" is the dual index plate used to prepare the ssSeq sample for sequencing -- it should take the form "DI##". "ReferenceSequence" is the gene fragment amplicon sequenced as part of ssSeq with the variable codons denoted by "NNN".
+Your reference sequences should be passed in to ssSeq as a csv file with the headers "PlateName", "IndexPlate", and "ReferenceSequence". An example csv file can be found in the ssSeq home directory. "PlateName" is a user-specified nickname for the plate in question. "IndexPlate" is the dual index plate used to prepare the ssSeq sample for sequencing -- it should take the form "DI##". "ReferenceSequence" is the gene fragment amplicon sequenced as part of ssSeq with the variable codons denoted by "NNN". 
+
+ssSeq expects to see "NNN" in both the forward and reverse reads. Even if you don't have a variable position in the reverse read, you must denote one in a region of the reference sequence covered by sequencing; ssSeq will crash if you do not. 
