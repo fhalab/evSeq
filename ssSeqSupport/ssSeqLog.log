@@ -1236,3 +1236,98 @@ Unmatched Files in Folder:The identified read length for this run was: 150
     
 Identified Seq File Pairs:Forward Reads: Validation/Set1/Pos1/Pos1_R1_test.fastq 	 Reverse Reads: Validation/Set1/Pos1/Pos1_R2_test.fastq
 Unmatched Files in Folder:The identified read length for this run was: 150
+    
+    20200201-143216
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: /home/brucejwittmann/Downloads/Bruce Wittman - 01312020/
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200201-143216 
+    
+Identified Seq File Pairs:Forward Reads: /home/brucejwittmann/Downloads/Bruce Wittman - 01312020/CHL1_S193_L001_R1_001.fastq.gz 	 Reverse Reads: /home/brucejwittmann/Downloads/Bruce Wittman - 01312020/CHL1_S193_L001_R2_001.fastq.gz
+Unmatched Files in Folder:/home/brucejwittmann/Downloads/Bruce Wittman - 01312020/CHL1_S193_L001_I1_001.fastq.gzThe identified read length for this run was: 150
+Error Encountered: Reference sequence in row {} has base other than 'A', 'C', 'T', 'G', or 'N'
+    
+    20200201-144036
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: /home/brucejwittmann/Downloads/Bruce Wittman - 01312020/
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200201-144036 
+    
+Identified Seq File Pairs:Forward Reads: /home/brucejwittmann/Downloads/Bruce Wittman - 01312020/CHL1_S193_L001_R1_001.fastq.gz 	 Reverse Reads: /home/brucejwittmann/Downloads/Bruce Wittman - 01312020/CHL1_S193_L001_R2_001.fastq.gz
+Unmatched Files in Folder:/home/brucejwittmann/Downloads/Bruce Wittman - 01312020/CHL1_S193_L001_I1_001.fastq.gzThe identified read length for this run was: 150
+Error Encountered: Reference sequence in row {} has base other than 'A', 'C', 'T', 'G', or 'N'
+    
+    20200201-144301
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: /home/brucejwittmann/Downloads/Bruce Wittman - 01312020/
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200201-144301 
+    
+Identified Seq File Pairs:Forward Reads: /home/brucejwittmann/Downloads/Bruce Wittman - 01312020/CHL1_S193_L001_R1_001.fastq.gz 	 Reverse Reads: /home/brucejwittmann/Downloads/Bruce Wittman - 01312020/CHL1_S193_L001_R2_001.fastq.gz
+Unmatched Files in Folder:/home/brucejwittmann/Downloads/Bruce Wittman - 01312020/CHL1_S193_L001_I1_001.fastq.gzThe identified read length for this run was: 150
+Error Encountered: No variable sites detected in one of the forward or reverse reference sequences.
+    
+    20200201-144517
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: /home/brucejwittmann/Downloads/Bruce Wittman - 01312020/
+    fastq_r: 
+    analysis only: False
+    input_readlength: 150
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200201-144517 
+    
+Identified Seq File Pairs:Forward Reads: /home/brucejwittmann/Downloads/Bruce Wittman - 01312020/CHL1_S193_L001_R1_001.fastq.gz 	 Reverse Reads: /home/brucejwittmann/Downloads/Bruce Wittman - 01312020/CHL1_S193_L001_R2_001.fastq.gz
+Unmatched Files in Folder:/home/brucejwittmann/Downloads/Bruce Wittman - 01312020/CHL1_S193_L001_I1_001.fastq.gz
+Error Encountered: No variable sites detected in one of the forward or reverse reference sequences.
+    
+    20200201-144758
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: /home/brucejwittmann/Downloads/Bruce Wittman - 01312020/
+    fastq_r: 
+    analysis only: False
+    input_readlength: 150
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200201-144758 
+    
+Identified Seq File Pairs:Forward Reads: /home/brucejwittmann/Downloads/Bruce Wittman - 01312020/CHL1_S193_L001_R1_001.fastq.gz 	 Reverse Reads: /home/brucejwittmann/Downloads/Bruce Wittman - 01312020/CHL1_S193_L001_R2_001.fastq.gz
+Unmatched Files in Folder:/home/brucejwittmann/Downloads/Bruce Wittman - 01312020/CHL1_S193_L001_I1_001.fastq.gz
+Error Encountered: No variable sites detected in one of the forward or reverse reference sequences.
+    
+    20200201-145528
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: /home/brucejwittmann/Downloads/Bruce Wittman - 01312020/
+    fastq_r: 
+    analysis only: False
+    input_readlength: 150
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200201-145528 
+    
+Identified Seq File Pairs:Forward Reads: /home/brucejwittmann/Downloads/Bruce Wittman - 01312020/CHL1_S193_L001_R1_001.fastq.gz 	 Reverse Reads: /home/brucejwittmann/Downloads/Bruce Wittman - 01312020/CHL1_S193_L001_R2_001.fastq.gz
+Unmatched Files in Folder:/home/brucejwittmann/Downloads/Bruce Wittman - 01312020/CHL1_S193_L001_I1_001.fastq.gz
