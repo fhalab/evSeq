@@ -263,8 +263,8 @@ class Well():
                 # If the alignment did not meet the alignment score cutoff, 
                 # record it as a bad alignment
                 if alignment_output is None:
-                    poor_alignment = True
-                    
+                    continue
+                                        
                 # Otherwise, unpack the alignment results
                 (temp_insertions,
                  temp_deletions,
@@ -281,9 +281,8 @@ class Well():
                 # Don't bother moving on if the alignment quality was poor.
                 # Don't check the combination if this is the case for either
                 # alignment in the forward-reverse pair.
-                if ins_found or del_found or poor_alignment:
+                if ins_found or del_found:
                     check_combo = False
-                    poor_alignment = False
                     continue
 
                 # Translate each codon in the read alignment
