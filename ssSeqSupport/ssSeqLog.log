@@ -1266,3 +1266,107 @@ Unmatched Files in Folder:/home/brucejwittmann/Downloads/CHLib01_Seq/CHL1_S193_L
     
 Identified Seq File Pairs:Forward Reads: /home/brucejwittmann/Downloads/CHLib01_Seq/CHL1_S193_L001_R1_001.fastq.gz 	 Reverse Reads: /home/brucejwittmann/Downloads/CHLib01_Seq/CHL1_S193_L001_R2_001.fastq.gz
 Unmatched Files in Folder:/home/brucejwittmann/Downloads/CHLib01_Seq/CHL1_S193_L001_I1_001.fastq.gzThe identified read length for this run was: 150
+    
+    20200203-182528
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: /home/brucejwittmann/Downloads/fastq
+    fastq_r: 
+    analysis only: False
+    input_readlength: 250
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200203-182528 
+    
+Error Encountered: The file or folder does not exist: /home/brucejwittmann/Downloads/fastq
+    
+    20200203-182550
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: /home/brucejwittmann/Downloads/20200131/fastq
+    fastq_r: 
+    analysis only: False
+    input_readlength: 250
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200203-182550 
+    
+Identified Seq File Pairs:Forward Reads: /home/brucejwittmann/Downloads/20200131/fastq/Lib_S194_L001_R1_001.fastq.gz 	 Reverse Reads: /home/brucejwittmann/Downloads/20200131/fastq/Lib_S194_L001_R2_001.fastq.gz
+Unmatched Files in Folder:/home/brucejwittmann/Downloads/20200131/fastq/Lib_S194_L001_I1_001.fastq.gz
+    
+    20200203-183338
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: /home/brucejwittmann/Downloads/CHLib01_Seq/
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200203-183338 
+    
+Identified Seq File Pairs:Forward Reads: /home/brucejwittmann/Downloads/CHLib01_Seq/CHL1_S193_L001_R1_001.fastq.gz 	 Reverse Reads: /home/brucejwittmann/Downloads/CHLib01_Seq/CHL1_S193_L001_R2_001.fastq.gz
+Unmatched Files in Folder:/home/brucejwittmann/Downloads/CHLib01_Seq/CHL1_S193_L001_I1_001.fastq.gzThe identified read length for this run was: 150
+    
+    20200203-184002
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: /home/brucejwittmann/Downloads/20200131/fastq
+    fastq_r: 
+    analysis only: False
+    input_readlength: 250
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200203-184002 
+    
+Identified Seq File Pairs:Forward Reads: /home/brucejwittmann/Downloads/20200131/fastq/Lib_S194_L001_R1_001.fastq.gz 	 Reverse Reads: /home/brucejwittmann/Downloads/20200131/fastq/Lib_S194_L001_R2_001.fastq.gz
+Unmatched Files in Folder:/home/brucejwittmann/Downloads/20200131/fastq/Lib_S194_L001_I1_001.fastq.gz
+    
+    20200203-185145
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: /home/brucejwittmann/Downloads/20200131/fastq
+    fastq_r: 
+    analysis only: False
+    input_readlength: 250
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200203-185145 
+    
+Identified Seq File Pairs:Forward Reads: /home/brucejwittmann/Downloads/20200131/fastq/Lib_S194_L001_R1_001.fastq.gz 	 Reverse Reads: /home/brucejwittmann/Downloads/20200131/fastq/Lib_S194_L001_R2_001.fastq.gz
+Unmatched Files in Folder:/home/brucejwittmann/Downloads/20200131/fastq/Lib_S194_L001_I1_001.fastq.gz
+    
+    20200203-191139
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: /home/brucejwittmann/Downloads/20200131/fastq
+    fastq_r: 
+    analysis only: False
+    input_readlength: 250
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200203-191139 
+    
+Identified Seq File Pairs:Forward Reads: /home/brucejwittmann/Downloads/20200131/fastq/Lib_S194_L001_R1_001.fastq.gz 	 Reverse Reads: /home/brucejwittmann/Downloads/20200131/fastq/Lib_S194_L001_R2_001.fastq.gz
+Unmatched Files in Folder:/home/brucejwittmann/Downloads/20200131/fastq/Lib_S194_L001_I1_001.fastq.gz
+    
+    20200203-191554
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: /home/brucejwittmann/Downloads/20200131/fastq
+    fastq_r: 
+    analysis only: False
+    input_readlength: 250
+    troubleshoot mode: False
+    n jobs: 7
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/GitRepos/ssSeq/ssSeq_Output/20200203-191554 
+    
+Identified Seq File Pairs:Forward Reads: /home/brucejwittmann/Downloads/20200131/fastq/Lib_S194_L001_R1_001.fastq.gz 	 Reverse Reads: /home/brucejwittmann/Downloads/20200131/fastq/Lib_S194_L001_R2_001.fastq.gz
+Unmatched Files in Folder:/home/brucejwittmann/Downloads/20200131/fastq/Lib_S194_L001_I1_001.fastq.gz

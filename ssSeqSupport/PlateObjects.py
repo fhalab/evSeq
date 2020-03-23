@@ -247,7 +247,6 @@ class Well():
                                    self._seq_pairs[j].reversed_barcodeless_r]
 
             # Create a series of tests
-            poor_alignment = False
             check_combo = True
             bad_codon_found = False
 
@@ -676,7 +675,7 @@ class Plate():
 
                 # Unpack differently if we are not in troubleshoot mode
                 summary_info_part, variant_info_part = result
-
+            print(variant_info_part)
             # Extend the summary and variant info tables
             summary_info.extend(summary_info_part)
             variant_info.extend(variant_info_part)
@@ -695,7 +694,9 @@ class Plate():
         df_max = variant_info_df.groupby('Well')[['Well', 'AlignmentFrequency']].max().reset_index(drop=True)
         
         # Merge with full DataFrame
-        df_full = variant_info_df.merge(df_max)
+        df_max.to_csv("~/Downloads/MaxTest.csv")
+        variant_info_df.to_csv("~/Downloads/VariantInfo.csv")
+        df_full = variant_info_df.merge(df_max, on = "Well")
 
         # Round for easier reading
         df_full['AlignmentFrequency'] = np.round(df_full['AlignmentFrequency'].values, 3)
