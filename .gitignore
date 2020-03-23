@@ -6,6 +6,9 @@ ssSeq_Support/*.log
 # vscode
 .vscode/
 
+# ToDo file
+ToDo.txt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
