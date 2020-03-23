@@ -94,8 +94,8 @@ def CheckRefSeqs(ref_seqs_df, detailed_file):
             
         # Confirm that the reference sequence is made up entirely of 'A', 'C', 
         # 'T', 'G', and 'N'.
-        if any([char not in AllowedBases for char in row["ReferenceSequence"]]):
-            LogError("Reference sequence in row {} has base other than 'A', 'C', 'T', 'G', or 'N'")
+        if any([char.upper() not in AllowedBases for char in row["ReferenceSequence"]]):
+            LogError("Reference sequence in row {} has base other than 'A', 'C', 'T', 'G', or 'N'".format(i))
                         
         # Make sure that the same plate nickname and dual index plate name always 
         # go together.

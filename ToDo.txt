@@ -1,10 +1,7 @@
-Single reference sequence
-Remove need to input the read size
-No more global params file
-Create a command line interface to run the program. Create a GUI for input as well.
-Create the option to just have the sequence analysis with no alignments made.
 Figure out if clustalW is a better alignment method than the current one.
 Add a check to make sure that "NNN" is always in frame with the others
+There is a bug when you don't have any "NNN" in your reference sequence. Make sure 
+    we check to make sure the user put in the variable regions.
 
 Tests to make:
 1. Are the counts coming back correct?
