@@ -1,3 +1,67 @@
+ssSeq
+=====
+Analyze raw fastq and fastq.gz files returned from next-gen sequencing of libraries prepared by the ssSeq wetlab protocol.
+
+Table of Contents
+-----------------
+- [Installation](#Installation)
+    - [Non-Programmers](#Non-Programmers)
+    - [General Instructions](#General Instructions)
+- [Program Arguments](#Program Arguments)
+    - [Required Inputs](#Required Inputs)
+    - [Optional Arguments](#Optional Arguments)
+- [Working with the GUI](#Working with the GUI)
+- [Working through Command Line](#Working through Command Line)
+- [Biological Protocols](#Biological Protocols)
+    - [Primer Design](#Primer Design)
+    - [Library Preparation](#Library Preparation)
+
+## Installation
+### Non-Programmers
+This section details installation of high level dependencies: gitbash (Windows users), git, and anaconda. If you have installed and are familiar with these items, you can skip this section. Installation on Linux is not detailed here, as we just assume you know what you're doing. Once this section is completed, continue installation by moving to [General Instructions](#General Instructions).
+
+#### Installing git
+Windows users: Install Git/Git Bash by following the instructions [here](https://www.stanleyulili.com/git/how-to-install-git-bash-on-windows/). Unless you know what you're doing, sticking to the default options during install is best. 
+
+Mac users: Install Git by following the instructions [here](https://www.atlassian.com/git/tutorials/install-git). Some commands must be performed through the terminal. You can open a terminal by typing command + spacebar, then searching "Terminal"; opening the search result will give you a terminal window.
+
+#### Installing Anaconda
+Anaconda is an open-source package managment framework for scientific computing with Python. For details, look at their website [here](https://www.anaconda.com/). All software that supports ssSeq is handled by the Anaconda package manager. See below for installation instructions on both Windows and Mac:
+
+Windows users: Install Anaconda following the instructions [here](https://docs.anaconda.com/anaconda/install/windows/). At step 8, I recommend adding Anaconda to your PATH environment variable. Note that this is in contrast to the recommendation of Anaconda, but their concerns shouldn't apply for our use case.
+
+Mac users: Install Anaconda following the instructions [here](https://docs.anaconda.com/anaconda/install/mac-os/). 
+
+#### Opening a Terminal Window
+Later steps in our installation will require you to write commands in terminal. To open a terminal in Windows, right-click on either the desktop background or within your file explorer, then open "Git Bash". For Mac users, type command + spacebar, search "Terminal", then open the search result. 
+
+#### Construction of "GitRepos" folder
+The next step will be to install ssSeq. If you have not worked with Git repos before, I recommend creating a folder where you can store all of them. Wherever seems reasonable to you (most likely your home directory), create a folder called "GitRepos".
+
+### General Instructions
+#### ssSeq Installation
+Open a terminal window and navigate to your GitRepos folder. This is accomplished by entering the below command in the terminal
+
+	cd PATH_TO_GIT_REPOS
+
+For instance, in my case I would type
+
+	cd /home/brucejwittmann/GitRepos
+
+After hitting "Enter" on your keyboard, you will notice that the prefix of your command line has changed. It will look something like the below after successfully executing the "cd" command:
+
+![Command line example](./GitImages/CommandLineExample.png "Command line example")
+
+From the ssSeq GitHub page, find the green box labeled "Clone or download". A screenshot giving the box location is below. Click on this box, then copy the presented url. 
+
+![Clone or download example](./GitImages/CloneDownloadImage.png "Clone or download example")
+
+Now in the command line, type 
+
+	git clone COPIED_URL
+
+replacing "COPIED_URL" with the link you just copied from GitHub. You can paste the link into command line by right-clicking and selecting "paste". 
+
 # ssSeq_Parser: Beta Release V2
 Package for analyzing site-saturation next-generation sequencing data. This is still in beta, as thorough validation of functionality has not yet been performed. The code has been reorganized into easier to manage packages, so it should be easier for other developers to contribute now. Docstrings are still on the to-do list.
 

@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 # Import relevant modules
 import argparse
 import os
