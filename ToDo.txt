@@ -17,4 +17,3 @@ Pre-Demo:
 - Work out how to install on different computers
     - Will need a series of instructions on how to actuall install all dependencies
 - Make all tests
-- Fix bug that causes failure when no alignments pass

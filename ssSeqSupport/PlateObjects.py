@@ -585,7 +585,24 @@ class Well():
     @property
     def plate(self):
         return self._plate
-
+    
+    @property
+    def f_alignments(self):
+        return self._f_alignments
+    
+    @property
+    def r_alignments(self):
+        return self._r_alignments
+    
+    @property
+    def f_consensus(self):
+        return self._f_consensus
+    
+    @property
+    def r_consensus(self):
+        return self._r_consensus
+    
+    
 # Define a class that can handle plate information
 class Plate():
 

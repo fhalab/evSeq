@@ -57,15 +57,18 @@ def RunssSeq(args):
         
         # Set the appropriate read length in args if the default is used
         if args["read_length"] == None:
+            print("Determining read length...")
             args["read_length"] = _SetReadLength(seq_pairs)
         
         # Analyze the seq_pairs. 
+        print("Analyzing sequencing quality. Generating sequence quality histograms...")
         _AnalyzeSeqPairs(seq_pairs, filepair, args)
         
         # Process the seq_pairs only if the --analysis_only flag is not thrown
         if not args["analysis_only"]:
 
             # Map barcodes to reference sequences
+            print("Mapping barcodes to reference sequences...")
             BcsToRefSeq = ConstructBCsToRefSeq(LoadRefSeq(args),
                                                LoadDualInds())
 

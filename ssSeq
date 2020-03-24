@@ -1,17 +1,18 @@
 #!/usr/bin/env python
-## Add shebang to force use of predefined conda environment
-if __name__=="__main__":
 
-    # Import relevant modules
-    import argparse
-    import os
-    from time import strftime
-    
-    # Import relevant modules from ssSeqSupport.
-    from ssSeqSupport import LogInit, LogInfo, LogError
-    from ssSeqSupport import RunssSeq
-    from ssSeqSupport import NCpus
-    
+# Import relevant modules
+import argparse
+import os
+from time import strftime
+
+# Import relevant modules from ssSeqSupport.
+from ssSeqSupport import LogInit, LogInfo, LogError
+from ssSeqSupport import RunssSeq
+from ssSeqSupport import NCpus
+
+# Create a "main" function
+def main():
+
     # Instantiate argparser
     parser = argparse.ArgumentParser()
 
@@ -50,11 +51,14 @@ if __name__=="__main__":
     LogInit(CLArgs)    
 
     # Run ssSeq
-    try:
-        RunssSeq(CLArgs)
-    except Exception as e:
-        LogError("\nUnhandled exception encountered: '{}'".format(e))
+    # try:
+    RunssSeq(CLArgs)
+    # except Exception as e:
+    #     LogError("\nUnhandled exception encountered: '{}'".format(e))
     
     # Log that we have successfully completed the run
     LogInfo("\nRun completed. Log may contain warnings.")
     
+# Run main()
+if __name__ == "__main__":
+    main()
