@@ -19,6 +19,9 @@ from gooey import Gooey, GooeyParser
        optional_cols = 1)
 def main():
 
+    # Get the cwd 
+    cwd = os.getcwd()
+
     # Instantiate GooeyParser
     parser = GooeyParser(description = "User Interface for ssSeq")
 
@@ -40,6 +43,11 @@ def main():
                                      required = False,
                                      default = "",
                                      widget = "FileChooser")
+    optional_args_group.add_argument("--output", 
+                                     help = "Save location for run.",
+                                     required = False,
+                                     default = cwd,
+                                     widget = "DirChooser")
     
     # Add read analysis parameters argument group
     params_args_group = parser.add_argument_group("Read Analysis Parameters",
@@ -88,9 +96,9 @@ def main():
         
     # Identify the cwd and start time and add to the "CLArgs" dict. Also create an
     # output directory from the two and add this to CLArgs as well.
-    cwd = os.getcwd()
+    base_output = CLArgs["output"]
     datetime = strftime("%Y%m%d-%H%M%S")
-    output_dir = os.path.join(cwd, "ssSeq_Output", datetime)
+    output_dir = os.path.join(base_output, "ssSeq_Output", datetime)
     CLArgs.update({"datetime": datetime, "output": output_dir})
     
     # Log CLArgs
