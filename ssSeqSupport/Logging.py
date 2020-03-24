@@ -23,18 +23,18 @@ def LogInit(args):
     
     # Format a string for adding to the logfile
     logstr = """
-    
-    {}
-    ----------------------------------------------------------------------------
-    source folder/fastq_f: {}
-    fastq_r: {}
-    analysis only: {}
-    input_readlength: {}
-    troubleshoot mode: {}
-    n jobs: {}
-    Q-score cutoff: {}
-    alignment filter: {}
-    output folder: {} 
+
+{}
+----------------------------------------------------------------------------
+source folder/fastq_f: {}
+fastq_r: {}
+analysis only: {}
+input_readlength: {}
+troubleshoot mode: {}
+n jobs: {}
+Q-score cutoff: {}
+alignment filter: {}
+output folder: {} 
     """.format(args["datetime"], args["folder"], args["fastq_r"],
                args["analysis_only"], args["read_length"],  args["troubleshoot"],
                args["jobs"], args["q_cutoff"], args["alignment_filter"],
@@ -111,7 +111,7 @@ def LogInputFiles(matched_files, unmatched_files):
         
         # Write all filenames that matches
         for f_file, r_file in matched_files.items():
-            f.write("Forward Reads: {} \t Reverse Reads: {}".format(f_file, r_file))
+            f.write("\n\t- Forward Reads: {} \n\t- Reverse Reads: {}".format(f_file, r_file))
             
         # Write a header for the unmatched files
         f.write("\nUnmatched Files in Folder:")
@@ -125,4 +125,4 @@ def LogInfo(m):
     
     # Write the message to the log file
     with open(Logfilename, "a") as f:
-        f.write(m)
+        f.write("\n" + m)

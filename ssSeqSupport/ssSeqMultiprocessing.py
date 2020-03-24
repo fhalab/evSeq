@@ -152,7 +152,6 @@ def MultiprocessPlateAnalyzer(args):
     variant_info = [[well.plate, well.well, well.f_barcode, well.r_barcode,
                      combo, count/var_depth, var_depth]
                     for combo, count in variant_counts.items()]
-    print(variant_info)
 
     # Create the well-specific summary tables
     summary_info = []

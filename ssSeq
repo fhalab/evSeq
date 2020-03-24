@@ -8,7 +8,7 @@ if __name__=="__main__":
     from time import strftime
     
     # Import relevant modules from ssSeqSupport.
-    from ssSeqSupport import LogInit
+    from ssSeqSupport import LogInit, LogInfo, LogError
     from ssSeqSupport import RunssSeq
     from ssSeqSupport import NCpus
     
@@ -50,5 +50,11 @@ if __name__=="__main__":
     LogInit(CLArgs)    
 
     # Run ssSeq
-    RunssSeq(CLArgs)
+    try:
+        RunssSeq(CLArgs)
+    except Exception as e:
+        LogError("\nUnhandled exception encountered: '{}'".format(e))
+    
+    # Log that we have successfully completed the run
+    LogInfo("\nRun completed. Log may contain warnings.")
     

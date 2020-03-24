@@ -1,6 +1,7 @@
 #ssSeq stuff
 Validation/
 ssSeq_Output/
+TestData/
 ssSeq_Support/*.log
 
 # vscode

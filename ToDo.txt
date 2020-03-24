@@ -10,3 +10,11 @@ Tests to make:
 4. Make sure --fastq_r is ignored if the folder argument is a folder
 5. Remind users about the detailed-refseq flag if our reference sequence file fails
    for some reason
+6. Does ts mode work?
+
+Pre-Demo:
+- Get a working GUI
+- Work out how to install on different computers
+    - Will need a series of instructions on how to actuall install all dependencies
+- Make all tests
+- Fix bug that causes failure when no alignments pass
