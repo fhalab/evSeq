@@ -18,6 +18,8 @@ Table of Contents
 - [Program Arguments](#Program-Arguments)
     - [Required Inputs](#Required-Inputs)
         - [refseq](#refseq)
+            - [Default refseq](#Default-refseq)
+            - [Detailed refseq](#Detailed-refseq)
         - [folder](#folder)
     - [Optional Arguments](#Optional-Arguments)
 - [Working with the GUI](#Working-with-the-GUI)
@@ -42,7 +44,7 @@ Table of Contents
 
 # Installation
 ## Non-Programmers
-This section details installation of high level dependencies: gitbash (Windows users), git, and anaconda. If you have installed and are familiar with these items, you can skip this section. Installation on Linux is not detailed here, as we just assume you know what you're doing. Once this section is completed, continue installation by moving to [General Instructions](#General Instructions).
+This section details installation of high level dependencies: gitbash (Windows users), git, and anaconda. If you have installed and are familiar with these items, you can skip this section and more on to [General Instructions](#General Instructions). Installation on Linux is not detailed here, as we just assume you know what you're doing. Once this section is completed, continue installation by moving to [General Instructions](#General Instructions).
 
 ### Installing Git
 Windows users: Install Git/Git Bash by following the instructions [here](https://www.stanleyulili.com/git/how-to-install-git-bash-on-windows/). Unless you know what you're doing, sticking to the default options during install is best. 
@@ -143,11 +145,59 @@ ssSeq should now be fully ready for your use.
 The only two required arguments for ssSeq are a table giving the reference sequences for the expected amplicons ("refseq") and the folder containing the fastq files resulting from the sequencing run ("folder"). Both of these arguments are explained in detail below.
 
 ### refseq
+This is a csv file outlining the expected amplicon sequence for a given plate or well. To construct a reference sequence:
+
+1. Make a copy of your amplicon sequence. The sequence should include only that DNA pertaining to the target gene. In other words, adapter sequences should not be present, but binding regions for your primers should be. An example is given in the below image, where only the regions of NodSeq04 and NodSeq05 which bind to the gene of interest are taken as part of the amplicon (amplicon is highlighted); the remaining sequence of NodSeq04 and NodSeq05 is hidden and will not be taken as part of the amplicon.
+
+![Example Amplicon](./GitImages/ExampleAmplicon.png "Example Amplicon")
+
+2. Replace the bases at the known mutagenized positions with "NNN" as the codon. This is given as an example again in the below image. Note that positions 29, 39, 49, and 63 are now given by "NNN" in the DNA sequence. ssSeq will search for "NNN" in the input reference sequences and identify those positions as the targets of site-saturation mutagenesis. Of course, for single site site-saturation mutagenesis, only 1 position would be given by "NNN", for double site site-saturation mutagenesis, 2 positions would be given by "NNN", and so on. 
+
+![Example Mutagenized Amplicon](./GitImages/ExampleAmpliconNNN.png "Example Mutagenized Amplicon")
+
+3. Using the "mutagenized" amplicon sequence (or sequences, depending on your use case), construct the csv file to pass in as the refseq argument. There are two different styles of refseq file that you can pass in, each detailed in the below subsections.
+
+#### Default refseq
+This form of the file assumes the same reference sequence in each well of the analyzed plates, and requires three columns: "PlateName", "IndexPlate", and "ReferenceSequence".These columns are detailed below:
+
+| Column | Description |
+|:-------|-------------|
+| PlateName | This is a nickname given to the plate. For instance, if I performed ssSeq on a plate that I named "BJW_TestPlate01", I would write "BJW_TestPlate01" in this column. |
+| IndexPlate | This is the ssSeq index plate used for library preparation corresponding to the plate in "PlateName". For instance, if I prepared "BJW_TestPlate01" using index plate 2, I would write "BJW_TestPlate01" in the "PlateName" column and "DI02" in the "IndexPlate" column. Allowed barcode names are DI01 through DI08. |
+| ReferenceSequence | This is the reference sequence found in every well of "PlateName". This reference sequence is constructed following the instructions in the parent section of this section. |
+
+As currently deployed, up to 8 plates (DI01 - DI08) can be input in a single ssSeq run. No more than 8 columns should thus ever be filled in this form of refseq. An example Default refseq format is given in the ssSeq GitHub repository [here](#./InstallationConfirmationData/DefaultRefSeqs.csv)
+
+#### Detailed refseq
+This form of the file allows for a different reference sequence in each well of the analyzed plates. In addition to the column headers given in [Default refseq](#Default-refseq), this form of the file has a "Well" column, enabling specification of a different reference sequence for each well in the input plates. As currently deployed, up to 8 plates (DI01 - DI08) can be input in a single ssSeq run, so no more than 768 columns should ever be filled in this form of refseq. An example Detailed refseq format is given in the ssSeq GitHub repository [here](#./InstallationConfirmationData/DetailedRefSeqs.csv)
+
+When using this form of refseq, the detailed_refseq flag found in [Optional Arguments](#Optional-Arguments) must be set.
 
 ### folder
+This is the folder containing the fastq or fastq.gz files generated during next-gen sequencing. Once activated, ssSeq will...
+
+1. Look in this folder to find all filenames containing "\_R1\_" or "\_R2\_".
+2. Match forward and reverse files by the name preceding the identified "\_R1\_" or "\_R2\_". For instance, the files "CHL1_S193_L001_R1_001.fastq.gz" and "CHL1_S193_L001_R2_001.fastq.gz" would be matched because the text preceding the "\_R1\_" and "\_R2\_", "CHL1_S193_L001", matches for both files. The file with the "\_R1\_" is designated the forward read file and the file with the "\_R2\_" is designated the reverse read file.
+3. Pass the matched files into data processing.
+
+Note that both files without a "\_R1\_" or "\_R2\_" in their name and files for which no matching partner is identified will be ignored; all ignored files are recorded in the [log file](#ssSeqLog). If multiple forward-reverse file pairs are identified, all pairs will be pushed into ssSeq using the same refseq file. If you need different refseq files for different ssSeq runs, then run separate ssSeq instances.
+
+In special cases using ssSeq through command line, the forward read file can be passed in as the folder, and the reverse read file can be passed in as the optional argument "fastq_r". See the entry on "fastq_r" in the [Optional Arguments](#Optional-Arguments) section for more detail.
 
 ## Optional Arguments
+There are a number of flags and optional arguments that can be thrown for ssSeq, all detailed in the table below:
 
+| Argument | Type | Description |
+|:---------|------|-------------|
+| fastq_r | Argument | This argument is only available for command line use. If a case arises where, for whatever reason, ssSeq cannot auto-identify the forward and reverse read files, this option acts as a failsafe. Instead of passing the folder containing the forward and reverse files in to the "folder" required argument, pass in the forward read file as the "folder" argument and the reverse read file as this optional argument. |
+| output | Argument | By default, ssSeq will save to the current working directory (command line) or the ssSeq Git repository folder (GUI). The default save location can be overwritten with this argument. |
+| q_cutoff | Argument | As part of preprocessing, ssSeq discards any reads with an average quality score below this value. The default and recommended value is 30, though the threshold can be raised or lowered by entering different values. |
+| alignemt_filter | Argument | ssSeq aligns each read found in the fastq files to the reference sequence and calculates an alignment score. All alignment scores are normalized to the maximum possible alignment score (i.e. a perfect alignment gets a score of "1"). Alignments with a score below this threshold are discarded and not used in later processing. The default value of 0.5 enables filtering out carried over primer from the library preparation stage, though the value can be raised or lowered for different filtering stringency. |
+| analysis_only | Flag | Set this flag (check the box in the GUI) to only perform Q-score analysis on the input fastq files. The only output in this case will be the [quality score histograms](#Qualities). |
+| detailed_refseq | Flag | Set this flag (check the box in the GUI) when passing in a detailed reference sequence file. See [Detailed refseq](#Detailed-refseq) for more information. |
+| troubleshoot | Flag | Set this flag (check the box in the GUI) to perform ssSeq in troubleshoot mode. In addition to the standard output (see [Summaries](#Summaries), [Platemaps](#Platemaps), and [Qualities](#Qualities)), running in troubleshoot mode will also output [Alignments](#Alignments), [AACountsFrequencies](#AACountsFrequencies), [BPCountsFrequencies](#BPCountsFrequencies), and [ConsensusSequences](#ConsensusSequences). This detailed information can be used for identifying problems with ssSeq library prep and sequencing. |
+| jobs | Argument | This is the number of processors used by ssSeq for data processing. By default, ssSeq uses 1 less processor than are available on your computer. As with all multiprocessing programs, it is typically not recommended to use all available processors unless you are okay devoting all computer resources to the task (e.g. you don't want to be concurrently checking email, playing music, running another program, etc.). The number of jobs can be lowered to reduce the memory demands of ssSeq. |
+| read_length | Argument | By default, ssSeq will attempt to determine the read length from the fastq files. If this process is failing or you have some other reason for using a different read length than that in your fastq files, the read length can be manually set using this argument.
 
 # Working with the GUI
 The GUI is designed for use by non-programming experts. If you are comfortable with a command line interface, that is the recommended way to use ssSeq. If using the GUI, make sure you check the log file after each run to check for warnings or errors encountered. See details on the log file [here](#ssSeqLog). 
@@ -259,13 +309,22 @@ The example presented results from a good run -- as a heuristic, you typically w
 Note that most of the reverse reads have Q-scores below 30. If you have a histogram like this, it's highly likely that something went wrong at some stage of ssSeq library prep/sequencing. As of now, we don't know what causes histograms like this, so please keep track of your data and let us know when you see this!
 
 ## Alignments
-This information is only generated when running in troubleshoot mode. It is a text file containing every alignment made between the passed in reference sequences and the reads collected from next-gen sequencing. 
+This information is only generated when running in troubleshoot mode. For each plate passed in via the "refseqs" file, a text file containing every alignment made between the passed in reference sequences and the reads collected from next-gen sequencing is generated and stored in this folder.
+
+The alignment file is ordered in blocks of forward and reverse reads for each well in the index plates. Each block is started by a series of "#" symbols, followed by a header specifying the index plate used, the well mapped, the forward barcode, the reverse barcode, and whether the forward or reverse alignments are reported in the block, all separated by "_" as a delimiter. 
+
+The reference sequence used for alignment is always in the forward direction, truncated to the appropriate read length. The reverse complement of the reverse reads are reported rather than the reverse reads themselves.
 
 ## AACountsFrequencies
+This information is only generated when running in troubleshoot mode. For each plate passed in via the "refseqs" file, a csv file containing the amino acid count and frequency matrices for each well is generated. 
+
+The csv file is organized in alternating blocks of counts and frequencies of observing each amino acid at each position in the reference sequence. Each block is started by a header specifying the index plate used, the well mapped, the forward barcode, the reverse barcode, whether we are looking at a counts of frequencies matrix, and whether the matrix corresponds to the reverse or forward reads, all separated by "_" as a delimiter. Within each matrix, the rows correspond to an identified amino acid at that read position, while the columns correspond to the amino acid present at that read position in the reference sequence. For instance, if the column header is "Q" and the rows corresponding to "A" and "Q" have 2 and 50 counts, respectively, this indicates that 2 reads mapped to this well translated to put "A" at the expected position for "Q", while 50 reads translated to put the expected "Q" at the position giving "Q".
 
 ## BPCountsFrequencies
+This information is only generated when running in troubleshoot mode. For each plate passed in via the "refseqs" file, a csv file containing the base pair count and frequency matrices for each well is generated. The format of these matrices is exactly the same as for the AACountsFrequencies matrices, only for the mapped base pairs rather than translated amino acids. 
 
 ## ConsensusSequences
+This information is only generated when running in troubleshoot mode. For each plate passed in via the "refseqs" file, a text file containing the consensus sequence identified in both the forward and reverse directions of each well is reported. Currently, "consensus" is defined as having an alignment frequency greater than 90%. This parameter may become tunable in the future. If the 90% threshold is not met, then the consensus sequence is given an "N" 
 
 ## ssSeqLog
 ssSeq keeps a log of every run. This is the only output not found in the generate date-time folder. Within the ssSeq Git repository folder, the log can be found here: ssSeqSupport/ssSeqLog.log. Information captured by the log file includes:
@@ -280,38 +339,3 @@ ssSeq keeps a log of every run. This is the only output not found in the generat
 5. Fatal errors. If the program completed successfully, the last line in the log entry will read "Run completed. Log may contain warnings."
 
 The amount of information stored in the log file is small (bytes per run), but will build with continued use of ssSeq. If the file gets too large (this will take a long time...) you can delete ssSeqLog.log; on the next run a fresh ssSeqLog.log file will be instantiated.
-
-
-
-
-
-
-
-# ssSeq_Parser: Beta Release V2
-Package for analyzing site-saturation next-generation sequencing data. This is still in beta, as thorough validation of functionality has not yet been performed. The code has been reorganized into easier to manage packages, so it should be easier for other developers to contribute now. Docstrings are still on the to-do list.
-
-## Required Packages:
-All required packages can be found in the conda environment file, "ssSeq.yml". Run ssSeq from within this conda environment to ensure all functionality can be used.
-
-## Setting up a run:
-### Command line interface
-If added to PATH, ssSeq can be run directly from command line by calling "ssSeq" followed by the appropriate below arguments. If not added to path, ssSeq can be run from its home directory by calling "./ssSeq", again followed by the appropriate below arguments.
-
-Positional arguments:
- - refseq: csv containing reference sequences. See more information below.
- - folder/fastq_f: A folder containing a set of fastq or fastq.gz to be used in ssSeq. If pointing to a folder, ssSeq will automatically match forward and reverse files by locating files with identical names (except for "_R1_" for a forward read file and "_R2_" for a reverse read file). If pointing to a file, it should be the fastq or fastq.gz file containing the forward reads.
-  
- Optional arguments:
- - --fastq_r: Optional argument which points to the fastq or fastq.gz file containing the reverse reads. Must be specified if "folder/fastq_f" points to a file. Will be ignored if "folder/fastq_f" is a folder.
- - --analysis_only: Throw this flag to only perform analysis on the fastq/fastq.gz files. Alignment steps will be skipped.
- - --detailed_refseq: Throw this flag if you are passing in a detailed reference sequence file. See below for more detail.
- - --jobs: Controls the number of processors used for computation. Default is the number available on your machine minus one.
- - --troubleshoot: Throw this flag to force more detailed output, including consensus sequences and the underlying matrices used to calculate alignment frequencies and make variant calls.
- - --read_length: Optional argument for specifying the read length of your input files. If not specified, the read length will automatically be assumed to be the most common fragment length in the fastq/fastq.gz files.
- - --q_cutoff: The quality score filter, default = 30. Individual bases with a Q-score below this threshold will not be used for determining alignment frequencies.
- - --alignment_filter: A fraction of the maximum possible alignment score below which an alignment is discarded. This flag is used for eliminating off-target sequencing reads (e.g. from primer dimer). The default is 0.5, and it must vary between 0 and 1.
-    
-### RefSeqs.csv
-Your reference sequences should be passed in to ssSeq as a csv file with the headers "PlateName", "IndexPlate", and "ReferenceSequence". An example csv file can be found in the ssSeq home directory. "PlateName" is a user-specified nickname for the plate in question. "IndexPlate" is the dual index plate used to prepare the ssSeq sample for sequencing -- it should take the form "DI##". "ReferenceSequence" is the gene fragment amplicon sequenced as part of ssSeq with the variable codons denoted by "NNN". 
-
-ssSeq expects to see "NNN" in both the forward and reverse reads. Even if you don't have a variable position in the reverse read, you must denote one in a region of the reference sequence covered by sequencing; ssSeq will crash if you do not. 
