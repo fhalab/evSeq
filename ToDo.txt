@@ -11,9 +11,10 @@ Tests to make:
 5. Remind users about the detailed-refseq flag if our reference sequence file fails
    for some reason
 6. Does ts mode work?
+    1. Are we getting the right consensus sequences
+    2. How about the matrices?
 
 Pre-Demo:
-- Get a working GUI
 - Work out how to install on different computers
     - Will need a series of instructions on how to actuall install all dependencies
 - Make all tests

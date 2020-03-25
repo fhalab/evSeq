@@ -35,14 +35,9 @@ def main():
                                      help = "Folder containing fastq or fastq.gz files",
                                      widget = "DirChooser")
     
-    # Add an argument group for passing in the reverse file
+    # Add an argument group for setting the output location
     optional_args_group = parser.add_argument_group("Optional Arguments",
                                                     "Optional arguments for specific use cases.")
-    optional_args_group.add_argument("--fastq_r", 
-                                     help = "Reverse fastq or fastq.gz file. Usually not needed.",
-                                     required = False,
-                                     default = "",
-                                     widget = "FileChooser")
     optional_args_group.add_argument("--output", 
                                      help = "Save location for run.",
                                      required = False,
@@ -99,7 +94,7 @@ def main():
     base_output = CLArgs["output"]
     datetime = strftime("%Y%m%d-%H%M%S")
     output_dir = os.path.join(base_output, "ssSeq_Output", datetime)
-    CLArgs.update({"datetime": datetime, "output": output_dir})
+    CLArgs.update({"datetime": datetime, "output": output_dir, "fastq_r": ""})
     
     # Log CLArgs
     LogInit(CLArgs)    
