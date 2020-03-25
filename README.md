@@ -179,7 +179,7 @@ where "ssSEQ_LOCATION" is the location in which you installed ssSeq. Executing e
 
 Note that the two required arguments are at the top of the GUI, details on these arguments can be found [here](#Required-Arguments). We can populate the fields with the test data given in [Example Data](#Example-Data), which will look like below:
 
-![Filled GUI](./GitImages/FilledGUI.png "Filled GUI")
+![Filled GUI](./GitImages/FilledGui.png "Filled GUI")
 
 Note that "refseq" is a file while "folder" is a folder. For more advanced use, other arguments can be accessed by scrolling down (These additional arguments are detailed in [OptionalArguments](#Optional-Arguments).). You will typically not need these arguments, however, and the standard ssSeq run can be started by clicking "Start" once "refseq" and "folder" are populated. Once started, the progress of the program will be printed to the GUI along with any encountered warnings and errors.
 
