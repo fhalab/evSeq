@@ -51,7 +51,7 @@ Table of Contents
 
 # Installation
 ## Non-Programmers
-This section details installation of high level dependencies: gitbash (Windows users), git, and anaconda. If you have installed and are familiar with these items, you can skip this section and more on to [General Instructions](#General-Instructions). Installation on Linux is not detailed here, as we just assume you know what you're doing. Once this section is completed, continue installation by moving to [General Instructions](#General-Instructions).
+This section details installation of high level dependencies: gitbash (Windows users), git, and anaconda. If you have installed and are familiar with these items, you can skip this section and move on to [General Instructions](#General-Instructions). Installation on Linux is not detailed here, as we just assume you know what you're doing. Once this section is completed, continue installation by moving to [General Instructions](#General-Instructions).
 
 ### Installing Git
 Windows users: Install Git/Git Bash by following the instructions [here](https://www.stanleyulili.com/git/how-to-install-git-bash-on-windows/). Unless you know what you're doing, sticking to the default options during install is best. 
@@ -212,6 +212,16 @@ The GUI is designed for use by non-programming experts. If you are comfortable w
 When using the GUI, begin by opening a terminal window then activating the ssSeq conda environment as below
 
     conda activate ssSeq
+
+On Windows, you may receive the below error the first time you try to activate an environment:
+
+    CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+
+The error can be fixed by entering the command
+
+    conda init bash
+
+and then repeating the 'conda activate' command. This step should fix the error permanently.
 
 With the conda environment active, you can now launch the graphic user interface (GUI). There are two ways to launch ssSeq through the GUI:
 1. If ssSeq was added to your PATH and ssSeqGui made executable (see [PATH Variable Setup](#PATH-Variable-Setup)), then the GUI can be opened by typing
