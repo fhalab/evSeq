@@ -26,8 +26,8 @@ Table of Contents
 - [Understanding ssSeq Output](#Understanding-ssSeq-Output)
     - [Summaries](#Summaries)
         - [MaxInfo.csv](#MaxInfo.csv)
-        - [SummaryInfo.csv](#SummaryInfo.csv)
         - [VariantInfo.csv](#VariantInfo.csv)
+        - [SummaryInfo.csv](#SummaryInfo.csv)
     - [Platemaps](#Platemaps) 
     - [Qualities](#Qualities)
     - [Alignments](#Alignments)
@@ -182,12 +182,12 @@ This is the recommended way to use ssSeq, as any warnings or errors encountered 
 With the conda environment active, ssSeq can be run. There are two ways to launch ssSeq:
 1. If ssSeq was added to your PATH and ssSeq made executable (see [PATH Variable Setup](#PATH-Variable-Setup)), then ssSeq can be run by typing
 
-    ssSeq refseq folder OPTIONAL_ARGS FLAGS
+        ssSeq refseq folder OPTIONAL_ARGS FLAGS
 
 2. If ssSeq was not added to your PATH and  is not executable, then you can run ssSeq by first navigating to the ssSeq git repo folder (installed above) through command line and explicitly invoking Python as below
 
-    cd ssSEQ_LOCATION
-    python ssSeq refseq folder OPTIONAL_ARGS FLAGS
+        cd ssSEQ_LOCATION
+        python ssSeq refseq folder OPTIONAL_ARGS FLAGS
 
 In both of cases, "refseq" is the path to your reference sequence file and "folder" is the location of the folder with your fastq or fastq.gz files. Details on these required arguments can be found [here](#Required-Arguments). Optional arguments and flags are passed in after the two positional arguments. For information on the potential optional arguments and flags, type
 
@@ -208,19 +208,58 @@ The folder InstallationConfirmationData contains an example reference sequence f
 The output location of ssSeq is controlled with the "output" optional argument (see [here](#Optional-Arguments)). If the "output" argument is not set, then ssSeq will save to the current working directory (command line) or the ssSeq Git repository folder (GUI). If the save location has not previously been used, then ssSeq will create a folder titled "ssSeq_Output" in the output location which contains a folder giving the date-time of the run initialization (in yyyymmdd-hhmmss format). If the save location has been previously used, then ssSeq will add another date-time folder with the previously generated ssSeq_Output folder. All ssSeq outputs of a specific run (except the log file) are contained in the associated date-time folder. The below sections detail the folders found within the date-time folder.
 
 ## Summaries
-The summaries 
+The summaries folder contains most tabular information needed for downstream processing after ssSeq. For each plate passed in via the "refseqs" file, 3 files will be generated and stored within the Summaries folder. The 3 files are "PREFIX_MaxInfo.csv", "PREFIX_SummaryInfo.csv", and "PREFIX_VariantInfo.csv", where PREFIX is the name of the plate given in the "refseqs" file. Each of these files shares the following headers:
+
+| Header | Information Contained|
+|:-------|----------------------|
+| Plate | Index plate used |
+| Well | Source plate/index plate well|
+| F-BC | The forward barcode corresponding to the well|
+| R-BC | The reverse barcode corresponding to the well|
+| Aligment Frequency| The fraction of reads corresponding to VariantCombo or AA, depending on the specific file|
+| WellSeqDepth | The number of reads with the specific VariantCombo or AA mapping to the well, again depending on the specific file|
+| R1 | The forward read file used for processing |
+| R2 | The reverse read file used for processing |
+
+More detailed information on the contents of each file is found in the below subsections. Note that in all 3 files, if no reads were identified for a specific well, this well is omitted from the table.
 
 ### MaxInfo.csv
-
-### SummaryInfo.csv
+This file acts as the highest level tabular summary, reporting only the amino acid combination (or single mutant if not sequencing combinatorial libraries) with the highest alignment frequency. The heading "VariantCombo" gives this highest-frequency combination (in 5' -> 3' order, as passed in in the "refseqs" file). Care should be taken to review both the AlignmentFrequency and WellSeqDepth columns to gauge a measure of confidence in the variant combination identified. If either of these categories report low values, then the confidence in the call is low. Note that in the case where two variants are identified with equal frequency, both are reported in this file (so some wells may have multiple rows). 
 
 ### VariantInfo.csv
+This file is the next highest level tabular summary, containing information on all identified variants as part of the ssSeq run. The information contained in this file is otherwise the same as that in MaxInfo.csv.
+
+### SummaryInfo.csv
+This file is the lowest level tabular summary, containing information on the specific sites mutagenesis sites passed in in the "refseqs" file. Unlike in MaxInfo.csv and VariantInfo.csv, sequencing information is decoupled here, meaning the information reported is agnostic to whether or not mutations were identified on the same sequencing read. As a result, the information reported gives the overall amino acid frequency identified at each mutagenized site as specified in the "refseqs" csv file. To report this information, SummaryInfo.csv has a few specific headers:
+
+| Header | Information Contained|
+|:-------|----------------------|
+| ReadDirection | Whether the row corresponds to the forward or reverse read |
+| Site | The id of the mutagenized position on the read |
+| AA | The specific amino acid identified at the mutagenized position |
+
+When analyzing combinatorial libraries, the information contained in MaxInfo.csv and VariantInfo.csv will typically be more informative. 
 
 ## Platemaps
+For each plate passed in via the "refseqs" file, a single platemap image will be generated; these images are contained in html files found in the "Platemaps" folder, prefixed by the plate name. An example image is given below for a 4-site combinatorial library:
+
+![Platemap Example](./GitImages/PlatemapExample.png "Platemap Example")
+
+The text within each well is the combination of amino acids (in 5' -> 3' order, as passed in in the "refseqs" file) with the highest alignment frequency for that well. The fill color of the well is the log sequencing depth, while the well border color is the alignment frequency of the well. Note that the border color is binned rather than existing on a continuous scale. 
 
 ## Qualities
+This folder contains histograms of the forward and reverse read quality scores for the sequencing run. For information on what the quality score is, see [here](https://www.illumina.com/content/dam/illumina-marketing/documents/products/technotes/technote_understanding_quality_scores.pdf) An example image from the "Qualities" folder is given below:
+
+![Good Q-Score Example](./GitImages/GoodQScoreExample.png "Good Q-Score Example")
+
+The example presented results from a good run -- as a heuristic, you typically want most reads above 30 in both the forward and reverse direction. Checking this file is critical, as it gives you insight into how confident you can be in your sequencing results. An example of a bad quality score histogram is below:
+
+![Bad Q-Score Example](./GitImages/BadQScoreExample.png "Bad Q-Score Example")
+
+Note that most of the reverse reads have Q-scores below 30. If you have a histogram like this, it's highly likely that something went wrong at some stage of ssSeq library prep/sequencing. As of now, we don't know what causes histograms like this, so please keep track of your data and let us know when you see this!
 
 ## Alignments
+This information is only generated when running in troubleshoot mode. It is a text file containing every alignment made between the passed in reference sequences and the reads collected from next-gen sequencing. 
 
 ## AACountsFrequencies
 
