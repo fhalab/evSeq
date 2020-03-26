@@ -8,4 +8,4 @@ import os
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 # Run the sequence
-subprocess.run('conda run -n ssSeq python ssSeqGui', shell=True)
+subprocess.run('conda run -n ssSeq pythonw ssSeqGui', shell=True)
