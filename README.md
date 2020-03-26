@@ -239,7 +239,7 @@ The error can be fixed by entering the command
 
 and then repeating the 'conda activate' command. This step should fix the error permanently.
 
-### Adding `conda` and `python` for Windows users who had already installed python
+### Adding `conda` and `python` to path for Windows users who had already installed python
 On Windows, if you had installed conda previously, GitBash may not recognize `conda` or `python` as allowed commands. You can check if this is you by trying to run the following:
 
     conda --version
