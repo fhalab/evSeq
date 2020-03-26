@@ -239,6 +239,15 @@ The error can be fixed by entering the command
 
 and then repeating the 'conda activate' command. This step should fix the error permanently.
 
+### Adding `conda` and `python` for Windows users who had already installed python
+On Windows, if you had installed conda previously, GitBash may not recognize `conda` or `python` as allowed commands. You can check if this is you by trying to run the following:
+
+    conda --version
+
+    python --version
+
+If these commands work and print your versions this is not your problem. If you get an error, use the website found [here](https://www.datacamp.com/community/tutorials/installing-anaconda-windows) to solve this issue. Search for the section 'Add Anaconda to Path (Optional)' and if you need more clarification for how to add directories to your path, you can use the website [here](https://helpdeskgeek.com/windows-10/add-windows-path-environment-variable/).
+
 ### Framework Build Error
 On Mac, if you try to invoke the GUI through
 
