@@ -3,6 +3,7 @@ Validation/
 ssSeq_Output/
 TestData/
 ssSeq_Support/*.log
+ssSeqGui_Click.pyw
 
 # vscode
 .vscode/
