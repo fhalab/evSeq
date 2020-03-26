@@ -189,11 +189,11 @@ This is the recommended way to use ssSeq, as any warnings or errors encountered 
     conda activate ssSeq 
 
 With the conda environment active, ssSeq can be run. There are two ways to launch ssSeq:
-1. If ssSeq was added to your PATH and ssSeq made executable (see [PATH Variable Setup](#PATH-Variable-Setup)), then ssSeq can be run by typing
+1. If ssSeq was added to your PATH (see [PATH Variable Setup](#PATH-Variable-Setup)), then ssSeq can be run by typing
 
         ssSeq refseq folder OPTIONAL_ARGS FLAGS
 
-2. If ssSeq was not added to your PATH and  is not executable, then you can run ssSeq by first navigating to the ssSeq git repo folder (installed above) through command line and explicitly invoking Python as below
+2. If ssSeq was not added to your PATH or is not executable, then you can run ssSeq by first navigating to the ssSeq git repo folder (installed above) through command line and explicitly invoking Python as below
 
         cd ssSEQ_LOCATION
         python ssSeq refseq folder OPTIONAL_ARGS FLAGS
@@ -349,10 +349,10 @@ This form of the file assumes the same reference sequence in each well of the an
 | IndexPlate | This is the ssSeq index plate used for library preparation corresponding to the plate in "PlateName". For instance, if I prepared "BJW_TestPlate01" using index plate 2, I would write "BJW_TestPlate01" in the "PlateName" column and "DI02" in the "IndexPlate" column. Allowed barcode names are DI01 through DI08. |
 | ReferenceSequence | This is the reference sequence found in every well of "PlateName". This reference sequence is constructed following the instructions in the parent section of this section. |
 
-As currently deployed, up to 8 plates (DI01 - DI08) can be input in a single ssSeq run. No more than 8 columns should thus ever be filled in this form of refseq. An example Default refseq format is given in the ssSeq GitHub repository [here](#./InstallationConfirmationData/DefaultRefSeqs.csv)
+As currently deployed, up to 8 plates (DI01 - DI08) can be input in a single ssSeq run. No more than 8 rows should thus ever be filled in this form of refseq. An example Default refseq format is given in the ssSeq GitHub repository [here](#./InstallationConfirmationData/DefaultRefSeqs.csv)
 
 #### Detailed refseq
-This form of the file allows for a different reference sequence in each well of the analyzed plates. In addition to the column headers given in [Default refseq](#Default-refseq), this form of the file has a "Well" column, enabling specification of a different reference sequence for each well in the input plates. As currently deployed, up to 8 plates (DI01 - DI08) can be input in a single ssSeq run, so no more than 768 columns should ever be filled in this form of refseq. An example Detailed refseq format is given in the ssSeq GitHub repository [here](#./InstallationConfirmationData/DetailedRefSeqs.csv).
+This form of the file allows for a different reference sequence in each well of the analyzed plates. In addition to the column headers given in [Default refseq](#Default-refseq), this form of the file has a "Well" column, enabling specification of a different reference sequence for each well in the input plates. As currently deployed, up to 8 plates (DI01 - DI08) can be input in a single ssSeq run, so no more than 768 rows should ever be filled in this form of refseq. An example Detailed refseq format is given in the ssSeq GitHub repository [here](#./InstallationConfirmationData/DetailedRefSeqs.csv).
 
 When using this form of refseq, the detailed_refseq flag found in [Optional Arguments](#Optional-Arguments) must be set.
 
