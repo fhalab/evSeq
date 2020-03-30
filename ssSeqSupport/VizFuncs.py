@@ -44,6 +44,17 @@ def StretchColorLevels(data, center, cmap):
 def MakeHeatmap(df, title):
     """Generates a heatmap from ssSeq data using Holoviews with bokeh backend."""
     
+    # Add 0s to wells that have no data
+    well_list = [row+column for row in ['A','B','C','D','E','F','G','H'] for column in ['01','02','03','04','05','06','07','08','09','10','11','12']]
+
+    for well in well_list:
+    
+    if well not in df['Well'].unique():
+        
+        temp_df = pd.DataFrame([[np.nan,well,np.nan,np.nan,'    ',0,0,np.nan,np.nan]],columns=df.columns)
+        
+        df = pd.concat([df,temp_df],sort=False)
+
     # Create necessary Row and Column values and sort
     df['Row'] = df.apply(lambda row: row['Well'][0], axis=1)
     df['Column'] = df.apply(lambda row: int(row['Well'][1:]), axis=1)
