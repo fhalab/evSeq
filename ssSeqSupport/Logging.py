@@ -68,7 +68,7 @@ def LogError(e):
     with open(Logfilename, "a") as f:
         
         # Write the error
-        f.write("\nError Encountered: {}".format(e))
+        f.write("\n\nError Encountered: {}".format(e))
         
         # Print the error
         print(e)
@@ -94,7 +94,7 @@ def LogWarning(w):
     with open(Logfilename, "a") as f:
         
         # Write the warning
-        f.write("\nWarning: {}".format(w))
+        f.write("\n\nWarning: {}".format(w))
 
         # Print the error
         print(w)
@@ -125,4 +125,4 @@ def LogInfo(m):
     
     # Write the message to the log file
     with open(Logfilename, "a") as f:
-        f.write("\n" + m)
+        f.write("\n\n" + m)

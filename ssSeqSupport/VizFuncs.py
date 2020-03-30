@@ -6,6 +6,8 @@ import colorcet as cc
 import bokeh.io
 from bokeh.layouts import row
 
+from . import LogWarning
+
 hv.extension('bokeh')
 hv.renderer('bokeh')
 
@@ -31,6 +33,7 @@ def StretchColorLevels(data, center, cmap):
         
     # check that the center passed is within the data
     if not 0 < center < max(data):
+        np.save("./TestData.npy", data.values)
         raise ValueError('Must have min(data) < center < max(data).')
     
     dist = max(max(data) - center, center - 0)
@@ -59,7 +62,14 @@ def MakeHeatmap(df, title):
     center = np.log(10)
     
     # Adjust if it is greater than max of data (avoids ValueError)
-    if df['logseqdepth'].max() < center:
+    if df['logseqdepth'].max() <= center:
+        
+        # Log a warning
+        LogWarning(f"All wells associated with {df.Plate.values[0]} have a read depth <=10."
+                   "Be careful comparing heatmaps between this plate and others."
+                   "Be careful using this data; sequencing was not good.")
+        
+        # Adjust the center
         center = df['logseqdepth'].median()
 
     # generate the heatmap
