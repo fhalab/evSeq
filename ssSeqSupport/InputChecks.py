@@ -77,6 +77,11 @@ def CheckRefSeqs(ref_seqs_df, detailed_file):
     ref_seq_cols = set(ref_seqs_df.columns)
     missing_cols = [col for col in expected_cols if col not in ref_seq_cols]
     
+    # If this is not a detailed file but we have a 'Well' column, throw an error
+    if not detailed_file and "Well" in ref_seq_cols:
+        LogError("It looks like you're trying to pass in a detailed reference sequence file. "
+                 "You must throw the 'detailed_refseq' flag if this is your intent.")
+    
     # If we are missing any columns, log an error and terminate the program
     if len(missing_cols) != 0:
         LogError("Expected columns missing from refseq file: {}".format(missing_cols))
@@ -102,7 +107,7 @@ def CheckRefSeqs(ref_seqs_df, detailed_file):
         if row["PlateName"] not in index_to_nick_check:
             index_to_nick_check[row["PlateName"]] = row["IndexPlate"]
         else:
-            if index_to_nick_check["PlateName"] != row["IndexPlate"]:
+            if index_to_nick_check[row["PlateName"]] != row["IndexPlate"]:
                 LogError("""Each plate nickname must be associated with a single dual index plate.
                          In row {}, nickname {} is duplicated with index plate {}""".format(i, row["PlateName"],
                                                                                             row["IndexPlate"]))
@@ -114,13 +119,14 @@ def CheckRefSeqs(ref_seqs_df, detailed_file):
             if row["Well"] not in AllowedWells:
                 LogError("""Unexpected well in row {}: {} of reference sequence file. 
                           Well must take form 'A##'""".format(i, row["Well"]))
+          
     
     # Additional wholistic checks for a detailed file: Make sure that there are 
     # no duplicate dual index plate-well combos
     if detailed_file:
         
         # Get all combos of dual index plate and well. 
-        combos = [(row["IndexPlate"], row["IndexWell"]) 
+        combos = [(row["IndexPlate"], row["Well"]) 
                   for _, row in ref_seqs_df.iterrows()]
         
         # Count the number of occurences of each. Identify those combos with 
