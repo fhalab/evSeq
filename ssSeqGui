@@ -1,4 +1,4 @@
-#!/usr/bin/env pythonw
+#!/usr/bin/env python
 
 # Import relevant modules
 import argparse
@@ -9,6 +9,7 @@ from time import strftime
 from ssSeqSupport import LogInit, LogInfo, LogError
 from ssSeqSupport import RunssSeq
 from ssSeqSupport import NCpus
+from ssSeqSupport import BuildOutputDirs
 
 # Import gooey
 from gooey import Gooey, GooeyParser
@@ -96,6 +97,9 @@ def main():
     output_dir = os.path.join(base_output, "ssSeq_Output", datetime)
     CLArgs.update({"datetime": datetime, "output": output_dir, "fastq_r": ""})
     
+    # Build output directories
+    BuildOutputDirs(CLArgs)
+
     # Log CLArgs
     LogInit(CLArgs)    
 

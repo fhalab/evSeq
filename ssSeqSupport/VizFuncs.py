@@ -30,12 +30,8 @@ def StretchColorLevels(data, center, cmap):
     # don't allow a color map with only one color
     if len(cmap) == 1:
         raise RuntimeError("Must have `len(cmap)` > 1.")
-        
-    # check that the center passed is within the data
-    if not 0 < center < max(data):
-        np.save("./TestData.npy", data.values)
-        raise ValueError('Must have min(data) < center < max(data).')
     
+    # Scale dist
     dist = max(max(data) - center, center - 0)
     dist += dist / 100
     
@@ -44,17 +40,16 @@ def StretchColorLevels(data, center, cmap):
 def MakeHeatmap(df, title):
     """Generates a heatmap from ssSeq data using Holoviews with bokeh backend."""
     
+    # Convert SeqDepth to log for easier visualization.
+    df['logseqdepth'] = np.log(df['WellSeqDepth'])
+    
     # Add 0s to wells that have no data
     well_list = [row+column for row in ['A','B','C','D','E','F','G','H'] for column in ['01','02','03','04','05','06','07','08','09','10','11','12']]
-
     for well in well_list:
+        if well not in df['Well'].unique():
+            temp_df = pd.DataFrame([[np.nan,well,np.nan,np.nan,'',0,1,np.nan,np.nan,0]],columns=df.columns)
+            df = pd.concat([df,temp_df],sort=False)
     
-    if well not in df['Well'].unique():
-        
-        temp_df = pd.DataFrame([[np.nan,well,np.nan,np.nan,'    ',0,0,np.nan,np.nan]],columns=df.columns)
-        
-        df = pd.concat([df,temp_df],sort=False)
-
     # Create necessary Row and Column values and sort
     df['Row'] = df.apply(lambda row: row['Well'][0], axis=1)
     df['Column'] = df.apply(lambda row: int(row['Well'][1:]), axis=1)
@@ -62,9 +57,6 @@ def MakeHeatmap(df, title):
     
     # Set some base opts
     opts = dict(invert_yaxis=True,title=title,show_legend=True)
-    
-    # Convert SeqDepth to log for easier visualization.
-    df['logseqdepth'] = np.log(df['WellSeqDepth'])
     
     # logseqdepth heatmap
     cmap = list(reversed(cc.CET_D9))
@@ -76,7 +68,7 @@ def MakeHeatmap(df, title):
     if df['logseqdepth'].max() <= center:
         
         # Log a warning
-        LogWarning(f"All wells associated with {df.Plate.values[0]} have a read depth <=10."
+        LogWarning(f"All wells associated with {title} have a read depth <=10."
                    "Be careful comparing heatmaps between this plate and others."
                    "Be careful using this data; sequencing was not good.")
         
