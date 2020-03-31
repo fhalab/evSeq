@@ -99,10 +99,10 @@ def main():
     LogInit(CLArgs)    
 
     # Run ssSeq
-    # try:
-    RunssSeq(CLArgs)
-    # except Exception as e:
-    #     LogError("\nUnhandled exception encountered: '{}'".format(e))
+    try:
+        RunssSeq(CLArgs)
+    except Exception as e:
+        LogError("\nUnhandled exception encountered: '{}'".format(e))
     
     # Log that we have successfully completed the run
     LogInfo("\nRun completed. Log may contain warnings.")
