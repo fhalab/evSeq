@@ -10,46 +10,55 @@ Site-Saturation Sequencing (ssSeq) is a library preparation technique for extrem
 
 Table of Contents
 -----------------
-- [Installation](#Installation)
-    - [Non-Programmers](#Non-Programmers)
-        - [Installing Git](#Installing-Git)
-        - [Installing Anaconda](#Installing-Anaconda)
-        - [Opening a Terminal Window](#Opening-a-Terminal-Window)
-        - [Construction of "GitRepos" Folder](#Construction-of-GitRepos-Folder)
-    - [General Instructions](#General-Instructions)
-        - [ssSeq Installation](#ssSeq-Installation)
-        - [Conda Environment Setup](#Conda-Environment-Setup)
-            - [Dependencies](#Dependencies)
-        - [PATH Variable Setup](#Path-Variable-Setup)
-        - [Post Installation](#Post-Installation)
-- [Using ssSeq](#Using-ssSeq) 
-    - [Working with the GUI](#Working-with-the-GUI)
-    - [Working through Command Line](#Working-through-Command-Line)
-    - [Example Data](#Example-Data)
-    - [Troubleshooting](#Troubleshooting)
-- [Understanding ssSeq Output](#Understanding-ssSeq-Output)
-    - [Summaries](#Summaries)
-        - [MaxInfo.csv](#MaxInfo.csv)
-        - [VariantInfo.csv](#VariantInfo.csv)
-        - [SummaryInfo.csv](#SummaryInfo.csv)
-    - [Platemaps](#Platemaps) 
-    - [Qualities](#Qualities)
-    - [Alignments](#Alignments)
-    - [AACountsFrequencies](#AACountsFrequencies)
-    - [BPCountsFrequencies](#BPCountsFrequencies)
-    - [ConsensusSequences](#ConsensusSequences)
-    - [ssSeqLog](#LogFile)
-- [Program Arguments](#Program-Arguments)
-    - [Required Inputs](#Required-Inputs)
-        - [refseq](#refseq)
-            - [Default refseq](#Default-refseq)
-            - [Detailed refseq](#Detailed-refseq)
-        - [folder](#folder)
-    - [Optional Arguments](#Optional-Arguments)
-- [Biological Protocols](#Biological-Protocols)
-    - [Inner Primer Design](#Inner-Primer-Design)
-    - [Library Preparation](#Library-Preparation)
-- [Theoretical Overview](#Theoretical-Overview)
+- [ssSeq](#ssseq)
+  - [Table of Contents](#table-of-contents)
+- [Installation](#installation)
+  - [Non-Programmers](#non-programmers)
+    - [Installing Git](#installing-git)
+    - [Installing Anaconda](#installing-anaconda)
+    - [Opening a Terminal Window](#opening-a-terminal-window)
+    - [Construction of "GitRepos" Folder](#construction-of-%22gitrepos%22-folder)
+  - [General Instructions](#general-instructions)
+    - [ssSeq Installation](#ssseq-installation)
+    - [Conda Environment Setup](#conda-environment-setup)
+      - [Dependencies](#dependencies)
+    - [PATH Variable Setup](#path-variable-setup)
+    - [Post Installation](#post-installation)
+- [Using ssSeq](#using-ssseq)
+  - [Working with the GUI](#working-with-the-gui)
+    - [Windows users can also launch the GUI with with a simple double-click once the right program has been enabled. Setup this option as follows:](#windows-users-can-also-launch-the-gui-with-with-a-simple-double-click-once-the-right-program-has-been-enabled-setup-this-option-as-follows)
+  - [Working through Command Line](#working-through-command-line)
+  - [Example Data](#example-data)
+  - [Troubleshooting](#troubleshooting)
+    - [Permission Denied](#permission-denied)
+    - [Improper Shell Configuration](#improper-shell-configuration)
+    - [Adding `conda` and `python` to path for Windows users who had already installed python](#adding-conda-and-python-to-path-for-windows-users-who-had-already-installed-python)
+    - [Framework Build Error](#framework-build-error)
+- [Understanding ssSeq Output](#understanding-ssseq-output)
+  - [Summaries](#summaries)
+    - [MaxInfo.csv](#maxinfocsv)
+    - [VariantInfo.csv](#variantinfocsv)
+    - [SummaryInfo.csv](#summaryinfocsv)
+  - [Platemaps](#platemaps)
+  - [Qualities](#qualities)
+  - [Alignments](#alignments)
+  - [AACountsFrequencies](#aacountsfrequencies)
+  - [BPCountsFrequencies](#bpcountsfrequencies)
+  - [ConsensusSequences](#consensussequences)
+  - [ssSeqLog](#ssseqlog)
+- [Program Arguments](#program-arguments)
+  - [Required Arguments](#required-arguments)
+    - [refseq](#refseq)
+      - [Default refseq](#default-refseq)
+      - [Detailed refseq](#detailed-refseq)
+    - [folder](#folder)
+  - [Optional Arguments](#optional-arguments)
+- [Biological Protocols](#biological-protocols)
+  - [Inner Primer Design](#inner-primer-design)
+  - [Library Preparation](#library-preparation)
+- [Theoretical Overview](#theoretical-overview)
+  - [Motivation](#motivation)
+  - [Molecular Biology](#molecular-biology)
 
 
 # Installation
@@ -175,7 +184,21 @@ With the conda environment active, you can now launch the graphic user interface
         cd ssSEQ_LOCATION
         python ssSeqGui
 
-where "ssSEQ_LOCATION" is the location in which you installed ssSeq. Executing either of the above commands will launch an instance of the GUI. It should look like the below:
+where "ssSEQ_LOCATION" is the location in which you installed ssSeq. 
+
+
+### Windows users can also launch the GUI with with a simple double-click once the right program has been enabled. Setup this option as follows:
+
+1. Right click on the `ssSeqGuiClick.py` file and select 'Open with' > 'Choose another app'. If you see Python as an option, check the box 'Always use this app to open .py files' then select Python. From now on, you should be able to launch the GUI by double-clicking the file and you are done and do not need to follow any more steps. 
+2. However, Python likely won't be an option. In this case start by opening GitBash and typing:
+   
+        where python
+
+3. This will return the location of python on your computer! For example, your path is likely something like `C:\Users\<your username>\Anaconda3\python.exe`. This tells you where to find Python!
+4. Return to `ssSeqGuiClick.py` and select 'Open with' > 'Choose another app'. Check the box 'Always use this app to open .py files' then scroll down the list of apps, choose 'More apps' and then 'Look for another app on this PC'. This will bring you to a file browser. Using the file path you found above in GitBash, locate the `python.exe` file, select it, then click 'Open'.
+5. Now you should be able to launch `ssSeqGuiClick.py` with a double-click!
+
+Executing any of the above commands will launch an instance of the GUI. It should look like the below:
 
 ![GUI](./GitImages/GUI.png "GUI")
 
