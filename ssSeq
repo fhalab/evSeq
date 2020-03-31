@@ -9,6 +9,7 @@ from time import strftime
 from ssSeqSupport import LogInit, LogInfo, LogError
 from ssSeqSupport import RunssSeq
 from ssSeqSupport import NCpus
+from ssSeqSupport import BuildOutputDirs
 
 # Create a "main" function
 def main():
@@ -90,6 +91,9 @@ def main():
     datetime = strftime("%Y%m%d-%H%M%S")
     output_dir = os.path.join(base_output, "ssSeq_Output", datetime)
     CLArgs.update({"datetime": datetime, "output": output_dir})
+    
+    # Build output directories
+    BuildOutputDirs(CLArgs)
     
     # Log CLArgs
     LogInit(CLArgs)    

@@ -4,6 +4,16 @@ import os.path
 # # Import ssSeqSupport variables
 from . import Homedir, Logfilename
 
+# Write a function that writes a message to both the RunSpecific and continuous logs
+def WriteToLog(message):
+    
+    # Add to the run-specific log
+    with open(RunSpecLog, "a") as f:
+        f.write(message)
+
+    # Open the continuous log file and append the latest logging information
+    with open(Logfilename, "a") as f:
+        f.write(message)
 
 # Write a function to log all args passed in from each run
 def LogInit(args):
@@ -26,6 +36,7 @@ def LogInit(args):
 
 {}
 ----------------------------------------------------------------------------
+refseq: {}
 source folder/fastq_f: {}
 fastq_r: {}
 analysis only: {}
@@ -35,19 +46,18 @@ n jobs: {}
 Q-score cutoff: {}
 alignment filter: {}
 output folder: {} 
-    """.format(args["datetime"], args["folder"], args["fastq_r"],
+    """.format(args["datetime"], args["refseq"], args["folder"], args["fastq_r"],
                args["analysis_only"], args["read_length"],  args["troubleshoot"],
                args["jobs"], args["q_cutoff"], args["alignment_filter"],
                args["output"])
 
-    # Open the log file and append the latest logging information
-    with open(Logfilename, "a") as f:
-        f.write(logstr)
-            
-# Write a function that logs summary information. This function will only be
-# triggered if a run completes successfully
-def LogSummary(args):
-    pass
+    # Build the run-specific log file and make it global
+    # Export RunSpecLog as a global variable
+    global RunSpecLog
+    RunSpecLog = os.path.join(args["output"], "RunSpecificLog.txt")
+
+    # Add to logs
+    WriteToLog(logstr)
 
 # Write a function that logs any critical error encountered during the run
 def LogError(e):
@@ -64,14 +74,14 @@ def LogError(e):
     None
     """
     
-    # Open the logfile
-    with open(Logfilename, "a") as f:
-        
-        # Write the error
-        f.write("\n\nError Encountered: {}".format(e))
-        
-        # Print the error
-        print(e)
+    # Define the message
+    m = "\n\nError Encountered: {}".format(e)
+    
+    # Write the message
+    WriteToLog(m)
+    
+    # Print the error
+    print(e)
     
     # Terminate the program
     quit()
@@ -90,39 +100,39 @@ def LogWarning(w):
     None
     """
     
-    # Open the logfile
-    with open(Logfilename, "a") as f:
-        
-        # Write the warning
-        f.write("\n\nWarning: {}".format(w))
-
-        # Print the error
-        print(w)
-
+    # Define the message
+    m = "\n\nWarning: {}".format(w)
+    
+    # Write the message
+    WriteToLog(m)
+    
+    # Print the warning
+    print(w)
     
 # Write a function to log the identified file matches in the target folder
 def LogInputFiles(matched_files, unmatched_files):
     
-    # Open the logfilename and write the filenames
-    with open(Logfilename, "a") as f:
-        
-        # Write a header
-        f.write("\nIdentified Seq File Pairs:")
-        
-        # Write all filenames that matches
-        for f_file, r_file in matched_files.items():
-            f.write("\n\t- Forward Reads: {} \n\t- Reverse Reads: {}".format(f_file, r_file))
-            
-        # Write a header for the unmatched files
-        f.write("\nUnmatched Files in Folder:")
-        
-        # Write all filenames that did not match
-        for filename in unmatched_files:
-            f.write(filename)
-            
+    # Define the message
+    message = """
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    """
+    
+    # Add the unmatched files to the message
+    for filename in unmatched_files:
+        message += "\n\t {}".format(filename)
+    
+    # Write the message
+    WriteToLog(message)
+                
 # Write a generic log function for logging information
 def LogInfo(m):
     
-    # Write the message to the log file
-    with open(Logfilename, "a") as f:
-        f.write("\n\n" + m)
+    # Define the message
+    message = "\n" + m
+    
+    # Write the message
+    WriteToLog(message)
