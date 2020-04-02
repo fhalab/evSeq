@@ -263,6 +263,7 @@ class Well():
                 # If the alignment did not meet the alignment score cutoff, 
                 # record it as a bad alignment
                 if alignment_output is None:
+                    check_combo = False
                     continue
                                         
                 # Otherwise, unpack the alignment results
@@ -695,7 +696,7 @@ class Plate():
         df_max = variant_info_df.groupby('Well')[['Well', 'AlignmentFrequency']].max().reset_index(drop=True)
         
         # Merge with full DataFrame
-        df_full = variant_info_df.merge(df_max)
+        df_full = variant_info_df.merge(df_max)      
 
         # Round for easier reading
         df_full['AlignmentFrequency'] = np.round(df_full['AlignmentFrequency'].values, 3)

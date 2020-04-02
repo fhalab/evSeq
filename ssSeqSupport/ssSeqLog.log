@@ -1361,3 +1361,227 @@ Unmatched Files in Folder:/home/brucejwittmann/Downloads/Bruce Wittman - 0131202
 Identified Seq File Pairs:Forward Reads: /home/brucejwittmann/Downloads/CHLib01_Seq/CHL1_S193_L001_R1_001.fastq.gz 	 Reverse Reads: /home/brucejwittmann/Downloads/CHLib01_Seq/CHL1_S193_L001_R2_001.fastq.gz
 Unmatched Files in Folder:/home/brucejwittmann/Downloads/CHLib01_Seq/CHL1_S193_L001_I1_001.fastq.gzThe identified read length for this run was: 150
 >>>>>>> c41d43ba0aed53ea37b91eba7e2bf7acfbae42ea
+
+    
+    20200211-095016
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Bruce Wittman - 02102020/
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/Downloads/ssSeq_Output/20200211-095016 
+    
+Identified Seq File Pairs:Forward Reads: Bruce Wittman - 02102020/CHL2_S199_L001_R1_001.fastq.gz 	 Reverse Reads: Bruce Wittman - 02102020/CHL2_S199_L001_R2_001.fastq.gz
+Unmatched Files in Folder:Bruce Wittman - 02102020/CHL2_S199_L001_I1_001.fastq.gzThe identified read length for this run was: 150
+    
+    20200211-095501
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Bruce Wittman - 02102020/
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/Downloads/ssSeq_Output/20200211-095501 
+    
+Identified Seq File Pairs:Forward Reads: Bruce Wittman - 02102020/CHL2_S199_L001_R1_001.fastq.gz 	 Reverse Reads: Bruce Wittman - 02102020/CHL2_S199_L001_R2_001.fastq.gz
+Unmatched Files in Folder:Bruce Wittman - 02102020/CHL2_S199_L001_I1_001.fastq.gzThe identified read length for this run was: 150
+    
+    20200224-183859
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: ./
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /group_files/BJW/MachineLearning/CHInsertion/RawData/Sequencing/20200122_ssSeq/ssSeq_Output/20200224-183859 
+    
+Identified Seq File Pairs:Forward Reads: ./CHL1_S193_L001_R1_001.fastq.gz 	 Reverse Reads: ./CHL1_S193_L001_R2_001.fastq.gz
+Unmatched Files in Folder:./CHL1_S193_L001_I1_001.fastq.gzThe identified read length for this run was: 150
+    
+    20200224-184239
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: ./
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /group_files/BJW/MachineLearning/CHInsertion/RawData/Sequencing/20200205_ssSeq/ssSeq_Output/20200224-184239 
+    
+Identified Seq File Pairs:Forward Reads: ./CHL2_S199_L001_R1_001.fastq.gz 	 Reverse Reads: ./CHL2_S199_L001_R2_001.fastq.gz
+Unmatched Files in Folder:./CHL2_S199_L001_I1_001.fastq.gzThe identified read length for this run was: 150
+    
+    20200224-184503
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: ./
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /group_files/BJW/MachineLearning/CHInsertion/RawData/Sequencing/20200213_ssSeq/ssSeq_Output/20200224-184503 
+    
+Identified Seq File Pairs:Forward Reads: ./CHL1-R_S157_L001_R1_001.fastq.gz 	 Reverse Reads: ./CHL1-R_S157_L001_R2_001.fastq.gz
+Unmatched Files in Folder:./CHL1-R_S157_L001_I1_001.fastq.gzThe identified read length for this run was: 150
+    
+    20200225-120220
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: ./
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /group_files/BJW/EthylChrysanthemate/RawData/20200219_ssSeq/ssSeq_Output/20200225-120220 
+    
+Identified Seq File Pairs:Forward Reads: ./ETCT_S158_L001_R1_001.fastq.gz 	 Reverse Reads: ./ETCT_S158_L001_R2_001.fastq.gz
+Unmatched Files in Folder:./ETCT_S158_L001_I1_001.fastq.gzThe identified read length for this run was: 150
+    
+    20200225-130912
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: ./
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /group_files/BJW/EthylChrysanthemate/RawData/20200219_ssSeq/ssSeq_Output/20200225-130912 
+    
+    
+    20200225-130920
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: ./
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /group_files/BJW/EthylChrysanthemate/RawData/20200219_ssSeq/ssSeq_Output/20200225-130920 
+    
+Identified Seq File Pairs:Forward Reads: ./ETCT_S158_L001_R1_001.fastq.gz 	 Reverse Reads: ./ETCT_S158_L001_R2_001.fastq.gz
+Unmatched Files in Folder:./ETCT_S158_L001_I1_001.fastq.gzThe identified read length for this run was: 150
+    
+    20200225-131854
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: ./
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /group_files/BJW/EthylChrysanthemate/RawData/20200219_ssSeq/ssSeq_Output/20200225-131854 
+    
+Identified Seq File Pairs:Forward Reads: ./ETCT_S158_L001_R1_001.fastq.gz 	 Reverse Reads: ./ETCT_S158_L001_R2_001.fastq.gz
+Unmatched Files in Folder:./ETCT_S158_L001_I1_001.fastq.gzThe identified read length for this run was: 150
+    
+    20200225-132045
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: ./
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /group_files/BJW/EthylChrysanthemate/RawData/20200219_ssSeq/ssSeq_Output/20200225-132045 
+    
+Identified Seq File Pairs:Forward Reads: ./ETCT_S158_L001_R1_001.fastq.gz 	 Reverse Reads: ./ETCT_S158_L001_R2_001.fastq.gz
+Unmatched Files in Folder:./ETCT_S158_L001_I1_001.fastq.gzThe identified read length for this run was: 150
+    
+    20200225-132645
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: ./
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /group_files/BJW/EthylChrysanthemate/RawData/20200219_ssSeq/ssSeq_Output/20200225-132645 
+    
+Identified Seq File Pairs:Forward Reads: ./ETCT_S158_L001_R1_001.fastq.gz 	 Reverse Reads: ./ETCT_S158_L001_R2_001.fastq.gz
+Unmatched Files in Folder:./ETCT_S158_L001_I1_001.fastq.gzThe identified read length for this run was: 150
+    
+    20200225-133441
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: ./
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /group_files/BJW/EthylChrysanthemate/RawData/20200219_ssSeq/ssSeq_Output/20200225-133441 
+    
+Identified Seq File Pairs:Forward Reads: ./ETCT_S158_L001_R1_001.fastq.gz 	 Reverse Reads: ./ETCT_S158_L001_R2_001.fastq.gz
+Unmatched Files in Folder:./ETCT_S158_L001_I1_001.fastq.gz./ETCT_S158_L001_R1_001.fastqThe identified read length for this run was: 150
+    
+    20200225-133931
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: ./
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 23
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /group_files/BJW/EthylChrysanthemate/RawData/20200219_ssSeq/ssSeq_Output/20200225-133931 
+    
+Identified Seq File Pairs:Forward Reads: ./ETCT_S158_L001_R1_001.fastq.gz 	 Reverse Reads: ./ETCT_S158_L001_R2_001.fastq.gz
+Unmatched Files in Folder:./ETCT_S158_L001_I1_001.fastq.gz./ETCT_S158_L001_R1_001.fastqThe identified read length for this run was: 150
+    
+    20200302-134429
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Bruce Wittman - 03022020
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 1
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/Downloads/ssSeq_Output/20200302-134429 
+    
+Identified Seq File Pairs:Forward Reads: Bruce Wittman - 03022020/ETCT-L_S180_L001_R1_001.fastq.gz 	 Reverse Reads: Bruce Wittman - 03022020/ETCT-L_S180_L001_R2_001.fastq.gz
+Unmatched Files in Folder:Bruce Wittman - 03022020/ETCT-L_S180_L001_I1_001.fastq.gzThe identified read length for this run was: 151
+    
+    20200302-134721
+    ----------------------------------------------------------------------------
+    source folder/fastq_f: Bruce Wittman - 03022020
+    fastq_r: 
+    analysis only: False
+    input_readlength: None
+    troubleshoot mode: False
+    n jobs: 1
+    Q-score cutoff: 30
+    alignment filter: 0.5
+    output folder: /home/brucejwittmann/Downloads/ssSeq_Output/20200302-134721 
+    
+Identified Seq File Pairs:Forward Reads: Bruce Wittman - 03022020/ETCT-L_S180_L001_R1_001.fastq.gz 	 Reverse Reads: Bruce Wittman - 03022020/ETCT-L_S180_L001_R2_001.fastq.gz
+Unmatched Files in Folder:Bruce Wittman - 03022020/ETCT-L_S180_L001_I1_001.fastq.gzThe identified read length for this run was: 151
