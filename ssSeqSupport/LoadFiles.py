@@ -12,6 +12,25 @@ from . import Homedir, LogError
 # Write a function that loads the reference sequence file, checks the integrity
 # of the input information, and generates an appropriate reference sequence dataframe
 def LoadRefSeq(args):
+    """
+    In LoadFiles.py
+    
+    tile updated. Requires RefIndexStart in csv. Could be updated as an arg.
+    
+    Loads the reference sequence file, checks integrity of input, and generates
+    reference sequence dataframe.
+
+    Parameters
+    ----------
+    args : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    ref_seq_df : TYPE
+        DESCRIPTION.
+
+    """
     
     # Load the reference sequence using pandas
     ref_seq_df = pd.read_csv(args["refseq"])
@@ -31,12 +50,14 @@ def LoadRefSeq(args):
             
             # Make a new list with well information appended
             expanded_ref_seqs.extend([[row["PlateName"], row["IndexPlate"],
+                                       row["RefIndexStart"],
                                       row["ReferenceSequence"], well] for 
                                       well in AllowedWells])
             
         # Construct a new ref_seq_df
         ref_seq_df = pd.DataFrame(expanded_ref_seqs, 
                                   columns = ("PlateName", "IndexPlate", 
+                                             "RefIndexStart", 
                                              "ReferenceSequence", "Well"))
     
     # Output the ref_seq_df
@@ -44,6 +65,17 @@ def LoadRefSeq(args):
         
 # Write a function that loads and checks the contents of IndexMap.csv
 def LoadDualInds():
+    """
+    In LoadFiles.py
+    
+    Loads and checks the contents of IndexMap.csv
+
+    Returns
+    -------
+    index_df : TYPE
+        DESCRIPTION.
+
+    """
     
     # Identify the expected location of IndexMap.csv
     index_map_loc = os.path.join(Homedir, "IndexMap.csv")
@@ -66,10 +98,30 @@ def LoadDualInds():
 # Write a function which constructs global objects from the index_df and 
 # ref_seq_df
 def ConstructBCsToRefSeq(ref_seq_df, index_df):
+    """
+    In LoadFiles.py
+    
+    no tile updated needed
+    Generate the reference sequence with barcodes attached (based on index map)
+
+    Parameters
+    ----------
+    ref_seq_df : TYPE
+        DESCRIPTION.
+    index_df : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    bcs_to_refseq : TYPE
+        DESCRIPTION.
+
+    """
     
     # Create a dictionary mapping index plate and well combos to reference 
     # sequences and plate nicknames
-    inds_to_ref_plate = {(row["IndexPlate"], row["Well"]): (row["PlateName"], row["ReferenceSequence"])
+    inds_to_ref_plate = {(row["IndexPlate"], row["Well"]): (row["PlateName"], 
+                            row["ReferenceSequence"], row["RefIndexStart"])
                          for _, row in ref_seq_df.iterrows()}
     
     # Create a dictionary mapping index plate and well combos to forward and 
@@ -82,7 +134,7 @@ def ConstructBCsToRefSeq(ref_seq_df, index_df):
     bcs_to_refseq = {}
     error_message = "The following dual index plate-well pairs do not exist in IndexMap.csv:"
     error_found = False
-    for key, (plate_nick, refseq) in inds_to_ref_plate.items():
+    for key, (plate_nick, refseq, ref_ind_start) in inds_to_ref_plate.items():
         
         # Check to make sure there is a matching plate-well location in 
         # the barcode plate. Record if there is not one.
@@ -105,7 +157,8 @@ def ConstructBCsToRefSeq(ref_seq_df, index_df):
         ind_plate, well = key
     
         # Add to the dictionary
-        bcs_to_refseq[(fbc, rbc)] = (ind_plate, well, plate_nick, refseq)
+        bcs_to_refseq[(fbc, rbc)] = (ind_plate, well, plate_nick, 
+                                     refseq, ref_ind_start)
             
     # Log the error if we couldn't find the dual index plate-well combo
     if error_found:

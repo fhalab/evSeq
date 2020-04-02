@@ -40,6 +40,8 @@ def main():
                                      required = False,
                                      default = cwd)
     
+                                     
+    
     # Add read analysis parameters argument group
     params_args_group = parser.add_argument_group("Read Analysis Parameters",
                                                   "Parameters for filtering out poor quality reads.")
@@ -80,6 +82,11 @@ def main():
                                      required = False,
                                      type = int,
                                      default = None)
+    advanced_args_group.add_argument("--ssSeq_tile",
+                                     help = "Note if mutated positions are unknown (e.g. in a tile).",
+                                     required = False,
+                                     action = "store_true",
+                                     default = False)
 
     # Parse the arguments
     CLArgs = vars(parser.parse_args())
@@ -95,10 +102,12 @@ def main():
     LogInit(CLArgs)    
 
     # Run ssSeq
-    try:
-        RunssSeq(CLArgs)
-    except Exception as e:
-        LogError("\nUnhandled exception encountered: '{}'".format(e))
+    # try:
+    #    RunssSeq(CLArgs)
+    #except Exception as e:
+    #    LogError("\nUnhandled exception encountered: '{}'".format(e))
+    
+    RunssSeq(CLArgs)
     
     # Log that we have successfully completed the run
     LogInfo("\nRun completed. Log may contain warnings.")

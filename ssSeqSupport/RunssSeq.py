@@ -21,6 +21,8 @@ from . import PlateObjects
 def RunssSeq(args):
     
     """
+    In RunssSeq.py
+    
     Performs the full ssSeq analysis based on the arguments passed into 
     the command line.
     
@@ -32,6 +34,12 @@ def RunssSeq(args):
 
     # Build the output directories
     _BuildOutputDirs(args)
+    
+    print("submitted args are:\n")
+    print(args)
+    
+    if args['ssSeq_tile'] == True:
+        print("ssSeq_tile argument set. Checking for mutation position by bp frequency")
             
     # Check the argument inputs. 
     all_files, folder = CheckArgs(args)
@@ -72,11 +80,31 @@ def RunssSeq(args):
             BcsToRefSeq = ConstructBCsToRefSeq(LoadRefSeq(args),
                                                LoadDualInds())
 
-            # Process sequence pairs
-            _ProcessSeqPairs(seq_pairs, BcsToRefSeq, args, filepair, i)
+            # Process ssSeq_tile data to define reference positions
+            if args["ssSeq_tile"]:
+                _ProcessSeqPairTiles(seq_pairs, BcsToRefSeq, args, filepair, i)
+            else:
+                # Process sequence pairs
+                _ProcessSeqPairs(seq_pairs, BcsToRefSeq, args, filepair, i)
     
 # Write a function for setting the read length argument when it is not passed in
 def _SetReadLength(seq_pairs):
+    """
+    In RunssSeq.py
+    
+    Sets the read length argument when the argument is not passed in.
+
+    Parameters
+    ----------
+    seq_pairs : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    read_length : TYPE
+        DESCRIPTION.
+
+    """
     
     # Get the length of every sequence pair
     seq_lengths = np.array([[pair.f_len, pair.r_len] for pair in seq_pairs])
@@ -94,6 +122,21 @@ def _SetReadLength(seq_pairs):
 
 # Write a function that builds the output directory structure
 def _BuildOutputDirs(args):
+    """
+    In RunssSeq.py
+    
+    Builds the output directory structure.
+
+    Parameters
+    ----------
+    args : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    """
     
     # Build the folder structure if it does not exist
     if not os.path.exists(args["output"]):
@@ -121,6 +164,24 @@ def _BuildOutputDirs(args):
     
 # Write a function that matches forward and reverse reads in a passed in folder
 def _FindMatches(seqfiles):
+    """
+    In RunssSeq.py
+    
+    Matches forward and reverse reads in a passed in folder.
+
+    Parameters
+    ----------
+    seqfiles : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    final_filepairs : TYPE
+        DESCRIPTION.
+    unmatched_files : TYPE
+        DESCRIPTION.
+
+    """
     
     # Define a generic regex to identify forward and reverse reads in the folder
     f_regex = re.compile("(.*)_R1_.*")
@@ -193,6 +254,24 @@ def _FindMatches(seqfiles):
 # Write a function that builds sequence pairs from the forward and reverse
 # read files
 def _BuildSeqPairs(ForwardReads_Filepath, ReverseReads_Filepath):
+    """
+    In RunssSeq.py
+    
+    Builds sequence pairs from the forward and reverse read files.
+
+    Parameters
+    ----------
+    ForwardReads_Filepath : TYPE
+        DESCRIPTION.
+    ReverseReads_Filepath : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    TYPE
+        DESCRIPTION.
+
+    """
     
     # First check if file paths are gzipped or not
     gzipped_f = True if "fastq.gz" in ForwardReads_Filepath else False
@@ -297,6 +376,25 @@ def _BuildSeqPairs(ForwardReads_Filepath, ReverseReads_Filepath):
 
 # Write a function analyzes sequencing pairs only
 def _AnalyzeSeqPairs(seq_pairs, filepair, args):
+    """
+    In RunssSeq.py
+    
+    Analyzes sequencing pairs only.
+
+    Parameters
+    ----------
+    seq_pairs : TYPE
+        DESCRIPTION.
+    filepair : TYPE
+        DESCRIPTION.
+    args : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    """
     
     # Get the path to the Q-score save location
     qual_dir = os.path.join(args["output"], "Qualities/")
@@ -319,6 +417,80 @@ def _AnalyzeSeqPairs(seq_pairs, filepair, args):
                                                                      f_basename,
                                                                      r_basename))
 
+#Write a function to do initial processing of tile sequencing (no NNN)
+def _ProcessSeqPairTiles(seq_pairs, BcsToRefSeq, args, filepair, combo_ind):
+    """
+    In RunssSeq.py
+    
+    AMK
+    
+    Performs the initial processing of ssSeq tile sequencing (no NNNs given)
+    and 
+
+    Parameters
+    ----------
+    seq_pairs : TYPE
+        DESCRIPTION.
+    BcsToRefSeq : TYPE
+        DESCRIPTION.
+    args : TYPE
+        DESCRIPTION.
+    filepair : TYPE
+        DESCRIPTION.
+    combo_ind : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    """
+
+    # Parse each pair and separate into plates and wells. Discard orphan pairs.
+    well_pairs = {}
+    for pair in seq_pairs:
+            
+        # Determine if the combination of forward and reverse barcode has been determined.
+        # If the combo has not been seen yet, create a list in the dictionary
+        well_ID = (pair.f_barcode, pair.r_barcode)
+        if well_ID not in well_pairs:
+            well_pairs[well_ID] = [pair]
+
+        # If the combo has been seen, add to the list that's growing
+        else:
+            well_pairs[well_ID].append(pair)
+
+    # Create wells for each list in the well_pairs dictionary
+    all_wells = [PlateObjects.Well(pair_list, args["read_length"], 
+                                   BcsToRefSeq, args) 
+                 for pair_list in well_pairs.values()]
+    true_wells = [well for well in all_wells if well.real_well is True]
+
+    # Parse each well and separate wells by plate
+    plate_wells = {}
+    for well in true_wells:
+
+        # Determine if the plate has been seen yet. If not, create a list
+        # in the dictionary
+        if well.plate not in plate_wells:
+            plate_wells[well.plate] = [well]
+
+        # If the plate has been seen, just append to the list.
+        else:
+            plate_wells[well.plate].append(well)
+
+    # Generate plates
+    plates = [PlateObjects.Plate(well_list) for well_list in plate_wells.values()]
+    n_plates = len(plates)
+
+    # Loop over each plate
+    for i, plate in tqdm(enumerate(plates), total = n_plates, 
+                         desc = "Processing plates", position = 1,
+                         leave = False):
+        desc = "{} of {}".format(i + 1, n_plates)
+        plate.processTiles(args, desc, filepair, combo_ind)
+
+
 # Write a function that processes sequencing pairs
 def _ProcessSeqPairs(seq_pairs, BcsToRefSeq, args, filepair, combo_ind):
 
@@ -337,7 +509,8 @@ def _ProcessSeqPairs(seq_pairs, BcsToRefSeq, args, filepair, combo_ind):
             well_pairs[well_ID].append(pair)
 
     # Create wells for each list in the well_pairs dictionary
-    all_wells = [PlateObjects.Well(pair_list, args["read_length"], BcsToRefSeq) 
+    all_wells = [PlateObjects.Well(pair_list, args["read_length"], 
+                                   BcsToRefSeq, args) 
                  for pair_list in well_pairs.values()]
     true_wells = [well for well in all_wells if well.real_well is True]
 

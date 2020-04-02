@@ -59,7 +59,7 @@ from ssSeqSupport.InputChecks import CheckArgs, CheckRefSeqs, CheckIndexMap
 from ssSeqSupport.LoadFiles import LoadRefSeq, LoadDualInds, ConstructBCsToRefSeq
 
 # Load plate and well objects followed by multiprocessing support
-from ssSeqSupport.ssSeqMultiprocessing import MultiprocessPlateAnalyzer, MultiprocessPlateAnalyzerTS
+from ssSeqSupport.ssSeqMultiprocessing import MultiprocessPlateAnalyzer, MultiprocessPlateAnalyzerTS, MultiProcessPlateAnalyzerTiles
 from ssSeqSupport.PlateObjects import Well, Plate
 
 # Now load the single required function from RunssSeq

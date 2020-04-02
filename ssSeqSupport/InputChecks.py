@@ -11,6 +11,20 @@ from . import NCpus
 
 # Write a function that checks the validity of the index file
 def CheckIndexMap(index_df):
+    """
+    In InputChecks.py
+    Checks the validity of the index file.
+
+    Parameters
+    ----------
+    index_df : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    """
     
     # Define the expected columns
     expected_cols = ("IndexPlate", "Well", "F-BC", "R-BC")
@@ -65,13 +79,29 @@ def CheckIndexMap(index_df):
 
 # Write a function that checks the validity of the reference sequence file
 def CheckRefSeqs(ref_seqs_df, detailed_file):
+    """
+    In InputChecks.py
+    Checks the validity of the reference sequence file.
+
+    Parameters
+    ----------
+    ref_seqs_df : TYPE
+        DESCRIPTION.
+    detailed_file : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    """
     
     # Define expected_cols based on whether we are expecting a detailed reference
     # sequence file or not
     if detailed_file:
-        expected_cols = ("PlateName", "IndexPlate", "Well", "ReferenceSequence")
+        expected_cols = ("PlateName", "IndexPlate", "Well", "RefIndexStart", "ReferenceSequence")
     else:
-        expected_cols = ("PlateName", "IndexPlate", "ReferenceSequence")
+        expected_cols = ("PlateName", "IndexPlate", "RefIndexStart", "ReferenceSequence")
         
     # Identify columns missing from the reference sequence file
     ref_seq_cols = set(ref_seqs_df.columns)
@@ -96,6 +126,10 @@ def CheckRefSeqs(ref_seqs_df, detailed_file):
         # 'T', 'G', and 'N'.
         if any([char.upper() not in AllowedBases for char in row["ReferenceSequence"]]):
             LogError("Reference sequence in row {} has base other than 'A', 'C', 'T', 'G', or 'N'".format(i))
+            
+        #Confirm that a RefIndexStart is an integer
+        if type(row["RefIndexStart"]) != int:
+            LogError("RefIndexStart is not an integer.")
                         
         # Make sure that the same plate nickname and dual index plate name always 
         # go together.
@@ -136,6 +170,23 @@ def CheckRefSeqs(ref_seqs_df, detailed_file):
            
 # Write a function that checks the arguments passed into the command line prompt
 def CheckArgs(args):
+    """
+    in InputChecks.py
+    Check arguments passed into the command line prompt.
+
+    Parameters
+    ----------
+    args : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    all_files : TYPE
+        DESCRIPTION.
+    folder : TYPE
+        DESCRIPTION.
+
+    """
     
     # Confirm that the csv file with reference sequences exists
     if not os.path.exists(args["refseq"]):

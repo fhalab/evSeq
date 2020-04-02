@@ -1,0 +1,50 @@
+changelog:
+LoadFiles.py added ref_ind_start to inds_to_ref_plate
+bcs_to_refseq now returns as (ind_plate, well, plate_nick, refseq, ref_ind_start)
+	this adds ref_ind_start at the end of bcs_to_refseq
+	
+RefSeq.py 
+	in BuildRefSeqs added ref_ind_start, args to input
+	if args[ ssSeq_tile], skipping findNNN, generate RefSeq with just raw_f, no var sites, 
+		args, and the ref_ind_start to find reading frame
+		
+	The reverse sequence was out of reading frame.
+		testing: identify the translation start site for reverse by adding starting index
+		and sequence length
+		fixed _trans_start using (3 - 
+                    (ref_ind_start + len(full_ref_seq) - self._seq_length) % 3) % 3
+			to determine the reading frame. Tested with multiple test data sets.
+	
+	For determining mutation positions, recording within RefSeq the starting index for 
+		forward and reverse sequences, as self._ref_ind_start
+		
+RunssSeq.py
+	when creating wells for each list in well pairs dictionary (line 515), 
+		now passing in args as well to use ssSeq_tile arg
+
+
+PlateObjects.py
+	add function analyze_alignments_tile
+		skips the counter phase of analyze_alignments, only generate bp and aa frequencies
+	import MultiProcessPlateAnalyzerTiles added, added to _init_ as well.
+	
+	adding compare_freq_to_ref 
+	Initially set up to compare amino acids but opted to 
+	
+	changed ref_codons to pulling from ref_seq.seq so it would actually compare new and ref codons
+	instead of only against itself.
+	
+ssSeqMultiprocessing.py
+	adding MultiProcessPlateAnalyzerTiles, uses analyze_alignments_tiles
+
+	modifying summary table to add variant position into extend
+	
+	added well.f_var_pos_info and well.r_var_pos_info for anlyze forward and reverse results
+		~line 75
+		
+	variant_info, consensus left in 
+
+		
+TODO
+	switch from using args["ssSeq_tile"] to just passing in the bool
+	generate a dataset with insertions to test insertion information

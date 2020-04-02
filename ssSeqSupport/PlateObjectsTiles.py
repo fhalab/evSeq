@@ -1,3 +1,5 @@
+#Modifying PlateObjects.py to utilize 
+
 # Import third party modules
 from Bio import pairwise2
 from multiprocessing import Pool
@@ -12,18 +14,13 @@ from . import BuildRefSeqs
 from . import BpToInd, AaToInd, IndToAa, IndToBp
 from . import LogError, LogWarning
 from . import Translation
-from . import MultiprocessPlateAnalyzer, MultiprocessPlateAnalyzerTS, MultiProcessPlateAnalyzerTiles
+from . import MultiprocessPlateAnalyzer, MultiprocessPlateAnalyzerTS
 from . import GenerateSequencingHeatmap
-from . import CodonTable
 
 # Write a class which holds all sequence blocks of a given set of barcodes
 class Well():
+
     """
-    In PlateObjects.py
-    
-    Well class.
-    
-    
     Desired functionality:
     1. Identify the appropriate plate and well for the sequence grouping
     2. Align all sequences to the appropriate reference sequence(s)
@@ -31,13 +28,11 @@ class Well():
     4. Identify the amino acid(s) at the variable position and assign a probability
         - One option for this is just to pass in reference sequences where the
           variable region(s) is denoted as "NNN"
-        - If we are using reference sequences without NNN, need to skip 
-          identifying variable positions.
     5. Identify any other mutations in the alignment. Return a probability score.
     """
 
     # Define the initialization function
-    def __init__(self, seq_pairs, read_length, BcsToRefSeq, args):
+    def __init__(self, seq_pairs, read_length, BcsToRefSeq):
 
         # Set the group of sequences as a class attribute
         self._seq_pairs = seq_pairs
@@ -52,14 +47,11 @@ class Well():
 
             # Identify the barcode plate, plate nickname, well string, and 
             # raw reference sequence
-            [self._plate, self._well, self._plate_name, 
-                 raw_ref, ref_ind_start] = BcsToRefSeq[bc_pair]
+            self._plate, self._well, self._plate_name, raw_ref = BcsToRefSeq[bc_pair]
             
             # Construct the forward and reverse reference sequences
-            [self._f_ref_seq, self._r_ref_seq, 
-                 self._n_variable_sites] = BuildRefSeqs(raw_ref,
-                                                        read_length,
-                                                        ref_ind_start, args)
+            self._f_ref_seq, self._r_ref_seq, self._n_variable_sites = BuildRefSeqs(raw_ref,
+                                                                                    read_length)
             
             # Confirm that this is a real well
             self._real_well = True
@@ -74,16 +66,6 @@ class Well():
 
     # Define a function for aligning each sequence to the appropriate reference
     def align(self):
-        """
-        In PlateObjects.py
-        
-        align each sequence to the appropriate reference.
-
-        Returns
-        -------
-        None.
-
-        """
 
         # Loop over the sequence pairs and make alignments to the reference sequences
         self._f_alignments = [pairwise2.align.globalxs(self._f_ref_seq.seq,
@@ -100,42 +82,6 @@ class Well():
     # Write a helper function that analyzes a single alignment
     def analyze_alignment(self, alignment, j, f_r_ind, bp_counts, 
                           alignment_cutoff, q_cutoff):
-        """
-        In PlateObjects.py
-        
-        Analyze a single alignment.
-
-        Parameters
-        ----------
-        alignment : TYPE
-            DESCRIPTION.
-        j : TYPE
-            DESCRIPTION.
-        f_r_ind : TYPE
-            DESCRIPTION.
-        bp_counts : TYPE
-            DESCRIPTION.
-        alignment_cutoff : TYPE
-            DESCRIPTION.
-        q_cutoff : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        insertions : TYPE
-            DESCRIPTION.
-        deletions : TYPE
-            DESCRIPTION.
-        read_trans_start : TYPE
-            DESCRIPTION.
-        ins_found : TYPE
-            DESCRIPTION.
-        del_found : TYPE
-            DESCRIPTION.
-        low_quality_chars : TYPE
-            DESCRIPTION.
-
-        """
 
         # Unpack the alignment
         (reference_alignment, read_alignment, score, _, _) = alignment
@@ -262,407 +208,8 @@ class Well():
         # Return relevant values
         return insertions, deletions, read_trans_start, ins_found, del_found, low_quality_chars
 
-
-    #Define a function to generate basepair and aa frequence matrices
-    def analyze_alignments_tiles(self, alignment_cutoff, q_cutoff):
-        """
-        
-
-        Parameters
-        ----------
-        alignment_cutoff : TYPE
-            DESCRIPTION.
-        q_cutoff : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        None.
-
-        """
-        """
-        In PlateObjects.py
-        
-        AMK
-        
-        
-        Using a reference sequence (with or without NNNs), loop through the forward and reverse 
-        alignments to build the basepair and amino-acid frequency matrices.
-        
-        Starting by taking the 
-        """
-
-        ######################## Upfront Processing #############################
-        # Determine the number of alignments in the set
-        n_f_alignments = len(self._f_alignments)
-        n_r_alignments = len(self._r_alignments)
-        
-        # Log an error if we don't have an equal number of alignments
-        if n_f_alignments != n_r_alignments:
-            LogError("There are an unequal number of forward and reverse alignments.")
-    
-        # Build a matrix to count the occurences of each base type at each position
-        # in the reference sequence
-        # 6 for bp for 4 bps, N, and -
-        # 22 for aa for all amino acids, ?, and -
-        bp_counts = [np.zeros([self._f_ref_seq.seq_length, 6]),
-                     np.zeros([self._r_ref_seq.seq_length, 6])]
-        aa_counts = [np.zeros([self._f_ref_seq.trans_length, 22]),
-                     np.zeros([self._r_ref_seq.trans_length, 22])]
-
-        # Package redundant arguments
-        ref_seqs = [self._f_ref_seq, self._r_ref_seq]
-
-
-        # Loop over each alignment in the set and analyze
-        insertions = [[],[]]
-        deletions = [[],[]]
-        variant_counts = {}
-        for j, (f_alignment, r_alignment) in enumerate(zip(self._f_alignments, self._r_alignments)):
-
-            # Pull the unaligned read sequences
-            unaligned_read_seqs = [self._seq_pairs[j].barcodeless_f,
-                                   self._seq_pairs[j].reversed_barcodeless_r]
-
-            # Create a series of tests
-            check_combo = True
-            bad_codon_found = False
-
-            # Analyze the forward and reverse alignments
-            for i, alignment in enumerate((f_alignment, r_alignment)):
-
-                # Analyze the alignment
-                alignment_output = self.analyze_alignment(alignment, j, i, 
-                                                          bp_counts[i], 
-                                                          alignment_cutoff,
-                                                          q_cutoff)
-
-                # If the alignment did not meet the alignment score cutoff, 
-                # record it as a bad alignment
-                if alignment_output is None:
-                    continue
-                                        
-                # Otherwise, unpack the alignment results
-                (temp_insertions,
-                 temp_deletions,
-                 read_trans_start,
-                 ins_found,
-                 del_found,
-                 low_quality_chars) = alignment_output
-
-                # Record insertions and deletions
-                insertions[i].extend(temp_insertions)
-                deletions[i].extend(temp_deletions)
-
-                # Don't bother moving on if there was an insertion or deletion
-                # Don't bother moving on if the alignment quality was poor.
-                # Don't check the combination if this is the case for either
-                # alignment in the forward-reverse pair.
-                if ins_found or del_found:
-                    check_combo = False
-                    continue
-
-                # Translate each codon in the read alignment
-                alignment_translation = Translation(unaligned_read_seqs[i],
-                                                    read_trans_start,
-                                                    low_quality_chars)
-
-                # Point to the appropriate reference sequence
-                ref_seq = ref_seqs[i]
-
-                # Add to the amino acid count matrix and compare the translation to the
-                # reference
-                for k, aa_read in enumerate(alignment_translation.translation[:ref_seq.trans_length]):
-
-                    # Add to the amino acid count matrix if it is not a low quality
-                    # codon. If this codon is a variable position, continue adding
-                    # to the alignment matrix, but don't try and determine the
-                    # variant. Just continue in the parent loop from here
-                    """
-                    Thought here: for a given read, include both the aa_count addition and 
-                    also add a check comparing to the reference elementwise by amino acid
-                    Thus keeping tuple pairs of 
-                    """
-                    
-                    # Not currently tracking only a subset of sites,
-                    # Skipping bad codon check for subset of sites now.
-                    
-                    # if k in alignment_translation.low_quality_codons:
-                    #     if k in ref_seq.var_aa_sites:
-                    #         bad_codon_found = True
-                    #     continue
-                    aa_counts[i][k, AaToInd[aa_read]] += 1
-
-                # If the forward reads failed for any reason, continue. If the 
-                # # reverse reads failed for any reason, break the loop.
-                # We can't make combination data without both reads.
-                if (bad_codon_found or not check_combo) and i == 0:
-                    continue
-                elif (bad_codon_found or not check_combo) and i == 1:
-                    break
-
-                
-        """
-        Deleted analyze_alignments variant combo counting section here.
-        """
-
-        # Convert the count matrices to frequency matrices
-        bp_sums = [None, None]
-        aa_sums = [None, None]
-        bp_freqs = [None, None]
-        aa_freqs = [None, None]
-        var_aa_info = [[], []]
-
-        for i, (bp_count_matrix,
-                aa_count_matrix,
-                ref_seq) in enumerate(zip(bp_counts, aa_counts, ref_seqs)):
-
-            bp_sums[i] = bp_count_matrix.sum(axis=1)
-            aa_sums[i] = aa_count_matrix.sum(axis=1)
-            bp_freqs[i] = np.nan_to_num(bp_count_matrix/bp_sums[i][:, None])
-            aa_freqs[i] = np.nan_to_num(aa_count_matrix/aa_sums[i][:, None])
-
-            """Thought: check the amino acid mutations here
-            Opting to do so in a separate function below.
-                """
-            # Set frequency threshold for a non-ambiguous position
-            # freq_thresh = 0.9
-            
-            # #check which aa positions match that threshold
-            # thresh_met_aa = np.argwhere(aa_freqs[i] > freq_thresh)
-            
-            # #find the most common aa at that position
-            # max_inds = aa_freqs[i].argmax(axis=1)
-            
-            # for k, aapos in enumerate(ref_seq.aas_as_list):
-               
-            #     if aa_freqs[i][k, max_inds[k]] != aapos:
-                    
-            #         var_aa_info[i].append[k, aa_freqs[i][k, max_inds[k]], aapos]
-                
-
-
-        # Save all relevant information
-        # var_aa_info and variant_counts are both empty, could remove in future
-        self._alignment_results = (insertions, deletions, bp_counts, aa_counts,
-                                   bp_freqs, aa_freqs, var_aa_info, variant_counts)
-        
-        
-        
-        
-
-    # Define a function which finds highest frequency at each position
-    # and compares to the reference sequence
-    def compare_freq_to_ref(self, freq_thresh = 0.9, forward = True):
-        
-        """
-        required input: just frequency threshold and forward/reverse bools;
-        the rest is obtained through the well class.
-        
-        Thoughts:
-            
-            as we are still in Well class, the ref_seq information is still here
-            without needing to generate a new ref_seq dataframe
-            
-            In building ref_seqs, have ref_seq also output the index for forward 
-            and reverse. This can be used to determine which positions are 
-            different once we have the index within the alignment.
-            
-            Determine if there are positions under threshold and log them; 
-                possible to have multiclonal
-            Determine highest frequency aa at each position
-            Elementwise compare to reference
-            If different, note the index, reference aa, and new aa as variant info
-                Also record the bp for the codon information
-                
-            As we might have synonymous mutations, it is better to look at bp
-            frequency instead of aa_freq; otherwise silent mutations will be skipped
-            
-            Use components of the generate_consensus function heavily
-            
-        """
-  
-        # Adapted from generate_consensus, pull in aa_freq information
-        # Choose forward or reverse alignments
-        if forward:
-            (insertions, _, _, _, bp_freq, aa_freq, _) = [entry[0] for entry in 
-                                                    self._alignment_results[:-1]]
-            ref_seq = self._f_ref_seq
-        
-        # reverse alignment
-        else:
-            (insertions, _, _, _, bp_freq, aa_freq, _) = [entry[1] for entry in
-                                                     self._alignment_results[:-1]]
-            ref_seq = self._r_ref_seq
-                
-        
-        # Parse insertion information
-        insertion_count_dict = {}
-        insertion_info_dict = {}
-        for _, ref_ind, ins_char in insertions:
-
-            # Count the number of insertions of each type
-            # If we haven't seen this reference index yet, add it to the dictionary
-            if ref_ind not in insertion_info_dict:
-
-                # Add to the count of the specific character at the position
-                insertion_info_dict[ref_ind] = {ins_char: 1}
-
-            # If we have seen the reference index but have not seen the character,
-            # add the character to the dictionary
-            elif ins_char not in insertion_info_dict[ref_ind]:
-
-                # Add the specific character at the position
-                insertion_info_dict[ref_ind][ins_char] = 1
-
-            # Otherwise, just add to the existing instance
-            else:
-                insertion_info_dict[ref_ind][ins_char] += 1
-
-            # If we haven't seen the reference yet, add to the count dictionary
-            if ref_ind not in insertion_count_dict:
-                insertion_count_dict[ref_ind] = 1
-
-            # Otherwise, just add to the count
-            else:
-                insertion_count_dict[ref_ind] += 1
-
-        # Get the frequency that an insertion is called at each site. Record the
-        # insertion position if it is above the threshold
-        true_insertions = []
-        for ref_ind, count in insertion_count_dict.items():
-
-            # Determine if the frequency of occurence is above the threshold
-            if count/self._n_seqs >= freq_thresh:
-
-                # Set a binary for recording whether an identified base meets the
-                # required threshold
-                ins_thresh_met = False
-
-                # Take a look at the frequency of bases in the insertion.
-                for bp, count in insertion_info_dict[ref_ind].items():
-
-                    # If the character meets the threshold, record the character
-                    if count/self._n_seqs >= freq_thresh:
-                        true_insertions.append([ref_ind, bp])
-                        ins_thresh_met = True
-
-                # If the insertion threshold was not met for any characters,
-                # insert an ambiguous bases
-                if not ins_thresh_met:
-                    true_insertions.append([ref_ind, "N"])
-
-        # Loop over the bp_freq matrix and record the most common base at each
-        # position assuming it occurs with greater frequency than the threshold
-        thresh_met_inds = np.argwhere(bp_freq >= freq_thresh)
-        max_inds = bp_freq.argmax(axis=1)
-
-        # Identify indices where things are not ambiguous
-        non_ambiguous_inds = set(thresh_met_inds[:, 0])
-
-        # Construct the sequence
-        consensus_bp = np.array(["N" for ind in range(len(bp_freq))])
-        consensus_bp = [IndToBp[max_inds[ind]] if ind in non_ambiguous_inds else
-                          "N" for ind in range(len(bp_freq))]
-
-        #Convert consensus sequence to string
-        consensus_bp = "".join(consensus_bp)
-      
-        
-        """
-        Elementwise comparison of consensus to reference_seq
-        """
-        
-
-        # Pulling code from Translate function to generate the codon lists
-        start_ind = ref_seq.trans_start
-        
-        # Get the number of codons in the sequence
-        n_codons = np.floor((len(consensus_bp) - start_ind)/3)
-    
-        # Identify all codons in consensus sequence
-        codons = [consensus_bp[int(start_ind + i*3): int(start_ind + (i+1)*3)] 
-                  for i in range(int(n_codons))]
-        
-        #Identify all codons in reference sequence
-        ref_codons = [ref_seq.seq[int(start_ind + i*3): int(start_ind + (i+1)*3)] 
-                  for i in range(int(n_codons))]
-
-        
-        # Store variant position information
-        # First and second lists are for forward and reverse reads
-        # Each list to include mutation position information 
-
-        variant_pos_info = [[],[]]
-        
-        # Loop through each pair of codons
-        for i, (codon, refcodon) in enumerate(zip(codons, ref_codons)):
-            
-            #skip if same as reference
-            if codon == refcodon:
-                continue
-            
-            else:
-                # Determine the bp index for the codons
-                # counting first bp in codon
-                # Use ref_index_start 
-                bp_index = ref_seq.ref_ind_start + (i * 3)
-                
-                # Determine the aa position for the codons
-                aa_position = (ref_seq.ref_ind_start // 3) + i
-                
-                # Translate codon and ref codon
-                # If an N is present, this will give "?" in translation
-                # print(bp_index, aa_position, codon, refcodon)
-                if "N" in codon:
-                    aa = "?"
-                else: aa = CodonTable[codon]
-                
-                if "N" in refcodon:
-                    refaa = "?"
-                else:
-                    refaa = CodonTable[refcodon]
-
-                
-                
-                # Store variant info
-                # stored as [[forward],[reverse]] positions w/ "not forward"
-                # stored as reference, position, new for both bp and aa
-                variant_pos_info[not forward].append([
-                    refcodon, bp_index, codon, refaa, aa_position, aa])
-
-        
-        """"
-        We do not need to account for insertions in the output, insertions
-        are handled separately with analyze_alignments
-        """
-
-        # Decide whether to assign this as the forward or reverse information
-        if forward:
-            self._f_var_pos_info = variant_pos_info
-        else:
-            self._r_var_pos_info = variant_pos_info
-
-
     # Define a function for performing data analysis on the alignments
     def analyze_alignments(self, alignment_cutoff, q_cutoff):
-        """
-        In PlateObjects.py
-        
-        Perform data analysis on the alignments
-
-        Parameters
-        ----------
-        alignment_cutoff : TYPE
-            DESCRIPTION.
-        q_cutoff : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        None.
-
-        """
 
         ######################## Upfront Processing #############################
         # Determine the number of alignments in the set
@@ -675,8 +222,6 @@ class Well():
     
         # Build a matrix to count the occurences of each base type at each position
         # in the reference sequence
-        # 6 for bp for 4 bps, N, and -
-        # 22 for aa for all amino acids, ?, and -
         bp_counts = [np.zeros([self._f_ref_seq.seq_length, 6]),
                      np.zeros([self._r_ref_seq.seq_length, 6])]
         aa_counts = [np.zeros([self._f_ref_seq.trans_length, 22]),
@@ -757,12 +302,6 @@ class Well():
                     # codon. If this codon is a variable position, continue adding
                     # to the alignment matrix, but don't try and determine the
                     # variant. Just continue in the parent loop from here
-                    """
-                    Thought here: for a given read, include both the aa_count addition and 
-                    also add a check comparing to the reference elementwise by amino acid
-                    Thus keeping tuple pairs of 
-                    """
-                    
                     if k in alignment_translation.low_quality_codons:
                         if k in ref_seq.var_aa_sites:
                             bad_codon_found = True
@@ -934,56 +473,16 @@ class Well():
         self._alignment_results = (insertions, deletions, bp_counts, aa_counts,
                                    bp_freqs, aa_freqs, var_aa_info, variant_counts)
 
-
-    
-
-
-        
-
-
     # Define a function for generating a consensus sequences
-    def generate_consensus(self, freq_thresh = 0.9, forward = True, 
-                           freq_matrix_only = False):
-        """
-        In PlateObjects.py
-        
-        Generate a consensus sequence based on bp frequency and given threshold
+    def generate_consensus(self, freq_thresh = 0.9, forward = True):
 
-        Parameters
-        ----------
-        freq_thresh : TYPE, optional
-            DESCRIPTION. The default is 0.9.
-        forward : TYPE, optional
-            DESCRIPTION. The default is True.
-        freq_matrix_only : TYPE, optional
-            DESCRIPTION. The default is False.
-
-        Returns
-        -------
-        None.
-
-        """
-
-        #Freq_matrix_only uses _bp_frequency_results from generate frequency 
-        #matrices instead of analyze_alignments
-        if freq_matrix_only:
-            
-            # Decide which set of alignment results we're working off of
-            if forward:
-                (insertions, _, _, bp_freq) = [entry[0] for entry in 
-                                                        self._bp_frequency_results[:-1]]
-            else:
-                (insertions, _, _, bp_freq) = [entry[1] for entry in
-                                                         self._bp_frequency_results[:-1]]
-        
         # Decide which set of alignment results we're working off of
+        if forward:
+            (insertions, _, _, _, bp_freq, _, _) = [entry[0] for entry in 
+                                                    self._alignment_results[:-1]]
         else:
-            if forward:
-                (insertions, _, _, _, bp_freq, _, _) = [entry[0] for entry in 
-                                                        self._alignment_results[:-1]]
-            else:
-                (insertions, _, _, _, bp_freq, _, _) = [entry[1] for entry in
-                                                         self._alignment_results[:-1]]
+            (insertions, _, _, _, bp_freq, _, _) = [entry[1] for entry in
+                                                     self._alignment_results[:-1]]
 
         # Parse insertion information
         insertion_count_dict = {}
@@ -1105,23 +604,11 @@ class Well():
     def r_consensus(self):
         return self._r_consensus
     
-    @property
-    def f_var_pos_info(self):
-        return self._f_var_pos_info
-    
-    @property
-    def r_var_pos_info(self):
-        return self._r_var_pos_info
-    
     
 # Define a class that can handle plate information
 class Plate():
 
     """
-    In PlateObjects.py
-    
-    Plate class.
-    
     In report, print out all of the alignments to a text file
     1. Frequency of each base at each reference position.
     2. Any amino acid changes from the expected (including silent mutations) making
@@ -1146,255 +633,9 @@ class Plate():
         # Set the plate name
         self._name = self._wells[0].plate_name
 
-
-    # Write a function for processing contents of the plate when using tiles. 
-    # This will find bp frequencies and 
-    def processTiles(self, args, desc, filepair, combo_ind):
-        """
-        In PlateObjects.py
-        
-        AMK
-        
-        Process the contents of plate using ssSeq tiles. Only perform the initial
-        steps of processing to get basepair frequencies and 
-
-        Parameters
-        ----------
-        args : TYPE
-            DESCRIPTION.
-        desc : TYPE
-            DESCRIPTION.
-        filepair : TYPE
-            DESCRIPTION.
-        combo_ind : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        None.
-
-        """
-        print("processing data as tiles (Plate.processTiles)")
-        
-        # Create variables to store information needed for writing the output
-        alignment_text = ""
-        consensus_text = ""
-        # var_pos_info_text = ""
-        summary_info = [["Plate", "Well", "ReadDirection", "F-BC",
-                         "R-BC", "Site", "AA", "AlignmentFrequency", "WellSeqDepth"]]
-        pos_summary_info = [["Plate", "Well", "ReadDirection", "F-BC",
-                 "R-BC", "ReferenceCodon", "BPindex", "NewCodon", "ReferenceAA", "AAindex", "NewAA"]]
-        
-        
-        # debug
-        pos_summary_info = [["Plate", "Well", "ReadDirection", "F-BC",
-                 "R-BC", "Test"]]
-        
-        
-        bp_count_freq_info = []
-        aa_count_freq_info = []
-        variant_info = [["Plate", "Well", "F-BC", "R-BC",
-                         "VariantCombo", "AlignmentFrequency", "WellSeqDepth"]]
-
-
-
-        # For troubleshooting without the multiprocessing 
-        
-        # results = []
-
-        # print("Testing MultiProcessPlateAnalyzerTiles w/o multiprocessing")
-        # for well in self._wells:
-        #     results = MultiProcessPlateAnalyzerTiles(
-        #         [well, args["alignment_filter"], args["q_cutoff"]])
-
-
-
-        # Process all wells in the plate
-        with Pool(args["jobs"]) as p:
-
-            # Generate multiprocessing args
-            multiprocessess_args = [[well, args["alignment_filter"], args["q_cutoff"]]
-                                    for well in self._wells]
-
-
-            #print("Right before MultiProcessPlateAnalyzerTiles")
-
-            # Change approach depending on whether or not we are in TS mode
-            if args["troubleshoot"]:
-                #print("Troubleshoot results")
-                results = list(tqdm(p.imap(MultiProcessPlateAnalyzerTiles,
-                                            multiprocessess_args),
-                                    position = 2, desc = desc,
-                                    total = len(self._wells), leave = False))
-
-            else:
-                results = list(tqdm(p.imap(MultiprocessPlateAnalyzer,
-                                            multiprocessess_args),
-                                    position = 2, desc = desc,
-                                    total = len(self._wells), leave = False))
-        
-        #print("First pass through MultiProcessPlateAnalyzerTiles")
-
-        # Process the results
-        for result in results:
-
-            # Process differently depending on whether or not we are running
-            # in troubleshoot mode
-            if args["troubleshoot"]:
-
-                # Unpack results
-                (aa_count_freq_info_part, bp_count_freq_info_part,
-                 alignment_text_part, consensus_text_part,
-                 summary_info_part, pos_summary_info_part) = result
-
-                # Append the completed tables to the master lists
-                aa_count_freq_info.extend(aa_count_freq_info_part)
-                bp_count_freq_info.extend(bp_count_freq_info_part)
-
-                # Extend the alignment text
-                alignment_text += alignment_text_part
-                
-                # Extend the consensus sequences table
-                consensus_text += consensus_text_part
-                
-                # # Extend the variant position info table
-                # var_pos_info_text += var_pos_info_text_part
-
-            else:
-
-                # Unpack differently if we are not in troubleshoot mode
-                summary_info_part, variant_info_part = result
- 
-            # Extend the summary and variant info tables
-            summary_info.extend(summary_info_part)
-            #variant_info.extend(variant_info_part)
-            pos_summary_info.extend(pos_summary_info_part)
-
-        # Convert summary info and variant infor to dataframes
-        summary_info = pd.DataFrame(summary_info[1:], columns = summary_info[0])
-        #variant_info_df = pd.DataFrame(variant_info[1:], columns = variant_info[0])
-        pos_summary_info_df = pd.DataFrame(pos_summary_info[1:], columns = pos_summary_info[0])
-        
-        #print(pos_summary_info_df)
-        # Add the source file names on
-        summary_info["R1"] = filepair[0]
-        summary_info["R2"] = filepair[1]
-        #variant_info_df["R1"] = filepair[0]
-        #variant_info_df["R2"] = filepair[1]
-        pos_summary_info_df["R1"] = filepair[0]
-        pos_summary_info_df["R2"] = filepair[1]
-
-        # Merge with full DataFrame unless we had no alignment. If there is no
-        # alignment, then skip the merge and assign df_full to be a copy of
-        # variant_info_df
-        # if len(variant_info_df) == 0:
-            
-        #     # Just make a copy of df_full
-        #     df_full = variant_info_df.copy()
-            
-        #     # Log a warning that we didn't find any alignments for this plate
-        #     LogWarning("\nNo sequences passed alignment QC for '{}'. Consider lowering filtering thresholds.".format(self._name))
-            
-        # else:
-            
-        #     # Find the max value for Alignment Frequency for each well
-        #     df_max = variant_info_df.groupby('Well')[['Well', 'AlignmentFrequency']].max().reset_index(drop=True)
-        #     df_full = variant_info_df.merge(df_max)
-
-        #     # Round for easier reading
-        #     df_full['AlignmentFrequency'] = np.round(df_full['AlignmentFrequency'].values, 3)
-            
-        #     # Generate heatmap and save it
-        #     # Build the heatmaps folder
-        #     hm_output_file = os.path.join(args["output"],
-        #                                     "Platemaps/{}-{}_SequencingHeatmap".format(self._name,
-        #                                                                                 combo_ind))
-        #     GenerateSequencingHeatmap(df_full, self._name, hm_output_file)
-
-
-        ###################### Save all of the generated data #################
-        # Get the paths to all save locations
-        summary_dir = os.path.join(args["output"], "Summaries")
-        extra_dirs = [os.path.join(args["output"], loc) for loc in
-                      ["Alignments", "AACountsFrequencies",
-                       "BPCountsFrequencies", "ConsensusSequences", 
-                       "VarPosInfo"]]
-        
-        # If we are in troubleshoot mode, save the extra data
-        if args["troubleshoot"]:
-
-            # Save alignments
-            with open(extra_dirs[0]+"/{}-{}_Alignments.txt".format(self._name,
-                                                                   combo_ind), "w") as f:
-                f.writelines(alignment_text)
-
-            # Save frequency and count tables
-            with open(extra_dirs[1]+"/{}-{}_AACountsFrequencies.csv".format(self._name,
-                                                                            combo_ind), "w", newline="") as f:
-                writer = csv.writer(f)
-                writer.writerows(aa_count_freq_info)
-
-            with open(extra_dirs[2]+"/{}-{}_BPCountsFrequencies.csv".format(self._name,
-                                                                            combo_ind), "w", newline="") as f:
-                writer = csv.writer(f)
-                writer.writerows(bp_count_freq_info)
-                                
-            # Save consensus sequences
-            with open(extra_dirs[3]+"/{}-{}_ConsensusSequences.txt".format(self._name,
-                                                                           combo_ind), "w") as f:
-                f.writelines(consensus_text)
-                
-            # # Save position summary info
-            # with open(extra_dirs[3]+"/{}-{}_VarPosInfo.txt".format(self._name,
-            #                                                                 combo_ind), "w") as f:
-            #     f.writelines(pos_summary_info)
-                
-
-        # Save summary info
-        summary_info.to_csv(summary_dir+"/{}-{}_SummaryInfo.csv".format(self._name,
-                                                                           combo_ind),
-                               index = False)
-        
-        pos_summary_info_df.to_csv(summary_dir+"/{}-{}_PosSummaryInfo.csv".format(self._name,
-                                                                           combo_ind),
-                               index = False)
-
-        
-        # # Save combination count information
-        # variant_info_df.to_csv(summary_dir+"/{}-{}_VariantInfo.csv".format(self._name,
-        #                                                                    combo_ind),
-        #                        index = False)
-           
-        # # Save the limited table with which captures the maximum frequency alignment    
-        # df_full.to_csv(summary_dir+"/{}-{}_MaxInfo.csv".format(self._name, combo_ind),
-        #                index=False)
-        
-
     # Write a function for processing contents of the plate. This will perform alignments
     # for each well, then generate a report
     def process(self, args, desc, filepair, combo_ind):
-        """
-        In PlateObjects.py
-        
-        Process contents of the plate. Performs alignments for each well and
-        generates a report.
-
-        Parameters
-        ----------
-        args : TYPE
-            DESCRIPTION.
-        desc : TYPE
-            DESCRIPTION.
-        filepair : TYPE
-            DESCRIPTION.
-        combo_ind : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        None.
-
-        """
 
         # Create variables to store information needed for writing the output
         alignment_text = ""

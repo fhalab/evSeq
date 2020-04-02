@@ -8,28 +8,104 @@ from . import LogError
 
 # Write a function for pulling information from the id line
 def GetBlockInfo(id_line):
+    """
+    In SupportFuncs.py
+    
+    Pull information from the id line
+
+    Parameters
+    ----------
+    id_line : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    TYPE
+        DESCRIPTION.
+
+    """
 
     # Parse the block with a regex
     return IdParser.search(id_line).groups()
 
 # Write a function to generate ids from a single id line
 def CreateID(id_line):
+    """
+    In SupportFuncs.py
+    
+    Generate ids from a single id line
 
-        # Get the id information for the block
-        (instrument_name, _, _, lane, tile, x_coord, y_coord, _, _, _,
-         sample_number) = GetBlockInfo(id_line)
+    Parameters
+    ----------
+    id_line : TYPE
+        DESCRIPTION.
 
-        # Create a unique id for the pair that can pair ends
-        return (instrument_name, lane, tile, x_coord, y_coord, sample_number)
+    Returns
+    -------
+    instrument_name : TYPE
+        DESCRIPTION.
+    lane : TYPE
+        DESCRIPTION.
+    tile : TYPE
+        DESCRIPTION.
+    x_coord : TYPE
+        DESCRIPTION.
+    y_coord : TYPE
+        DESCRIPTION.
+    sample_number : TYPE
+        DESCRIPTION.
+
+    """
+
+    # Get the id information for the block
+    (instrument_name, _, _, lane, tile, x_coord, y_coord, _, _, _,
+     sample_number) = GetBlockInfo(id_line)
+
+    # Create a unique id for the pair that can pair ends
+    return (instrument_name, lane, tile, x_coord, y_coord, sample_number)
 
 # Write a function that returns the reverse complement of a sequence
 def ReverseComplement(seq):
+    """
+    In SupportFuncs.py
+    
+    Return the reverse complement of a sequence
+
+    Parameters
+    ----------
+    seq : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    TYPE
+        DESCRIPTION.
+
+    """
 
     # Loop through the sequence in reverse and translate
     return "".join(ReverseCompDict[char] for char in reversed(seq))
 
 # Write a function for translating sequences
 def Translate(seq, start_ind):
+    """
+    In SupportFuncs.py
+    
+    Translate sequences.
+
+    Parameters
+    ----------
+    seq : TYPE
+        DESCRIPTION.
+    start_ind : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    TYPE
+        DESCRIPTION.
+
+    """
 
     # Get the number of codons in the sequence
     n_codons = np.floor((len(seq) - start_ind)/3)
@@ -50,8 +126,31 @@ def Translate(seq, start_ind):
     # Return the translation
     return "".join(translation)
 
+   
+
+
 # Write a function that identifies the positions of "NNN" in a reference sequence
 def FindNNN(reference_sequence):
+    """
+    In SupportFuncs.py
+    
+    Identifies the positions of NNN in a reference sequence.
+
+    Parameters
+    ----------
+    reference_sequence : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    var_sites : TYPE
+        DESCRIPTION.
+    TYPE
+        DESCRIPTION.
+    codon_format : TYPE
+        DESCRIPTION.
+
+    """
 
     # Define a list which will record where the variable positions start in the 
     # reference sequence

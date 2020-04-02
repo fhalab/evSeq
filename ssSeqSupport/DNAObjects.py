@@ -6,6 +6,11 @@ from . import CodonTable, BarcodeLength
 from . import GetBlockInfo, ReverseComplement, Translate
 
 class Translation():
+    """
+    In DNAObjects.py
+    
+    translation class.
+    """
 
     # Initialize
     def __init__(self, seq, start_ind, low_quality_chars = []):
@@ -41,6 +46,11 @@ class Translation():
         self.translation  = "".join(translation)
 
 class SeqPair():
+    """
+    In DNAObjects.py
+    
+    SeqPair class.
+    """
 
     # Define the initialization. This takes the sequence information and
     # organizes it
@@ -66,6 +76,22 @@ class SeqPair():
 
     # Write a function to attach the partner information
     def attach_partner(self, info_block, r_partner = True):
+        """
+        In DNAObjects.py
+        Attaches the partner information.
+
+        Parameters
+        ----------
+        info_block : TYPE
+            DESCRIPTION.
+        r_partner : TYPE, optional
+            DESCRIPTION. The default is True.
+
+        Returns
+        -------
+        None.
+
+        """
 
         # Depending on the partner that's being appended, attach different values
         if r_partner:
