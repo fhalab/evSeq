@@ -3,7 +3,7 @@ Validation/
 ssSeq_Output/
 TestData/
 ssSeq_Support/*.log
-ssSeqGui_Click.pyw
+ssSeqLog.log
 
 # vscode
 .vscode/
@@ -83,7 +83,7 @@ docs/_build/
 target/
 
 # Jupyter Notebook
-.ipynb_checkpoints
+*.ipynb_checkpoints
 
 # pyenv
 .python-version
