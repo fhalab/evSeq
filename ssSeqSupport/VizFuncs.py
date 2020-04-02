@@ -6,6 +6,8 @@ import colorcet as cc
 import bokeh.io
 from bokeh.layouts import row
 
+from . import LogWarning
+
 hv.extension('bokeh')
 hv.renderer('bokeh')
 
@@ -28,11 +30,8 @@ def StretchColorLevels(data, center, cmap):
     # don't allow a color map with only one color
     if len(cmap) == 1:
         raise RuntimeError("Must have `len(cmap)` > 1.")
-        
-    # check that the center passed is within the data
-    if not 0 < center < max(data):
-        raise ValueError('Must have min(data) < center < max(data).')
     
+    # Scale dist
     dist = max(max(data) - center, center - 0)
     dist += dist / 100
     
@@ -40,6 +39,16 @@ def StretchColorLevels(data, center, cmap):
 
 def MakeHeatmap(df, title):
     """Generates a heatmap from ssSeq data using Holoviews with bokeh backend."""
+    
+    # Convert SeqDepth to log for easier visualization.
+    df['logseqdepth'] = np.log(df['WellSeqDepth'])
+    
+    # Add 0s to wells that have no data
+    well_list = [row+column for row in ['A','B','C','D','E','F','G','H'] for column in ['01','02','03','04','05','06','07','08','09','10','11','12']]
+    for well in well_list:
+        if well not in df['Well'].unique():
+            temp_df = pd.DataFrame([[np.nan,well,np.nan,np.nan,'',0,1,np.nan,np.nan,0]],columns=df.columns)
+            df = pd.concat([df,temp_df],sort=False)
     
     # Create necessary Row and Column values and sort
     df['Row'] = df.apply(lambda row: row['Well'][0], axis=1)
@@ -49,9 +58,6 @@ def MakeHeatmap(df, title):
     # Set some base opts
     opts = dict(invert_yaxis=True,title=title,show_legend=True)
     
-    # Convert SeqDepth to log for easier visualization.
-    df['logseqdepth'] = np.log(df['WellSeqDepth'])
-    
     # logseqdepth heatmap
     cmap = list(reversed(cc.CET_D9))
     
@@ -59,7 +65,14 @@ def MakeHeatmap(df, title):
     center = np.log(10)
     
     # Adjust if it is greater than max of data (avoids ValueError)
-    if df['logseqdepth'].max() < center:
+    if df['logseqdepth'].max() <= center:
+        
+        # Log a warning
+        LogWarning(f"All wells associated with {title} have a read depth <=10."
+                   "Be careful comparing heatmaps between this plate and others."
+                   "Be careful using this data; sequencing was not good.")
+        
+        # Adjust the center
         center = df['logseqdepth'].median()
 
     # generate the heatmap

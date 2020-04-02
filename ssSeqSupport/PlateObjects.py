@@ -10,7 +10,7 @@ import csv
 # Import necessary modules from ssSeqSupport
 from . import BuildRefSeqs
 from . import BpToInd, AaToInd, IndToAa, IndToBp
-from . import LogError
+from . import LogError, LogWarning
 from . import Translation
 from . import MultiprocessPlateAnalyzer, MultiprocessPlateAnalyzerTS
 from . import GenerateSequencingHeatmap
@@ -209,6 +209,15 @@ class Well():
     # Define a function for performing data analysis on the alignments
     def analyze_alignments(self, alignment_cutoff, q_cutoff):
 
+        """
+        To change: 
+        1. Right now you have it where if any of the overlapping codons don't
+           meet the quality threshold then you don't try and make a variant call. 
+           You should change this so that overlapping sites can rescue one another.
+        2. Right now if you don't get a combo then you aren't returning anything.
+           You should make it so that you return '-' for each missing character.
+        """
+        
         ######################## Upfront Processing #############################
         # Determine the number of alignments in the set
         n_f_alignments = len(self._f_alignments)
@@ -247,7 +256,6 @@ class Well():
                                    self._seq_pairs[j].reversed_barcodeless_r]
 
             # Create a series of tests
-            poor_alignment = False
             check_combo = True
             bad_codon_found = False
 
@@ -487,7 +495,7 @@ class Well():
         # Parse insertion information
         insertion_count_dict = {}
         insertion_info_dict = {}
-        for j, ref_ind, ins_char in insertions:
+        for _, ref_ind, ins_char in insertions:
 
             # Count the number of insertions of each type
             # If we haven't seen this reference index yet, add it to the dictionary
@@ -587,7 +595,24 @@ class Well():
     @property
     def plate(self):
         return self._plate
-
+    
+    @property
+    def f_alignments(self):
+        return self._f_alignments
+    
+    @property
+    def r_alignments(self):
+        return self._r_alignments
+    
+    @property
+    def f_consensus(self):
+        return self._f_consensus
+    
+    @property
+    def r_consensus(self):
+        return self._r_consensus
+    
+    
 # Define a class that can handle plate information
 class Plate():
 
@@ -677,7 +702,7 @@ class Plate():
 
                 # Unpack differently if we are not in troubleshoot mode
                 summary_info_part, variant_info_part = result
-
+ 
             # Extend the summary and variant info tables
             summary_info.extend(summary_info_part)
             variant_info.extend(variant_info_part)
@@ -692,14 +717,32 @@ class Plate():
         variant_info_df["R1"] = filepair[0]
         variant_info_df["R2"] = filepair[1]
 
-        # Find the max value for Alignment Frequency for each well
-        df_max = variant_info_df.groupby('Well')[['Well', 'AlignmentFrequency']].max().reset_index(drop=True)
-        
-        # Merge with full DataFrame
-        df_full = variant_info_df.merge(df_max)      
+        # Merge with full DataFrame unless we had no alignment. If there is no
+        # alignment, then skip the merge and assign df_full to be a copy of
+        # variant_info_df
+        if len(variant_info_df) == 0:
+            
+            # Just make a copy of df_full
+            df_full = variant_info_df.copy()
+            
+            # Log a warning that we didn't find any alignments for this plate
+            LogWarning("\nNo sequences passed alignment QC for '{}'. Consider lowering filtering thresholds.".format(self._name))
+            
+        else:
+            
+            # Find the max value for Alignment Frequency for each well
+            df_max = variant_info_df.groupby('Well')[['Well', 'AlignmentFrequency']].max().reset_index(drop=True)
+            df_full = variant_info_df.merge(df_max)
 
-        # Round for easier reading
-        df_full['AlignmentFrequency'] = np.round(df_full['AlignmentFrequency'].values, 3)
+            # Round for easier reading
+            df_full['AlignmentFrequency'] = np.round(df_full['AlignmentFrequency'].values, 3)
+            
+            # Generate heatmap and save it
+            # Build the heatmaps folder
+            hm_output_file = os.path.join(args["output"],
+                                            "Platemaps/{}-{}_SequencingHeatmap".format(self._name,
+                                                                                        combo_ind))
+            GenerateSequencingHeatmap(df_full, self._name, hm_output_file)
 
 
         ###################### Save all of the generated data #################
@@ -732,13 +775,6 @@ class Plate():
             with open(extra_dirs[3]+"/{}-{}_ConsensusSequences.txt".format(self._name,
                                                                            combo_ind), "w") as f:
                 f.writelines(consensus_text)
-
-        # Generate heatmap and save it
-            # Build the heatmaps folder
-        hm_output_file = os.path.join(args["output"],
-                                      "Platemaps/{}-{}_SequencingHeatmap".format(self._name,
-                                                                                 combo_ind))
-        GenerateSequencingHeatmap(df_full, self._name, hm_output_file)
 
         # Save summary info
         summary_info.to_csv(summary_dir+"/{}-{}_SummaryInfo.csv".format(self._name,

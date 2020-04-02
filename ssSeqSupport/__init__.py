@@ -35,12 +35,13 @@ from ssSeqSupport.PredefinedGlobals import (ReverseCompDict, AllowedBases,
                                             IdParser, AaOpts, BpOpts)
 
 # Load loggers
-from ssSeqSupport.Logging import (LogError, LogInit, LogSummary, 
-                                  LogInputFiles, LogWarning, LogInfo)
+from ssSeqSupport.Logging import (LogError, LogInit, LogInputFiles,
+                                  LogWarning, LogInfo)
 
 # Load support functions
 from ssSeqSupport.SupportFuncs import (GetBlockInfo, CreateID, FindNNN,
-                                       ReverseComplement, Translate)
+                                       ReverseComplement, Translate,
+                                       BuildOutputDirs)
                                        
 # Import reference sequence
 from ssSeqSupport.RefSeq import RefSeq, BuildRefSeqs

@@ -1,5 +1,6 @@
 # Import third party modules
 import numpy as np
+import os
 
 # Import ssSeqSupport modules
 from . import (IdParser, ReverseCompDict, CodonTable, AdapterLengthF,
@@ -103,9 +104,52 @@ def FindNNN(reference_sequence):
     codon_format = in_series and found_in_3
     
     # If there are no variable sites, then throw an error
-    if len(var_sites) == 0:
+    n_var_sites = len(var_sites)
+    if n_var_sites == 0:
         LogError("No variable sites detected in one of the forward or reverse reference sequences.")
+    
+    # Check to be sure that the variable sites all exist in the same reference
+    # frame. This is only important when we have more than one codon present.
+    if n_var_sites > 1:
+        
+        # What is the distance between the location of each codon?
+        diffs = np.diff(var_sites)
+        
+        # Are all differences divisible by 3? If they are all in the same frame
+        # then they should be
+        in_frame = np.all(diffs%3 == 0)
+        
+        # Throw an error if not all are in frame
+        if not in_frame:
+            LogError("Specified variable positons are not in the same reading frame. Aborting run.")
     
     # Return the variable sites, the number of variable sites, and whether or 
     # not N was included in codon-format (multiples of 3 in series) 
-    return var_sites, len(var_sites), codon_format
+    return var_sites, n_var_sites, codon_format
+
+# Write a function that builds the output directory structure
+def BuildOutputDirs(args):
+    
+    # Build the folder structure if it does not exist
+    if not os.path.exists(args["output"]):
+        os.makedirs(args["output"])
+        
+    # Build the summaries folder only if we are not in ts mode
+    summary_dir = os.path.join(args["output"], "Summaries/")
+    os.mkdir(summary_dir)
+    
+    # Build the read qualities folder
+    qual_dir = os.path.join(args["output"], "Qualities/")
+    os.mkdir(qual_dir)
+    
+    # Build the heatmaps folder
+    heatmap_dir = os.path.join(args["output"], "Platemaps/")
+    os.mkdir(heatmap_dir)
+    
+    # If we are in ts mode, build additional directories
+    if args["troubleshoot"]:
+        extra_dirs = [os.path.join(args["output"], loc) for loc in
+                      ["Alignments", "AACountsFrequencies",
+                       "BPCountsFrequencies", "ConsensusSequences"]]
+        for directory in extra_dirs:
+            os.mkdir(directory)

@@ -11,35 +11,39 @@ from ssSeqSupport import RunssSeq
 from ssSeqSupport import NCpus
 from ssSeqSupport import BuildOutputDirs
 
+# Import gooey
+from gooey import Gooey, GooeyParser
+
 # Create a "main" function
+@Gooey(program_name = "ssSeq",
+       required_cols = 1,
+       optional_cols = 1)
 def main():
 
-    # Get the cwd
+    # Get the cwd 
     cwd = os.getcwd()
 
-    # Instantiate argparser
-    parser = argparse.ArgumentParser()
+    # Instantiate GooeyParser
+    parser = GooeyParser(description = "User Interface for ssSeq")
 
-    # Add required arguments
+    # Create the first argument group
     required_args_group = parser.add_argument_group("Required Arguments", 
                                                     "Arguments required for each run")
     required_args_group.add_argument("refseq", 
-                                     help = "csv containing reference sequences.")
+                                     help = "csv containing reference sequences.",
+                                     widget = "FileChooser")
     required_args_group.add_argument("folder",
-                                     help = "Folder containing fastq or fastq.gz files. Can also be forward fastq or fastq.gz file.")
+                                     help = "Folder containing fastq or fastq.gz files",
+                                     widget = "DirChooser")
     
-    
-  # Add an argument group for passing in the reverse file
+    # Add an argument group for setting the output location
     optional_args_group = parser.add_argument_group("Optional Arguments",
                                                     "Optional arguments for specific use cases.")
-    optional_args_group.add_argument("--fastq_r", 
-                                     help = "Reverse fastq or fastq.gz file. Usually not needed.",
-                                     required = False,
-                                     default = "")
     optional_args_group.add_argument("--output", 
                                      help = "Save location for run.",
                                      required = False,
-                                     default = cwd)
+                                     default = cwd,
+                                     widget = "DirChooser")
     
     # Add read analysis parameters argument group
     params_args_group = parser.add_argument_group("Read Analysis Parameters",
@@ -59,15 +63,15 @@ def main():
     advanced_args_group = parser.add_argument_group("Advanced",
                                                     "Advanced use-case parameters")
     advanced_args_group.add_argument("--analysis_only", 
-                                     help = "Set to perform quality analysis only",
+                                     help = "Check box to perform quality analysis only",
                                      required = False, 
                                      action = "store_true")
     advanced_args_group.add_argument("--detailed_refseq",
-                                     help = "Set if you are using different reference sequences by well",
+                                     help = "Check box if you are using different reference sequences by well",
                                      required = False, 
                                      action = "store_true")
     advanced_args_group.add_argument("--troubleshoot", 
-                                     help = "Set to run in troubleshoot mode",
+                                     help = "Check box to run in troubleshoot mode",
                                      action = "store_true", 
                                      required = False)
     advanced_args_group.add_argument("--jobs", 
@@ -81,6 +85,7 @@ def main():
                                      required = False,
                                      type = int,
                                      default = None)
+    
 
     # Parse the arguments
     CLArgs = vars(parser.parse_args())
@@ -90,11 +95,11 @@ def main():
     base_output = CLArgs["output"]
     datetime = strftime("%Y%m%d-%H%M%S")
     output_dir = os.path.join(base_output, "ssSeq_Output", datetime)
-    CLArgs.update({"datetime": datetime, "output": output_dir})
+    CLArgs.update({"datetime": datetime, "output": output_dir, "fastq_r": ""})
     
     # Build output directories
     BuildOutputDirs(CLArgs)
-    
+
     # Log CLArgs
     LogInit(CLArgs)    
 
