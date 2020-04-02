@@ -7,4 +7,6 @@ NCpus = cpu_count()
     
 # Get the the running location of ssSeq and the logfile
 Homedir = os.path.dirname(os.path.realpath(__file__))
-Logfilename = os.path.join(Homedir, "ssSeqLog.log")
+
+# Get the name of the global logifle
+Logfilename = os.path.join(Homedir, "..", "ssSeqLog.log")

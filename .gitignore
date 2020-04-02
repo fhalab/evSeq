@@ -1,6 +1,15 @@
 #ssSeq stuff
 Validation/
 ssSeq_Output/
+TestData/
+ssSeq_Support/*.log
+ssSeqGui_Click.pyw
+
+# vscode
+.vscode/
+
+# ToDo file
+ToDo.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -29,10 +29,7 @@ def RunssSeq(args):
     args: dict: Dictionary resulting from calling 'parser.parse_args()' in the 
         initial setup of the run.
     """
-
-    # Build the output directories
-    _BuildOutputDirs(args)
-            
+                
     # Check the argument inputs. 
     all_files, folder = CheckArgs(args)
     
@@ -57,15 +54,18 @@ def RunssSeq(args):
         
         # Set the appropriate read length in args if the default is used
         if args["read_length"] == None:
+            print("Determining read length...")
             args["read_length"] = _SetReadLength(seq_pairs)
         
         # Analyze the seq_pairs. 
+        print("Analyzing sequencing quality. Generating sequence quality histograms...")
         _AnalyzeSeqPairs(seq_pairs, filepair, args)
         
         # Process the seq_pairs only if the --analysis_only flag is not thrown
         if not args["analysis_only"]:
 
             # Map barcodes to reference sequences
+            print("Mapping barcodes to reference sequences...")
             BcsToRefSeq = ConstructBCsToRefSeq(LoadRefSeq(args),
                                                LoadDualInds())
 
@@ -88,33 +88,6 @@ def _SetReadLength(seq_pairs):
     
     # Return the read length
     return read_length
-
-# Write a function that builds the output directory structure
-def _BuildOutputDirs(args):
-    
-    # Build the folder structure if it does not exist
-    if not os.path.exists(args["output"]):
-        os.makedirs(args["output"])
-        
-    # Build the summaries folder only if we are not in ts mode
-    summary_dir = os.path.join(args["output"], "Summaries/")
-    os.mkdir(summary_dir)
-    
-    # Build the read qualities folder
-    qual_dir = os.path.join(args["output"], "Qualities/")
-    os.mkdir(qual_dir)
-    
-    # Build the heatmaps folder
-    heatmap_dir = os.path.join(args["output"], "Platemaps/")
-    os.mkdir(heatmap_dir)
-    
-    # If we are in ts mode, build additional directories
-    if args["troubleshoot"]:
-        extra_dirs = [os.path.join(args["output"], loc) for loc in
-                      ["Alignments", "AACountsFrequencies",
-                       "BPCountsFrequencies", "ConsensusSequences"]]
-        for directory in extra_dirs:
-            os.mkdir(directory)
     
 # Write a function that matches forward and reverse reads in a passed in folder
 def _FindMatches(seqfiles):

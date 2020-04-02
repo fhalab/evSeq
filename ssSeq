@@ -1,54 +1,112 @@
 #!/usr/bin/env python
-## Add shebang to force use of predefined conda environment
-if __name__=="__main__":
 
-    # Import relevant modules
-    import argparse
-    import os
-    from time import strftime
-    
-    # Import relevant modules from ssSeqSupport.
-    from ssSeqSupport import LogInit
-    from ssSeqSupport import RunssSeq
-    from ssSeqSupport import NCpus
-    
+# Import relevant modules
+import argparse
+import os
+from time import strftime
+
+# Import relevant modules from ssSeqSupport.
+from ssSeqSupport import LogInit, LogInfo, LogError
+from ssSeqSupport import RunssSeq
+from ssSeqSupport import NCpus
+from ssSeqSupport import BuildOutputDirs
+
+# Create a "main" function
+def main():
+
+    # Get the cwd
+    cwd = os.getcwd()
+
     # Instantiate argparser
     parser = argparse.ArgumentParser()
 
     # Add required arguments
-    parser.add_argument("refseq", help = "csv containing reference sequences.")
-    parser.add_argument("folder", help = "Folder containing fastq files, or just forward fastq file.")
-    parser.add_argument("--fastq_r", help = "Reverse fastq file.",
-                        required = False, default = "")
-    parser.add_argument("--analysis_only", help = "Perform quality analysis only.",
-                        required = False, action = "store_true")
-    parser.add_argument("--detailed_refseq", help = "Different reference sequences by well.",
-                        required = False, action = "store_true")
-    parser.add_argument("--jobs", help = "Processors used for multiprocessing.",
-                        required = False, dest = "jobs",
-                        default = NCpus - 1, type = int)
-    parser.add_argument("--troubleshoot", action = "store_true", 
-                        help = "Run in troubleshoot mode if set", required = False)
-    parser.add_argument("--read_length", help = "fastq read lengths. Calculated if not specified.",
-                        required = False, type = int, default = None)
-    parser.add_argument("--q_cutoff", help = "Quality score filter by average read quality.",
-                        required = False, default = 30, type = int)
-    parser.add_argument("--alignment_filter", help = "Filter for alignment scores.",
-                        required = False, default = 0.5, type = float)
+    required_args_group = parser.add_argument_group("Required Arguments", 
+                                                    "Arguments required for each run")
+    required_args_group.add_argument("refseq", 
+                                     help = "csv containing reference sequences.")
+    required_args_group.add_argument("folder",
+                                     help = "Folder containing fastq or fastq.gz files. Can also be forward fastq or fastq.gz file.")
+    
+    
+  # Add an argument group for passing in the reverse file
+    optional_args_group = parser.add_argument_group("Optional Arguments",
+                                                    "Optional arguments for specific use cases.")
+    optional_args_group.add_argument("--fastq_r", 
+                                     help = "Reverse fastq or fastq.gz file. Usually not needed.",
+                                     required = False,
+                                     default = "")
+    optional_args_group.add_argument("--output", 
+                                     help = "Save location for run.",
+                                     required = False,
+                                     default = cwd)
+    
+    # Add read analysis parameters argument group
+    params_args_group = parser.add_argument_group("Read Analysis Parameters",
+                                                  "Parameters for filtering out poor quality reads.")
+    params_args_group.add_argument("--q_cutoff", 
+                                   help = "Reads below this Q-score are discarded.",
+                                   required = False,
+                                   default = 30,
+                                   type = int)
+    params_args_group.add_argument("--alignment_filter", 
+                                   help = "Reads with normalized alignment score below this value are discarded.",
+                                   required = False,
+                                   default = 0.5,
+                                   type = float)
+    
+    # Add an advanced argument group
+    advanced_args_group = parser.add_argument_group("Advanced",
+                                                    "Advanced use-case parameters")
+    advanced_args_group.add_argument("--analysis_only", 
+                                     help = "Set to perform quality analysis only",
+                                     required = False, 
+                                     action = "store_true")
+    advanced_args_group.add_argument("--detailed_refseq",
+                                     help = "Set if you are using different reference sequences by well",
+                                     required = False, 
+                                     action = "store_true")
+    advanced_args_group.add_argument("--troubleshoot", 
+                                     help = "Set to run in troubleshoot mode",
+                                     action = "store_true", 
+                                     required = False)
+    advanced_args_group.add_argument("--jobs", 
+                                     help = "Computer processors used. Must be between 1 and {}.".format(NCpus),
+                                     required = False,
+                                     dest = "jobs",
+                                     default = NCpus - 1, 
+                                     type = int)
+    advanced_args_group.add_argument("--read_length", 
+                                     help = "Read length found in fastq files. Calculated if not specified.",
+                                     required = False,
+                                     type = int,
+                                     default = None)
 
     # Parse the arguments
     CLArgs = vars(parser.parse_args())
         
     # Identify the cwd and start time and add to the "CLArgs" dict. Also create an
     # output directory from the two and add this to CLArgs as well.
-    cwd = os.getcwd()
+    base_output = CLArgs["output"]
     datetime = strftime("%Y%m%d-%H%M%S")
-    output_dir = os.path.join(cwd, "ssSeq_Output", datetime)
+    output_dir = os.path.join(base_output, "ssSeq_Output", datetime)
     CLArgs.update({"datetime": datetime, "output": output_dir})
+    
+    # Build output directories
+    BuildOutputDirs(CLArgs)
     
     # Log CLArgs
     LogInit(CLArgs)    
 
     # Run ssSeq
-    RunssSeq(CLArgs)
+    try:
+        RunssSeq(CLArgs)
+    except Exception as e:
+        LogError("\nUnhandled exception encountered: '{}'".format(e))
     
+    # Log that we have successfully completed the run
+    LogInfo("\nRun completed. Log may contain warnings.")
+    
+# Run main()
+if __name__ == "__main__":
+    main()
