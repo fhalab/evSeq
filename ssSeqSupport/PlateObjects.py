@@ -209,6 +209,15 @@ class Well():
     # Define a function for performing data analysis on the alignments
     def analyze_alignments(self, alignment_cutoff, q_cutoff):
 
+        """
+        To change: 
+        1. Right now you have it where if any of the overlapping codons don't
+           meet the quality threshold then you don't try and make a variant call. 
+           You should change this so that overlapping sites can rescue one another.
+        2. Right now if you don't get a combo then you aren't returning anything.
+           You should make it so that you return '-' for each missing character.
+        """
+        
         ######################## Upfront Processing #############################
         # Determine the number of alignments in the set
         n_f_alignments = len(self._f_alignments)
@@ -262,6 +271,7 @@ class Well():
                 # If the alignment did not meet the alignment score cutoff, 
                 # record it as a bad alignment
                 if alignment_output is None:
+                    check_combo = False
                     continue
                                         
                 # Otherwise, unpack the alignment results

@@ -104,12 +104,28 @@ def FindNNN(reference_sequence):
     codon_format = in_series and found_in_3
     
     # If there are no variable sites, then throw an error
-    if len(var_sites) == 0:
+    n_var_sites = len(var_sites)
+    if n_var_sites == 0:
         LogError("No variable sites detected in one of the forward or reverse reference sequences.")
+    
+    # Check to be sure that the variable sites all exist in the same reference
+    # frame. This is only important when we have more than one codon present.
+    if n_var_sites > 1:
+        
+        # What is the distance between the location of each codon?
+        diffs = np.diff(var_sites)
+        
+        # Are all differences divisible by 3? If they are all in the same frame
+        # then they should be
+        in_frame = np.all(diffs%3 == 0)
+        
+        # Throw an error if not all are in frame
+        if not in_frame:
+            LogError("Specified variable positons are not in the same reading frame. Aborting run.")
     
     # Return the variable sites, the number of variable sites, and whether or 
     # not N was included in codon-format (multiples of 3 in series) 
-    return var_sites, len(var_sites), codon_format
+    return var_sites, n_var_sites, codon_format
 
 # Write a function that builds the output directory structure
 def BuildOutputDirs(args):
