@@ -10,4 +10,4 @@ _ssSeqGuiLoc = os.path.dirname(os.path.realpath(__file__))
 os.chdir(_ssSeqGuiLoc)
 
 # Activate from command line
-subprocess.run("conda run -n ssSeq python ./ssSeqGui", shell = True)
+subprocess.run("conda run -n ssSeq pythonw ./ssSeqGui", shell = True)
