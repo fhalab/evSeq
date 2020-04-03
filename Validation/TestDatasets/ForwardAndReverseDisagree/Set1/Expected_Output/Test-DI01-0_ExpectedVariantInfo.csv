@@ -1,0 +1,14 @@
+Plate,Well,F-BC,R-BC,VariantCombo,AlignmentFrequency,WellSeqDepth,R1,R2
+DI01,A02,TACATGG,ACCAGGT,SCLS,1.0,1,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R1_test.fastq,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R2_test.fastq
+DI01,A03,AAGCACC,TCTAGAG,SYSL,1.0,10,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R1_test.fastq,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R2_test.fastq
+DI01,A07,TCTCCAT,GGTCTGA,LSCF,1.0,16,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R1_test.fastq,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R2_test.fastq
+DI01,A11,GCGTTAT,TCCGAAG,SYCL,1.0,1,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R1_test.fastq,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R2_test.fastq
+DI01,A12,TGCACCA,GGCTTAC,FLSY,1.0,13,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R1_test.fastq,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R2_test.fastq
+DI01,B12,CTTCGCT,TAGACGT,YLCS,1.0,5,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R1_test.fastq,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R2_test.fastq
+DI01,C07,GTTGGAG,TATCCGG,CCSS,1.0,1,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R1_test.fastq,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R2_test.fastq
+DI01,C10,GAGGTTG,TTCCATG,SFSY,1.0,9,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R1_test.fastq,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R2_test.fastq
+DI01,E08,CAGGATT,TCCTTCA,SFSY,1.0,1,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R1_test.fastq,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R2_test.fastq
+DI01,F07,GATGCCA,AGGTTCC,FLYF,1.0,16,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R1_test.fastq,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R2_test.fastq
+DI01,G10,GAAGAAG,CTCTGAT,SYCF,1.0,4,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R1_test.fastq,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R2_test.fastq
+DI01,H04,CTAGGTG,ACGGTTC,YSSS,1.0,5,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R1_test.fastq,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R2_test.fastq
+DI01,H06,TCGGCTA,TACGCAT,LFSS,1.0,6,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R1_test.fastq,./TestDatasets/ForwardAndReverseDisagree/Set1/TestData_R2_test.fastq

@@ -1,0 +1,6 @@
+Plate,Well,F-BC,R-BC,VariantCombo,AlignmentFrequency,WellSeqDepth,R1,R2
+DI08,E05,TCCAAGC,TGAACGC,SFYL,1.0,2,./TestDatasets/ForwardAndReverseDisagree/Set2/TestData_R1_test.fastq,./TestDatasets/ForwardAndReverseDisagree/Set2/TestData_R2_test.fastq
+DI08,E11,TGCTACT,TTCAGCC,LSSS,1.0,6,./TestDatasets/ForwardAndReverseDisagree/Set2/TestData_R1_test.fastq,./TestDatasets/ForwardAndReverseDisagree/Set2/TestData_R2_test.fastq
+DI08,E12,GTGATCC,GGATTCA,LCFS,1.0,5,./TestDatasets/ForwardAndReverseDisagree/Set2/TestData_R1_test.fastq,./TestDatasets/ForwardAndReverseDisagree/Set2/TestData_R2_test.fastq
+DI08,F07,GATGCCA,AGACGTC,SSSC,1.0,6,./TestDatasets/ForwardAndReverseDisagree/Set2/TestData_R1_test.fastq,./TestDatasets/ForwardAndReverseDisagree/Set2/TestData_R2_test.fastq
+DI08,G11,AGCGGTT,TCGACAC,SSLL,1.0,9,./TestDatasets/ForwardAndReverseDisagree/Set2/TestData_R1_test.fastq,./TestDatasets/ForwardAndReverseDisagree/Set2/TestData_R2_test.fastq

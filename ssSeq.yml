@@ -5,7 +5,7 @@ channels:
 dependencies:
   - biopython
   - colorcet
-  - holoviews
+  - holoviews<1.13
   - bokeh=1.4.0
   - numpy
   - pandas
