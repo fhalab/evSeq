@@ -3,20 +3,19 @@ Validation Information
 This folder contains multiple different synthetic datasets designed to test the functionality of ssSeq. It is designed for use by developers who want to make sure they haven't broken anything in the code after making changes to the software.
 
 # Quick Use
-Running inside of the ssSeqTest conda environment (see ssSeqTest.yml), the shell script ssSeqTest.sh should be run to test the existing instance of ssSeq. This script will...
+Running inside of the ssSeq conda environment, the shell script ssSeqTest.sh should be run to test the existing instance of ssSeq. This script will...
 
 1. Run ssSeq in both troubleshooting and standard mode for each test dataset found in TestDatasets/.
 2. Run test_ssSeq.py to evaluate the output of ssSeq and make sure that it matches the expected output (which has been precalculated and uploaded).
 
 Importantly, the expected data is generated using current alignment rules and default parameters. Obviously, if you change either the rules of the defaults, then you're going to need to develop new expected datasets.
 
-After running ssSeqTest.sh, image outputs from ssSeq should be evaluated manually to confirm there are no errors -- tests are not written for this output type. Note also that tests are currently not run for the troubleshooting output -- it is only for the summary output generated in non troubleshoot mode.
+After running ssSeqTest.sh, image outputs from ssSeq should be evaluated manually to confirm there are no errors -- tests are not written for this output type. Note also that tests are currently not run for the troubleshooting-specific output -- it is only for the summary output generated in non troubleshoot mode.
 
 # General notes on test datasets and expected datasets:
 1. Only barcode plates 1-8 are currently deployed and tested in ssSeq. Further test data must be made to incorporate more barcode plates.
 2. There are some discrepencies between the expected and ssSeq output. These all happen as a result of the alignment algorithm: Insertions and deletions toward the end of the sequence are harder to capture, so ssSeq does not always catch insertions and deletions at the end of a sequence. Errors in alignment can be remedied with overlapping forward and reverse reads! When reads do not overlap, some insertions and deletions may go unnoticed. All exceptions were manually evaluated for this problem, and code is written in the test data to ignore expected discrepencies. 
     
-
 # test_ssSeq.py
 This python script contains all tests that will be run on ssSeq output. All developers should feel free to add more tests to/improve the detail of the tests in this script as issues are encountered. 
 
@@ -44,6 +43,4 @@ For each sequence pair in each test dataset, the following "noise" conditions ar
 Each well also has random DNA fragments added to it. These should be filtered out by alignment filtering.
 
 # On Generation of Expected Data
-The synthetic datasets were all constructed in a Jupyter Notebook. The notebook is included in html and .ipynb form in this folder "ssSeqValidationDatasetConstruction.ipynb/html". 
-
-The expected data was generated using the python script "GenerateExpectedData.py", which is included in this folder. If ssSeq rules or defaults change, this script will need to be modified to generate the expected test data.
+The synthetic datasets were all constructed using the python script "ssSeqValidationDatasetConstruction.py". The expected data was generated using the python script "GenerateExpectedData.py". Both of these scripts are included in this folder. If ssSeq rules or defaults change, the "GemerateExpectedData.py" script will need to be modified to generate the new expected test data.
