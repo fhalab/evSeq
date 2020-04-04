@@ -163,18 +163,7 @@ class Well():
 
                 # Continue to the next character
                 continue
-
-            # Determine if the read character surpasses our quality score filter.
-            # If it does not, record and continue
-            if f_r_ind == 0:
-                if self._seq_pairs[j].barcodeless_f_q[read_counter] < q_cutoff:
-                    low_quality_chars.append(read_counter)
-                    continue
-            else:
-                if self._seq_pairs[j].reversed_barcodeless_r_q[read_counter] < q_cutoff:
-                    low_quality_chars.append(read_counter)
-                    continue
-
+            
             # Determine if the read char is a space. If it is, this indicates a deletion.
             # It is okay if we have a space if we are at the end of the read. Sometimes
             # reads are shorter than the reference.
@@ -198,6 +187,17 @@ class Well():
                 # Reset relevant values
                 del_possible = False
                 holding_dels = []
+            
+            # Determine if the read character surpasses our quality score filter.
+            # If it does not, record and continue
+            if f_r_ind == 0:
+                if self._seq_pairs[j].barcodeless_f_q[read_counter] < q_cutoff:
+                    low_quality_chars.append(read_counter)
+                    continue
+            else:
+                if self._seq_pairs[j].reversed_barcodeless_r_q[read_counter] < q_cutoff:
+                    low_quality_chars.append(read_counter)
+                    continue
 
             # Add to the alignment matrix to determine what base is called at
             # what position
@@ -249,8 +249,9 @@ class Well():
         insertions = [[],[]]
         deletions = [[],[]]
         variant_counts = {}
-        for j, (f_alignment, r_alignment) in enumerate(zip(self._f_alignments, self._r_alignments)):
 
+        for j, (f_alignment, r_alignment) in enumerate(zip(self._f_alignments, self._r_alignments)):
+            
             # Pull the unaligned read sequences
             unaligned_read_seqs = [self._seq_pairs[j].barcodeless_f,
                                    self._seq_pairs[j].reversed_barcodeless_r]
