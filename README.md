@@ -175,7 +175,9 @@ If ssSeq was not added to your PATH and is not executable, then you can activate
         python ssSeqGuiLauncher
 
 ### Open GUI with Double-Click
-Windows users can also launch the GUI with with a simple double-click once the right program has been enabled. Setup this option as follows:
+Windows users can also launch the GUI with with a simple double-click once the right program has been enabled. Mac users can as well by first running two simple commands from the terminal. Enable double-clicking as follows:
+
+#### Windows Users:
 
 1. Right click on the `ssSeqGuiLauncher.py` file and select 'Open with' > 'Choose another app'. If you see Python as an option, check the box 'Always use this app to open .py files' then select Python. From now on, you should be able to launch the GUI by double-clicking the file and you are done and do not need to follow any more steps.
 2. However, Python likely won't be an option. In this case start by opening GitBash and typing:
@@ -185,6 +187,18 @@ Windows users can also launch the GUI with with a simple double-click once the r
 3. This will return the location of python on your computer! For example, your path is likely something like `C:\Users\<your username>\Anaconda3\python.exe`. This tells you where to find Python!
 4. Return to `ssSeqGuiClick.py` and select 'Open with' > 'Choose another app'. Check the box 'Always use this app to open .py files' then scroll down the list of apps, choose 'More apps' and then 'Look for another app on this PC'. This will bring you to a file browser. Using the file path you found above in GitBash, locate the `python.exe` file, select it, then click 'Open'.
 5. Now you should be able to launch `ssSeqGuiClick.py` with a double-click!
+
+#### Mac users
+
+1. First change the file extension of `ssSeqGuiLauncher.py` to `.command` by navigating to the `ssSeq/` directory and running in the terminal command line:
+
+        mv ssSeqGuiLauncher.py ssSeqGuiLauncher.command
+
+2. Make the file executable by then running:
+
+        chmod +x ssSeqGuiLauncher.command
+
+3. Now you should be able to launch `ssSeqGuiClick.command` with a double-click!
 
 ## Running ssSeq with the GUI
 Once the GUI is launched it should look like the below:
