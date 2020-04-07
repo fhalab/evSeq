@@ -175,8 +175,8 @@ The GUI can be launched with a simple double-click after a little more setup. En
         where python
 
 3. This will return the location of python on your computer! For example, your path is likely something like `C:\Users\<your username>\Anaconda3\python.exe`. This tells you where to find Python!
-4. Return to `ssSeqGuiClick.py` and select 'Open with' > 'Choose another app'. Check the box 'Always use this app to open .py files' then scroll down the list of apps, choose 'More apps' and then 'Look for another app on this PC'. This will bring you to a file browser. Using the file path you found above in GitBash, locate the `python.exe` file, select it, then click 'Open'.
-5. Now you should be able to launch `ssSeqGuiClick.py` with a double-click!
+4. Return to `ssSeqGuiLauncher.py` and select 'Open with' > 'Choose another app'. Check the box 'Always use this app to open .py files' then scroll down the list of apps, choose 'More apps' and then 'Look for another app on this PC'. This will bring you to a file browser. Using the file path you found above in GitBash, locate the `python.exe` file, select it, then click 'Open'.
+5. Now you should be able to launch `ssSeqGuiLauncher.py` with a double-click!
 
 #### Mac users
 
@@ -188,7 +188,7 @@ The GUI can be launched with a simple double-click after a little more setup. En
 
         chmod +x ssSeqGuiLauncher.command
 
-3. Now you should be able to launch `ssSeqGuiClick.command` with a double-click!
+3. Now you should be able to launch `ssSeqGuiLauncher.command` with a double-click!
 
 ### Open GUI with Command Line
 Begin by opening a terminal window. If ssSeq was added to your PATH and ssSeqGuiLauncher.py made executable (see [PATH Variable Setup](#PATH-Variable-Setup)), then the GUI can be opened by typing
