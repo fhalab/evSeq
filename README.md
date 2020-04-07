@@ -67,21 +67,21 @@ Table of Contents
 This section details installation of high level dependencies: gitbash (Windows users), git, and anaconda. If you have installed and are familiar with these items, you can skip this section and move on to [General Instructions](#General-Instructions). Installation on Linux is not detailed here, as we just assume you know what you're doing. Once this section is completed, continue installation by moving to [General Instructions](#General-Instructions).
 
 ### Installing Git
-Windows users: Install Git/Git Bash by following the instructions [here](https://www.stanleyulili.com/git/how-to-install-git-bash-on-windows/). Unless you know what you're doing, sticking to the default options during install is best. 
+Windows users: Install Git/Git Bash by following the instructions [here](https://www.stanleyulili.com/git/how-to-install-git-bash-on-windows/). Unless you know what you're doing, sticking to the default options during install is best.
 
 Mac users: Install Git by following the instructions [here](https://www.atlassian.com/git/tutorials/install-git). Some commands must be performed through the terminal. You can open a terminal by typing command + spacebar, then searching "Terminal"; opening the search result will give you a terminal window.
 
 ### Opening a Terminal Window
-Later steps in our installation will require you to write commands in terminal. To open a terminal in Windows, right-click on either the desktop background or within your file explorer, then open "Git Bash". For Mac users, type command + spacebar, search "Terminal", then open the search result. 
+Later steps in our installation will require you to write commands in terminal. To open a terminal in Windows, right-click on either the desktop background or within your file explorer, then open "Git Bash". For Mac users, type command + spacebar, search "Terminal", then open the search result.
 
 ### Installing Anaconda
 Anaconda is an open-source package managment framework for scientific computing with Python. For details, look at their website [here](https://www.anaconda.com/). All software that supports ssSeq is handled by the Anaconda package manager. See below for installation instructions on both Windows and Mac:
 
 Windows users: Install Anaconda following the instructions [here](https://docs.anaconda.com/anaconda/install/windows/). At step 8, I recommend adding Anaconda to your PATH environment variable. Note that this is in contrast to the recommendation of Anaconda, but their concerns shouldn't apply for our use case. Once installation is complete, open a terminal window and enter the below command
 
-  conda init bash
+    conda init bash
 
-Mac users: Install Anaconda following the instructions [here](https://docs.anaconda.com/anaconda/install/mac-os/). 
+Mac users: Install Anaconda following the instructions [here](https://docs.anaconda.com/anaconda/install/mac-os/).
 
 ### Construction of "GitRepos" Folder
 The next step will be to install ssSeq. If you have not worked with Git repos before, I recommend creating a folder where you can store all of them. Wherever seems reasonable to you (most likely your home directory), create a folder called "GitRepos".
@@ -100,26 +100,26 @@ After hitting "Enter" on your keyboard, you will notice that the prefix of your 
 
 ![Command line example](./GitImages/CommandLineExample.png "Command line example")
 
-From the ssSeq GitHub page, find the green box labeled "Clone or download". A screenshot giving the box location is below. Click on this box, then copy the presented url. 
+From the ssSeq GitHub page, find the green box labeled "Clone or download". A screenshot giving the box location is below. Click on this box, then copy the presented url.
 
 ![Clone or download example](./GitImages/CloneDownloadImage.png "Clone or download example")
 
-Now in the command line, type 
+Now in the command line, type
 
 	git clone COPIED_URL
 
-replacing "COPIED_URL" with the link you just copied from GitHub. You can paste the link into command line by right-clicking and selecting "paste". If you successfully installed Git earlier, then this should begin the installation process. 
+replacing "COPIED_URL" with the link you just copied from GitHub. You can paste the link into command line by right-clicking and selecting "paste". If you successfully installed Git earlier, then this should begin the installation process.
 
 ### Conda Environment Setup
-We will now set up the conda environment for ssSeq. This conda environment will neatly package all of the support software needed to run ssSeq. To begin, navigate to the ssSeq folder via the command line. On my machine, I would type 
+We will now set up the conda environment for ssSeq. This conda environment will neatly package all of the support software needed to run ssSeq. To begin, navigate to the ssSeq folder via the command line. On my machine, I would type
 
     cd /home/brucejwittmann/GitRepos/ssSeq
 
-Note that ssSeq was installed within my GitRepos folder. Depending on where you installed ssSeq you will need to navigate to a different folder. Next, type the command 
+Note that ssSeq was installed within my GitRepos folder. Depending on where you installed ssSeq you will need to navigate to a different folder. Next, type the command
 
     conda env create -f ssSeq.yml
 
-If you successfully installed conda earlier, then this command should run without problems. 
+If you successfully installed conda earlier, then this command should run without problems.
 
 #### Dependencies
 Advanced users: If you would rather not use the ssSeq environment and run in a custom environment (or, if you're a brave soul, your base environment), below are the ssSeq dependencies, all of which are available through conda. These dependencies are, of course, explicitly listed in the ssSeq.yml environment file. The explicit version call with bokeh handles an incompatibility between the most recent bokeh and holoviews versions at the time of writing (03/24/2020).
@@ -134,7 +134,7 @@ Advanced users: If you would rather not use the ssSeq environment and run in a c
     - python=3.7
     - tqdm
     - scipy
-    
+
     # With GUI, also need:
     - gooey
 
@@ -152,7 +152,7 @@ Instructions for adding ssSeq to PATH are [here](https://helpdeskgeek.com/window
     /home/brucejwittmann/GitRepos/ssSeq/
 
 ### Post Installation
-Once installed, refer to [Launching the GUI](#Launching-the-GUI) or [Working through Command Line](#Working-through-Command-Line), depending on your preference, for instructions for instructions on how to use ssSeq. Non-programmers will want to use the GUI. 
+Once installed, refer to [Launching the GUI](#Launching-the-GUI) or [Working through Command Line](#Working-through-Command-Line), depending on your preference, for instructions for instructions on how to use ssSeq. Non-programmers will want to use the GUI.
 
 Once comfortable with the GUI or command line, example data can be found in [InstallationConfirmationData](./InstallationConfirmationData) for you to test your installation. The file "DefaultRefSeqs.csv" should be used as "refseq" and the whole folder should be used as "folder". Details on these arguments can be found in [Required Arguments](#Required-Arguments). Additional optional arguments can also be passed in to ssSeq; they are detailed in [Optional Arguments](#Optional-Arguments).
 
@@ -160,7 +160,7 @@ For common problems encountered when using ssSeq, please reference [Troubleshoot
 
 # Using ssSeq
 ## Launching the GUI
-The GUI is designed for use by non-programming experts. If you are comfortable with a command line interface, that is the recommended way to use ssSeq. If using the GUI, make sure you check the log file after each run to check for warnings or errors encountered. See details on the log file [here](#ssSeqLog). 
+The GUI is designed for use by non-programming experts. If you are comfortable with a command line interface, that is the recommended way to use ssSeq. If using the GUI, make sure you check the log file after each run to check for warnings or errors encountered. See details on the log file [here](#ssSeqLog).
 
 The GUI is not currently available for use on Linux. The GUI must currently be opened by command line on Mac, but can be opened with a double click in Windows. Options for both are below:
 
@@ -177,9 +177,9 @@ If ssSeq was not added to your PATH and is not executable, then you can activate
 ### Open GUI with Double-Click
 Windows users can also launch the GUI with with a simple double-click once the right program has been enabled. Setup this option as follows:
 
-1. Right click on the `ssSeqGuiLauncher.py` file and select 'Open with' > 'Choose another app'. If you see Python as an option, check the box 'Always use this app to open .py files' then select Python. From now on, you should be able to launch the GUI by double-clicking the file and you are done and do not need to follow any more steps. 
+1. Right click on the `ssSeqGuiLauncher.py` file and select 'Open with' > 'Choose another app'. If you see Python as an option, check the box 'Always use this app to open .py files' then select Python. From now on, you should be able to launch the GUI by double-clicking the file and you are done and do not need to follow any more steps.
 2. However, Python likely won't be an option. In this case start by opening GitBash and typing:
-   
+
         where python
 
 3. This will return the location of python on your computer! For example, your path is likely something like `C:\Users\<your username>\Anaconda3\python.exe`. This tells you where to find Python!
@@ -200,7 +200,7 @@ Note that "refseq" is a file while "folder" is a folder. For more advanced use, 
 ## Working through Command Line
 This is the recommended way to use ssSeq as any warnings or errors encountered are printed directly to the terminal. Begin by opening a terminal window then activating the ssSeq conda environment as below
 
-    conda activate ssSeq 
+    conda activate ssSeq
 
 With the conda environment active, ssSeq can be run. There are two ways to launch ssSeq:
 1. If ssSeq was added to your PATH (see [PATH Variable Setup](#PATH-Variable-Setup)), then ssSeq can be run by typing
@@ -225,7 +225,7 @@ depending on whether or not you added ssSeq to PATH. The "-h" flag will pull up 
 ![Help Window](./GitImages/HelpWindow.png "Help Window")
 
 ## Example Data
-The folder [InstallationConfirmationData](./InstallationConfirmationData) contains an example reference sequence file and is itself an example folder containing fastq.gz files. This data can be used for confirming installation or just playing around with ssSeq. 
+The folder [InstallationConfirmationData](./InstallationConfirmationData) contains an example reference sequence file and is itself an example folder containing fastq.gz files. This data can be used for confirming installation or just playing around with ssSeq.
 
 ## Troubleshooting
 ### Permission Denied
@@ -281,7 +281,7 @@ The summaries folder contains most tabular information needed for downstream pro
 More detailed information on the contents of each file is found in the below subsections. Note that in all 3 files, if no reads were identified for a specific well, this well is omitted from the table.
 
 ### MaxInfo.csv
-This file acts as the highest level tabular summary, reporting only the amino acid combination (or single mutant if not sequencing combinatorial libraries) with the highest alignment frequency. The heading "VariantCombo" gives this highest-frequency combination (in 5' -> 3' order, as passed in in the "refseqs" file). Care should be taken to review both the AlignmentFrequency and WellSeqDepth columns to gauge a measure of confidence in the variant combination identified. If either of these categories report low values, then the confidence in the call is low. Note that in the case where two variants are identified with equal frequency, both are reported in this file (so some wells may have multiple rows). 
+This file acts as the highest level tabular summary, reporting only the amino acid combination (or single mutant if not sequencing combinatorial libraries) with the highest alignment frequency. The heading "VariantCombo" gives this highest-frequency combination (in 5' -> 3' order, as passed in in the "refseqs" file). Care should be taken to review both the AlignmentFrequency and WellSeqDepth columns to gauge a measure of confidence in the variant combination identified. If either of these categories report low values, then the confidence in the call is low. Note that in the case where two variants are identified with equal frequency, both are reported in this file (so some wells may have multiple rows).
 
 ### VariantInfo.csv
 This file is the next highest level tabular summary, containing information on all identified variants as part of the ssSeq run. The information contained in this file is otherwise the same as that in MaxInfo.csv.
@@ -295,14 +295,14 @@ This file is the lowest level tabular summary, containing information on the spe
 | Site | The id of the mutagenized position on the read |
 | AA | The specific amino acid identified at the mutagenized position |
 
-When analyzing combinatorial libraries, the information contained in MaxInfo.csv and VariantInfo.csv will typically be more informative. 
+When analyzing combinatorial libraries, the information contained in MaxInfo.csv and VariantInfo.csv will typically be more informative.
 
 ## Platemaps
 For each plate passed in via the "refseqs" file, a single platemap image will be generated; these images are contained in html files found in the "Platemaps" folder, prefixed by the plate name. An example image is given below for a 4-site combinatorial library:
 
 ![Platemap Example](./GitImages/PlatemapExample.png "Platemap Example")
 
-The text within each well is the combination of amino acids (in 5' -> 3' order, as passed in in the "refseqs" file) with the highest alignment frequency for that well. The fill color of the well is the log sequencing depth, while the well border color is the alignment frequency of the well. Note that the border color is binned rather than existing on a continuous scale. 
+The text within each well is the combination of amino acids (in 5' -> 3' order, as passed in in the "refseqs" file) with the highest alignment frequency for that well. The fill color of the well is the log sequencing depth, while the well border color is the alignment frequency of the well. Note that the border color is binned rather than existing on a continuous scale.
 
 ## Qualities
 This folder contains histograms of the forward and reverse read quality scores for the sequencing run. For information on what the quality score is, see [here](https://www.illumina.com/content/dam/illumina-marketing/documents/products/technotes/technote_understanding_quality_scores.pdf) An example image from the "Qualities" folder is given below:
@@ -318,20 +318,20 @@ Note that most of the reverse reads have Q-scores below 30. If you have a histog
 ## Alignments
 This information is only generated when running in troubleshoot mode. For each plate passed in via the "refseqs" file, a text file containing every alignment made between the passed in reference sequences and the reads collected from next-gen sequencing is generated and stored in this folder.
 
-The alignment file is ordered in blocks of forward and reverse reads for each well in the index plates. Each block is started by a series of "#" symbols, followed by a header specifying the index plate used, the well mapped, the forward barcode, the reverse barcode, and whether the forward or reverse alignments are reported in the block, all separated by "_" as a delimiter. 
+The alignment file is ordered in blocks of forward and reverse reads for each well in the index plates. Each block is started by a series of "#" symbols, followed by a header specifying the index plate used, the well mapped, the forward barcode, the reverse barcode, and whether the forward or reverse alignments are reported in the block, all separated by "_" as a delimiter.
 
 The reference sequence used for alignment is always in the forward direction, truncated to the appropriate read length. The reverse complement of the reverse reads are reported rather than the reverse reads themselves.
 
 ## AACountsFrequencies
-This information is only generated when running in troubleshoot mode. For each plate passed in via the "refseqs" file, a csv file containing the amino acid count and frequency matrices for each well is generated. 
+This information is only generated when running in troubleshoot mode. For each plate passed in via the "refseqs" file, a csv file containing the amino acid count and frequency matrices for each well is generated.
 
 The csv file is organized in alternating blocks of counts and frequencies of observing each amino acid at each position in the reference sequence. Each block is started by a header specifying the index plate used, the well mapped, the forward barcode, the reverse barcode, whether we are looking at a counts of frequencies matrix, and whether the matrix corresponds to the reverse or forward reads, all separated by "_" as a delimiter. Within each matrix, the rows correspond to an identified amino acid at that read position, while the columns correspond to the amino acid present at that read position in the reference sequence. For instance, if the column header is "Q" and the rows corresponding to "A" and "Q" have 2 and 50 counts, respectively, this indicates that 2 reads mapped to this well translated to put "A" at the expected position for "Q", while 50 reads translated to put the expected "Q" at the position giving "Q".
 
 ## BPCountsFrequencies
-This information is only generated when running in troubleshoot mode. For each plate passed in via the "refseqs" file, a csv file containing the base pair count and frequency matrices for each well is generated. The format of these matrices is exactly the same as for the AACountsFrequencies matrices, only for the mapped base pairs rather than translated amino acids. 
+This information is only generated when running in troubleshoot mode. For each plate passed in via the "refseqs" file, a csv file containing the base pair count and frequency matrices for each well is generated. The format of these matrices is exactly the same as for the AACountsFrequencies matrices, only for the mapped base pairs rather than translated amino acids.
 
 ## ConsensusSequences
-This information is only generated when running in troubleshoot mode. For each plate passed in via the "refseqs" file, a text file containing the consensus sequence identified in both the forward and reverse directions of each well is reported. Currently, "consensus" is defined as having an alignment frequency greater than 90%. This parameter may become tunable in the future. If the 90% threshold is not met, then the consensus sequence is given an "N" 
+This information is only generated when running in troubleshoot mode. For each plate passed in via the "refseqs" file, a text file containing the consensus sequence identified in both the forward and reverse directions of each well is reported. Currently, "consensus" is defined as having an alignment frequency greater than 90%. This parameter may become tunable in the future. If the 90% threshold is not met, then the consensus sequence is given an "N"
 
 ## ssSeqLog
 ssSeq keeps a log of every run. A single log is output for each ssSeq run. However, a continuous log is also stored within the ssSeq Git repository folder and can be found here: ssSeqSupport/ssSeqLog.log. Information captured by the log file includes:
@@ -340,9 +340,9 @@ ssSeq keeps a log of every run. A single log is output for each ssSeq run. Howev
 2. The values of all parameters input to ssSeq. Note that if parameters are unspecified, the log records the default parameters.
 3. Calculated parameters, including
     1. The forward and reverse read file pairs identified in the 'folder' argument
-    2. Any files within 'folder' that were not matched. 
+    2. Any files within 'folder' that were not matched.
     3. The calculated read length for the run if read length was unspecified. Otherwise, the input read length.
-4. Any warnings encountered during the run. These warnings will also be printed to the console during the run. 
+4. Any warnings encountered during the run. These warnings will also be printed to the console during the run.
 5. Fatal errors. If the program completed successfully, the last line in the log entry will read "Run completed. Log may contain warnings."
 
 The amount of information stored in the log file is small (bytes per run), but will build with continued use of ssSeq. If the file gets too large (this will take a long time...) you can delete ssSeqLog.log; on the next run a fresh ssSeqLog.log file will be instantiated.
@@ -358,7 +358,7 @@ This is a csv file outlining the expected amplicon sequence for a given plate or
 
 ![Example Amplicon](./GitImages/AmpliconExample.png "Example Amplicon")
 
-2. Replace the bases at the known mutagenized positions with "NNN" as the codon. This is given as an example again in the below image. Note that positions 29, 39, 49, and 63 are now given by "NNN" in the DNA sequence. ssSeq will search for "NNN" in the input reference sequences and identify those positions as the targets of site-saturation mutagenesis. Of course, for single site site-saturation mutagenesis, only 1 position would be given by "NNN", for double site site-saturation mutagenesis, 2 positions would be given by "NNN", and so on. 
+2. Replace the bases at the known mutagenized positions with "NNN" as the codon. This is given as an example again in the below image. Note that positions 29, 39, 49, and 63 are now given by "NNN" in the DNA sequence. ssSeq will search for "NNN" in the input reference sequences and identify those positions as the targets of site-saturation mutagenesis. Of course, for single site site-saturation mutagenesis, only 1 position would be given by "NNN", for double site site-saturation mutagenesis, 2 positions would be given by "NNN", and so on.
 
 ![Example Mutagenized Amplicon](./GitImages/ExampleAmpliconNNN.png "Example Mutagenized Amplicon")
 
@@ -415,7 +415,7 @@ This section details design of inner primers. It is assumed that you already hav
 To use ssSeq, you need to amplify the region that you want to sequence as well as append barcode primers to the resultant amplicon. Your inner primers are thus made up of two parts: (1) a "seed" region which binds to the gene of interest and (2) a "tail" region which is acts as a universal adapter that outer, barcode primers can bind to and amplify off of. Follow the below to design your primers:
 
 1. Identify the site (or sites) that you want to sequence.
-2. Choose the priming sites and design your primer. Aim for a 58 C melting temperature, end on a G or a C, and check secondary structure! You need at least 6 bp open on the 3’ terminus of your primer for efficient priming. Keep in mind that the ssSeq sequence machinery takes up 27 bp of the forward read and 26 bp of the reverse read. For a 150 bp read, this thus means that the site that you want to sequence must be within 123 bp (223 for a 250 bp read) of the 5’-most extent of your forward primer, and 124 bp (224 for a 250 bp read) of the 5’-most extent of your reverse primer. 
+2. Choose the priming sites and design your primer. Aim for a 58 C melting temperature, end on a G or a C, and check secondary structure! You need at least 6 bp open on the 3’ terminus of your primer for efficient priming. Keep in mind that the ssSeq sequence machinery takes up 27 bp of the forward read and 26 bp of the reverse read. For a 150 bp read, this thus means that the site that you want to sequence must be within 123 bp (223 for a 250 bp read) of the 5’-most extent of your forward primer, and 124 bp (224 for a 250 bp read) of the 5’-most extent of your reverse primer.
 3. Append the below adapter sequences to the 5’ terminus of your primers:
 
 	F: 5’ - CACCCAAGACCACTCTCCGG – 3’
@@ -432,10 +432,10 @@ where "X" signifes the seed region binding to your target gene.
 Some things to keep in mind when designing primers:
 
 1. Try to keep amplification fragments below 600 bp. You will notice fewer reads (and so can sequence less samples) if you start to go higher than this.
-2. Reads are paired-end (see [here](https://www.biostars.org/p/314258/) for explanation), so your forward and reverse reads need not overlap; the computer will figure out what forward read goes with what reverse read. 
+2. Reads are paired-end (see [here](https://www.biostars.org/p/314258/) for explanation), so your forward and reverse reads need not overlap; the computer will figure out what forward read goes with what reverse read.
 3. Reiteration: It is okay if your reads don't overlap. It is also okay if the center of the amplicon is not sequenced.
-4. If you choose to overlap your forward and reverse reads, you get double the coverage at a position, which means greater confidence in your variant calls. Choosing whether or not to overlap forward and reverse reads is a tradeoff between sequencing depth at a target site and the number of sites that can be targeted with a single primer pair. 
-5. The more samples you add to a run, the lower your coverage of each sample, and so the lower your confidence in your variant calls. 
+4. If you choose to overlap your forward and reverse reads, you get double the coverage at a position, which means greater confidence in your variant calls. Choosing whether or not to overlap forward and reverse reads is a tradeoff between sequencing depth at a target site and the number of sites that can be targeted with a single primer pair.
+5. The more samples you add to a run, the lower your coverage of each sample, and so the lower your confidence in your variant calls.
 6. If you design primers efficiently, you should be able to reuse the same sets for multiple different site-saturation positions.
 
 ## Library Preparation
@@ -467,17 +467,17 @@ This section details generation of an ssSeq library. It assumes you have already
 7. Once the reactions finish, if not immediately moving on to the next step, put the on ice.
 8. Prepare DNA ladder by combining 10 uL 100 bp ladder (NEB), 70 uL ddH2O, and 16 uL loading dye without SDS.
 9. Add 8 uL 10 mM EDTA (pH = 8.1) to 12 PCR tubes per plate. EDTA will be used to quench the reactions pre-pooling. Once you have started pooling reactions, you must be ready to immediately move on to the gel extraction step. **Do not pool reactions and let them sit.**
-10. Row-wise, add 5 uL of completed PCR product to the tubes from step 6 (making 12 combined tubes per plate, 1 per column in the original plate). 
-11. For each plate, combine 40 uL from each of the combinations made in the previous step to make 1 complete combination for the plate. 
+10. Row-wise, add 5 uL of completed PCR product to the tubes from step 6 (making 12 combined tubes per plate, 1 per column in the original plate).
+11. For each plate, combine 40 uL from each of the combinations made in the previous step to make 1 complete combination for the plate.
 11. To 100 uL of each pool, add 20 uL of gel loading dye ([NEB 6x Purple, No SDS](https://www.neb.com/products/b7025-gel-loading-dye-purple-6x-no-sds#Product%20Information)).
 12. Load each pooled sample with gel to the agarose gel. Load 20 uL of the DNA ladder prepared earlier as reference. Immediately store the remaining pooled sample at -20 C.
 13. Run the gel at 130 V until the dye bands have sufficiently migrated. You will get a gel that looks something like the below. The two central bands in the above image are representative 300 bp amplicon libraries. The bordering wells are blanks or ladders. The lower MW band is primer dimer. The more failed colonies that you have in a plate, the brighter this band will be. If your fragment is 150 bp, you will need to run a longer gel to separate the desired band from the primer dimer. It is critical to remove as much primer dimer as possible from your sample. **Primer dimer will dominate your sequencing and cause it to fail.**
 
 ![Gel Image Example](./GitImages/GelImageExample.png "Gel Image Example")
 
-14. For each pool of variants, identify the desired band and excise it. Perform gel extraction (this method was developed using a [Zymoclean Gel DNA Recovery Kit](https://www.zymoresearch.com/collections/zymoclean-gel-dna-recovery-kits). Elution should be in ddH2O. 
+14. For each pool of variants, identify the desired band and excise it. Perform gel extraction (this method was developed using a [Zymoclean Gel DNA Recovery Kit](https://www.zymoresearch.com/collections/zymoclean-gel-dna-recovery-kits). Elution should be in ddH2O.
 15. Measure the DNA concentration of each gel extracted sample.
-16. Finally, use the calculator found [here]() to create 15 uL at 5 ng/uL of combined pool of DNA of each of the plate samples. This is the sample that you will submit to multiplexed next-generation sequencing. 
+16. Finally, use the calculator found [here]() to create 15 uL at 5 ng/uL of combined pool of DNA of each of the plate samples. This is the sample that you will submit to multiplexed next-generation sequencing.
 
 # Theoretical Overview
 ssSeq was developed initially to sequence combinatorial variants built and evaluated during a course of machine learning-assisted directed evolution (MLDE), though the method can also be used to sequence variants generated during a traditional directed evolution (DE) experiment. In the non-machine learning context, sequencing data can provide valuable biochemical/biophysical insight to inform future DE experiments. The data collected from traditional DE experiments can also be later used to build machine learning models. This section outlines the motivation behind the development of ssSeq as well as the molecular biology that goes into making it work.
@@ -496,7 +496,7 @@ ssSeq focuses the reads generated during NGS to DNA regions known to contain mut
 
 The above figure depicts a nested PCR, which is a *single* experimental step; it is broken down in the image for clarity. Mechanistically, this nested PCR works as follows:
 
-1. To begin, inner primers specific to the region of DNA known to contain mutations bind. Because these primers are specific to a target gene fragment, a different set must be designed by the user for each target region. 
+1. To begin, inner primers specific to the region of DNA known to contain mutations bind. Because these primers are specific to a target gene fragment, a different set must be designed by the user for each target region.
 2. In addition to the gene-specific region, the inner primers also contain a universal adapter "tail". These universal adapters are the same for each set of inner primers, and allow reuse of the same inline barcode primers (next step) regardless of the target DNA.
 3. PCR using the inner primers generates an amplicon containing both the variable regions and ends with universal sequences. Inline barcoding primers designed to be complementary to the universal sequences can then bind and further extend the amplicon. Importantly, the combination of forward and reverse inline barcodes is unique for each variant. The inline barcoding primers (also refered to as the "outer primers") also contain adapters for feeding the generated amplicon into multiplexed NGS sequencing.
 4. After step 3, ssSeq is complete for most labs. Addition of the adapters for multiplexed NGS sequencing allows the actual sequencing step to be outsourced.
