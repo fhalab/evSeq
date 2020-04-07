@@ -162,20 +162,10 @@ For common problems encountered when using ssSeq, please reference [Troubleshoot
 ## Launching the GUI
 The GUI is designed for use by non-programming experts. If you are comfortable with a command line interface, that is the recommended way to use ssSeq. If using the GUI, make sure you check the log file after each run to check for warnings or errors encountered. See details on the log file [here](#ssSeqLog).
 
-The GUI is not currently available for use on Linux. The GUI must currently be opened by command line on Mac, but can be opened with a double click in Windows. Options for both are below:
-
-### Open GUI with Command Line
-Begin by opening a terminal window. If ssSeq was added to your PATH and ssSeqGuiLauncher.py made executable (see [PATH Variable Setup](#PATH-Variable-Setup)), then the GUI can be opened by typing
-
-        ssSeqGuiLauncher.py
-
-If ssSeq was not added to your PATH and is not executable, then you can activate the GUI by first navigating to the ssSeq git repo folder (installed above) through command line and explicitly invoking Python as below
-
-        cd ssSEQ_LOCATION
-        python ssSeqGuiLauncher
+The GUI can be opened either by double-clicking or command line on Windows and Mac. Options for both are below. The GUI is not currently available for use on Linux.
 
 ### Open GUI with Double-Click
-Windows users can also launch the GUI with with a simple double-click once the right program has been enabled. Mac users can as well by first running two simple commands from the terminal. Enable double-clicking as follows:
+The GUI can be launched with a simple double-click after a little more setup. Enable double-clicking as follows:
 
 #### Windows Users:
 
@@ -199,6 +189,16 @@ Windows users can also launch the GUI with with a simple double-click once the r
         chmod +x ssSeqGuiLauncher.command
 
 3. Now you should be able to launch `ssSeqGuiClick.command` with a double-click!
+
+### Open GUI with Command Line
+Begin by opening a terminal window. If ssSeq was added to your PATH and ssSeqGuiLauncher.py made executable (see [PATH Variable Setup](#PATH-Variable-Setup)), then the GUI can be opened by typing
+
+        ssSeqGuiLauncher.py
+
+If ssSeq was not added to your PATH and is not executable, then you can activate the GUI by first navigating to the ssSeq git repo folder (installed above) through command line and explicitly invoking Python as below
+
+        cd ssSEQ_LOCATION
+        python ssSeqGuiLauncher
 
 ## Running ssSeq with the GUI
 Once the GUI is launched it should look like the below:
@@ -251,6 +251,7 @@ Once in the ssSeq folder, make both the GUI and command line versions executable
 
     chmod +x ssSeq
     chmod +x ssSeqGui
+    chmod +x ssSeqGuiLauncher.py
 
 ssSeq should now be fully ready for your use.
 
