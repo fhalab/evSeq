@@ -198,7 +198,7 @@ Begin by opening a terminal window. If ssSeq was added to your PATH and ssSeqGui
 If ssSeq was not added to your PATH and is not executable, then you can activate the GUI by first navigating to the ssSeq git repo folder (installed above) through command line and explicitly invoking Python as below
 
         cd ssSEQ_LOCATION
-        python ssSeqGuiLauncher
+        python ssSeqGuiLauncher.py
 
 ## Running ssSeq with the GUI
 Once the GUI is launched it should look like the below:
