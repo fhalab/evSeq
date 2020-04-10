@@ -135,16 +135,22 @@ def MultiProcessPlateAnalyzerTiles(args):
         #                           site + 1, aa, freq, depth] for aa, freq in freq_dict.items()])
         
         #print(var_pos_info)
-        # # Append to the summary table
-        # for refcodon, bp_index, codon, refaa, aa_position, aa in var_pos_info:
-        #     pos_summary_info.extend([[well.plate, well.well, label, well.f_barcode, well.r_barcode,
-        #                           refcodon, bp_index, codon, refaa, aa_position, aa]])
-        
+        # Append to the summary table
+        var_pos_info_set = var_pos_info[0] + var_pos_info[1]
+        print(var_pos_info_set)
+        for i in var_pos_info_set:
+            #Extend for non-empty variant position information
+            if len(i) > 0:
+                print(i)
+                pos_summary_info.extend([[well.plate, well.well, label, 
+                                          well.f_barcode, well.r_barcode,
+                                      *i]])
+            
         # debug
         # Append to the summary table
-        for i in var_pos_info:
-            pos_summary_info.extend([[well.plate, well.well, label, well.f_barcode, well.r_barcode,
-                                  i]])
+        # for i in var_pos_info:
+        #     pos_summary_info.extend([[well.plate, well.well, label, well.f_barcode, well.r_barcode,
+        #                           i,i,i,i,i,i]])
 
 
     ##################### Format Alignment Results #######################

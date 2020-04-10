@@ -34,6 +34,8 @@ PlateObjects.py
 	changed ref_codons to pulling from ref_seq.seq so it would actually compare new and ref codons
 	instead of only against itself.
 	
+	did not have an addition to codon number in compare_freq_to_ref 
+	
 ssSeqMultiprocessing.py
 	adding MultiProcessPlateAnalyzerTiles, uses analyze_alignments_tiles
 
@@ -48,3 +50,5 @@ ssSeqMultiprocessing.py
 TODO
 	switch from using args["ssSeq_tile"] to just passing in the bool
 	generate a dataset with insertions to test insertion information
+		generate datasets with poor read quality added
+		generate datasets with different tile lengths and starting positions

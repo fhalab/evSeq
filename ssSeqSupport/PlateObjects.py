@@ -1186,9 +1186,9 @@ class Plate():
                  "R-BC", "ReferenceCodon", "BPindex", "NewCodon", "ReferenceAA", "AAindex", "NewAA"]]
         
         
-        # debug
-        pos_summary_info = [["Plate", "Well", "ReadDirection", "F-BC",
-                 "R-BC", "Test"]]
+        # # debug
+        # pos_summary_info = [["Plate", "Well", "ReadDirection", "F-BC",
+        #          "R-BC", "Test"]]
         
         
         bp_count_freq_info = []
