@@ -269,7 +269,7 @@ def _BuildSeqPairs(ForwardReads_Filepath, ReverseReads_Filepath):
 def _AnalyzeSeqPairs(seq_pairs, filepair, args):
     
     # Get the path to the Q-score save location
-    qual_dir = os.path.join(args["output"], "Qualities/")
+    qual_dir = os.path.join(args["output"], "Qualities")
     
     # Get the basenames of the two files
     f_basename = os.path.splitext(os.path.basename(filepair[0]))[0]
@@ -285,9 +285,9 @@ def _AnalyzeSeqPairs(seq_pairs, filepair, args):
     
     # generate quality score histogram
     counts = (f_qual_counts, r_qual_counts)
-    GenerateReadQualChart(counts, "{}{}-{}-ReadQualPlot.html".format(qual_dir,
-                                                                     f_basename,
-                                                                     r_basename))
+    filename = f'{f_basename}-{r_basename}-ReadQualPlot.html'
+    path = os.path.join(qual_dir, filename)
+    GenerateReadQualChart(counts, path)
 
 # Write a function that processes sequencing pairs
 def _ProcessSeqPairs(seq_pairs, BcsToRefSeq, args, filepair, combo_ind):
