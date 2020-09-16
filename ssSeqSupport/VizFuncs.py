@@ -34,8 +34,14 @@ def StretchColorLevels(data, center, cmap):
     # Scale dist
     dist = max(max(data) - center, center - 0)
     dist += dist / 100
+
+    color_levels = list(np.linspace(center-dist, center+dist, len(cmap)+1))
+
+    # Ignore if only one value is present
+    if len(np.unique(color_levels)) == 1:
+        color_levels = None
     
-    return list(np.linspace(center-dist, center+dist, len(cmap)+1))
+    return color_levels
 
 def MakeHeatmap(df, title):
     """Generates a heatmap from ssSeq data using Holoviews with bokeh backend."""
@@ -68,12 +74,14 @@ def MakeHeatmap(df, title):
     if df['logseqdepth'].max() <= center:
         
         # Log a warning
-        LogWarning(f"All wells associated with {title} have a read depth <=10."
-                   "Be careful comparing heatmaps between this plate and others."
+        LogWarning(f"All wells associated with {title} have a read depth <=10. "
+                   "Be careful comparing heatmaps between this plate and others. "
                    "Be careful using this data; sequencing was not good.")
         
         # Adjust the center
         center = df['logseqdepth'].median()
+
+    color_levels = StretchColorLevels(df['logseqdepth'], center, cmap)
 
     # generate the heatmap
     hm = hv.HeatMap(
@@ -87,7 +95,7 @@ def MakeHeatmap(df, title):
             xmarks=100,
             ymarks=100,
             clipping_colors={'NaN': '#DCDCDC'},
-            color_levels=StretchColorLevels(df['logseqdepth'], center, cmap),
+            color_levels=color_levels,
             colorbar_opts=dict(
                 title='LogSeqDepth',
                 background_fill_alpha=0
