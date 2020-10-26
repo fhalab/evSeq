@@ -3,6 +3,7 @@
 TestData/
 ssSeq_Support/*.log
 ssSeqLog.log
+Validation
 
 # vscode
 .vscode/
