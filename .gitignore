@@ -5,6 +5,10 @@ ssSeq_Support/*.log
 ssSeqLog.log
 Validation
 
+# Development stuff
+AlignmentDev/Msas
+AlignmentDev/ParsedFilteredFastqs
+
 # vscode
 .vscode/
 
