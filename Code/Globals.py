@@ -1,19 +1,28 @@
-# Import third party packages
-import re
+# Import needed directories
+import os.path
+from multiprocessing import cpu_count
+import numpy as np
 
-# Write a dictionary for reverse complements
-ReverseCompDict = {"A": "T",
-                     "T": "A",
-                     "C": "G",
-                     "G": "C",
-                     "N": "N"}
+# Get the number of CPUs available on the computer
+N_CPUS = cpu_count()
+    
+# Get the the running location of deSeq and the logfile
+HOMEDIR = os.path.dirname(os.path.realpath(__file__))
+
+# Get the name of the global logfile
+LOG_FILENAME = os.path.join(HOMEDIR, "..", "deSeqLog.log")
+
+# Define global lengths
+BARCODE_LENGTH = 7
+ADAPTER_LENGTH_F = 20
+ADAPTER_LENGTH_R = 19
 
 # Define the allowed bases
-AllowedBases = {"A", "T", "C", "G", "N"}
-AllowedBasesNoDeg = {"A", "T", "C", "G"}
+ALLOWED_BASES = {"A", "T", "C", "G", "N"}
+ALLOWED_BASES_NO_DEG = {"A", "T", "C", "G"}
 
 # Define the allowed wells
-AllowedWells = {'A01', 'A02', 'A03', 'A04', 'A05', 'A06', 'A07', 'A08', 'A09', 
+ALLOWED_WELLS = {'A01', 'A02', 'A03', 'A04', 'A05', 'A06', 'A07', 'A08', 'A09', 
                  'A10', 'A11', 'A12', 'B01', 'B02', 'B03', 'B04', 'B05', 'B06', 
                  'B07', 'B08', 'B09', 'B10', 'B11', 'B12', 'C01', 'C02', 'C03', 
                  'C04', 'C05', 'C06', 'C07', 'C08', 'C09', 'C10', 'C11', 'C12', 
@@ -26,7 +35,7 @@ AllowedWells = {'A01', 'A02', 'A03', 'A04', 'A05', 'A06', 'A07', 'A08', 'A09',
                  'H07', 'H08', 'H09', 'H10', 'H11', 'H12'}
 
 # Define a codon table
-CodonTable = {'TTT': 'F', 'TTC': 'F', 'TTA': 'L', 'TTG': 'L', 'TCT': 'S', 
+CODON_TABLE = {'TTT': 'F', 'TTC': 'F', 'TTA': 'L', 'TTG': 'L', 'TCT': 'S', 
                'TCC': 'S', 'TCA': 'S', 'TCG': 'S', 'TAT': 'Y', 'TAC': 'Y', 
                'TGT': 'C', 'TGC': 'C', 'TGG': 'W', 'CTT': 'L', 'CTC': 'L', 
                'CTA': 'L', 'CTG': 'L', 'CCT': 'P', 'CCC': 'P', 'CCA': 'P', 
@@ -41,28 +50,22 @@ CodonTable = {'TTT': 'F', 'TTC': 'F', 'TTA': 'L', 'TTG': 'L', 'TCT': 'S',
                'GGG': 'G', 'TAG': '*', 'TAA': '*', 'TGA': '*'}
 
 # Define a dictionary which links basepairs to indices and the reverse.
-BpToInd = {"A": 0, 
+BP_TO_IND = {"A": 0, 
             "T": 1,
             "C": 2,
             "G": 3,
             "N": 4,
             "-": 5}
-IndToBp = {v: k for k, v in BpToInd.items()}
-BpOpts = [IndToBp[ind] for ind in range(len(IndToBp))]
+IND_TO_BP = {val: key for key, val in BP_TO_IND.items()}
+
+# Get an array of all allowed basepairs indexed by `BP_TO_IND`
+BP_ARRAY = np.array([IND_TO_BP[i] for i in range(len(IND_TO_BP))])
 
 # Define a dictionary which links amino acids to indices and the reverse
-AaToInd = {'A': 0, 'R': 1, 'N': 2, 'D': 3, 'C': 4, 'E': 5, 'Q': 6, 'G': 7, 
+AA_TO_IND = {'A': 0, 'R': 1, 'N': 2, 'D': 3, 'C': 4, 'E': 5, 'Q': 6, 'G': 7, 
              'H': 8, 'I': 9, 'L': 10, 'K': 11, 'M': 12, 'F': 13, 'P': 14, 
-             'S': 15, 'T': 16, 'W': 17, 'Y': 18, 'V': 19, '*': 20, '?': 21}
-IndToAa = {v: k for k, v in AaToInd.items()}
-AaOpts = [IndToAa[ind] for ind in range(len(IndToAa))]
+             'S': 15, 'T': 16, 'W': 17, 'Y': 18, 'V': 19, '*': 20, '?': 21, '-': 22}
+IND_TO_AA = {val: key for key, val in AA_TO_IND.items()}
 
-# Construt a regular expression for parsing id lines of fastq files
-IdParser = re.compile("(.+):(.+):(.+):(.+):(.+):(.+):(.+) ([0-9]):([A-Za-z]):([0-9]):(.+)")
-
-# Define barcode length
-BarcodeLength = 7
-
-# Define the adapter lengths
-AdapterLengthF = 27
-AdapterLengthR = 26
+# Get an array of all allowed amino acids indexed by `AA_TO_IND`
+AA_ARRAY = np.array([IND_TO_AA[i] for i in range(len(IND_TO_AA))])
