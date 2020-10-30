@@ -13,7 +13,7 @@ from Code.Globals import N_CPUS
 from gooey import Gooey, GooeyParser
 
 # Create a "main" function
-@Gooey(program_name = "ssSeq",
+@Gooey(program_name = "deSeq",
        required_cols = 1,
        optional_cols = 1)
 def main():
@@ -22,7 +22,7 @@ def main():
     cwd = os.getcwd()
 
     # Instantiate GooeyParser
-    parser = GooeyParser(description = "User Interface for ssSeq")
+    parser = GooeyParser(description = "User Interface for deSeq")
 
     # Add required arguments
     required_args_group = parser.add_argument_group("Required Arguments", 
