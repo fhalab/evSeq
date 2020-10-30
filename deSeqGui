@@ -1,7 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env pythonw
 
 # Import relevant modules
-import argparse
 import os
 from time import strftime
 
@@ -10,16 +9,22 @@ from Code.Logging import log_init, log_info, log_error
 from Code.RunDeSeq import run_deseq
 from Code.Globals import N_CPUS
 
+# Import gooey
+from gooey import Gooey, GooeyParser
+
 # Create a "main" function
+@Gooey(program_name = "ssSeq",
+       required_cols = 1,
+       optional_cols = 1)
 def main():
 
     # Get the cwd
     cwd = os.getcwd()
 
-    # Instantiate argparser
-    parser = argparse.ArgumentParser()
+    # Instantiate GooeyParser
+    parser = GooeyParser(description = "User Interface for ssSeq")
 
-    # Add required arguments
+        # Add required arguments
     required_args_group = parser.add_argument_group("Required Arguments", 
                                                     "Arguments required for each run")
     required_args_group.add_argument("refseq", 
@@ -105,6 +110,7 @@ def main():
                                      type = int,
                                      default = None)
 
+
     # Parse the arguments
     CL_ARGS = vars(parser.parse_args())
         
@@ -126,7 +132,7 @@ def main():
     
     # Log that we have successfully completed the run
     log_info("\nRun completed. Log may contain warnings.")
-    
+
 # Run main()
 if __name__ == "__main__":
     main()

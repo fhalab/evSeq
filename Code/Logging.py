@@ -110,13 +110,13 @@ def log_error(e):
     quit()
      
 # Write a function to log the identified file matches in the target folder
-def log_input_file(matched_files, unmatched_files):
+def log_input_file(forward_file, reverse_file, unmatched_files):
     
     # Define the message
-    message = """
+    message = f"""
 Identified Seq File Pairs:
-    Forward Reads: {}
-    Reverse Reads: {}
+    Forward Reads: {forward_file}
+    Reverse Reads: {reverse_file}
     
 Unmatched Files in Folder:
     """

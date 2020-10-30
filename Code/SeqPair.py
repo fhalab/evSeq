@@ -407,6 +407,17 @@ class SeqPair():
             return [np.nan, self.r_len]
         else:
             raise AssertionError("No reads for which to return lengths.")
+        
+    # Write a function that returns read qualities
+    def read_quals(self):
+        if self.is_paired():
+            return [self.f_average_q, self.r_average_q]
+        elif self.use_f:
+            return [self.f_average_q, np.nan]
+        elif self.use_r:
+            return [np.nan, self.r_average_q]
+        else:
+            raise AssertionError("No reads for which to return lengths.")
     
     # Check to see if we are using both sequences
     def is_paired(self):

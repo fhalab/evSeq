@@ -18,7 +18,7 @@ class Well():
         self._all_seqpairs = seqpairs
         self._expected_variable_bp_positions = refseq_df_info["ExpectedVariablePositions"]
         self._index_plate = refseq_df_info["IndexPlate"]
-        self._plate_nickname = refseq_df_info["PlateNickname"]
+        self._plate_nickname = refseq_df_info["PlateName"]
         self._well = refseq_df_info["Well"]
         self._reference_sequence = refseq_df_info["ReferenceSequence"]
         self._ref_len = len(self.reference_sequence)
@@ -270,7 +270,7 @@ class Well():
         # If there are no reads, return that this is a dead well
         if not self.usable_reads:
             output_df = pd.DataFrame([[self.index_plate, self.plate_nickname, self.well, 
-                                       "DEAD", unit_type, 0, len(self.non_dud_alignments), "DEAD"]],
+                                       "#DEAD#", unit_type, 0, len(self.non_dud_alignments), "#DEAD#"]],
                                      columns = columns)
             return output_df, output_df
         
@@ -283,8 +283,8 @@ class Well():
             
             # Create an output dataframe and return
             output_df = pd.DataFrame([[self.index_plate, self.plate_nickname, self.well, 
-                                       "WT", unit_type, 1 - variable_thresh,
-                                       average_counts_by_position, "WT"]],
+                                       "#WT#", unit_type, 1 - variable_thresh,
+                                       average_counts_by_position, "#WT#"]],
                                      columns = columns)
             return output_df, output_df
                 
@@ -351,13 +351,14 @@ class Well():
                                       pos_offset):
         
         # Define output columns
-        columns = ("IndexPlate", "Plate", "Well", "VariantCombo", "VariantsFound",
-                   "AlignmentFrequency", "WellSeqDepth", "VariantSequence")
+        columns = ("IndexPlate", "Plate", "Well", "VariantCombo", "SimpleCombo",
+                   "VariantsFound", "AlignmentFrequency", "WellSeqDepth",
+                   "VariantSequence")
         
         # If there are no usable reads, return a dead dataframe
         if not self.usable_reads:
             return pd.DataFrame([[self.index_plate, self.plate_nickname, self.well,
-                                  "DEAD", 0, 0, 0, "DEAD"]], columns = columns)
+                                  "#DEAD#", "#DEAD#", 0, 0, 0, "#DEAD#"]], columns = columns)
         
         # Get the number of positions
         n_positions = len(variable_positions)            
@@ -372,7 +373,7 @@ class Well():
             
             # Create a dataframe and return
             return pd.DataFrame([[self.index_plate, self.plate_nickname, self.well,
-                                  "DEAD", n_paired, 0, 0, "DEAD"]],
+                                  "#DEAD#", "#DEAD#", n_paired, 0, 0, "#DEAD#"]],
                                 columns = columns)
         
         # Get the counts for the paired alignment seqpairs
@@ -386,7 +387,7 @@ class Well():
             
             # Create a dataframe and return
             return pd.DataFrame([[self.index_plate, self.plate_nickname, self.well,
-                                  "WT", 0, 1 - variable_thresh,
+                                  "#WT#", "#WT#", 0, 1 - variable_thresh,
                                   average_counts_by_position, reference_sequence]],
                                 columns = columns)
 
@@ -405,7 +406,8 @@ class Well():
             
             # Create a dataframe and return
             return pd.DataFrame([[self.index_plate, self.plate_nickname, self.well,
-                                  "DEAD", n_paired, 0, average_counts_by_position, "DEAD"]],
+                                  "#DEAD#", "#DEAD#", n_paired, 0,
+                                  average_counts_by_position, "#DEAD#"]],
                                 columns = columns)
 
         # Get the unique sequences that all passed QC
@@ -436,6 +438,7 @@ class Well():
             # Construct a combo name based on the combo and position
             new_seq = list(reference_sequence)
             combo_name = [None] * n_positions
+            simple_combo = combo_name.copy()
             for combo_ind, (pos, unit) in enumerate(zip(unique_position_array, unique_combo)):
 
                 # Update the sequence
@@ -444,6 +447,9 @@ class Well():
                 # Update the combo name. Add the offset to the position index to get
                 # the start id of the reference seqeunce
                 combo_name[combo_ind] = f"{reference_sequence[pos]}{pos + pos_offset}{unit}"
+                
+                # Update the simple combo name
+                simple_combo[combo_ind] = unit
 
             # Convert the new seq and new combo into strings
             new_seq = "".join(new_seq)
@@ -451,7 +457,7 @@ class Well():
 
             # Record output
             output[unique_counter] = [self.index_plate, self.plate_nickname, self.well,
-                                     combo_name, n_positions, unique_freqs[unique_counter],
+                                     combo_name, simple_combo, n_positions, unique_freqs[unique_counter],
                                       unique_counts[unique_counter], new_seq]
 
         # Convert output to a dataframe
