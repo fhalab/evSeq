@@ -16,27 +16,6 @@ from itertools import chain
 from functools import partial
 from multiprocessing import Pool
 from tqdm import tqdm
-
-# Write a function that builds the output directory structure
-def build_output_dirs(cl_args):
-    
-    # Build the folder structure if it does not exist
-    if not os.path.exists(cl_args["output"]):
-        os.makedirs(cl_args["output"])
-    
-    # Build required folders
-    os.path.join(cl_args["output"], "Qualities")
-    
-    # Build folders that only occur if we don't stop too early
-    if not cl_args["analysis_only"]:
-        os.mkdir(os.path.join(cl_args["output"], "ParsedFilteredFastqs"))
-    if not cl_args["stop_after_fastq"]:
-        os.mkdir(os.path.join(cl_args["output"], "OutputCounts"))
-        os.mkdir(os.path.join(cl_args["output"], "Platemaps"))
-     
-    # Build optional folders for the outputs
-    if cl_args["return_alignments"]:
-        os.mkdir(os.path.join(cl_args["output"], "Alignments"))
             
 # Write a function for loading and pairing fastq files
 def build_seqpairs(f_loc, r_loc):
@@ -51,7 +30,7 @@ def build_seqpairs(f_loc, r_loc):
     id_to_reads = {}
     
     # Load and parse forward reads
-    print("Loading reverse reads...")
+    print("Loading forward reads...")
     all_f_recs = list(SeqIO.parse(f_loc, "fastq"))
     for f_record in tqdm(all_f_recs, desc = "Parsing forward reads..."):
         temp_record = SeqPair()
@@ -198,7 +177,7 @@ def format_and_save_outputs(well_results, saveloc, return_alignments):
         output_df.to_csv(os.path.join(saveloc, "OutputCounts", savename), index = False)
         
     # Generate heatmaps from the Combos_Coupled_Max dataframe
-    generate_sequencing_heatmap(max_outs[-1], saveloc)    
+    # generate_sequencing_heatmap(max_outs[-1], saveloc)    
 
     # Loop over and save all alignments if asked to do so
     if return_alignments:

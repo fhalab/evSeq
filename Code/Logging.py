@@ -4,15 +4,15 @@ import os.path
 # # Import ssSeqSupport variables
 from .Globals import HOMEDIR, LOG_FILENAME
 
-# Write a function to log all args passed in from each run
-def log_init(args):
+# Write a function to log all cl_args passed in from each run
+def log_init(cl_args):
     """
     Logs the initialization variables passed in through either the command line
     or the GUI submission sheet.
     
     Parameters
     ----------
-    args: dict: Dictionary resulting from calling 'parser.parse_args()' in the 
+    cl_args: dict: Dictionary resulting from calling 'parser.parse_args()' in the 
         initial setup of the run.
         
     Returns
@@ -21,29 +21,42 @@ def log_init(args):
     """
     
     # Format a string for adding to the logfile
-    logstr = """
+    logstr = f"""
 
-{}
+{cl_args["datetime"]}
 ----------------------------------------------------------------------------
-refseq: {}
-source folder/fastq_f: {}
-fastq_r: {}
-analysis only: {}
-input_readlength: {}
-troubleshoot mode: {}
-n jobs: {}
-Q-score cutoff: {}
-alignment filter: {}
-output folder: {} 
-    """.format(args["datetime"], args["refseq"], args["folder"], args["fastq_r"],
-               args["analysis_only"], args["read_length"],  args["troubleshoot"],
-               args["jobs"], args["q_cutoff"], args["alignment_filter"],
-               args["output"])
+Required Arguments:
+    refseq: {cl_args["refseq"]}
+    folder: {cl_args["folder"]}
+    
+Input/Output Arguments:
+    fastq_r: {cl_args["fastq_r"]}
+    output: {cl_args["output"]}
+    detailed_refseq: {cl_args["detailed_refseq"]}
+    analysis_only: {cl_args["analysis_only"]}
+    stop_after_fastq: {cl_args["stop_after_fastq"]}
+    return_alignments: {cl_args["return_alignments"]}
+    
+Read Analysis:
+    average_q_cutoff: {cl_args["average_q_cutoff"]}
+    bp_q_cutoff: {cl_args["bp_q_cutoff"]}
+    length_cutoff: {cl_args["length_cutoff"]}
+
+Position Identification:
+    variable_thresh: {cl_args["variable_thresh"]}
+    variable_count: {cl_args["variable_count"]}
+    
+Advanced:
+    jobs: {cl_args["jobs"]}
+    read_length: {cl_args["read_length"]}
+
+Logged Messages:
+    """
 
     # Build the run-specific log file and make it global
     # Export RunSpecLog as a global variable
     global RUN_SPEC_LOG
-    RUN_SPEC_LOG = os.path.join(args["output"], "RunSpecificLog.txt")
+    RUN_SPEC_LOG = os.path.join(cl_args["output"], "RunSpecificLog.txt")
 
     # Add to logs
     write_to_log(logstr)

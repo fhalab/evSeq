@@ -60,14 +60,7 @@ def make_heatmap(df, title):
     
     # Convert SeqDepth to log for easier visualization.
     df['logseqdepth'] = np.log(df['WellSeqDepth'])
-    
-    # Add 0s to wells that have no data
-    well_list = [row+column for row in ['A','B','C','D','E','F','G','H'] for column in ['01','02','03','04','05','06','07','08','09','10','11','12']]
-    for well in well_list:
-        if well not in df['Well'].unique():
-            temp_df = pd.DataFrame([[np.nan,well,np.nan,np.nan,'',0,1,np.nan,np.nan,0]],columns=df.columns)
-            df = pd.concat([df,temp_df],sort=False)
-    
+        
     # Create necessary Row and Column values and sort
     df['Row'] = df.apply(lambda row: row['Well'][0], axis=1)
     df['Column'] = df.apply(lambda row: int(row['Well'][1:]), axis=1)
@@ -179,9 +172,11 @@ def generate_read_qual_chart(seqpairs, output_dir):
     
     # Generate forward and reverse qualities
     all_qualities = [seqpair.read_quals() for seqpair in seqpairs]
-    f_qual_counts = [qual[0] for qual in all_qualities if not np.isnan(qual[0])]
-    r_qual_counts = [qual[1] for qual in all_qualities if not np.isnan(qual[1])]
-    
+    f_qual_counts = np.unique([int(qual[0]) for qual in all_qualities if not np.isnan(qual[0])],
+                              return_counts = True)
+    r_qual_counts = np.unique([int(qual[1]) for qual in all_qualities if not np.isnan(qual[1])],
+                              return_counts = True)
+        
     # Plot counts
     p_f = plot_read_qual(f_qual_counts).opts(title='Forward Read Quality')
     p_r = plot_read_qual(r_qual_counts).opts(title='Reverse Read Quality')
@@ -193,7 +188,7 @@ def generate_read_qual_chart(seqpairs, output_dir):
     )
 
     # Output as html
-    bokeh.io.output_file(os.path.join(output_dir, "Qualities"))
+    bokeh.io.output_file(os.path.join(output_dir, "Qualities", "QualityPlot.html"))
     bokeh.io.save(p)
 
 def plot_read_qual(counts):
