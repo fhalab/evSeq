@@ -1,5 +1,7 @@
+# Import required modules
 import numpy as np
 import pandas as pd
+import os
 
 import holoviews as hv
 import colorcet as cc
@@ -13,14 +15,24 @@ hv.renderer('bokeh')
 
 
 #### Heatmap ####
-def generate_sequencing_heatmap(df, plate, hm_output_file):
+def generate_sequencing_heatmap(max_combo_df, output_dir):
     """Saves a heatmap html generated from from ssSeq data."""
     
-    # generate a holoviews plot
-    hm = make_heatmap(df, title=plate)
+    # Identify unique plates
+    unique_plates = max_combo_df.Plate.unique()
     
-    # render the plot using bokeh and save to html file
-    hv.renderer('bokeh').save(hm, hm_output_file)
+    # Generate plots for each plate
+    for plate in unique_plates:
+        
+        # Split to just the information of interest
+        df = max_combo_df.loc[max_combo_df.Plate == plate].copy()
+    
+        # generate a holoviews plot
+        hm = make_heatmap(df, title=plate)
+        
+        # render the plot using bokeh and save to html file
+        hv.renderer('bokeh').save(hm, os.path.join(output_dir, "Platemaps",
+                                                   f"{plate}.html"))
 
 def stretch_color_levels(data, center, cmap):
     """Stretch a color map so that its center is at `center`. Taken
@@ -152,7 +164,7 @@ def make_heatmap(df, title):
     labels = hv.Labels(
         df,
         ['Column', 'Row'],
-        'VariantCombo'
+        'SimpleCombo'
     ).opts(**opts)
     
     # return formatted final plot
@@ -162,11 +174,15 @@ def make_heatmap(df, title):
                                   show_legend=True)
 
 #### Read quality chart ####
-def generate_read_qual_chart(counts, path):
+def generate_read_qual_chart(seqpairs, output_dir):
     """Makes histograms of read qualities and saves to designated location."""
-    # Unpack
-    f_qual_counts, r_qual_counts = counts
-
+    
+    # Generate forward and reverse qualities
+    all_qualities = [seqpair.read_quals() for seqpair in seqpairs]
+    f_qual_counts = [qual[0] for qual in all_qualities if not np.isnan(qual[0])]
+    r_qual_counts = [qual[1] for qual in all_qualities if not np.isnan(qual[1])]
+    
+    # Plot counts
     p_f = plot_read_qual(f_qual_counts).opts(title='Forward Read Quality')
     p_r = plot_read_qual(r_qual_counts).opts(title='Reverse Read Quality')
     
@@ -177,7 +193,7 @@ def generate_read_qual_chart(counts, path):
     )
 
     # Output as html
-    bokeh.io.output_file(path)
+    bokeh.io.output_file(os.path.join(output_dir, "Qualities"))
     bokeh.io.save(p)
 
 def plot_read_qual(counts):

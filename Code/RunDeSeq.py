@@ -1,37 +1,84 @@
-warnings.warn("RunDeSeq must still be integrated with RunssSeq")
+# Import deSeq objects
+from .InputValidation import check_args
+from .InputProcessing import load_all, unzip_gz
+from .SeqPair import SeqPair
+from .Well import Well
+from .DataVisualization import (generate_read_qual_chart, 
+                                generate_sequencing_heatmap)
+
+# Import other required modules
+import os
+import numpy as np
+import pandas as pd
+import scipy.stats as ss
+from Bio import SeqIO
+from itertools import chain
+from functools import partial
+from multiprocessing import Pool
+from tqdm import tqdm
 
 # Write a function that builds the output directory structure
-def BuildOutputDirs(args):
+def build_output_dirs(cl_args):
     
     # Build the folder structure if it does not exist
-    if not os.path.exists(args["output"]):
-        os.makedirs(args["output"])
-        
-    # Build the summaries folder only if we are not in ts mode
-    summary_dir = os.path.join(args["output"], "Summaries/")
-    os.mkdir(summary_dir)
+    if not os.path.exists(cl_args["output"]):
+        os.makedirs(cl_args["output"])
     
-    # Build the read qualities folder
-    qual_dir = os.path.join(args["output"], "Qualities/")
-    os.mkdir(qual_dir)
+    # Build required folders
+    os.path.join(cl_args["output"], "Qualities")
     
-    # Build the heatmaps folder
-    heatmap_dir = os.path.join(args["output"], "Platemaps/")
-    os.mkdir(heatmap_dir)
-    
-    # If we are in ts mode, build additional directories
-    if args["troubleshoot"]:
-        extra_dirs = [os.path.join(args["output"], loc) for loc in
-                      ["Alignments", "AACountsFrequencies",
-                       "BPCountsFrequencies", "ConsensusSequences"]]
-        for directory in extra_dirs:
-            os.mkdir(directory)
+    # Build folders that only occur if we don't stop too early
+    if not cl_args["analysis_only"]:
+        os.mkdir(os.path.join(cl_args["output"], "ParsedFilteredFastqs"))
+    if not cl_args["stop_after_fastq"]:
+        os.mkdir(os.path.join(cl_args["output"], "OutputCounts"))
+        os.mkdir(os.path.join(cl_args["output"], "Platemaps"))
+     
+    # Build optional folders for the outputs
+    if cl_args["return_alignments"]:
+        os.mkdir(os.path.join(cl_args["output"], "Alignments"))
             
+# Write a function for loading and pairing fastq files
+def build_seqpairs(f_loc, r_loc):
 
+    # Unzip the files if need be
+    if "fastq.gz" in f_loc:
+        f_loc = unzip_gz(f_loc)
+    if "fastq.gz" in r_loc:
+        r_loc = unzip_gz(r_loc)
+
+    # Create a dictionary that links id to sequence object
+    id_to_reads = {}
+    
+    # Load and parse forward reads
+    print("Loading reverse reads...")
+    all_f_recs = list(SeqIO.parse(f_loc, "fastq"))
+    for f_record in tqdm(all_f_recs, desc = "Parsing forward reads..."):
+        temp_record = SeqPair()
+        temp_record.assign_f(f_record)
+        id_to_reads[f_record.id] = temp_record
+    
+    # Associate reverse reads with the forward
+    print("Loading reverse reads...")
+    all_r_recs = list(SeqIO.parse(r_loc, "fastq"))
+    for r_record in tqdm(all_r_recs, "Pairing reverse reads..."):
+
+        # If there is no partern in id_to_reads, create a new object 
+        # and continue
+        if r_record.id not in id_to_reads:
+            temp_record = SeqPair()
+            temp_record.assign_r(r_record)
+            id_to_reads[r_record.id] = temp_record
+
+        # Otherwise, attach the reverse record
+        else:
+            id_to_reads[r_record.id].assign_r(r_record)
+            
+    # Return all records
+    return tuple(id_to_reads.values())
 
 # Write a function for filtering out bad seqpairs
-def qc_seqpairs(all_seqpairs, read_length = None, length_cutoff = 0.9, 
-                average_q_cutoff = 25):
+def qc_seqpairs(all_seqpairs, read_length, length_cutoff, average_q_cutoff):
     
     print("Running read qc...")
     
@@ -82,10 +129,8 @@ def assign_seqpairs_to_well(filtered_seqpairs, bc_to_ref_plate_well, savedir):
             for well_id, pair in well_pairs.items()] 
 
 # Write a function that can process a single well
-def process_well(well, return_alignments = False, 
-                 bp_q_cutoff = 30,
-                 variable_thresh = 0.1,
-                 variable_count = 1):
+def process_well(well, return_alignments = False, bp_q_cutoff = 30, 
+                 variable_thresh = 0.1, variable_count = 1):
 
     # Align
     well.align()
@@ -151,6 +196,9 @@ def format_and_save_outputs(well_results, saveloc, return_alignments):
 
         # Save the dataframe
         output_df.to_csv(os.path.join(saveloc, "OutputCounts", savename), index = False)
+        
+    # Generate heatmaps from the Combos_Coupled_Max dataframe
+    generate_sequencing_heatmap(max_outs[-1], saveloc)    
 
     # Loop over and save all alignments if asked to do so
     if return_alignments:
@@ -159,56 +207,58 @@ def format_and_save_outputs(well_results, saveloc, return_alignments):
                 f.write(savestr)    
 
 # Write a function that runs deSeq
-def run_deseq(ref_seq_loc, forward_read_loc, reverse_read_loc,
-              saveloc, n_cpus, stop_after_qualities = False,
-              stop_after_fastq = False, return_alignments = False,
-              read_length = None, length_cutoff = 0.9,
-              average_q_cutoff = 25, bp_q_cutoff = 30,
-              variable_thresh = 0.1, variable_count = 1):
+def run_deseq(cl_args):
+   
+    # Check the input arguments
+    check_args(cl_args)
     
-    # Load the reference sequence file and associate reference sequence
-    # information with wells
-    bc_to_ref_plate_well = load_refseq(ref_seq_loc)
+    # Identify sequencing files and load reference sequence information
+    forward_file, reverse_file, bc_to_ref_plate_well = load_all(cl_args)
     
-    # Load fastq files
-    all_seqpairs = load_fastq(forward_read_loc, reverse_read_loc)
+    # Pair all sequences
+    all_seqpairs = build_seqpairs(forward_file, reverse_file)
     
-    # Filter the seqpairs
-    filtered_seqpairs = qc_seqpairs(all_seqpairs, 
-                                    read_length = read_length,
-                                    length_cutoff = length_cutoff, 
-                                    average_q_cutoff = average_q_cutoff)
-    
-    # Plot qualities
-    warnings.warn("Need to implement quality plotting")
-#     plot_qualities()
+    # Generate quality plots
+    generate_read_qual_chart(all_seqpairs, cl_args["output"])
     
     # Return if we stop after plot qualities
-    if stop_after_qualities:
+    if cl_args["analysis_only"]:
         return
     
+    # Run QC on the seqpairs
+    filtered_seqpairs = qc_seqpairs(all_seqpairs, cl_args["read_length"],
+                                    cl_args["length_cutoff"], 
+                                    cl_args["average_q_cutoff"])
+    
     # Assign seqpairs to a well
-    all_wells = assign_seqpairs_to_well(filtered_seqpairs, bc_to_ref_plate_well, saveloc)
+    all_wells = assign_seqpairs_to_well(filtered_seqpairs, 
+                                        bc_to_ref_plate_well,
+                                        cl_args["output"])
     
     # Save the fastq files
+    print("Saving fastq files...")
     for well in all_wells:
         well.write_fastqs()
 
     # Return if we stop after fastq
-    if stop_after_fastq:
+    if cl_args["stop_after_fastq"]:
         return
         
     # Complete the multiprocessing function, then process all wells
     complete_multiprocessor = partial(process_well, 
-                                      bp_q_cutoff = bp_q_cutoff,
-                                      return_alignments = return_alignments,
-                                     variable_thresh = variable_thresh,
-                                     variable_count = variable_count)
+                                      bp_q_cutoff = cl_args["bp_q_cutoff"],
+                                      return_alignments = cl_args["return_alignments"],
+                                      variable_thresh = cl_args["variable_thresh"],
+                                     variable_count = cl_args["variable_count"])
         
     # Multiprocess to handle wells
-    with Pool(n_cpus) as p:
+    with Pool(cl_args["jobs"]) as p:
         processed_well_results = list(tqdm(p.imap_unordered(complete_multiprocessor, all_wells),
                                       desc = "Processing wells:", total = len(all_wells)))
         
-    # Handle processed output
-    format_and_save_outputs(processed_well_results, saveloc, return_alignments)
+    # Handle processed output. This saves the summary dataframes, generates 
+    # platemaps, and saves alignments (if requested)
+    print("Saving outputs to disk...")
+    format_and_save_outputs(processed_well_results, 
+                            cl_args["output"],
+                            cl_args["return_alignments"])
