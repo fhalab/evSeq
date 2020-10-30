@@ -8,6 +8,8 @@ Validation
 # Development stuff
 AlignmentDev/Msas
 AlignmentDev/ParsedFilteredFastqs
+AlignmentDev/Alignments
+AlignmentDev/OutputCounts
 
 # vscode
 .vscode/
