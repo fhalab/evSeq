@@ -11,9 +11,36 @@ import gzip
 import shutil
 import pandas as pd
 import numpy as np
+from glob import glob
+
+# Write a function that builds the output directory structure
+def build_output_dirs(cl_args):
+    
+    # Build the folder structure if it does not exist
+    if not os.path.exists(cl_args["output"]):
+        os.makedirs(cl_args["output"])
+    
+    # Build required folders
+    os.mkdir(os.path.join(cl_args["output"], "Qualities"))
+    
+    # Build folders that only occur if we don't stop too early
+    if not cl_args["analysis_only"]:
+        fastq_folder = os.path.join(cl_args["output"], "ParsedFilteredFastqs")
+        os.makedirs(os.path.join(fastq_folder, "F"))
+        os.makedirs(os.path.join(fastq_folder, "R"))
+    if not cl_args["stop_after_fastq"]:
+        os.mkdir(os.path.join(cl_args["output"], "OutputCounts"))
+        os.mkdir(os.path.join(cl_args["output"], "Platemaps"))
+     
+    # Build optional folders for the outputs
+    if cl_args["return_alignments"]:
+        os.mkdir(os.path.join(cl_args["output"], "Alignments"))
 
 # Write a function that matches forward and reverse reads in a passed in folder
-def find_matches(seqfiles):
+def find_matches(input_folder):
+    
+    # Glob all potential sequencing files in the directory
+    seqfiles = glob(os.path.join(input_folder, "*fastq*"))
     
     # Define a generic regex to identify forward and reverse reads in the folder
     f_regex = re.compile("(.*)_R1_.*")
@@ -79,7 +106,7 @@ def find_matches(seqfiles):
     # If final_filepairs is 0, throw and error and terminate the program
     n_pairs = len(final_filepairs)
     if n_pairs == 0:
-        log_error("Could not match forward and reverse files."
+        log_error("Could not match forward and reverse files. "
                   "Make sure they have appropriate names.")
     
     # If more than 1 pair is identified, throw and error and terminate the program
@@ -241,7 +268,7 @@ def construct_bcs_to_refseq(refseq_df, index_df):
 
         # Map barcode to reference sequence, plate, and well
         bc_to_ref_plate_well[(row.FBC, row.RBC)] = {"IndexPlate": row.IndexPlate,
-                                                    "PlateNickname": row.PlateName,
+                                                    "PlateName": row.PlateName,
                                                     "Well": row.Well,
                                                     "ReferenceSequence": row.ReferenceSequence,
                                                     "InFrameBase": row.InFrameBase,

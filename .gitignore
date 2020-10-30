@@ -10,7 +10,7 @@ AlignmentDev/Msas
 AlignmentDev/ParsedFilteredFastqs
 AlignmentDev/Alignments
 AlignmentDev/OutputCounts
-AlignmentDev/ValidationOutputs
+AlignmentDev/ValidationOutput
 
 # vscode
 .vscode/

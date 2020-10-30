@@ -12,7 +12,7 @@ from .Globals import ALLOWED_BASES_NO_DEG, ALLOWED_BASES, ALLOWED_WELLS, N_CPUS
 def check_index_map(index_df):
     
     # Define the expected columns
-    expected_cols = ("IndexPlate", "Well", "F-BC", "R-BC")
+    expected_cols = ("IndexPlate", "Well", "FBC", "RBC")
     
     # Pull the columns and make sure all expected ones exist
     index_cols = set(index_df.columns)
@@ -24,15 +24,15 @@ def check_index_map(index_df):
         
     # Make sure all combinations of F-BC and R-BC are unique
     bc_combos = [(fbc, rbc) for fbc, rbc in 
-                 index_df.loc[:, ["F-BC", "R-BC"]].itertuples(index=False)]
+                 index_df.loc[:, ["FBC", "RBC"]].itertuples(index=False)]
     bc_combo_counts = Counter(bc_combos)
     non_unique_combos = [combo for combo, count in bc_combo_counts.items()
                          if count > 1]
     
     # Report non-unique combos by throwing an error
     if len(non_unique_combos) > 0:
-        log_error("""F-BC and R-BC combos must be unique in IndexMap.csv.
-                  The following F-BC, R-BC combos are not unique: {}""".format(non_unique_combos))
+        log_error("""FBC and RBC combos must be unique in IndexMap.csv.
+                  The following FBC, RBC combos are not unique: {}""".format(non_unique_combos))
         
     # Loop over each row in the input file
     for i, (_, row) in enumerate(index_df.iterrows()):
@@ -43,12 +43,12 @@ def check_index_map(index_df):
             
         # Confirm that the forward barcode sequence is made up entirely of 'A', 'C', 
         # 'T', 'G', and 'N'.
-        if any([char not in ALLOWED_BASES_NO_DEG for char in row["F-BC"]]):
+        if any([char not in ALLOWED_BASES_NO_DEG for char in row["FBC"]]):
             log_error("F-BC sequence in row {} has base other than 'A', 'C', 'T', or 'G'")
         
         # Confirm that the reverse barcode sequence is made up entirely of 'A', 'C', 
         # 'T', 'G', and 'N'.
-        if any([char not in ALLOWED_BASES_NO_DEG for char in row["R-BC"]]):
+        if any([char not in ALLOWED_BASES_NO_DEG for char in row["RBC"]]):
             log_error("R-BC sequence in row {} has base other than 'A', 'C', 'T', or 'G'")
 
         # Confirm that the named well is a real well
@@ -57,8 +57,8 @@ def check_index_map(index_df):
                         Well must take form 'A##'""".format(i, row["Well"]))
             
     # Confirm that all barcodes are the same length
-    pairwise_check = np.equal(index_df["F-BC"].str.len().values,
-                              index_df["R-BC"].str.len().values)
+    pairwise_check = np.equal(index_df["FBC"].str.len().values,
+                              index_df["RBC"].str.len().values)
     if not all(pairwise_check):
         log_error("Barcodes must all be the same length. Check IndexMap.csv")
 

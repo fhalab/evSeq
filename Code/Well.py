@@ -454,6 +454,7 @@ class Well():
             # Convert the new seq and new combo into strings
             new_seq = "".join(new_seq)
             combo_name = "_".join(combo_name)
+            simple_combo = "".join(simple_combo)
 
             # Record output
             output[unique_counter] = [self.index_plate, self.plate_nickname, self.well,
