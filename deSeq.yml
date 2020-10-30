@@ -1,9 +1,9 @@
-name: ssSeq
+name: deSeq
 channels:
   - anaconda
   - conda-forge
 dependencies:
-  - biopython
+  - biopython>=1.78
   - colorcet
   - holoviews<1.13
   - bokeh=1.4.0

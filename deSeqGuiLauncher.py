@@ -4,10 +4,10 @@ import subprocess
 import os
 
 # Get the location of ssSeqGui (same directory as this file)
-_ssSeqGuiLoc = os.path.dirname(os.path.realpath(__file__))
+gui_loc = os.path.dirname(os.path.realpath(__file__))
 
 # Change cwd
-os.chdir(_ssSeqGuiLoc)
+os.chdir(gui_loc)
 
 # Activate from command line
-subprocess.run("conda run -n ssSeq pythonw ./ssSeqGui", shell = True)
+subprocess.run("conda run -n ssSeq pythonw ./deSeqGui", shell = True)
