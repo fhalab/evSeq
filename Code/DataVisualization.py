@@ -6,23 +6,23 @@ import colorcet as cc
 import bokeh.io
 from bokeh.layouts import row
 
-from . import LogWarning
+from .Logging import log_warning
 
 hv.extension('bokeh')
 hv.renderer('bokeh')
 
 
 #### Heatmap ####
-def GenerateSequencingHeatmap(df, plate, hm_output_file):
+def generate_sequencing_heatmap(df, plate, hm_output_file):
     """Saves a heatmap html generated from from ssSeq data."""
     
     # generate a holoviews plot
-    hm = MakeHeatmap(df, title=plate)
+    hm = make_heatmap(df, title=plate)
     
     # render the plot using bokeh and save to html file
     hv.renderer('bokeh').save(hm, hm_output_file)
 
-def StretchColorLevels(data, center, cmap):
+def stretch_color_levels(data, center, cmap):
     """Stretch a color map so that its center is at `center`. Taken
     from hw4.2 solutions to 2019 bebi103a, probably with permission. 
     This is best for centering divergent color maps.
@@ -43,7 +43,7 @@ def StretchColorLevels(data, center, cmap):
     
     return color_levels
 
-def MakeHeatmap(df, title):
+def make_heatmap(df, title):
     """Generates a heatmap from ssSeq data using Holoviews with bokeh backend."""
     
     # Convert SeqDepth to log for easier visualization.
@@ -74,14 +74,14 @@ def MakeHeatmap(df, title):
     if df['logseqdepth'].max() <= center:
         
         # Log a warning
-        LogWarning(f"All wells associated with {title} have a read depth <=10. "
+        log_warning(f"All wells associated with {title} have a read depth <=10. "
                    "Be careful comparing heatmaps between this plate and others. "
                    "Be careful using this data; sequencing was not good.")
         
         # Adjust the center
         center = df['logseqdepth'].median()
 
-    color_levels = StretchColorLevels(df['logseqdepth'], center, cmap)
+    color_levels = stretch_color_levels(df['logseqdepth'], center, cmap)
 
     # generate the heatmap
     hm = hv.HeatMap(
@@ -162,13 +162,13 @@ def MakeHeatmap(df, title):
                                   show_legend=True)
 
 #### Read quality chart ####
-def GenerateReadQualChart(counts, path):
+def generate_read_qual_chart(counts, path):
     """Makes histograms of read qualities and saves to designated location."""
     # Unpack
     f_qual_counts, r_qual_counts = counts
 
-    p_f = PlotReadQual(f_qual_counts).opts(title='Forward Read Quality')
-    p_r = PlotReadQual(r_qual_counts).opts(title='Reverse Read Quality')
+    p_f = plot_read_qual(f_qual_counts).opts(title='Forward Read Quality')
+    p_r = plot_read_qual(r_qual_counts).opts(title='Reverse Read Quality')
     
     # Render to bokeh and combine into single chart
     p = row(
@@ -180,7 +180,7 @@ def GenerateReadQualChart(counts, path):
     bokeh.io.output_file(path)
     bokeh.io.save(p)
 
-def PlotReadQual(counts):
+def plot_read_qual(counts):
     """Given an array, creates a holoviews histogram."""
     p = hv.Histogram(counts).opts(
         xlabel='Mean quality score of sequence',
