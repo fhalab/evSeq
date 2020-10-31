@@ -121,7 +121,7 @@ def find_matches(input_folder):
 def unzip_gz(filename):
 
     # Find the name without the ".gz"
-    new_name = os.path.splitext(filename)
+    new_name = os.path.splitext(filename)[0]
     
     # Unzip and resave the file
     with gzip.open(filename, 'rb') as f_in:
