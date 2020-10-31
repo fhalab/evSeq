@@ -36,7 +36,7 @@ Table of Contents
     - [Improper Shell Configuration](#improper-shell-configuration)
     - [Adding `conda` and `python` to path for Windows users who had already installed python](#adding-conda-and-python-to-path-for-windows-users-who-had-already-installed-python)
 - [Understanding deSeq Output](#understanding-deseq-output)
-  - [Summaries](#summaries)
+  - [OutputCounts](#outputcounts)
     - [MaxInfo.csv](#maxinfocsv)
     - [VariantInfo.csv](#variantinfocsv)
     - [SummaryInfo.csv](#summaryinfocsv)
@@ -122,9 +122,9 @@ Note that deSeq was installed within my GitRepos folder. Depending on where you 
 If you successfully installed conda earlier, then this command should run without problems.
 
 #### Dependencies
-Advanced users: If you would rather not use the ssSeq environment and run in a custom environment (or, if you're a brave soul, your base environment), below are the deSeq dependencies, all of which are available through conda. These dependencies are, of course, explicitly listed in the deSeq.yml environment file. The explicit version call with bokeh handles an incompatibility between the most recent bokeh and holoviews versions at the time of writing (03/24/2020).
+Advanced users: If you would rather not use the deSeq environment and run in a custom environment (or, if you're a brave soul, your base environment), below are the deSeq dependencies, all of which are available through conda. These dependencies are, of course, explicitly listed in the deSeq.yml environment file. The explicit version call with bokeh handles an incompatibility between the most recent bokeh and holoviews versions at the time of writing (03/24/2020).
 
-    # ssSeq without GUI
+    # deSeq without GUI
     - biopython>=1.78
     - colorcet
     - holoviews<1.13
@@ -200,7 +200,7 @@ If deSeq was not added to your PATH and is not executable, then you can activate
         cd deSEQ_LOCATION
         python deSeqGuiLauncher.py
 
-## Running ssSeq with the GUI
+## Running deSeq with the GUI
 Once the GUI is launched it should look like the below:
 
 ![GUI](./GitImages/GUI.png "GUI")
@@ -209,51 +209,49 @@ Note that the two required arguments are at the top of the GUI, details on these
 
 ![Filled GUI](./GitImages/FilledGui.png "Filled GUI")
 
-Note that "refseq" is a file while "folder" is a folder. For more advanced use, other arguments can be accessed by scrolling down (These additional arguments are detailed in [OptionalArguments](#Optional-Arguments).). You will typically not need these arguments, however, and the standard ssSeq run can be started by clicking "Start" once "refseq" and "folder" are populated. Once started, the progress of the program will be printed to the GUI along with any encountered warnings and errors.
+Note that "refseq" is a file while "folder" is a folder. For more advanced use, other arguments can be accessed by scrolling down (These additional arguments are detailed in [OptionalArguments](#Optional-Arguments).). You will typically not need these arguments, however, and the standard deSeq run can be started by clicking "Start" once "refseq" and "folder" are populated. Once started, the progress of the program will be printed to the GUI along with any encountered warnings and errors.
 
 ## Working through Command Line
-This is the recommended way to use ssSeq as any warnings or errors encountered are printed directly to the terminal. Begin by opening a terminal window then activating the ssSeq conda environment as below
+This is the recommended way to use deSeq as any warnings or errors encountered are printed directly to the terminal. Begin by opening a terminal window then activating the deSeq conda environment as below
 
-    conda activate ssSeq
+    conda activate deSeq
 
-With the conda environment active, ssSeq can be run. There are two ways to launch ssSeq:
-1. If ssSeq was added to your PATH (see [PATH Variable Setup](#PATH-Variable-Setup)), then ssSeq can be run by typing
+With the conda environment active, deSeq can be run. There are two ways to launch deSeq:
+1. If deSeq was added to your PATH (see [PATH Variable Setup](#PATH-Variable-Setup)), then deSeq can be run by typing
 
-        ssSeq refseq folder OPTIONAL_ARGS FLAGS
+        deSeq refseq folder OPTIONAL_ARGS FLAGS
 
-2. If ssSeq was not added to your PATH or is not executable, then you can run ssSeq by first navigating to the ssSeq git repo folder (installed above) through command line and explicitly invoking Python as below
+2. If deSeq was not added to your PATH or is not executable, then you can run deSeq by first navigating to the deSeq git repo folder (installed above) through command line and explicitly invoking Python as below
 
-        cd ssSEQ_LOCATION
-        python ssSeq refseq folder OPTIONAL_ARGS FLAGS
+        cd deSeq_LOCATION
+        python deSeq refseq folder OPTIONAL_ARGS FLAGS
 
 In both of cases, "refseq" is the path to your reference sequence file and "folder" is the location of the folder with your fastq or fastq.gz files. Details on these required arguments can be found [here](#Required-Arguments). Optional arguments and flags are passed in after the two positional arguments. For information on the potential optional arguments and flags, type
 
-    ssSeq -h
+    deSeq -h
 
 or
 
-    python ssSeq -h
+    python deSeq -h
 
-depending on whether or not you added ssSeq to PATH. The "-h" flag will pull up the help window detailing all possible ssSeq arguments. Note that these arguments are also detailed in [Optional Arguments](#Optional-Arguments). The help window will look like below:
-
-![Help Window](./GitImages/HelpWindow.png "Help Window")
+depending on whether or not you added deSeq to PATH. The "-h" flag will pull up the help window detailing all possible deSeq arguments. Note that these arguments are also detailed in [Optional Arguments](#Optional-Arguments). 
 
 ## Example Data
-The folder [InstallationConfirmationData](./InstallationConfirmationData) contains an example reference sequence file and is itself an example folder containing fastq.gz files. This data can be used for confirming installation or just playing around with ssSeq.
+The folder [InstallationConfirmationData](./InstallationConfirmationData) contains an example reference sequence file and is itself an example folder containing fastq.gz files. This data can be used for confirming installation or just playing around with deSeq.
 
 ## Troubleshooting
 ### Permission Denied
-If you receive a "permission denied error", you may also need to make the ssSeq run files executable. In Mac and Linux, accomplish this by first navigating to the ssSeq folder in command line. For instance, for me this is
+If you receive a "permission denied error", you may also need to make the deSeq run files executable. In Mac and Linux, accomplish this by first navigating to the deSeq folder in command line. For instance, for me this is
 
-    cd /home/brucejwittmann/GitRepos/ssSeq/
+    cd /home/brucejwittmann/GitRepos/deSeq/
 
-Once in the ssSeq folder, make both the GUI and command line versions executable by writing the below commands in command line
+Once in the deSeq folder, make both the GUI and command line versions executable by writing the below commands in command line
 
-    chmod +x ssSeq
-    chmod +x ssSeqGui
-    chmod +x ssSeqGuiLauncher.py
+    chmod +x deSeq
+    chmod +x deSeqGui
+    chmod +x deSeqGuiLauncher.py
 
-ssSeq should now be fully ready for your use.
+deSeq should now be fully ready for your use.
 
 ### Improper Shell Configuration
 On Windows, you may receive the below error the first time you try to activate an environment:
@@ -276,30 +274,49 @@ On Windows, if you had installed conda previously, GitBash may not recognize `co
 If these commands work and print your versions this is not your problem. If you get an error, use the website found [here](https://www.datacamp.com/community/tutorials/installing-anaconda-windows) to solve this issue. Search for the section 'Add Anaconda to Path (Optional)' and if you need more clarification for how to add directories to your path, you can use the website [here](https://helpdeskgeek.com/windows-10/add-windows-path-environment-variable/).
 
 
-# Understanding ssSeq Output
-The output location of ssSeq is controlled with the "output" optional argument (see [here](#Optional-Arguments)). If the "output" argument is not set, then ssSeq will save to the current working directory (command line) or the ssSeq Git repository folder (GUI). If the save location has not previously been used, then ssSeq will create a folder titled "ssSeq_Output" in the output location which contains a folder giving the date-time of the run initialization (in yyyymmdd-hhmmss format). If the save location has been previously used, then ssSeq will add another date-time folder with the previously generated ssSeq_Output folder. All ssSeq outputs of a specific run are contained in the associated date-time folder. The below sections detail the folders found within the date-time folder.
+# Understanding deSeq Output
+The output location of deSeq is controlled with the "output" optional argument (see [here](#Optional-Arguments)). If the "output" argument is not set, then deSeq will save to the current working directory (command line) or the deSeq Git repository folder (GUI). If the save location has not previously been used, then deSeq will create a folder titled "deSeq_Output" in the output location which contains a folder giving the date-time of the run initialization (in yyyymmdd-hhmmss format). If the save location has been previously used, then deSeq will add another date-time folder with the previously generated deSeq_Output folder. All deSeq outputs of a specific run are contained in the associated date-time folder. The below sections detail the folders found within the date-time folder.
 
-## Summaries
-The summaries folder contains most tabular information needed for downstream processing after ssSeq. For each plate passed in via the "refseqs" file, 3 files will be generated and stored within the Summaries folder. The 3 files are "PREFIX_MaxInfo.csv", "PREFIX_SummaryInfo.csv", and "PREFIX_VariantInfo.csv", where PREFIX is the name of the plate given in the "refseqs" file. Each of these files shares the following headers:
+## OutputCounts
+The summaries folder contains most tabular information needed for downstream processing after deSeq. For each run, 8 files will be generated and stored within the OutputCounts folder. The files all follow the general format (AminoAcids/Bases_Decoupled/Coupled_All/Max.csv) and contain information on all variants identified in the run. Any "AminoAcid" file contains information for the mutant amino acids identified while a "Bases" file contains information for the mutant bases identified. "Decoupled" files are the result of counting bases independent of reads (e.g. they do not capture information about how frequentl two mutations occur together) while "Coupled" files contain the results of counting bases considering independent reads. "All" files contain information on all non-WT variants identified regardless of frequency while "Max" files contain information only on the most frequent non-WT variant found in a well. **For the purpose of directed evolution, the most useful file is 'AminoAcids_Coupled_Max".**
+
+Each output count file holds a table with the following information:
 
 | Header | Information Contained|
 |:-------|----------------------|
-| Plate | Index plate used |
+| IndexPlate | Index plate used |
+| Plate | User-specified plate name |
 | Well | Source plate/index plate well|
-| F-BC | The forward barcode corresponding to the well|
-| R-BC | The reverse barcode corresponding to the well|
-| Aligment Frequency| The fraction of reads corresponding to VariantCombo or AA, depending on the specific file|
-| WellSeqDepth | The number of reads with the specific VariantCombo or AA mapping to the well, again depending on the specific file|
-| R1 | The forward read file used for processing |
-| R2 | The reverse read file used for processing |
+| Aligment Frequency| The fraction of reads corresponding to combination or individual mutant, depending on the specific file |
+| WellSeqDepth | The number of reads corresponding to combination or individual mutant, depending on the specific file |
 
-More detailed information on the contents of each file is found in the below subsections. Note that in all 3 files, if no reads were identified for a specific well, this well is omitted from the table.
+In addition to the above information, the "Coupled" files contain the below columns:
+
+| Header | Information Contained|
+|:-------|----------------------|
+| VariantCombo | The identity of any variant identified. Each variant is given in the format (original character)(position in reference sequence)(new character), and variants are separated by underscores.|
+| SimpleCombo | The same information as 'VariantCombo', but only the new character is given. This is a useful shorthand. |
+| VariantsFound | The number of variants identified in the given combination. |
+| VariantsSequence | The reference sequence for the well updated to reflect the identified variant. |
+
+The "Decoupled" files contain the below columns additional columns:
+
+| Header | Information Contained|
+|:-------|----------------------|
+| Aa(or Bp)Position | The position where a variant amino acid or base was found.|
+| Aa(Bp) | The identify of the variant amino acid found.|
+| Flag | Contains any non-standard information about the variant. A particularly useful flag is "Unexpected Variation", which is returned for any variant/mutant identified that was not expected according to the provided reference sequence OR in cases where a mixed well is possible. |
+
+
+
+
+
 
 ### MaxInfo.csv
 This file acts as the highest level tabular summary, reporting only the amino acid combination (or single mutant if not sequencing combinatorial libraries) with the highest alignment frequency. The heading "VariantCombo" gives this highest-frequency combination (in 5' -> 3' order, as passed in in the "refseqs" file). Care should be taken to review both the AlignmentFrequency and WellSeqDepth columns to gauge a measure of confidence in the variant combination identified. If either of these categories report low values, then the confidence in the call is low. Note that in the case where two variants are identified with equal frequency, both are reported in this file (so some wells may have multiple rows).
 
 ### VariantInfo.csv
-This file is the next highest level tabular summary, containing information on all identified variants as part of the ssSeq run. The information contained in this file is otherwise the same as that in MaxInfo.csv.
+This file is the next highest level tabular summary, containing information on all identified variants as part of the deSeq run. The information contained in this file is otherwise the same as that in MaxInfo.csv.
 
 ### SummaryInfo.csv
 This file is the lowest level tabular summary, containing information on the specific sites mutagenesis sites passed in in the "refseqs" file. Unlike in MaxInfo.csv and VariantInfo.csv, sequencing information is decoupled here, meaning the information reported is agnostic to whether or not mutations were identified on the same sequencing read. As a result, the information reported gives the overall amino acid frequency identified at each mutagenized site as specified in the "refseqs" csv file. To report this information, SummaryInfo.csv has a few specific headers:
@@ -328,7 +345,7 @@ The example presented results from a good run -- as a heuristic, you typically w
 
 ![Bad Q-Score Example](./GitImages/BadQScoreExample.png "Bad Q-Score Example")
 
-Note that most of the reverse reads have Q-scores below 30. If you have a histogram like this, it's highly likely that something went wrong at some stage of ssSeq library prep/sequencing. As of now, we don't know what causes histograms like this, so please keep track of your data and let us know when you see this!
+Note that most of the reverse reads have Q-scores below 30. If you have a histogram like this, it's highly likely that something went wrong at some stage of deSeq library prep/sequencing. As of now, we don't know what causes histograms like this, so please keep track of your data and let us know when you see this!
 
 ## Alignments
 This information is only generated when running in troubleshoot mode. For each plate passed in via the "refseqs" file, a text file containing every alignment made between the passed in reference sequences and the reads collected from next-gen sequencing is generated and stored in this folder.
@@ -348,11 +365,11 @@ This information is only generated when running in troubleshoot mode. For each p
 ## ConsensusSequences
 This information is only generated when running in troubleshoot mode. For each plate passed in via the "refseqs" file, a text file containing the consensus sequence identified in both the forward and reverse directions of each well is reported. Currently, "consensus" is defined as having an alignment frequency greater than 90%. This parameter may become tunable in the future. If the 90% threshold is not met, then the consensus sequence is given an "N"
 
-## ssSeqLog
-ssSeq keeps a log of every run. A single log is output for each ssSeq run. However, a continuous log is also stored within the ssSeq Git repository folder and can be found here: ssSeqSupport/ssSeqLog.log. Information captured by the log file includes:
+## deSeqLog
+deSeq keeps a log of every run. A single log is output for each deSeq run. However, a continuous log is also stored within the deSeq Git repository folder and can be found here: deSeqSupport/deSeqLog.log. Information captured by the log file includes:
 
-1. The start time of the ssSeq run, given as 'yyyymmdd-hhmmss' followed by a series of underscores. This is the first line of each log block.
-2. The values of all parameters input to ssSeq. Note that if parameters are unspecified, the log records the default parameters.
+1. The start time of the deSeq run, given as 'yyyymmdd-hhmmss' followed by a series of underscores. This is the first line of each log block.
+2. The values of all parameters input to deSeq. Note that if parameters are unspecified, the log records the default parameters.
 3. Calculated parameters, including
     1. The forward and reverse read file pairs identified in the 'folder' argument
     2. Any files within 'folder' that were not matched.
@@ -360,11 +377,11 @@ ssSeq keeps a log of every run. A single log is output for each ssSeq run. Howev
 4. Any warnings encountered during the run. These warnings will also be printed to the console during the run.
 5. Fatal errors. If the program completed successfully, the last line in the log entry will read "Run completed. Log may contain warnings."
 
-The amount of information stored in the log file is small (bytes per run), but will build with continued use of ssSeq. If the file gets too large (this will take a long time...) you can delete ssSeqLog.log; on the next run a fresh ssSeqLog.log file will be instantiated.
+The amount of information stored in the log file is small (bytes per run), but will build with continued use of deSeq. If the file gets too large (this will take a long time...) you can delete deSeqLog.log; on the next run a fresh deSeqLog.log file will be instantiated.
 
 # Program Arguments
 ## Required Arguments
-The only two required arguments for ssSeq are a table giving the reference sequences for the expected amplicons ("refseq") and the folder containing the fastq files resulting from the sequencing run ("folder"). Both of these arguments are explained in detail below.
+The only two required arguments for deSeq are a table giving the reference sequences for the expected amplicons ("refseq") and the folder containing the fastq files resulting from the sequencing run ("folder"). Both of these arguments are explained in detail below.
 
 ### refseq
 This is a csv file outlining the expected amplicon sequence for a given plate or well. To construct a reference sequence:
@@ -373,7 +390,7 @@ This is a csv file outlining the expected amplicon sequence for a given plate or
 
 ![Example Amplicon](./GitImages/AmpliconExample.png "Example Amplicon")
 
-2. Replace the bases at the known mutagenized positions with "NNN" as the codon. This is given as an example again in the below image. Note that positions 29, 39, 49, and 63 are now given by "NNN" in the DNA sequence. ssSeq will search for "NNN" in the input reference sequences and identify those positions as the targets of site-saturation mutagenesis. Of course, for single site site-saturation mutagenesis, only 1 position would be given by "NNN", for double site site-saturation mutagenesis, 2 positions would be given by "NNN", and so on.
+2. Replace the bases at the known mutagenized positions with "NNN" as the codon. This is given as an example again in the below image. Note that positions 29, 39, 49, and 63 are now given by "NNN" in the DNA sequence. deSeq will search for "NNN" in the input reference sequences and identify those positions as the targets of site-saturation mutagenesis. Of course, for single site site-saturation mutagenesis, only 1 position would be given by "NNN", for double site site-saturation mutagenesis, 2 positions would be given by "NNN", and so on.
 
 ![Example Mutagenized Amplicon](./GitImages/ExampleAmpliconNNN.png "Example Mutagenized Amplicon")
 
@@ -384,53 +401,53 @@ This form of the file assumes the same reference sequence in each well of the an
 
 | Column | Description |
 |:-------|-------------|
-| PlateName | This is a nickname given to the plate. For instance, if I performed ssSeq on a plate that I named "BJW_TestPlate01", I would write "BJW_TestPlate01" in this column. |
-| IndexPlate | This is the ssSeq index plate used for library preparation corresponding to the plate in "PlateName". For instance, if I prepared "BJW_TestPlate01" using index plate 2, I would write "BJW_TestPlate01" in the "PlateName" column and "DI02" in the "IndexPlate" column. Allowed barcode names are DI01 through DI08. |
+| PlateName | This is a nickname given to the plate. For instance, if I performed deSeq on a plate that I named "BJW_TestPlate01", I would write "BJW_TestPlate01" in this column. |
+| IndexPlate | This is the deSeq index plate used for library preparation corresponding to the plate in "PlateName". For instance, if I prepared "BJW_TestPlate01" using index plate 2, I would write "BJW_TestPlate01" in the "PlateName" column and "DI02" in the "IndexPlate" column. Allowed barcode names are DI01 through DI08. |
 | ReferenceSequence | This is the reference sequence found in every well of "PlateName". This reference sequence is constructed following the instructions in the parent section of this section. |
 
-As currently deployed, up to 8 plates (DI01 - DI08) can be input in a single ssSeq run. No more than 8 rows should thus ever be filled in this form of refseq. An example Default refseq format is given in the ssSeq GitHub repository [here](#./InstallationConfirmationData/DefaultRefSeqs.csv)
+As currently deployed, up to 8 plates (DI01 - DI08) can be input in a single deSeq run. No more than 8 rows should thus ever be filled in this form of refseq. An example Default refseq format is given in the deSeq GitHub repository [here](#./InstallationConfirmationData/DefaultRefSeqs.csv)
 
 #### Detailed refseq
-This form of the file allows for a different reference sequence in each well of the analyzed plates. In addition to the column headers given in [Default refseq](#Default-refseq), this form of the file has a "Well" column, enabling specification of a different reference sequence for each well in the input plates. As currently deployed, up to 8 plates (DI01 - DI08) can be input in a single ssSeq run, so no more than 768 rows should ever be filled in this form of refseq. An example Detailed refseq format is given in the ssSeq GitHub repository [here](#./InstallationConfirmationData/DetailedRefSeqs.csv).
+This form of the file allows for a different reference sequence in each well of the analyzed plates. In addition to the column headers given in [Default refseq](#Default-refseq), this form of the file has a "Well" column, enabling specification of a different reference sequence for each well in the input plates. As currently deployed, up to 8 plates (DI01 - DI08) can be input in a single deSeq run, so no more than 768 rows should ever be filled in this form of refseq. An example Detailed refseq format is given in the deSeq GitHub repository [here](#./InstallationConfirmationData/DetailedRefSeqs.csv).
 
 When using this form of refseq, the detailed_refseq flag found in [Optional Arguments](#Optional-Arguments) must be set.
 
 ### folder
-This is the folder containing the fastq or fastq.gz files generated during next-gen sequencing. Once activated, ssSeq will...
+This is the folder containing the fastq or fastq.gz files generated during next-gen sequencing. Once activated, deSeq will...
 
 1. Look in this folder to find all filenames containing "\_R1\_" or "\_R2\_".
 2. Match forward and reverse files by the name preceding the identified "\_R1\_" or "\_R2\_". For instance, the files "CHL1_S193_L001_R1_001.fastq.gz" and "CHL1_S193_L001_R2_001.fastq.gz" would be matched because the text preceding the "\_R1\_" and "\_R2\_", "CHL1_S193_L001", matches for both files. The file with the "\_R1\_" is designated the forward read file and the file with the "\_R2\_" is designated the reverse read file.
 3. Pass the matched files into data processing.
 
-Note that both files without a "\_R1\_" or "\_R2\_" in their name and files for which no matching partner is identified will be ignored; all ignored files are recorded in the [log file](#ssSeqLog). If multiple forward-reverse file pairs are identified, all pairs will be pushed into ssSeq using the same refseq file. If you need different refseq files for different ssSeq runs, then run separate ssSeq instances.
+Note that both files without a "\_R1\_" or "\_R2\_" in their name and files for which no matching partner is identified will be ignored; all ignored files are recorded in the [log file](#deSeqLog). If multiple forward-reverse file pairs are identified, all pairs will be pushed into deSeq using the same refseq file. If you need different refseq files for different deSeq runs, then run separate deSeq instances.
 
-In special cases using ssSeq through command line, the forward read file can be passed in as the folder, and the reverse read file can be passed in as the optional argument "fastq_r". See the entry on "fastq_r" in the [Optional Arguments](#Optional-Arguments) section for more detail.
+In special cases using deSeq through command line, the forward read file can be passed in as the folder, and the reverse read file can be passed in as the optional argument "fastq_r". See the entry on "fastq_r" in the [Optional Arguments](#Optional-Arguments) section for more detail.
 
 ## Optional Arguments
-There are a number of flags and optional arguments that can be thrown for ssSeq, all detailed in the table below:
+There are a number of flags and optional arguments that can be thrown for deSeq, all detailed in the table below:
 
 | Argument | Type | Description |
 |:---------|------|-------------|
-| fastq_r | Argument | This argument is only available for command line use. If a case arises where, for whatever reason, ssSeq cannot auto-identify the forward and reverse read files, this option acts as a failsafe. Instead of passing the folder containing the forward and reverse files in to the "folder" required argument, pass in the forward read file as the "folder" argument and the reverse read file as this optional argument. |
-| output | Argument | By default, ssSeq will save to the current working directory (command line) or the ssSeq Git repository folder (GUI). The default save location can be overwritten with this argument. |
-| q_cutoff | Argument | ssSeq will not record information from any base pair call with an average quality score below this value. The default and recommended value is 30, though the threshold can be raised or lowered by entering different values. |
-| alignment_filter | Argument | ssSeq aligns each read found in the fastq files to the reference sequence and calculates an alignment score. All alignment scores are normalized to the maximum possible alignment score (i.e. a perfect alignment gets a score of "1"). Alignments with a score below this threshold are discarded and not used in later processing. The default value of 0.5 enables filtering out carried over primer from the library preparation stage, though the value can be raised or lowered for different filtering stringency. |
+| fastq_r | Argument | This argument is only available for command line use. If a case arises where, for whatever reason, deSeq cannot auto-identify the forward and reverse read files, this option acts as a failsafe. Instead of passing the folder containing the forward and reverse files in to the "folder" required argument, pass in the forward read file as the "folder" argument and the reverse read file as this optional argument. |
+| output | Argument | By default, deSeq will save to the current working directory (command line) or the deSeq Git repository folder (GUI). The default save location can be overwritten with this argument. |
+| q_cutoff | Argument | deSeq will not record information from any base pair call with an average quality score below this value. The default and recommended value is 30, though the threshold can be raised or lowered by entering different values. |
+| alignment_filter | Argument | deSeq aligns each read found in the fastq files to the reference sequence and calculates an alignment score. All alignment scores are normalized to the maximum possible alignment score (i.e. a perfect alignment gets a score of "1"). Alignments with a score below this threshold are discarded and not used in later processing. The default value of 0.5 enables filtering out carried over primer from the library preparation stage, though the value can be raised or lowered for different filtering stringency. |
 | analysis_only | Flag | Set this flag (check the box in the GUI) to only perform Q-score analysis on the input fastq files. The only output in this case will be the [quality score histograms](#Qualities). |
 | detailed_refseq | Flag | Set this flag (check the box in the GUI) when passing in a detailed reference sequence file. See [Detailed refseq](#Detailed-refseq) for more information. |
-| troubleshoot | Flag | Set this flag (check the box in the GUI) to perform ssSeq in troubleshoot mode. In addition to the standard output (see [Summaries](#Summaries), [Platemaps](#Platemaps), and [Qualities](#Qualities)), running in troubleshoot mode will also output [Alignments](#Alignments), [AACountsFrequencies](#AACountsFrequencies), [BPCountsFrequencies](#BPCountsFrequencies), and [ConsensusSequences](#ConsensusSequences). This detailed information can be used for identifying problems with ssSeq library prep and sequencing. *NOTE THAT TROUBLESHOOT IS CURRENTLY EXPERIMENTAL. TROUBLESHOOT-SPECIFIC OUTPUTS HAVE NOT BEEN SUFFICIENTLY VALIDATED AND SHOULD BE USED WITH CAUTION|
-| jobs | Argument | This is the number of processors used by ssSeq for data processing. By default, ssSeq uses 1 less processor than are available on your computer. As with all multiprocessing programs, it is typically not recommended to use all available processors unless you are okay devoting all computer resources to the task (e.g. you don't want to be concurrently checking email, playing music, running another program, etc.). The number of jobs can be lowered to reduce the memory demands of ssSeq. |
-| read_length | Argument | By default, ssSeq will attempt to determine the read length from the fastq files. If this process is failing or you have some other reason for using a different read length than that in your fastq files, the read length can be manually set using this argument.
+| troubleshoot | Flag | Set this flag (check the box in the GUI) to perform deSeq in troubleshoot mode. In addition to the standard output (see [Summaries](#Summaries), [Platemaps](#Platemaps), and [Qualities](#Qualities)), running in troubleshoot mode will also output [Alignments](#Alignments), [AACountsFrequencies](#AACountsFrequencies), [BPCountsFrequencies](#BPCountsFrequencies), and [ConsensusSequences](#ConsensusSequences). This detailed information can be used for identifying problems with deSeq library prep and sequencing. *NOTE THAT TROUBLESHOOT IS CURRENTLY EXPERIMENTAL. TROUBLESHOOT-SPECIFIC OUTPUTS HAVE NOT BEEN SUFFICIENTLY VALIDATED AND SHOULD BE USED WITH CAUTION|
+| jobs | Argument | This is the number of processors used by deSeq for data processing. By default, deSeq uses 1 less processor than are available on your computer. As with all multiprocessing programs, it is typically not recommended to use all available processors unless you are okay devoting all computer resources to the task (e.g. you don't want to be concurrently checking email, playing music, running another program, etc.). The number of jobs can be lowered to reduce the memory demands of deSeq. |
+| read_length | Argument | By default, deSeq will attempt to determine the read length from the fastq files. If this process is failing or you have some other reason for using a different read length than that in your fastq files, the read length can be manually set using this argument.
 
 # Biological Protocols
-The below sections detail the wet-lab protocols for generating ssSeq libraries. For a theoretical background on ssSeq library preparation please jump to [Theoretical Overview](#Theoretical-Overview).
+The below sections detail the wet-lab protocols for generating deSeq libraries. For a theoretical background on deSeq library preparation please jump to [Theoretical Overview](#Theoretical-Overview).
 
 ## Inner Primer Design
 This section details design of inner primers. It is assumed that you already have access to the outer primer dual indexing plates, which are currently managed by Bruce.
 
-To use ssSeq, you need to amplify the region that you want to sequence as well as append barcode primers to the resultant amplicon. Your inner primers are thus made up of two parts: (1) a "seed" region which binds to the gene of interest and (2) a "tail" region which is acts as a universal adapter that outer, barcode primers can bind to and amplify off of. Follow the below to design your primers:
+To use deSeq, you need to amplify the region that you want to sequence as well as append barcode primers to the resultant amplicon. Your inner primers are thus made up of two parts: (1) a "seed" region which binds to the gene of interest and (2) a "tail" region which is acts as a universal adapter that outer, barcode primers can bind to and amplify off of. Follow the below to design your primers:
 
 1. Identify the site (or sites) that you want to sequence.
-2. Choose the priming sites and design your primer. Aim for a 58 C melting temperature, end on a G or a C, and check secondary structure! You need at least 6 bp open on the 3’ terminus of your primer for efficient priming. Keep in mind that the ssSeq sequence machinery takes up 27 bp of the forward read and 26 bp of the reverse read. For a 150 bp read, this thus means that the site that you want to sequence must be within 123 bp (223 for a 250 bp read) of the 5’-most extent of your forward primer, and 124 bp (224 for a 250 bp read) of the 5’-most extent of your reverse primer.
+2. Choose the priming sites and design your primer. Aim for a 58 C melting temperature, end on a G or a C, and check secondary structure! You need at least 6 bp open on the 3’ terminus of your primer for efficient priming. Keep in mind that the deSeq sequence machinery takes up 27 bp of the forward read and 26 bp of the reverse read. For a 150 bp read, this thus means that the site that you want to sequence must be within 123 bp (223 for a 250 bp read) of the 5’-most extent of your forward primer, and 124 bp (224 for a 250 bp read) of the 5’-most extent of your reverse primer.
 3. Append the below adapter sequences to the 5’ terminus of your primers:
 
 	F: 5’ - CACCCAAGACCACTCTCCGG – 3’
@@ -442,7 +459,7 @@ To use ssSeq, you need to amplify the region that you want to sequence as well a
 	R: 5’ - GGTAGACGGAGACAGGCGGXXXXXXXXXXXXXXXX – 3’
 
 where "X" signifes the seed region binding to your target gene.
-5. Once you have your primers in hand, you should run a test case to make sure that they work for ssSeq before using them to process full plates. You'll be very sad if you perform multiple plates of PCR only to find that they failed due to the inner primer. To check the inner primer, perform a single PCR reaction following the makeup given by the calculator [here](./LibraryPrepCalculators/PrimerFunctionalityCalculator.xlsx). Note that "inner primer" refers to a mixture of forward and reverse inner primer. Use the thermalcycler conditions given in [Library Preparation](#Library-Preparation).
+5. Once you have your primers in hand, you should run a test case to make sure that they work for deSeq before using them to process full plates. You'll be very sad if you perform multiple plates of PCR only to find that they failed due to the inner primer. To check the inner primer, perform a single PCR reaction following the makeup given by the calculator [here](./LibraryPrepCalculators/PrimerFunctionalityCalculator.xlsx). Note that "inner primer" refers to a mixture of forward and reverse inner primer. Use the thermalcycler conditions given in [Library Preparation](#Library-Preparation).
 
 Some things to keep in mind when designing primers:
 
@@ -454,7 +471,7 @@ Some things to keep in mind when designing primers:
 6. If you design primers efficiently, you should be able to reuse the same sets for multiple different site-saturation positions.
 
 ## Library Preparation
-This section details generation of an ssSeq library. It assumes you have already designed and ordered inner primers according to the protocol in the previous section. The stepwise library preparation protocol follows:
+This section details generation of an deSeq library. It assumes you have already designed and ordered inner primers according to the protocol in the previous section. The stepwise library preparation protocol follows:
 
 1. One day before library prepartion, begin overnight cultures of your plates of site-saturation library variants.
 2. The next day, prepare Taq polymerase primary mastermix using the calculator found [here](./LibraryPrepCalculators/MastermixCalculator.xlsx). Note that "inner primer" refers to a 10 uM mixture of both the forward and reverse inner primers.
@@ -495,31 +512,31 @@ This section details generation of an ssSeq library. It assumes you have already
 16. Finally, use the calculator found [here]() to create 15 uL at 5 ng/uL of combined pool of DNA of each of the plate samples. This is the sample that you will submit to multiplexed next-generation sequencing.
 
 # Theoretical Overview
-ssSeq was developed initially to sequence combinatorial variants built and evaluated during a course of machine learning-assisted directed evolution (MLDE), though the method can also be used to sequence variants generated during a traditional directed evolution (DE) experiment. In the non-machine learning context, sequencing data can provide valuable biochemical/biophysical insight to inform future DE experiments. The data collected from traditional DE experiments can also be later used to build machine learning models. This section outlines the motivation behind the development of ssSeq as well as the molecular biology that goes into making it work.
+deSeq was developed initially to sequence combinatorial variants built and evaluated during a course of machine learning-assisted directed evolution (MLDE), though the method can also be used to sequence variants generated during a traditional directed evolution (DE) experiment. In the non-machine learning context, sequencing data can provide valuable biochemical/biophysical insight to inform future DE experiments. The data collected from traditional DE experiments can also be later used to build machine learning models. This section outlines the motivation behind the development of deSeq as well as the molecular biology that goes into making it work.
 
 ## Motivation
 Traditional directed evolution experiments require limited, if any, sequencing in order to be successful. When sequencing is performed for DE, Sanger sequencing is usually the method of choice, despite competing sequencing methods returning greater information content. This preference likely stems from the ease with which Sanger sequencing can be performed, the simplicity of Sanger sequencing data analysis, and the lower cost of outsourcing Sanger sequencing to commercial sequencing companies. The cost of Sanger sequencing scales linearly with the number of samples, however, so while the cost of sequencing a few variants in traditional DE is minor, sequencing the hundreds or thousands of protein variants generated during a MLDE experiment rapidly becomes cost-prohibitive for most laboratories.
 
 An alternate sequencing approach to Sanger is next-generation sequencing (NGS) Unlike Sanger sequencing, whose output is a single read of DNA, a single NGS run outputs millions of individual DNA reads, equivalent to a random sample from the input population of DNA. A single NGS run is roughly three orders of magnitude more expensive than a Sanger sequencing run, but molecular biology methods relying on molecular barcoding have been developed to spread reads from an NGS run -- and hence the cost of the run -- over a set of samples. Molecular barcoding involves incorporating a unique piece of DNA, the barcode, with a known sequence into a sample. This barcoded sample can then be combined with a set of other uniquely barcoded samples before being pooled and sequenced in the same NGS run, a process known as “multiplexed sequencing”. After sequencing is complete, the barcodes are used to deconvolute the sequences, and individual sequences are assigned to specific samples. Current commercially available kits allow for multiplexed sequencing of up to 96 samples, yielding tens to hundreds of thousands of individual sequences per sample. For labs that do not produce large quantities of samples for sequencing, commercial sequencing providers will charge around $80 per sample for a spot in a multiplexed sequencing run.
 
-Unfortunately, multiplexed sequencing with 96 samples is still an order of magnitude more expensive per sample than a single Sanger run, and so is also impractical for use in sequencing DE variants. Notably, however, the sequencing depth generated from a 96-barcode multiplexed sequencing run is much greater than what is needed for sequencing variants from MLDE experiments, where the individual samples sequenced are (ideally) monoclonal and the locations of mutations are generally known. Recognizing this unneccessary depth, ssSeq employs an inline barcoding approach to further spread the reads from multiplexed NGS over an even greater number of samples, further decreasing the per-sample sequencing cost. *Using this inline barcoding approach, ssSeq enables sequencing of up to 8 plates of variants at a total cost of $80 (when outsourcing to commercial sequencing companies), 10.4 cents per variant, ~130 reads per variant. Because the actual sequencing step can be outsourced, ssSeq is available to all labs, whether or not they have directe access to NGS.*
+Unfortunately, multiplexed sequencing with 96 samples is still an order of magnitude more expensive per sample than a single Sanger run, and so is also impractical for use in sequencing DE variants. Notably, however, the sequencing depth generated from a 96-barcode multiplexed sequencing run is much greater than what is needed for sequencing variants from MLDE experiments, where the individual samples sequenced are (ideally) monoclonal and the locations of mutations are generally known. Recognizing this unneccessary depth, deSeq employs an inline barcoding approach to further spread the reads from multiplexed NGS over an even greater number of samples, further decreasing the per-sample sequencing cost. *Using this inline barcoding approach, deSeq enables sequencing of up to 8 plates of variants at a total cost of $80 (when outsourcing to commercial sequencing companies), 10.4 cents per variant, ~130 reads per variant. Because the actual sequencing step can be outsourced, deSeq is available to all labs, whether or not they have directe access to NGS.*
 
 ## Molecular Biology
-ssSeq focuses the reads generated during NGS to DNA regions known to contain mutations (i.e. from site-saturation mutagenesis). The general procedure for ssSeq for a single variant (e.g. one well in a plate) is shown in the below figure.
+deSeq focuses the reads generated during NGS to DNA regions known to contain mutations (i.e. from site-saturation mutagenesis). The general procedure for deSeq for a single variant (e.g. one well in a plate) is shown in the below figure.
 
-![ssSeq One Well](./GitImages/SingleWellssSeq.png "ssSeq One Well")
+![deSeq One Well](./GitImages/SingleWelldeSeq.png "deSeq One Well")
 
 The above figure depicts a nested PCR, which is a *single* experimental step; it is broken down in the image for clarity. Mechanistically, this nested PCR works as follows:
 
 1. To begin, inner primers specific to the region of DNA known to contain mutations bind. Because these primers are specific to a target gene fragment, a different set must be designed by the user for each target region.
 2. In addition to the gene-specific region, the inner primers also contain a universal adapter "tail". These universal adapters are the same for each set of inner primers, and allow reuse of the same inline barcode primers (next step) regardless of the target DNA.
 3. PCR using the inner primers generates an amplicon containing both the variable regions and ends with universal sequences. Inline barcoding primers designed to be complementary to the universal sequences can then bind and further extend the amplicon. Importantly, the combination of forward and reverse inline barcodes is unique for each variant. The inline barcoding primers (also refered to as the "outer primers") also contain adapters for feeding the generated amplicon into multiplexed NGS sequencing.
-4. After step 3, ssSeq is complete for most labs. Addition of the adapters for multiplexed NGS sequencing allows the actual sequencing step to be outsourced.
+4. After step 3, deSeq is complete for most labs. Addition of the adapters for multiplexed NGS sequencing allows the actual sequencing step to be outsourced.
 
-Of course, the above steps detail the reaction for a single variant. The full ssSeq library preparation protocol performs the above steps for every target variant. The bigger picture workflow is depicted in the below figure:
+Of course, the above steps detail the reaction for a single variant. The full deSeq library preparation protocol performs the above steps for every target variant. The bigger picture workflow is depicted in the below figure:
 
-![ssSeq All Wells](./GitImages/AllWellsssSeq.png "ssSeq All Wells")
+![deSeq All Wells](./GitImages/AllWellsdeSeq.png "deSeq All Wells")
 
-The above image depicts ssSeq library prep for one plate, but the process is easily scaled to more than one plate just by using more than 96 barcode combinations. In step 1 in the above image, the individual PCR step is performed for all variants in a plate (or set of plates, depending on how many variants the user has), and inline barcoding is performed based on the position of each variant in a plate. Post PCR, the amplicons generated from the full plate are pooled and purified via gel extraction. At this point, the pool of amplicons is outsourced to a third party sequencing company, where a single Illumina barcode is attached to the pool using the illumina adapter sequences attached during the barcoding step. The pool is then run as a single sample in a multiplexed NGS run.
+The above image depicts deSeq library prep for one plate, but the process is easily scaled to more than one plate just by using more than 96 barcode combinations. In step 1 in the above image, the individual PCR step is performed for all variants in a plate (or set of plates, depending on how many variants the user has), and inline barcoding is performed based on the position of each variant in a plate. Post PCR, the amplicons generated from the full plate are pooled and purified via gel extraction. At this point, the pool of amplicons is outsourced to a third party sequencing company, where a single Illumina barcode is attached to the pool using the illumina adapter sequences attached during the barcoding step. The pool is then run as a single sample in a multiplexed NGS run.
 
-Once sequencing is complete, the third party sequencing company will return fastq or fastq.gz files to the submitter. These files contain a list of all sequences identified during NGS. Using the ssSeq software detailed in this repository, the list of sequences is programmatically mapped back to the original plate locations based on the unique combination of inline barcodes. From these deconvoluted sequences, the variant identity in each well of the submitted plate(s) is identified.
+Once sequencing is complete, the third party sequencing company will return fastq or fastq.gz files to the submitter. These files contain a list of all sequences identified during NGS. Using the deSeq software detailed in this repository, the list of sequences is programmatically mapped back to the original plate locations based on the unique combination of inline barcodes. From these deconvoluted sequences, the variant identity in each well of the submitted plate(s) is identified.
