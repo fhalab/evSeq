@@ -145,7 +145,7 @@ Unmatched Files in Folder:
 def log_info(m):
     
     # Define the message
-    message = "\n" + m
+    message = "\n\n" + m
     
     # Write the message
     write_to_log(message)
