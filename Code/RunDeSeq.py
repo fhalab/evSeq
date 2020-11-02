@@ -1,4 +1,5 @@
 # Import deSeq objects
+from .Logging import log_info
 from .InputValidation import check_args
 from .InputProcessing import load_all, unzip_gz
 from .SeqPair import SeqPair
@@ -67,6 +68,8 @@ def qc_seqpairs(all_seqpairs, read_length, length_cutoff, average_q_cutoff):
         # Get the most common read length. We will assign this as our read length
         all_readlengths = np.array([seqpair.read_lengths() for seqpair in all_seqpairs])
         read_length = ss.mode(all_readlengths, axis = None, nan_policy = "omit").mode[0]
+        
+        log_info(f"A read length of {read_length} as calculated for this run")
         
     # Calculate the read filter
     read_filter = read_length * length_cutoff
