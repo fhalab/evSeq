@@ -269,7 +269,7 @@ class Well():
         
         # Define a dataframe to use for dead wells
         dead_df = pd.DataFrame([[self.index_plate, self.plate_nickname,
-                                 self.well, "#DEAD#", unit_type, 0,
+                                 self.well, "#DEAD#", "#DEAD#", 0,
                                  len(self.non_dud_alignments), "#DEAD#"]],
                                columns = columns)
         

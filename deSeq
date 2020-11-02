@@ -129,7 +129,7 @@ def main():
 #        log_error("\nUnhandled exception encountered: '{}'".format(e))
     
     # Log that we have successfully completed the run
-    log_info("\nRun completed. Log may contain warnings.")
+    log_info("Run completed. Log may contain warnings.")
     
 # Run main()
 if __name__ == "__main__":
