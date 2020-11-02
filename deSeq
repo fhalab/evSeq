@@ -123,10 +123,10 @@ def main():
     log_init(CL_ARGS)    
 
     # Run ssSeq
-    try:
-        run_deseq(CL_ARGS)
-    except Exception as e:
-        log_error("\nUnhandled exception encountered: '{}'".format(e))
+#    try:
+    run_deseq(CL_ARGS)
+#    except Exception as e:
+#        log_error("\nUnhandled exception encountered: '{}'".format(e))
     
     # Log that we have successfully completed the run
     log_info("\nRun completed. Log may contain warnings.")

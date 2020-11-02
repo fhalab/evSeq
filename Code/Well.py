@@ -267,12 +267,15 @@ class Well():
         columns = ("IndexPlate", "Plate", "Well",  unit_pos, unit_type,
                    "AlignmentFrequency", "WellSeqDepth", "Flag")
         
+        # Define a dataframe to use for dead wells
+        dead_df = pd.DataFrame([[self.index_plate, self.plate_nickname,
+                                 self.well, "#DEAD#", unit_type, 0,
+                                 len(self.non_dud_alignments), "#DEAD#"]],
+                               columns = columns)
+        
         # If there are no reads, return that this is a dead well
         if not self.usable_reads:
-            output_df = pd.DataFrame([[self.index_plate, self.plate_nickname, self.well, 
-                                       "#DEAD#", unit_type, 0, len(self.non_dud_alignments), "#DEAD#"]],
-                                     columns = columns)
-            return output_df, output_df
+            return dead_df, dead_df
         
         # If there are no variable positions, return wild type with the average
         # number of counts
@@ -283,7 +286,7 @@ class Well():
             
             # Create an output dataframe and return
             output_df = pd.DataFrame([[self.index_plate, self.plate_nickname, self.well, 
-                                       "#PARENT#", unit_type, 1 - variable_thresh,
+                                       "#PARENT#", "#PARENT#", 1 - variable_thresh,
                                        average_counts_by_position, "#PARENT#"]],
                                      columns = columns)
             return output_df, output_df
@@ -294,6 +297,11 @@ class Well():
 
         # Identify non-zero positions
         nonzero_inds = np.argwhere(variable_freqs != 0)
+        
+        # If there are no non-zero positions with our desired reads, this well is
+        # dead. 
+        if nonzero_inds.shape[0] == 0:
+            return dead_df, dead_df
     
         # Pull the variable amino acid positons, their frequencies/counts, and 
         # the associated amino acids. Also update positions for output: the offset
@@ -417,7 +425,8 @@ class Well():
         assert unique_counts.max() <= len(paired_alignment_inds), "Counting error"
         
         # Get a frequency array
-        unique_freqs = unique_counts / unique_counts.sum()
+        seq_depth = unique_counts.sum()
+        unique_freqs = unique_counts / seq_depth
 
         # Loop over the unique combos and format for output
         output = [None] * len(unique_counts)
@@ -458,8 +467,8 @@ class Well():
 
             # Record output
             output[unique_counter] = [self.index_plate, self.plate_nickname, self.well,
-                                     combo_name, simple_combo, n_positions, unique_freqs[unique_counter],
-                                      unique_counts[unique_counter], new_seq]
+                                     combo_name, simple_combo, n_positions,
+                                     unique_freqs[unique_counter], seq_depth, new_seq]
 
         # Convert output to a dataframe
         return pd.DataFrame(output, columns = columns)
