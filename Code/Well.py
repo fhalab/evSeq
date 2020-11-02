@@ -283,8 +283,8 @@ class Well():
             
             # Create an output dataframe and return
             output_df = pd.DataFrame([[self.index_plate, self.plate_nickname, self.well, 
-                                       "#WT#", unit_type, 1 - variable_thresh,
-                                       average_counts_by_position, "#WT#"]],
+                                       "#PARENT#", unit_type, 1 - variable_thresh,
+                                       average_counts_by_position, "#PARENT#"]],
                                      columns = columns)
             return output_df, output_df
                 
@@ -373,7 +373,7 @@ class Well():
             
             # Create a dataframe and return
             return pd.DataFrame([[self.index_plate, self.plate_nickname, self.well,
-                                  "#DEAD#", "#DEAD#", n_paired, 0, 0, "#DEAD#"]],
+                                  "#DEAD#", "#DEAD#", 0, 0, n_paired, "#DEAD#"]],
                                 columns = columns)
         
         # Get the counts for the paired alignment seqpairs
@@ -387,7 +387,7 @@ class Well():
             
             # Create a dataframe and return
             return pd.DataFrame([[self.index_plate, self.plate_nickname, self.well,
-                                  "#WT#", "#WT#", 0, 1 - variable_thresh,
+                                  "#PARENT#", "#PARENT#", 0, 1 - variable_thresh,
                                   average_counts_by_position, reference_sequence]],
                                 columns = columns)
 
@@ -406,8 +406,8 @@ class Well():
             
             # Create a dataframe and return
             return pd.DataFrame([[self.index_plate, self.plate_nickname, self.well,
-                                  "#DEAD#", "#DEAD#", n_paired, 0,
-                                  average_counts_by_position, "#DEAD#"]],
+                                  "#DEAD#", "#DEAD#", 0, 0,
+                                  n_passing, "#DEAD#"]],
                                 columns = columns)
 
         # Get the unique sequences that all passed QC
@@ -502,7 +502,7 @@ class Well():
     def format_alignments(self):
         
         # Write a function that formats all alignments in a well
-        formatted_alignments = [""] * int(len(self.all_seqpairs) * 3)
+        formatted_alignments = [""] * int(len(self.all_seqpairs) * 5)
         alignment_counter = 0
         for pair_ind, seqpair in enumerate(self.all_seqpairs):
 
@@ -511,17 +511,21 @@ class Well():
             alignment_counter += 1
 
             # If we are using the forward alignment, add to the list
-            if seqpair.use_f_alignment:
+            if seqpair.use_f:
+                formatted_alignments[alignment_counter] = "Forward:"
+                alignment_counter += 1
                 formatted_alignments[alignment_counter] = pairwise2.format_alignment(*seqpair.f_alignment)
                 alignment_counter += 1
 
             # If we are using the reverse alignment, add to the list
-            if seqpair.use_r_alignment:
+            if seqpair.use_r:
+                formatted_alignments[alignment_counter] = "Reverse:"
+                alignment_counter += 1
                 formatted_alignments[alignment_counter] = pairwise2.format_alignment(*seqpair.r_alignment)
                 alignment_counter += 1
 
         # Join as one string and return with plate and well information
-        return (self.alignment_loc, "\n".join(formatted_alignments))
+        return (self.alignment_loc, "\n".join(formatted_alignments[:alignment_counter]))
         
         
     # Define properties
