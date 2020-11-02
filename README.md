@@ -26,8 +26,8 @@ Table of Contents
     - [Post Installation](#post-installation)
 - [Using deSeq](#using-deseq)
   - [Launching the GUI](#launching-the-gui)
-    - [Open GUI with Command Line](#open-gui-with-command-line)
     - [Open GUI with Double-Click](#open-gui-with-double-click)
+    - [Open GUI with Command Line](#open-gui-with-command-line)
   - [Running deSeq with the GUI](#running-deseq-with-the-gui)
   - [Working through Command Line](#working-through-command-line)
   - [Example Data](#example-data)
@@ -35,18 +35,6 @@ Table of Contents
     - [Permission Denied](#permission-denied)
     - [Improper Shell Configuration](#improper-shell-configuration)
     - [Adding `conda` and `python` to path for Windows users who had already installed python](#adding-conda-and-python-to-path-for-windows-users-who-had-already-installed-python)
-- [Understanding deSeq Output](#understanding-deseq-output)
-  - [OutputCounts](#outputcounts)
-    - [MaxInfo.csv](#maxinfocsv)
-    - [VariantInfo.csv](#variantinfocsv)
-    - [SummaryInfo.csv](#summaryinfocsv)
-  - [Platemaps](#platemaps)
-  - [Qualities](#qualities)
-  - [Alignments](#alignments)
-  - [AACountsFrequencies](#aacountsfrequencies)
-  - [BPCountsFrequencies](#bpcountsfrequencies)
-  - [ConsensusSequences](#consensussequences)
-  - [deSeqLog](#deseqlog)
 - [Program Arguments](#program-arguments)
   - [Required Arguments](#required-arguments)
     - [refseq](#refseq)
@@ -54,6 +42,13 @@ Table of Contents
       - [Detailed refseq](#detailed-refseq)
     - [folder](#folder)
   - [Optional Arguments](#optional-arguments)
+- [Understanding deSeq Output](#understanding-deseq-output)
+  - [OutputCounts](#outputcounts)
+  - [Platemaps](#platemaps)
+  - [Qualities](#qualities)
+  - [ParsedFilteredFastqs](#parsedfilteredfastqs)
+  - [deSeqLog](#deseqlog)
+  - [Alignments](#alignments)
 - [Biological Protocols](#biological-protocols)
   - [Inner Primer Design](#inner-primer-design)
   - [Library Preparation](#library-preparation)
@@ -428,13 +423,17 @@ To use deSeq, you need to amplify the region that you want to sequence as well a
 2. Choose the priming sites and design your primer. Aim for a 58 C melting temperature, end on a G or a C, and check secondary structure! You need at least 6 bp open on the 3’ terminus of your primer for efficient priming. Keep in mind that the deSeq sequence machinery takes up 27 bp of the forward read and 26 bp of the reverse read. For a 150 bp read, this thus means that the site that you want to sequence must be within 123 bp (223 for a 250 bp read) of the 5’-most extent of your forward primer, and 124 bp (224 for a 250 bp read) of the 5’-most extent of your reverse primer.
 3. Append the below adapter sequences to the 5’ terminus of your primers:
 
-	F: 5’ - CACCCAAGACCACTCTCCGG – 3’
+```
+  F: 5’ - CACCCAAGACCACTCTCCGG – 3’ 
 	R: 5’ - CGGTGTGCGAAGTAGGTGC – 3’
+```
 
 4. After you have appended the adapters, check secondary structure again to make sure you still have open binding sites on the complete primers. Your final primers will look something like the below
 
+```
 	F: 5’ - CACCCAAGACCACTCTCCGGXXXXXXXXXXXXXXXX – 3’
 	R: 5’ - CGGTGTGCGAAGTAGGTGCXXXXXXXXXXXXXXXX – 3’
+```
 
 where "X" signifes the seed region binding to your target gene.
 
