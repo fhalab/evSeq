@@ -166,8 +166,7 @@ class SeqPair():
         
         # Grab the reference sequence, the aligned sequences, 
         # and the quality scores
-        refseq = self.f_alignment.seqA
-        reflength = len(refseq)
+        reflength = len(self.f_alignment.seqA)
         forward_seq = self.f_alignment.seqB
         reverse_seq = self.r_alignment.seqB
         forward_qual = np.array(self.f_adapterless.letter_annotations["phred_quality"])
@@ -182,6 +181,12 @@ class SeqPair():
         # make any adjustments
         pre_reverse_dash_ind = self.last_dash
         first_r_char_ind = pre_reverse_dash_ind + 1
+
+        # Make an array for storing potential counts. By default everything has
+        # a potential count of 1. If we have overlapping forward and reverse 
+        # reads, then there is the potential to have a count of 2 if the forward
+        # and reverse agree
+        potential_counts = np.ones(reflength, dtype = int)
 
         # See if the forward and reverse overlap. If they don't overlap. Then the composite
         # is just the forward DNA + dashes + reverse DNA
@@ -233,17 +238,23 @@ class SeqPair():
             middle_seq = [None] * middle_size
             middle_qual = np.zeros(middle_size, dtype = int)
             quality_comparison = np.greater(middle_f_qual, middle_r_qual).astype(int)
+            count_inds = np.arange(first_r_char_ind, post_forward_dash_ind)
             for i in range(middle_size):
 
-                # If the reverse read has better quality, use that
-                if quality_comparison[i]:
-                    middle_seq[i] = middle_r_seq[i]
-                    middle_qual[i] = middle_r_qual[i]
+                # If the characters in the forward and reverse reads agree, add
+                # an extra count to the potential count matrix
+                if middle_r_seq[i] == middle_f_seq[i]:
+                    potential_counts[count_inds[i]] += 1
 
                 # If the forward read has better quality, use that
-                else:
+                if quality_comparison[i]:
                     middle_seq[i] = middle_f_seq[i]
                     middle_qual[i] = middle_f_qual[i]
+
+                # If the reverse read has better quality, use that
+                else:
+                    middle_seq[i] = middle_r_seq[i]
+                    middle_qual[i] = middle_r_qual[i]
 
             # Build the overall composite sequence and qualities. 
             composite_seq = "".join((only_f_seq, "".join(middle_seq), only_r_seq))
@@ -253,7 +264,7 @@ class SeqPair():
         assert reflength == len(composite_seq)
         assert reflength == len(composite_qual)
             
-        return composite_seq, composite_qual
+        return composite_seq, composite_qual, potential_counts
     
     # Build a pairwise composite alignment for non-paired ends
     def build_unpaired_composite_alignment(self):
@@ -267,6 +278,10 @@ class SeqPair():
             # Get the length of the reference sequence
             refseq = self.f_alignment.seqA
             composite_length = len(refseq)
+            
+            # Get the potnetial counts. It's just "1" for the length of the
+            # reference sequence. 
+            potential_counts = np.ones(composite_length, dtype = int)
             
             # The composite sequence is just the aligned sequence
             composite_seq = self.f_alignment.seqB
@@ -284,6 +299,10 @@ class SeqPair():
             refseq = self.r_alignment.seqA
             composite_length = len(refseq)
             
+            # Get the potnetial counts. It's just "1" for the length of the
+            # reference sequence. 
+            potential_counts = np.ones(composite_length, dtype = int)
+            
             # The composite sequence is just the aligned sequence
             composite_seq = self.r_alignment.seqB
             
@@ -298,7 +317,7 @@ class SeqPair():
         assert composite_length == len(composite_seq)
         assert composite_length == len(composite_qual)
             
-        return composite_seq, composite_qual
+        return composite_seq, composite_qual, potential_counts
     
     # Write a function that builds a composite sequence regardless of alignment type
     def build_composite_alignment(self):
@@ -315,7 +334,7 @@ class SeqPair():
     def analyze_alignment(self, inframe_ind, ref_len, n_aas, qual_thresh):
         
         # Pull the composite alignment for the sequence
-        composite_sequence, composite_qual = self.build_composite_alignment()
+        composite_sequence, composite_qual, potential_counts = self.build_composite_alignment()
 
         # Create matrices in which to store counts
         bp_counts = np.zeros([6, ref_len], dtype = int)
@@ -328,12 +347,13 @@ class SeqPair():
 
             # Only record counts if we meet a quality threshold
             if qual >= qual_thresh:
-                bp_counts[BP_TO_IND[bp], base_ind] += 1
+                bp_counts[BP_TO_IND[bp], base_ind] += potential_counts[base_ind]
 
         # Initialize variables for holding codon information
         aa_counter = 0
         record_aa = True
         codon = [None] * 3
+        codon_counts = np.zeros(3, dtype = int)
         codon_counter = 0
         
         # Loop over the remaining sequence that is in frame
@@ -345,8 +365,9 @@ class SeqPair():
 
             # Only record counts if we meet a quality threshold
             if qual >= qual_thresh:
-                bp_counts[BP_TO_IND[bp], base_ind] += 1
+                bp_counts[BP_TO_IND[bp], base_ind] += potential_counts[base_ind]
                 codon[codon_counter] = bp
+                codon_counts[codon_counter] += potential_counts[base_ind]
 
             # If we don't meet a quality threshold, then throw a flag to
             # not record the aa in this codon
@@ -377,22 +398,25 @@ class SeqPair():
                     else:
                         aa = CODON_TABLE[joined_codon]
                     
-                    # Add to counts
-                    aa_counts[AA_TO_IND[aa], aa_counter] += 1
+                    # Add to counts. This is the minimum number of counts in 
+                    # the codon counts
+                    aa_counts[AA_TO_IND[aa], aa_counter] += np.min(codon_counts)
 
                 # Reset all codon related variables and increment the aa counter
                 aa_counter += 1
                 record_aa = True
                 codon = [None] * 3
+                codon_counts = np.zeros(3, dtype = int)
                 codon_counter = 0
+                
             
         # Run a check on the count. A sum across the 0th axis should
         # return all ones and zeros, as we should never count two bases or two
         # amino acids in one position
         bp_test = np.sum(bp_counts, axis = 0)
         aa_test = np.sum(aa_counts, axis = 0)
-        assert np.all(np.logical_or(bp_test == 1, bp_test == 0)), "Double counting bases"
-        assert np.all(np.logical_or(aa_test == 1, aa_test == 0)), "Double counting amino acids"
+        assert np.all(np.logical_or(np.logical_or(bp_test == 2, bp_test == 1), bp_test == 0)), f"Overcounting bases: {np.max(bp_test)}"
+        assert np.all(np.logical_or(np.logical_or(aa_test == 2, aa_test == 1), aa_test == 0)), f"Overcounting amino acids: {np.max(aa_test)}"
             
         # Return the filled out count matrices
         return bp_counts, aa_counts
