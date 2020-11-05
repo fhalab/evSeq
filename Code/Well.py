@@ -222,7 +222,7 @@ class Well():
         difference_from_expectation_absolute = np.abs(by_unit_frequency - expected_array[:n_units])
         average_difference_from_expectation = np.sum(difference_from_expectation_absolute, axis = 0)/2
 
-        # Find positions that have differences greater than the threshold
+        # Find positions that have differences greater than the threshold.
         identified_variable_positions = np.argwhere(average_difference_from_expectation > 
                                                     variable_thresh).flatten()
         identified_variable_positions.sort()
@@ -312,8 +312,9 @@ class Well():
         variable_units = unit_array[nonzero_inds[:, 1]]
         nonzero_freqs = variable_freqs[nonzero_inds[:, 0], nonzero_inds[:, 1]]
         
-        # We cannot have more counts than seqpairs
-        assert variable_total_counts.max() <= len(self.non_dud_alignments), "Counting error"
+        # We cannot have more counts than 2x the number of seqpairs (2x would 
+        # occur if every sequence overlapped and passed QC)
+        assert variable_total_counts.max() <= (2 * len(self.non_dud_alignments)), "Counting error"
         
         # Format for output and convert to a dataframe
         output_formatted = [[self.index_plate, self.plate_nickname, self.well, 
@@ -402,11 +403,11 @@ class Well():
         # Get the positions with variety
         variable_position_counts = paired_alignment_counts[:, :, variable_positions]
 
-        # Make sure all passed QC. This means that the sum over the last two indices
-        # is equal to the number of amino acids. This works because amino acids are only
-        # counted if they pass QC: for all to pass QC they must all have an index at some
-        # position
-        passing_qc = variable_position_counts[variable_position_counts.sum(axis = (1, 2)) == n_positions]
+        # Make sure all passed QC. This means that each variable position has at least
+        # one count. This works because amino acids are only counted if they pass QC:
+        # for all to pass QC they must all have a count at some position
+        all_pos_at_least_one_count = np.all(variable_position_counts.sum(axis=1) >= 1, axis = 1)
+        passing_qc = variable_position_counts[all_pos_at_least_one_count]
         
         # If too few pass QC, return a dead dataframe
         n_passing = len(passing_qc)
@@ -434,7 +435,7 @@ class Well():
 
             # Get the index profile. This maps each position to a unit position
             # in either `BP_ARRAY` or `AA_ARRAY`
-            index_profile = np.argwhere(np.transpose(unique_binary_combo == 1))
+            index_profile = np.argwhere(np.transpose(unique_binary_combo > 0))
 
             # Get the position and amino acid.
             unique_position_array = variable_positions[index_profile[:, 0]]
