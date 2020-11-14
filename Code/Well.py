@@ -205,12 +205,18 @@ class Well():
     def identify_variable_positions_generic(by_unit_frequency, expected_array, 
                                             variable_thresh, expected_variable_positions):
         
-        # Compare the unit frequency to the expected array.
-        # The furthest difference is 2 (e.g. if there are no reads matching to the
-        # expected sequence), so take the absolute value is taken and the full
-        # array divided by 2 to scale to a "percent different"
-        difference_from_expectation_absolute = np.abs(by_unit_frequency - expected_array)
-        average_difference_from_expectation = np.sum(difference_from_expectation_absolute, axis = 0)/2
+        # Get the total frequencies of each well
+        total_frequencies = by_unit_frequency.sum(axis=0)
+
+        # Assert that it is all 1 or 0
+        total_length = len(total_frequencies)
+        assert np.all(np.logical_or(np.isclose(total_frequencies, np.ones(total_length)),
+                                    np.isclose(total_frequencies, np.zeros(total_length))))
+
+        # The only way we can have a total frequency of 0 is if we are in a gap region. 
+        # This is because we are explicitly ignoring gaps in this calculation. The next
+        # code identifies gaps
+        gap_positions = total_frequencies == 0
         
         # Get the length of the unit frequency first axis
         n_units = by_unit_frequency.shape[0]
@@ -221,6 +227,9 @@ class Well():
         # array divided by 2 to scale to a "percent different"
         difference_from_expectation_absolute = np.abs(by_unit_frequency - expected_array[:n_units])
         average_difference_from_expectation = np.sum(difference_from_expectation_absolute, axis = 0)/2
+
+        # Set the gap positions to have a difference of 0
+        average_difference_from_expectation[gap_positions] = 0
 
         # Find positions that have differences greater than the threshold.
         identified_variable_positions = np.argwhere(average_difference_from_expectation > 
@@ -277,9 +286,20 @@ class Well():
         if not self.usable_reads:
             return dead_df, dead_df
         
+        # If there are no forward or reverse reads in the well, then throw a 
+        # flag as a warning to the user
+        flags = []
+        if not any([seqpair.use_f_alignment for seqpair in self.non_dud_alignments]):
+            flags.append("No usable forward alignments.")
+        if not any([seqpair.use_r_alignment for seqpair in self.non_dud_alignments]):
+            flags.append("No usable reverse alignments.")
+        
         # If there are no variable positions, return wild type with the average
         # number of counts
         if len(all_variable_positions) == 0:
+            
+            # Update flags
+            flags.append("#PARENT#")
             
             # Get the mean read depth over all positions.
             average_counts_by_position = int(np.mean(total_count_array))
@@ -287,7 +307,7 @@ class Well():
             # Create an output dataframe and return
             output_df = pd.DataFrame([[self.index_plate, self.plate_nickname, self.well, 
                                        "#PARENT#", "#PARENT#", 1 - variable_thresh,
-                                       average_counts_by_position, "#PARENT#"]],
+                                       average_counts_by_position, " -- ".join(flags)]],
                                      columns = columns)
             return output_df, output_df
                 
@@ -317,11 +337,23 @@ class Well():
         assert variable_total_counts.max() <= (2 * len(self.non_dud_alignments)), "Counting error"
         
         # Format for output and convert to a dataframe
-        output_formatted = [[self.index_plate, self.plate_nickname, self.well, 
-                           position, unit, freq, depth, flag] for 
-                           position, unit, freq, depth, flag in 
-                           zip(variable_positions, variable_units, nonzero_freqs,
-                              variable_total_counts, variable_expectation)]
+        output_formatted = [None] * len(variable_positions)
+        for out_ind, (position, unit, freq, depth, exp_flag) in enumerate(zip(variable_positions, 
+                                                                              variable_units,
+                                                                              nonzero_freqs,
+                                                                              variable_total_counts,
+                                                                              variable_expectation)):
+            
+            # Determine the final flags
+            final_flags = flags.copy()
+            final_flags.append(exp_flag)
+            
+            # Record output
+            output_formatted[out_ind] = [self.index_plate, self.plate_nickname,
+                                         self.well, position, unit, freq, depth,
+                                         " -- ".join(final_flags)]
+            
+        # Convert output to a dataframe
         output_df = pd.DataFrame(output_formatted, columns = columns)
         
         # Get the max output

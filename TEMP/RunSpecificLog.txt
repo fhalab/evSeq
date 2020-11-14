@@ -1,0 +1,39 @@
+
+
+ADFADF
+----------------------------------------------------------------------------
+Required Arguments:
+    refseq: ./deSeqValidation/TestRefSeq.csv
+    folder: ./deSeqValidation/
+    
+Input/Output Arguments:
+    fastq_r: 
+    output: ./TEMP/
+    detailed_refseq: True
+    analysis_only: False
+    stop_after_fastq: False
+    return_alignments: False
+    
+Read Analysis:
+    average_q_cutoff: 25
+    bp_q_cutoff: 30
+    length_cutoff: 0.9
+
+Position Identification:
+    variable_thresh: 0.1
+    variable_count: 1
+    
+Advanced:
+    jobs: 23
+    read_length: None
+
+Logged Messages:
+    
+Identified Seq File Pairs:
+    Forward Reads: ./deSeqValidation/Test_R1_001.fastq
+    Reverse Reads: ./deSeqValidation/Test_R2_001.fastq
+    
+Unmatched Files in Folder:
+    
+
+A read length of 150 as calculated for this run

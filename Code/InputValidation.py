@@ -244,6 +244,11 @@ def check_args(cl_args):
         
         # Write the error and terminate the program
         log_error("--bp_q_cutoff must be an integer greater than 0.")
+        
+    # Confirm that the average q cutoff is less than or equal to the basepair
+    # one
+    if cl_args["average_q_cutoff"] > cl_args["bp_q_cutoff"]:
+        log_error("--average_q_cutoff must be less than or equal to --bp_q_cutoff")
     
     # Confirm that the length cutoff is a float between 0 and 1
     if not ( 0 <= cl_args["length_cutoff"] <= 1):
