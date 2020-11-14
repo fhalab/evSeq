@@ -1,5 +1,5 @@
 # Import deSeq objects
-from .Logging import log_info
+from .Logging import log_info, log_warning
 from .InputValidation import check_args
 from .InputProcessing import load_all, unzip_gz
 from .SeqPair import SeqPair
@@ -69,7 +69,7 @@ def qc_seqpairs(all_seqpairs, read_length, length_cutoff, average_q_cutoff):
         all_readlengths = np.array([seqpair.read_lengths() for seqpair in all_seqpairs])
         read_length = ss.mode(all_readlengths, axis = None, nan_policy = "omit").mode[0]
         
-        log_info(f"A read length of {read_length} as calculated for this run")
+        log_info(f"A read length of {read_length} was calculated for this run")
         
     # Calculate the read filter
     read_filter = read_length * length_cutoff
@@ -113,41 +113,42 @@ def assign_seqpairs_to_well(filtered_seqpairs, bc_to_ref_plate_well, savedir):
 # Write a function that can process a single well
 def process_well(well, return_alignments = False, bp_q_cutoff = 30, 
                  variable_thresh = 0.1, variable_count = 1):
-    try:
-        # Align
-        well.align()
+    
+    # Define a frequency warning variable
+    freq_warning = ""
+    
+    # Align
+    well.align()
 
-        # Analyze alignments. 
-        has_reads = well.analyze_alignments(bp_q_cutoff, variable_count)
+    # Analyze alignments. 
+    has_reads = well.analyze_alignments(bp_q_cutoff, variable_count)
 
-        # If we don't have any reads that passed
-        # QC, skip straight to analyzing counts. 
-        if has_reads:
-            # Build count matrices
-            well.build_unit_count_matrices()
+    # If we don't have any reads that passed
+    # QC, skip straight to analyzing counts. 
+    if has_reads:
+        # Build count matrices
+        well.build_unit_count_matrices()
 
-            # Identify variable positions
-            well.identify_variable_positions(variable_thresh)
+        # Identify variable positions
+        freq_warning = well.identify_variable_positions(variable_thresh)
 
-        # Analyze reads with decoupled counts
-        well.analyze_unpaired_counts(variable_thresh)
+    # Analyze reads with decoupled counts
+    well.analyze_unpaired_counts(variable_thresh)
 
-        # Analyze reads with coupled counts
-        well.analyze_paired_counts(variable_thresh, variable_count)
+    # Analyze reads with coupled counts
+    well.analyze_paired_counts(variable_thresh, variable_count)
 
-        # If we are returning alignments, generate them
-        if return_alignments:
-            formatted_alignments = well.format_alignments()
-        else:
-            formatted_alignments = None
+    # If we are returning alignments, generate them
+    if return_alignments:
+        formatted_alignments = well.format_alignments()
+    else:
+        formatted_alignments = None
 
-        # Return relevant information for downstream processing
-        return (well.unpaired_bp_output, well.unpaired_bp_output_max,
-                well.unpaired_aa_output, well.unpaired_aa_output_max,
-                well.paired_bp_output, well.paired_aa_output, 
-                formatted_alignments) 
-    except:
-        print(well.index_plate, well.well)
+    # Return relevant information for downstream processing
+    return (well.unpaired_bp_output, well.unpaired_bp_output_max,
+            well.unpaired_aa_output, well.unpaired_aa_output_max,
+            well.paired_bp_output, well.paired_aa_output, 
+            formatted_alignments, freq_warning) 
     
 def format_and_save_outputs(well_results, saveloc, return_alignments):
 
@@ -155,7 +156,7 @@ def format_and_save_outputs(well_results, saveloc, return_alignments):
     unpacked_output = tuple(zip(*well_results))
 
     # Concatenate all dataframes
-    full_dfs = tuple(pd.concat(df_list, ignore_index = True) for df_list in unpacked_output[:-1])
+    full_dfs = tuple(pd.concat(df_list, ignore_index = True) for df_list in unpacked_output[:-2])
 
     # Get just the max of each of the paired outputs
     max_outs = [None, None]
@@ -186,9 +187,15 @@ def format_and_save_outputs(well_results, saveloc, return_alignments):
 
     # Loop over and save all alignments if asked to do so
     if return_alignments:
-        for savename, savestr in unpacked_output[-1]:
+        for savename, savestr in unpacked_output[-2]:
             with open(savename, "w") as f:
-                f.write(savestr)    
+                f.write(savestr)   
+                
+    # Report all warnings
+    for warning in unpacked_output[-1]:
+        if warning != "":
+            log_warning(f"High mutational frequency in {warning}. You may "
+                        "want to check alignments for accuracy.") 
 
 # Write a function that runs deSeq
 def run_deseq(cl_args):
@@ -238,8 +245,8 @@ def run_deseq(cl_args):
     # Multiprocess to handle wells
     with Pool(cl_args["jobs"]) as p:
         processed_well_results = list(tqdm(p.imap_unordered(complete_multiprocessor, all_wells),
-                                      desc = "Processing wells:", total = len(all_wells)))
-        
+                                      desc = "Processing wells:", total = len(all_wells)))  
+    
     # Handle processed output. This saves the summary dataframes, generates 
     # platemaps, and saves alignments (if requested)
     print("Saving outputs to disk...")
