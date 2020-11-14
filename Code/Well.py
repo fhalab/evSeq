@@ -241,12 +241,18 @@ class Well():
         all_found = np.unique(np.concatenate((expected_variable_positions, 
                                               identified_variable_positions)))
         all_found.sort()
-        
+                
         # Determine if the variation is expected or not. Return this along with all_found
         expected_variation = np.array(["" if var in expected_set else "Unexpected Variation"
                                        for var in all_found])
         
-        return all_found, expected_variation
+        # Calculate what percentage of possibly mutated positions are variable
+        total_possible_positions = sum(np.logical_not(gap_positions))
+        n_variable_positions = len(all_found)
+        percentage_mutated = n_variable_positions / total_possible_positions
+        assert percentage_mutated <= 1
+        
+        return all_found, expected_variation, percentage_mutated
         
     # Write a function for identifying variable positions in both the amino acid
     # and basepair counts
@@ -255,15 +261,23 @@ class Well():
         # Find the variable basepair and amino acid positions. Note that gaps are not used 
         # when finding variable positions
         (self._all_variable_bp_positions, 
-         self._variable_bp_type) = Well.identify_variable_positions_generic(self.unit_bp_freqs_no_gaps,
-                                                                            self.expected_bps[:-1],
-                                                                            variable_thresh,
-                                                                           self.expected_variable_bp_positions)
+         self._variable_bp_type,
+         percent_bp_mutated) = Well.identify_variable_positions_generic(self.unit_bp_freqs_no_gaps,
+                                                                        self.expected_bps[:-1],
+                                                                        variable_thresh,
+                                                                        self.expected_variable_bp_positions)
         (self._all_variable_aa_positions,
-         self._variable_aa_type) = Well.identify_variable_positions_generic(self.unit_aa_freqs_no_gaps,
-                                                                            self.expected_aas[:-1],
-                                                                            variable_thresh,
-                                                                           self.expected_variable_aa_positions)
+         self._variable_aa_type, _) = Well.identify_variable_positions_generic(self.unit_aa_freqs_no_gaps,
+                                                                               self.expected_aas[:-1],
+                                                                               variable_thresh,
+                                                                               self.expected_variable_aa_positions)
+         
+         # If there are >10% of positions mutated, throw a warning. The alignment
+         # may not work correctly
+        if percent_bp_mutated > 0.1:
+            return f"{self.index_plate}-{self.well}"
+        else:
+            return ""
     
     # Write a function that analyzes and reports unpaired counts
     def analyze_unpaired_counts_generic(self, unit_freq_array, total_count_array, 
@@ -394,12 +408,12 @@ class Well():
         # Define output columns
         columns = ("IndexPlate", "Plate", "Well", "VariantCombo", "SimpleCombo",
                    "VariantsFound", "AlignmentFrequency", "WellSeqDepth",
-                   "VariantSequence")
+                   "VariantSequence", "Flags")
         
         # If there are no usable reads, return a dead dataframe
         if not self.usable_reads:
             return pd.DataFrame([[self.index_plate, self.plate_nickname, self.well,
-                                  "#DEAD#", "#DEAD#", 0, 0, 0, "#DEAD#"]], columns = columns)
+                                  "#DEAD#", "#DEAD#", 0, 0, 0, "#DEAD#", "No usable reads"]], columns = columns)
         
         # Get the number of positions
         n_positions = len(variable_positions)            
@@ -414,7 +428,7 @@ class Well():
             
             # Create a dataframe and return
             return pd.DataFrame([[self.index_plate, self.plate_nickname, self.well,
-                                  "#DEAD#", "#DEAD#", 0, 0, n_paired, "#DEAD#"]],
+                                  "#DEAD#", "#DEAD#", 0, 0, n_paired, "#DEAD#", "Too few paired reads"]],
                                 columns = columns)
         
         # Get the counts for the paired alignment seqpairs
@@ -429,7 +443,7 @@ class Well():
             # Create a dataframe and return
             return pd.DataFrame([[self.index_plate, self.plate_nickname, self.well,
                                   "#PARENT#", "#PARENT#", 0, 1 - variable_thresh,
-                                  average_counts_by_position, reference_sequence]],
+                                  average_counts_by_position, reference_sequence, "No variable positions detected"]],
                                 columns = columns)
 
         # Get the positions with variety
@@ -448,7 +462,7 @@ class Well():
             # Create a dataframe and return
             return pd.DataFrame([[self.index_plate, self.plate_nickname, self.well,
                                   "#DEAD#", "#DEAD#", 0, 0,
-                                  n_passing, "#DEAD#"]],
+                                  n_passing, "#DEAD#", "Too few paired reads pass QC"]],
                                 columns = columns)
 
         # Get the unique sequences that all passed QC
@@ -501,7 +515,7 @@ class Well():
             # Record output
             output[unique_counter] = [self.index_plate, self.plate_nickname, self.well,
                                      combo_name, simple_combo, n_positions,
-                                     unique_freqs[unique_counter], seq_depth, new_seq]
+                                     unique_freqs[unique_counter], seq_depth, new_seq, None]
 
         # Convert output to a dataframe
         return pd.DataFrame(output, columns = columns)
