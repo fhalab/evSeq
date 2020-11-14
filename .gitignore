@@ -11,6 +11,7 @@ AlignmentDev/ParsedFilteredFastqs
 AlignmentDev/Alignments
 AlignmentDev/OutputCounts
 AlignmentDev/ValidationOutput
+deSeqValidation/
 
 # vscode
 .vscode/

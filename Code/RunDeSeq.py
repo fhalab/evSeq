@@ -113,39 +113,41 @@ def assign_seqpairs_to_well(filtered_seqpairs, bc_to_ref_plate_well, savedir):
 # Write a function that can process a single well
 def process_well(well, return_alignments = False, bp_q_cutoff = 30, 
                  variable_thresh = 0.1, variable_count = 1):
+    try:
+        # Align
+        well.align()
 
-    # Align
-    well.align()
+        # Analyze alignments. 
+        has_reads = well.analyze_alignments(bp_q_cutoff, variable_count)
 
-    # Analyze alignments. 
-    has_reads = well.analyze_alignments(bp_q_cutoff, variable_count)
+        # If we don't have any reads that passed
+        # QC, skip straight to analyzing counts. 
+        if has_reads:
+            # Build count matrices
+            well.build_unit_count_matrices()
 
-    # If we don't have any reads that passed
-    # QC, skip straight to analyzing counts. 
-    if has_reads:
-        # Build count matrices
-        well.build_unit_count_matrices()
+            # Identify variable positions
+            well.identify_variable_positions(variable_thresh)
 
-        # Identify variable positions
-        well.identify_variable_positions(variable_thresh)
+        # Analyze reads with decoupled counts
+        well.analyze_unpaired_counts(variable_thresh)
 
-    # Analyze reads with decoupled counts
-    well.analyze_unpaired_counts(variable_thresh)
+        # Analyze reads with coupled counts
+        well.analyze_paired_counts(variable_thresh, variable_count)
 
-    # Analyze reads with coupled counts
-    well.analyze_paired_counts(variable_thresh, variable_count)
+        # If we are returning alignments, generate them
+        if return_alignments:
+            formatted_alignments = well.format_alignments()
+        else:
+            formatted_alignments = None
 
-    # If we are returning alignments, generate them
-    if return_alignments:
-        formatted_alignments = well.format_alignments()
-    else:
-        formatted_alignments = None
-
-    # Return relevant information for downstream processing
-    return (well.unpaired_bp_output, well.unpaired_bp_output_max,
-            well.unpaired_aa_output, well.unpaired_aa_output_max,
-            well.paired_bp_output, well.paired_aa_output, 
-            formatted_alignments) 
+        # Return relevant information for downstream processing
+        return (well.unpaired_bp_output, well.unpaired_bp_output_max,
+                well.unpaired_aa_output, well.unpaired_aa_output_max,
+                well.paired_bp_output, well.paired_aa_output, 
+                formatted_alignments) 
+    except:
+        print(well.index_plate, well.well)
     
 def format_and_save_outputs(well_results, saveloc, return_alignments):
 
