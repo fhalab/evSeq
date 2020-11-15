@@ -13,6 +13,9 @@ AlignmentDev/OutputCounts
 AlignmentDev/ValidationOutput
 deSeqValidation/
 
+# Temporary folder
+TEMP/
+
 # vscode
 .vscode/
 
