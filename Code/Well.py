@@ -453,7 +453,7 @@ class Well():
         # one count. This works because amino acids are only counted if they pass QC:
         # for all to pass QC they must all have a count at some position
         all_pos_at_least_one_count = np.all(variable_position_counts.sum(axis=1) >= 1, axis = 1)
-        passing_qc = variable_position_counts[all_pos_at_least_one_count]
+        passing_qc = variable_position_counts[all_pos_at_least_one_count].copy()
         
         # If too few pass QC, return a dead dataframe
         n_passing = len(passing_qc)
@@ -464,6 +464,12 @@ class Well():
                                   "#DEAD#", "#DEAD#", 0, 0,
                                   n_passing, "#DEAD#", "Too few paired reads pass QC"]],
                                 columns = columns)
+            
+        # Replace all instances where we have a count of 2 with 1. Counting at 
+        # this stage is by combo, so we don't worry about the sequencing depth
+        # of individual positions
+        passing_qc[passing_qc == 2] = 1
+        assert np.all(np.logical_or(passing_qc == 1, passing_qc == 0)), "Unexpected number of counts"
 
         # Get the unique sequences that all passed QC
         unique_binary_combos, unique_counts = np.unique(passing_qc, axis = 0, return_counts = True)
@@ -517,7 +523,7 @@ class Well():
                                      combo_name, simple_combo, n_positions,
                                      unique_freqs[unique_counter], seq_depth, new_seq, None]
 
-        # Convert output to a dataframe
+        # Convert output to a dataframe.
         return pd.DataFrame(output, columns = columns)
                                       
     # Analyze the paired data for both amino acids and basepairs                              
