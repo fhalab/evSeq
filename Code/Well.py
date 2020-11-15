@@ -274,7 +274,7 @@ class Well():
          
          # If there are >10% of positions mutated, throw a warning. The alignment
          # may not work correctly
-        if percent_bp_mutated > 0.1:
+        if percent_bp_mutated > 0.1 and self.usable_reads:
             return f"{self.index_plate}-{self.well}"
         else:
             return ""

@@ -83,12 +83,12 @@ def main():
     variable_group.add_argument("--variable_thresh", 
                                    help = "Non-reference count frequency above which a position is considered to contain a variant.",
                                    required = False,
-                                   default = 0.1,
+                                   default = 0.2,
                                    type = float)
     variable_group.add_argument("--variable_count", 
                                    help = "Wells with less reads than this are considered to contain nothing.",
                                    required = False,
-                                   default = 1,
+                                   default = 10,
                                    type = int)
     
     # Add an advanced arguments group
