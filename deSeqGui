@@ -124,6 +124,11 @@ def main():
     datetime = strftime("%Y%m%d-%H%M%S")
     output_dir = os.path.join(base_output, "deSeq_Output", datetime)
     CL_ARGS.update({"datetime": datetime, "output": output_dir})
+
+    # Build all output directories
+    build_output_dirs(CL_ARGS)
+    # Log CLArgs
+    log_init(CL_ARGS)   
         
     # Log CLArgs
     log_init(CL_ARGS)    
