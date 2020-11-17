@@ -55,12 +55,56 @@ def stretch_color_levels(data, center, cmap):
     
     return color_levels
 
+
+def generate_sequencing_heatmap(max_combo_df):
+    """Saves a heatmap html generated from from ssSeq data."""
+
+    # Identify unique plates
+    unique_plates = max_combo_df.Plate.unique()
+    hms = []
+
+    # Generate plots for each plate
+    for plate in unique_plates:
+
+        # Split to just the information of interest
+        df = max_combo_df.loc[max_combo_df.Plate == plate].copy()
+
+        # generate a holoviews plot
+        hm = make_heatmap(df, title=plate)
+        hms.append(hm)
+
+    layout = hv.Layout(hms).cols(2)
+    return layout
+
+
+def stretch_color_levels(data, center, cmap):
+    """Stretch a color map so that its center is at `center`. Taken
+    from hw4.2 solutions to 2019 bebi103a, probably with permission. 
+    This is best for centering divergent color maps.
+    """
+    # don't allow a color map with only one color
+    if len(cmap) == 1:
+        raise RuntimeError("Must have `len(cmap)` > 1.")
+
+    # Scale dist
+    dist = max(max(data) - center, center - 0)
+    dist += dist / 100
+
+    color_levels = list(np.linspace(center-dist, center+dist, len(cmap)+1))
+
+    # Ignore if only one value is present
+    if len(np.unique(color_levels)) == 1:
+        color_levels = None
+
+    return color_levels
+
+
 def make_heatmap(df, title):
     """Generates a heatmap from ssSeq data using Holoviews with bokeh backend."""
 
     # Convert SeqDepth to log for easier visualization.
-    df['logseqdepth'] = np.log(df['WellSeqDepth']).replace(
-        to_replace=-np.inf, value=0)
+    df['logseqdepth'] = np.log(df['WellSeqDepth'], out=np.zeros_like(df['WellSeqDepth'], dtype=float),
+                               where=df['WellSeqDepth'] != 0)
 
     # Create necessary Row and Column values and sort
     df['Row'] = df.apply(lambda row: row['Well'][0], axis=1)
@@ -105,8 +149,6 @@ def make_heatmap(df, title):
         **opts,
         colorbar=True,
         cmap=cmap,
-        xmarks=100,
-        ymarks=100,
         height=height,
         width=width,
         clipping_colors={'NaN': '#DCDCDC'},
@@ -116,6 +158,66 @@ def make_heatmap(df, title):
             background_fill_alpha=0
         )
     )
+
+    # function to bin the alignment frequencies into more relevant groupings
+    def bin_align_freq(value):
+        if value > 0.99:
+            bin_vals = '0.99+'
+        if value <= 0.99 and value > 0.98:
+            bin_vals = '0.98-0.99'
+        if value <= 0.98 and value > 0.95:
+            bin_vals = '0.95-0.98'
+        if value <= 0.95 and value > 0.9:
+            bin_vals = '0.90-0.95'
+
+        # anything below 0.9 should really be discarded
+        if value <= 0.9:
+            bin_vals = '<0.90'
+
+        return bin_vals
+
+    # Bin alignment frequencies for easier viz
+    bins = ['0.99+', '0.98-0.99', '0.95-0.98', '0.90-0.95', '<0.90']
+    # colors = bokeh.palettes.Plasma5
+    colors = ['#337D1F', '#94CD35', '#FFC300', '#FF5733', '#C62C20']
+    cmap = {bin: color for bin, color in zip(bins, colors)}
+
+    # apply binning function to the AlignmentFrequency
+    df['AlignmentFrequencyBinned'] = df['AlignmentFrequency'].apply(
+        bin_align_freq)
+
+    # Set up size of the outline boxes
+    box_size = height // n_rows*1.21
+
+    # alignment frequency heatmap for edges around wells
+    boxes = hv.Points(
+        df.sort_values(['AlignmentFrequency'], ascending=False),
+        ['Column', 'Row'],
+        'AlignmentFrequencyBinned'
+    ).opts(
+        **opts,
+        marker='square',
+        line_color='AlignmentFrequencyBinned',
+        line_join='miter',
+        cmap=cmap,
+        line_width=8,
+        fill_alpha=0,
+        line_alpha=1,
+        legend_position='right',
+        size=box_size)
+
+    # residue labels
+    labels = hv.Labels(
+        df,
+        ['Column', 'Row'],
+        'SimpleCombo',
+    ).opts(text_font_size='10pt', **opts)
+
+    # return formatted final plot
+    return (hm*boxes*labels).opts(frame_height=550,
+                                  frame_width=550 * 3 // 2,
+                                  border=50,
+                                  show_legend=True)
 
     # function to bin the alignment frequencies into more relevant groupings
     def bin_align_freq(value):
