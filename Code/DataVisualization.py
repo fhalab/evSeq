@@ -15,7 +15,7 @@ hv.renderer('bokeh')
 
 
 #### Heatmap ####
-def generate_sequencing_heatmap(max_combo_df, output_dir):
+def generate_sequencing_heatmaps(max_combo_df, output_dir):
     """Saves a heatmap html generated from from ssSeq data."""
     
     # Identify unique plates
@@ -53,49 +53,6 @@ def stretch_color_levels(data, center, cmap):
     if len(np.unique(color_levels)) == 1:
         color_levels = None
     
-    return color_levels
-
-
-def generate_sequencing_heatmap(max_combo_df):
-    """Saves a heatmap html generated from from ssSeq data."""
-
-    # Identify unique plates
-    unique_plates = max_combo_df.Plate.unique()
-    hms = []
-
-    # Generate plots for each plate
-    for plate in unique_plates:
-
-        # Split to just the information of interest
-        df = max_combo_df.loc[max_combo_df.Plate == plate].copy()
-
-        # generate a holoviews plot
-        hm = make_heatmap(df, title=plate)
-        hms.append(hm)
-
-    layout = hv.Layout(hms).cols(2)
-    return layout
-
-
-def stretch_color_levels(data, center, cmap):
-    """Stretch a color map so that its center is at `center`. Taken
-    from hw4.2 solutions to 2019 bebi103a, probably with permission. 
-    This is best for centering divergent color maps.
-    """
-    # don't allow a color map with only one color
-    if len(cmap) == 1:
-        raise RuntimeError("Must have `len(cmap)` > 1.")
-
-    # Scale dist
-    dist = max(max(data) - center, center - 0)
-    dist += dist / 100
-
-    color_levels = list(np.linspace(center-dist, center+dist, len(cmap)+1))
-
-    # Ignore if only one value is present
-    if len(np.unique(color_levels)) == 1:
-        color_levels = None
-
     return color_levels
 
 
