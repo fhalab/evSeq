@@ -183,7 +183,7 @@ def format_and_save_outputs(well_results, saveloc, return_alignments):
         output_df.to_csv(os.path.join(saveloc, "OutputCounts", savename), index = False)
         
     # Generate heatmaps from the Combos_Coupled_Max dataframe
-    # generate_sequencing_heatmap(max_outs[-1], saveloc)    
+    generate_sequencing_heatmap(max_outs[-1], saveloc)    
 
     # Loop over and save all alignments if asked to do so
     if return_alignments:

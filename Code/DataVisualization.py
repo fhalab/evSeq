@@ -32,7 +32,7 @@ def generate_sequencing_heatmap(max_combo_df, output_dir):
         
         # render the plot using bokeh and save to html file
         hv.renderer('bokeh').save(hm, os.path.join(output_dir, "Platemaps",
-                                                   f"{plate}.html"))
+                                                   f"{plate}"))
 
 def stretch_color_levels(data, center, cmap):
     """Stretch a color map so that its center is at `center`. Taken
@@ -57,59 +57,66 @@ def stretch_color_levels(data, center, cmap):
 
 def make_heatmap(df, title):
     """Generates a heatmap from ssSeq data using Holoviews with bokeh backend."""
-    
+
     # Convert SeqDepth to log for easier visualization.
-    df['logseqdepth'] = np.log(df['WellSeqDepth'])
-        
+    df['logseqdepth'] = np.log(df['WellSeqDepth']).replace(
+        to_replace=-np.inf, value=0)
+
     # Create necessary Row and Column values and sort
     df['Row'] = df.apply(lambda row: row['Well'][0], axis=1)
     df['Column'] = df.apply(lambda row: int(row['Well'][1:]), axis=1)
-    df = df.sort_values(['Column','Row'])
-    
+    df = df.sort_values(['Column', 'Row'])
+    df['Column'] = df['Column'].astype('str')
+
     # Set some base opts
-    opts = dict(invert_yaxis=True,title=title,show_legend=True)
-    
+    opts = dict(invert_yaxis=True, title=title, show_legend=True)
+
     # logseqdepth heatmap
     cmap = list(reversed(cc.CET_D9))
-    
+
     # Set the center
     center = np.log(10)
-    
+
     # Adjust if it is greater than max of data (avoids ValueError)
     if df['logseqdepth'].max() <= center:
-        
+
         # Log a warning
         log_warning(f"All wells associated with {title} have a read depth <=10. "
-                   "Be careful comparing heatmaps between this plate and others. "
-                   "Be careful using this data; sequencing was not good.")
-        
+                    "Be careful comparing heatmaps between this plate and others. "
+                    "Be careful using this data; sequencing was not good.")
+
         # Adjust the center
         center = df['logseqdepth'].median()
 
     color_levels = stretch_color_levels(df['logseqdepth'], center, cmap)
+
+    # Get heights
+    n_rows = len(df['Row'].unique())
+    n_cols = len(df['Column'].unique())
+    height = int(50 * n_rows)
+    width = height * n_cols // n_rows
 
     # generate the heatmap
     hm = hv.HeatMap(
         df,
         ['Column', 'Row'],
         'logseqdepth'
-        ).opts(
-            **opts,
-            colorbar=True,
-            cmap=cmap,
-            xmarks=100,
-            ymarks=100,
-            clipping_colors={'NaN': '#DCDCDC'},
-            color_levels=color_levels,
-            colorbar_opts=dict(
-                title='LogSeqDepth',
-                background_fill_alpha=0
-            )
+    ).opts(
+        **opts,
+        colorbar=True,
+        cmap=cmap,
+        xmarks=100,
+        ymarks=100,
+        height=height,
+        width=width,
+        clipping_colors={'NaN': '#DCDCDC'},
+        color_levels=color_levels,
+        colorbar_opts=dict(
+            title='LogSeqDepth',
+            background_fill_alpha=0
         )
-    
-    # Patrick did this, don't @ me
-    # @Kadina 
-    # @@Patrick
+    )
+
     # function to bin the alignment frequencies into more relevant groupings
     def bin_align_freq(value):
         if value > 0.99:
@@ -120,22 +127,26 @@ def make_heatmap(df, title):
             bin_vals = '0.95-0.98'
         if value <= 0.95 and value > 0.9:
             bin_vals = '0.90-0.95'
-        
+
         # anything below 0.9 should really be discarded
         if value <= 0.9:
             bin_vals = '<0.90'
 
         return bin_vals
-    
+
     # Bin alignment frequencies for easier viz
-    bins = ['0.99+','0.98-0.99','0.95-0.98','0.90-0.95','<0.90']
+    bins = ['0.99+', '0.98-0.99', '0.95-0.98', '0.90-0.95', '<0.90']
     # colors = bokeh.palettes.Plasma5
-    colors = ['#337D1F','#94CD35','#FFC300','#FF5733','#C62C20']
+    colors = ['#337D1F', '#94CD35', '#FFC300', '#FF5733', '#C62C20']
     cmap = {bin: color for bin, color in zip(bins, colors)}
-    
+
     # apply binning function to the AlignmentFrequency
-    df['AlignmentFrequencyBinned'] = df['AlignmentFrequency'].apply(bin_align_freq)
-    
+    df['AlignmentFrequencyBinned'] = df['AlignmentFrequency'].apply(
+        bin_align_freq)
+
+    # Set up size of the outline boxes
+    box_size = height // n_rows*1.21
+
     # alignment frequency heatmap for edges around wells
     boxes = hv.Points(
         df.sort_values(['AlignmentFrequency'], ascending=False),
@@ -150,19 +161,19 @@ def make_heatmap(df, title):
         line_width=8,
         fill_alpha=0,
         line_alpha=1,
-        legend_position = 'right',
-        size=62)
-    
+        legend_position='right',
+        size=box_size)
+
     # residue labels
     labels = hv.Labels(
         df,
         ['Column', 'Row'],
         'SimpleCombo'
-    ).opts(**opts)
-    
+    ).opts(text_font_size='10pt', **opts)
+
     # return formatted final plot
-    return (hm*boxes*labels).opts(frame_height=550, 
-                                  frame_width=550 * 3 // 2, 
+    return (hm*boxes*labels).opts(frame_height=550,
+                                  frame_width=550 * 3 // 2,
                                   border=50,
                                   show_legend=True)
 
