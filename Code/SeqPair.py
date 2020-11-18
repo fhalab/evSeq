@@ -251,7 +251,7 @@ class SeqPair():
                     middle_seq[i] = middle_f_seq[i]
                     middle_qual[i] = middle_f_qual[i]
 
-                # If the reverse read has better quality, use that
+                # If the reverse read has better or equal quality, use that
                 else:
                     middle_seq[i] = middle_r_seq[i]
                     middle_qual[i] = middle_r_qual[i]

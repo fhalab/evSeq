@@ -413,7 +413,7 @@ class Well():
         # If there are no usable reads, return a dead dataframe
         if not self.usable_reads:
             return pd.DataFrame([[self.index_plate, self.plate_nickname, self.well,
-                                  "#DEAD#", "#DEAD#", 0, 0, 0, "#DEAD#", "No usable reads"]], columns = columns)
+                                  "#DEAD#", "#DEAD#", 0, 0, 0, "#DEAD#", "Too few usable reads"]], columns = columns)
         
         # Get the number of positions
         n_positions = len(variable_positions)            
