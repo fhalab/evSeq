@@ -346,6 +346,13 @@ class Well():
         variable_units = unit_array[nonzero_inds[:, 1]]
         nonzero_freqs = variable_freqs[nonzero_inds[:, 0], nonzero_inds[:, 1]]
         
+        # Identify variable positions that have no variety
+        unique_variable_with_freq = np.unique(variable_positions)
+        missing_positions = np.setdiff1d(all_variable_positions, unique_variable_with_freq)
+        if len(missing_positions) > 0:
+            insertion = ", ".join(missing_positions)
+            flags.append(f"No counts for expected positions {insertion}")
+            
         # We cannot have more counts than 2x the number of seqpairs (2x would 
         # occur if every sequence overlapped and passed QC)
         assert variable_total_counts.max() <= (2 * len(self.non_dud_alignments)), "Counting error"
