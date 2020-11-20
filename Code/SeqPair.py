@@ -237,7 +237,7 @@ class SeqPair():
             # Build the composite middle sequence and quality
             middle_seq = [None] * middle_size
             middle_qual = np.zeros(middle_size, dtype = int)
-            quality_comparison = np.greater(middle_f_qual, middle_r_qual).astype(int)
+            quality_comparison = np.greater(middle_f_qual, middle_r_qual)
             count_inds = np.arange(first_r_char_ind, post_forward_dash_ind)
             for i in range(middle_size):
 
