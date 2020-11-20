@@ -237,7 +237,7 @@ class SeqPair():
             # Build the composite middle sequence and quality
             middle_seq = [None] * middle_size
             middle_qual = np.zeros(middle_size, dtype = int)
-            quality_comparison = np.greater(middle_f_qual, middle_r_qual).astype(int)
+            quality_comparison = np.greater(middle_f_qual, middle_r_qual)
             count_inds = np.arange(first_r_char_ind, post_forward_dash_ind)
             for i in range(middle_size):
 
@@ -251,7 +251,7 @@ class SeqPair():
                     middle_seq[i] = middle_f_seq[i]
                     middle_qual[i] = middle_f_qual[i]
 
-                # If the reverse read has better quality, use that
+                # If the reverse read has better or equal quality, use that
                 else:
                     middle_seq[i] = middle_r_seq[i]
                     middle_qual[i] = middle_r_qual[i]

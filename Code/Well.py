@@ -346,6 +346,14 @@ class Well():
         variable_units = unit_array[nonzero_inds[:, 1]]
         nonzero_freqs = variable_freqs[nonzero_inds[:, 0], nonzero_inds[:, 1]]
         
+        # Identify variable positions that have no variety
+        unique_variable_with_freq = np.unique(variable_positions)
+        missing_positions = np.setdiff1d(all_variable_positions + pos_offset,
+                                         unique_variable_with_freq)
+        if len(missing_positions) > 0:
+            insertion = ", ".join([str(pos) for pos in missing_positions])
+            flags.append(f"No counts for expected positions {insertion}")
+            
         # We cannot have more counts than 2x the number of seqpairs (2x would 
         # occur if every sequence overlapped and passed QC)
         assert variable_total_counts.max() <= (2 * len(self.non_dud_alignments)), "Counting error"
@@ -413,7 +421,7 @@ class Well():
         # If there are no usable reads, return a dead dataframe
         if not self.usable_reads:
             return pd.DataFrame([[self.index_plate, self.plate_nickname, self.well,
-                                  "#DEAD#", "#DEAD#", 0, 0, 0, "#DEAD#", "No usable reads"]], columns = columns)
+                                  "#DEAD#", "#DEAD#", 0, 0, 0, "#DEAD#", "Too few usable reads"]], columns = columns)
         
         # Get the number of positions
         n_positions = len(variable_positions)            
