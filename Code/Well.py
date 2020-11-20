@@ -348,9 +348,10 @@ class Well():
         
         # Identify variable positions that have no variety
         unique_variable_with_freq = np.unique(variable_positions)
-        missing_positions = np.setdiff1d(all_variable_positions, unique_variable_with_freq)
+        missing_positions = np.setdiff1d(all_variable_positions + pos_offset,
+                                         unique_variable_with_freq)
         if len(missing_positions) > 0:
-            insertion = ", ".join(missing_positions)
+            insertion = ", ".join([str(pos) for pos in missing_positions])
             flags.append(f"No counts for expected positions {insertion}")
             
         # We cannot have more counts than 2x the number of seqpairs (2x would 
