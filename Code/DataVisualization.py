@@ -108,6 +108,8 @@ def make_heatmap(df, title):
         cmap=cmap,
         height=height,
         width=width,
+        xmarks=100,
+        ymarks=100,
         clipping_colors={'NaN': '#DCDCDC'},
         color_levels=color_levels,
         colorbar_opts=dict(
@@ -164,71 +166,20 @@ def make_heatmap(df, title):
         size=box_size)
 
     # residue labels
+    def split_variant_labels(mutation_string):
+        
+        new_line_mutations = mutation_string.replace('_','\n')
+        
+        return new_line_mutations
+    
+    _df = df.copy()
+    _df['Labels'] = _df['VariantCombo'].apply(split_variant_labels)
+    
     labels = hv.Labels(
-        df,
+        _df,
         ['Column', 'Row'],
-        'SimpleCombo',
-    ).opts(text_font_size='10pt', **opts)
-
-    # return formatted final plot
-    return (hm*boxes*labels).opts(frame_height=550,
-                                  frame_width=550 * 3 // 2,
-                                  border=50,
-                                  show_legend=True)
-
-    # function to bin the alignment frequencies into more relevant groupings
-    def bin_align_freq(value):
-        if value > 0.99:
-            bin_vals = '0.99+'
-        if value <= 0.99 and value > 0.98:
-            bin_vals = '0.98-0.99'
-        if value <= 0.98 and value > 0.95:
-            bin_vals = '0.95-0.98'
-        if value <= 0.95 and value > 0.9:
-            bin_vals = '0.90-0.95'
-
-        # anything below 0.9 should really be discarded
-        if value <= 0.9:
-            bin_vals = '<0.90'
-
-        return bin_vals
-
-    # Bin alignment frequencies for easier viz
-    bins = ['0.99+', '0.98-0.99', '0.95-0.98', '0.90-0.95', '<0.90']
-    # colors = bokeh.palettes.Plasma5
-    colors = ['#337D1F', '#94CD35', '#FFC300', '#FF5733', '#C62C20']
-    cmap = {bin: color for bin, color in zip(bins, colors)}
-
-    # apply binning function to the AlignmentFrequency
-    df['AlignmentFrequencyBinned'] = df['AlignmentFrequency'].apply(
-        bin_align_freq)
-
-    # Set up size of the outline boxes
-    box_size = height // n_rows*1.21
-
-    # alignment frequency heatmap for edges around wells
-    boxes = hv.Points(
-        df.sort_values(['AlignmentFrequency'], ascending=False),
-        ['Column', 'Row'],
-        'AlignmentFrequencyBinned'
-    ).opts(
-        **opts,
-        marker='square',
-        line_color='AlignmentFrequencyBinned',
-        line_join='miter',
-        cmap=cmap,
-        line_width=8,
-        fill_alpha=0,
-        line_alpha=1,
-        legend_position='right',
-        size=box_size)
-
-    # residue labels
-    labels = hv.Labels(
-        df,
-        ['Column', 'Row'],
-        'SimpleCombo'
-    ).opts(text_font_size='10pt', **opts)
+        'Labels',
+    ).opts(text_font_size='9pt', **opts)
 
     # return formatted final plot
     return (hm*boxes*labels).opts(frame_height=550,
