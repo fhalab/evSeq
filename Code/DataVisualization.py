@@ -78,7 +78,7 @@ def generate_sequencing_heatmaps(max_combo_df):
 
 def save_heatmap_to_file(heatmaps, outputdir):
     
-    file_path = os.path.join(outputdir, "Platemaps.html")
+    file_path = os.path.join(outputdir, "Platemaps", "Platemaps")
     hv.renderer('bokeh').save(heatmaps, file_path)
 
 def stretch_color_levels(data, center, cmap):
