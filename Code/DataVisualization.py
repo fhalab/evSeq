@@ -454,7 +454,7 @@ def plot_variant_activities(
         p = ns.viz.plot_bar(
             _df,
             'AA',
-            value=value,
+            value_name=value,
             color=value,
             cmap='coolwarm'
         ).opts(
@@ -475,7 +475,7 @@ def plot_variant_activities(
         p_unknown = ns.viz.plot_bar(
             _df,
             'AA',
-            value=value,
+            value_name=value,
             color=value,
             cmap='coolwarm'
         ).opts({
