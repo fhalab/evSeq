@@ -285,8 +285,8 @@ def plot_read_qual(counts):
 def combine_seq_func_data(
     data_df,
     seq_output_path,
-    min_align_freq,
-    min_seq_depth,
+    min_align_freq=0.8,
+    min_seq_depth=10,
     value=None):
 
     # If the well column of the data_df is not zero-padded, pad it
@@ -301,9 +301,7 @@ def combine_seq_func_data(
         ['Plate', 'Well'])['AaPosition'].count())
     mut_count_dict = count_df.to_dict()['AaPosition']
 
-#    def get_mutation_counts(row):
-#         return mut_count_dict[row['Plate'], row['Well']]
-
+    # Get the number of mutations in a sequence for later filtering
     seq_df['MutCount'] = seq_df.apply(
         lambda x: mut_count_dict[x['Plate'], x['Well']], 
         axis=1)
