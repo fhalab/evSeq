@@ -299,28 +299,50 @@ def plot_variant_activities(
     activities of all sequences as well as a frequency histogram of each 
     mutant.
     """
-        
-    def get_seq_data(filepath):
-        seq_df = pd.read_csv(filepath+'AminoAcids_Decoupled_Max.csv')
+    
+    # If the well column of the data_df is not zero-padded, pad it
+    data_df['Well'] = data_df['Well'].apply(ns.parsers.pad)
 
-        count_df = pd.DataFrame(seq_df.groupby(['Plate','Well'])['AaPosition'].count())
-        mut_count_dict = count_df.to_dict()['AaPosition']
+    # Read in the results of deSeq
+    seq_df = pd.read_csv(seq_output_path+'AminoAcids_Decoupled_Max.csv')
 
-        def get_mutation_counts(row):
-            return mut_count_dict[row['Plate'], row['Well']]
-        
-        seq_df['MutCount'] = seq_df.apply(get_mutation_counts, axis=1)
+    # Find wells that have multiple mutations since this only works for 
+    # single-mutant libraries
+    count_df = pd.DataFrame(seq_df.groupby(['Plate','Well'])['AaPosition'].count())
+    mut_count_dict = count_df.to_dict()['AaPosition']
 
-        seq_df = seq_df.rename(
-            columns={'AaPosition': 'Position', 'Aa': 'AA'}
-            )
-        seq_df = seq_df.loc[(seq_df['Flag'] != '#DEAD#')].copy()
-        seq_df = seq_df.astype({'Position': 'int64'})
-        seq_df = seq_df.loc[seq_df['Flag'].isna()].copy()
-        return seq_df
+    def get_mutation_counts(row):
+        return mut_count_dict[row['Plate'], row['Well']]
+    
+    seq_df['MutCount'] = seq_df.apply(get_mutation_counts, axis=1)
 
-    seq_df = get_seq_data(seq_output_path)
+    # Rename columns for downstream use
+    seq_df = seq_df.rename(
+        columns={'AaPosition': 'Position', 'Aa': 'AA'}
+        )
+    
+    # Remove dead sequencing wells
+    seq_df = seq_df.loc[(seq_df['Flag'] != '#DEAD#')].copy()
 
+    # Remove sequencing wells with a flag
+    seq_df = seq_df.loc[seq_df['Flag'].isna()].copy()
+
+    # Now that the #DEAD# wells are removed, set to int
+    seq_df = seq_df.astype({'Position': 'int64'})
+    
+    # Check for unexpected shared columns between seq_df and data_df
+    shared_cols = set(seq_df.columns).intersection(set(data_df.columns))
+    expected_cols = {'Position', 'Well', 'Plate'}
+
+    assert shared_cols == expected_cols, (
+        "Your data_df may have too many or not enough shared columns. "
+        "This could cause unforeseen consequences when merging the "
+        "seq_df and data_df. Please remove additional shared columns "
+        "or add missing ones to the data_df. You should have 'Position', "
+        f"'Well', and 'Plate'. Your shared columns are: {shared_cols}"
+    )
+
+    # Merge data_df and seq_df on shared columns and fill missing w/ NaN
     df = data_df.merge(seq_df, how='outer')
 
     # list of AAs
@@ -348,12 +370,15 @@ def plot_variant_activities(
             working_df['AA'] = 'Unknown'
         elif working_df['WellSeqDepth'] < min_seq_depth:
             working_df['AA'] = 'Unknown'
+        elif working_df['MutCount'] > 1:
+            working_df['AA'] = 'Unknown'
         return working_df
     
     working_df = df.copy()
     working_df = working_df.apply(set_knowns, axis=1)
     
-    seq_func_plot_dict = {}
+    activity_plot_dict = {}
+    histogram_plot_dict = {}
 
     # for plate in ['Lib7_292X']:
     for plate in working_df['Plate'].unique():
@@ -361,7 +386,7 @@ def plot_variant_activities(
         # temp_plate = ns.Plate(temp_df.copy(), value_name=value)
 
         # Find missing AAs
-        missing = set(AAs) - set(temp_df['AA'].unique())
+        missing = tuple(set(AAs) - set(temp_df['AA'].unique()))
 
         for AA in missing:
 
@@ -374,26 +399,6 @@ def plot_variant_activities(
                 ignore_index=True
             )
             temp_df.at[len(temp_df) - 1, 'AA'] = AA
-
-        # Add in values for missing
-        # for AA in missing:
-            
-        #     for col in temp_plate.columns:
-        #         temp_plate.reindex(
-        #             temp_plate.index.values.tolist() + list(range(20, 40)))
-
-        #     return temp_plate
-
-        #     temp_row = temp_plate.loc[len(temp_plate.df)-1, :].copy()
-        #     print(temp_row.dtypes)
-        #     for column in temp_row.index:
-        #         print(type(column))
-        #         if type(column) == str:
-        #             print('hi')
-
-            # temp_plate = temp_plate.append(temp_row, ignore_index=True)
-            # return temp_plate
-            # temp_plate.loc[len(temp_plate)] = [AA, *[np.nan]*(len(temp_plate.columns)-1)]
         
         # Sort meaningfully
         sort = {
@@ -411,10 +416,6 @@ def plot_variant_activities(
         
         # Placeholder plotting
         opts = dict(
-        #     # color=value,
-        #     # sort='Sort',
-        #     cmap='coolwarm',
-        #     show_points=True,
             width=600,
             height=500,
             xrotation=45
@@ -478,11 +479,13 @@ def plot_variant_activities(
         else:
             max_value = activity_range[1]
         height = max_value / 20
-        
+
         # Plot the 'n.d.' in the empty sections
-        for AA in missing:
-            
-            p = p*hv.Text(AA, height, 'n.d.', rotation=90)
+        for AA in AAs:
+            if AA in missing:
+                p = p*hv.Text(AA, height, 'n.d.', rotation=90)
+            else:
+                p = p*hv.Text(AA, height, ' ', rotation=90)
         
         # Plot 'Unknown' if there are none!
         if not unknowns:
@@ -491,44 +494,6 @@ def plot_variant_activities(
         # Add opts for the size of the plot
         p = p.opts(**opts)
 
-        ##### Histogram #####
-        
-        # Get observed AA counts
-        counts = temp_df['AA'].value_counts()
-        
-        # Create DataFrame of counts, accounting for missing values
-        count_dict = {
-            'Residue': list(counts.index),
-            'Counts': [value if AA not in missing else 0
-                       for value, AA in zip(counts.values, counts.index)],
-        }
-
-        for AA in missing:
-            count_dict['Residue'].append(AA)
-            count_dict['Counts'].append(0)
-        
-        df_counts = pd.DataFrame(count_dict)
-
-        # Add in nans
-        # nan_count = sum(temp_plate['AA'].isna())
-        # df_counts.loc[len(temp_plate)] = ['Unknown', nan_count]
-        # print(df_counts)
-        
-        # Sort meaningfully, again...
-        df_counts['Sort'] = df_counts['Residue'].replace(sort)
-        df_counts = df_counts.sort_values('Sort')
-
-        # Make chart
-        p_counts = hv.Bars(
-            df_counts,
-            'Residue',
-            'Counts'
-        ).opts(
-            width=600,
-            height=200,
-            xrotation=45
-        )
-        
         # Relabel from AA
         p.opts(xlabel='Residue')
         if title is not None:
@@ -538,18 +503,66 @@ def plot_variant_activities(
             p.opts(title=title)
         if activity_range is not None:
             p.opts(ylim=activity_range)
-        if hist is True:
-            p.opts(xlabel='')
+
+        ##### Histogram #####
+        if hist:
+
+            # Get observed AA counts
+            counts = temp_df['AA'].value_counts()
+            
+            # Create DataFrame of counts, accounting for missing values
+            count_dict = {
+                'Residue': list(counts.index),
+                'Counts': [value if AA not in missing else 0
+                        for value, AA in zip(counts.values, counts.index)],
+            }
+
+            for AA in missing:
+                count_dict['Residue'].append(AA)
+                count_dict['Counts'].append(0)
+            
+            df_counts = pd.DataFrame(count_dict)
+            
+            # Sort meaningfully, again...
+            df_counts['Sort'] = df_counts['Residue'].replace(sort)
+            df_counts = df_counts.sort_values('Sort')
+
+            # Make chart
+            p_counts = hv.Bars(
+                df_counts,
+                'Residue',
+                'Counts'
+            ).opts(
+                width=600,
+                height=200,
+                xrotation=45
+            )
+
             if hist_range is not None:
                 p_counts = p_counts.opts(ylim=hist_range)
-            p = (p+p_counts).cols(1)
-        print(plate)
-        print(p)
-        seq_func_plot_dict[plate] = p
 
-    return hv.HoloMap(
-        seq_func_plot_dict, 
+            # Since we are plotting the histogram, remove xlabel
+            p.opts(xlabel='')
+            histogram_plot_dict[plate] = p_counts
+        
+        activity_plot_dict[plate] = p
+
+    activity_hmap = hv.HoloMap(
+        activity_plot_dict,
         kdims='Plate'
-        ).collate().opts(
+    ).opts(
         {'Bars': {'framewise': True}}
+    )
+
+    if hist:
+        
+        count_hmap = hv.HoloMap(
+            histogram_plot_dict,
+            kdims='Plate'
         )
+
+        return (activity_hmap+count_hmap).cols(1)
+
+    else:
+        # print('No histogram')
+        return activity_hmap
