@@ -282,6 +282,61 @@ def plot_read_qual(counts):
     return p
 
 ### SEQUENCE-FUNCTION PLOTTING ###
+def combine_seq_func_data(
+    data_df,
+    seq_output_path,
+    min_align_freq,
+    min_seq_depth,
+    value=None):
+
+    # If the well column of the data_df is not zero-padded, pad it
+    data_df['Well'] = data_df['Well'].apply(ns.parsers.pad)
+
+    # Read in the results of deSeq
+    seq_df = pd.read_csv(seq_output_path+'AminoAcids_Decoupled_Max.csv')
+
+    # Find wells that have multiple mutations since this only works for
+    # single-mutant libraries
+    count_df = pd.DataFrame(seq_df.groupby(
+        ['Plate', 'Well'])['AaPosition'].count())
+    mut_count_dict = count_df.to_dict()['AaPosition']
+
+#    def get_mutation_counts(row):
+#         return mut_count_dict[row['Plate'], row['Well']]
+
+    seq_df['MutCount'] = seq_df.apply(
+        lambda x: mut_count_dict[x['Plate'], x['Well']], 
+        axis=1)
+
+    # Rename columns for downstream use
+    seq_df = seq_df.rename(
+        columns={'AaPosition': 'Position', 'Aa': 'AA'}
+    )
+
+    # Remove dead sequencing wells
+    seq_df = seq_df.loc[(seq_df['Flag'] != '#DEAD#')].copy()
+
+    # Remove sequencing wells with a flag
+    seq_df = seq_df.loc[seq_df['Flag'].isna()].copy()
+
+    # Now that the #DEAD# wells are removed, set to int
+    seq_df = seq_df.astype({'Position': 'int64'})
+
+    # Check for unexpected shared columns between seq_df and data_df
+    shared_cols = set(seq_df.columns).intersection(set(data_df.columns))
+    expected_cols = {'Position', 'Well', 'Plate'}
+
+    assert shared_cols == expected_cols, (
+        "Your data_df may have too many or not enough shared columns. "
+        "This could cause unforeseen consequences when merging the "
+        "seq_df and data_df. Please remove additional shared columns "
+        "or add missing ones to the data_df. You should have 'Position', "
+        f"'Well', and 'Plate'. Your shared columns are: {shared_cols}"
+    )
+
+    # Merge data_df and seq_df on shared columns and fill missing w/ NaN
+    return data_df.merge(seq_df, how='outer')
+
 def plot_variant_activities(
     data_df,
     seq_output_path,
@@ -300,50 +355,13 @@ def plot_variant_activities(
     mutant.
     """
     
-    # If the well column of the data_df is not zero-padded, pad it
-    data_df['Well'] = data_df['Well'].apply(ns.parsers.pad)
-
-    # Read in the results of deSeq
-    seq_df = pd.read_csv(seq_output_path+'AminoAcids_Decoupled_Max.csv')
-
-    # Find wells that have multiple mutations since this only works for 
-    # single-mutant libraries
-    count_df = pd.DataFrame(seq_df.groupby(['Plate','Well'])['AaPosition'].count())
-    mut_count_dict = count_df.to_dict()['AaPosition']
-
-    def get_mutation_counts(row):
-        return mut_count_dict[row['Plate'], row['Well']]
-    
-    seq_df['MutCount'] = seq_df.apply(get_mutation_counts, axis=1)
-
-    # Rename columns for downstream use
-    seq_df = seq_df.rename(
-        columns={'AaPosition': 'Position', 'Aa': 'AA'}
-        )
-    
-    # Remove dead sequencing wells
-    seq_df = seq_df.loc[(seq_df['Flag'] != '#DEAD#')].copy()
-
-    # Remove sequencing wells with a flag
-    seq_df = seq_df.loc[seq_df['Flag'].isna()].copy()
-
-    # Now that the #DEAD# wells are removed, set to int
-    seq_df = seq_df.astype({'Position': 'int64'})
-    
-    # Check for unexpected shared columns between seq_df and data_df
-    shared_cols = set(seq_df.columns).intersection(set(data_df.columns))
-    expected_cols = {'Position', 'Well', 'Plate'}
-
-    assert shared_cols == expected_cols, (
-        "Your data_df may have too many or not enough shared columns. "
-        "This could cause unforeseen consequences when merging the "
-        "seq_df and data_df. Please remove additional shared columns "
-        "or add missing ones to the data_df. You should have 'Position', "
-        f"'Well', and 'Plate'. Your shared columns are: {shared_cols}"
-    )
-
-    # Merge data_df and seq_df on shared columns and fill missing w/ NaN
-    df = data_df.merge(seq_df, how='outer')
+    df = combine_seq_func_data(
+        data_df,
+        seq_output_path,
+        min_align_freq=min_align_freq,
+        min_seq_depth=min_seq_depth,
+        value=value
+    ).copy()
 
     # list of AAs
     AAs = list('ACDEFGHIKLMNPQRSTVWY')
@@ -351,7 +369,8 @@ def plot_variant_activities(
     ##### Activity plot
     # Determine activity value
     if value is None:
-        raise ValueError("You have not specified a column with the data value.")
+        raise ValueError(
+            "You have not specified a column with the data value.")
 
     # Find Parent
     parent = f"Parent ({df['AA'][df['Type'] == 'Parent'].unique()[0]})"
@@ -373,7 +392,7 @@ def plot_variant_activities(
         elif working_df['MutCount'] > 1:
             working_df['AA'] = 'Unknown'
         return working_df
-    
+
     working_df = df.copy()
     working_df = working_df.apply(set_knowns, axis=1)
     
