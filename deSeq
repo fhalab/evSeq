@@ -6,10 +6,10 @@ import os
 from time import strftime
 
 # Import relevant modules from ssSeqSupport.
-from Code.Globals import N_CPUS
-from Code.Logging import log_init, log_info, log_error
-from Code.InputProcessing import build_output_dirs
-from Code.RunDeSeq import run_deseq
+from Code.globals import N_CPUS
+from Code.logging import log_init, log_info, log_error
+from Code.input_processing import build_output_dirs
+from Code.run_deSeq import run_deseq
 
 # Create a "main" function
 def main():

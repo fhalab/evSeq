@@ -1,8 +1,8 @@
 
 # Import deSeq objects
-from .Globals import ALLOWED_WELLS, HOMEDIR
-from .Logging import log_error, log_input_file
-from .InputValidation import check_ref_seqs, check_index_map
+from .globals import ALLOWED_WELLS, HOMEDIR
+from .logging import log_error, log_input_file
+from .input_validation import check_ref_seqs, check_index_map
 
 # Import other required modules
 import re

@@ -10,7 +10,7 @@ from bokeh.layouts import row
 from bokeh.models import HoverTool
 import ninetysix as ns
 
-from .Logging import log_warning
+from .logging import log_warning
 
 hv.extension('bokeh')
 hv.renderer('bokeh')
