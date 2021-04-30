@@ -1,5 +1,5 @@
 # Import deSeq dependencies
-from .Globals import (BP_TO_IND, AA_TO_IND, CODON_TABLE, AA_TO_IND, BP_ARRAY,
+from .globals import (BP_TO_IND, AA_TO_IND, CODON_TABLE, AA_TO_IND, BP_ARRAY,
                       AA_ARRAY)
 
 # Import other required modules

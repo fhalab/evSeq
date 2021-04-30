@@ -1,10 +1,10 @@
 # Import deSeq objects
-from .Logging import log_info, log_warning
-from .InputValidation import check_args
-from .InputProcessing import load_all, unzip_gz
-from .SeqPair import SeqPair
-from .Well import Well
-from .DataVisualization import (generate_read_qual_chart, 
+from .logging import log_info, log_warning
+from .input_validation import check_args
+from .input_processing import load_all, unzip_gz
+from .seq_pair import SeqPair
+from .well import Well
+from .data_visualization import (generate_read_qual_chart, 
                                 generate_sequencing_heatmaps,
                                 save_heatmap_to_file)
 

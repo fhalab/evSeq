@@ -5,8 +5,8 @@ import numpy as np
 import os.path
 
 # # Load ssSeqSupport modules
-from .Logging import log_error, log_warning
-from .Globals import ALLOWED_BASES_NO_DEG, ALLOWED_BASES, ALLOWED_WELLS, N_CPUS
+from .logging import log_error, log_warning
+from .globals import ALLOWED_BASES_NO_DEG, ALLOWED_BASES, ALLOWED_WELLS, N_CPUS
 
 # Write a function that checks the validity of the index file
 def check_index_map(index_df):

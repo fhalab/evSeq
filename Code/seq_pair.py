@@ -1,7 +1,7 @@
 # Import deSeq dependencies
-from .Globals import (BARCODE_LENGTH, ADAPTER_LENGTH_F, ADAPTER_LENGTH_R,
+from .globals import (BARCODE_LENGTH, ADAPTER_LENGTH_F, ADAPTER_LENGTH_R,
                       BP_TO_IND, AA_TO_IND, CODON_TABLE)
-from .Alignment import deseq_align
+from .alignment import deseq_align
 
 # Import other required modules
 import numpy as np
