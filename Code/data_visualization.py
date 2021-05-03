@@ -2,6 +2,7 @@
 import numpy as np
 import pandas as pd
 import os
+import warnings
 
 import holoviews as hv
 import colorcet as cc
@@ -292,7 +293,7 @@ def combine_seq_func_data(
 
     # Read in the results of deSeq
     seq_df = pd.read_csv(seq_output_path+'AminoAcids_Decoupled_Max.csv')
-
+    
     # Find wells that have multiple mutations since this only works for
     # single-mutant libraries
     count_df = pd.DataFrame(seq_df.groupby(
@@ -308,12 +309,15 @@ def combine_seq_func_data(
     seq_df = seq_df.rename(
         columns={'AaPosition': 'Position', 'Aa': 'AA'}
     )
-
+    
     # Remove dead sequencing wells
     seq_df = seq_df.loc[(seq_df['Flag'] != '#DEAD#')].copy()
 
     # Remove sequencing wells with a flag
-    seq_df = seq_df.loc[seq_df['Flag'].isna()].copy()
+    # allow wells w/ 'Unexpected Variation' if MutCount is 1
+    inds = (seq_df['Flag'].isna()) | ((seq_df['Flag'] == 'Unexpected Variation') & (seq_df['MutCount'] < 2))
+
+    seq_df = seq_df.loc[inds].copy()
 
     # Now that the #DEAD# wells are removed, set to int
     seq_df = seq_df.astype({'Position': 'int64'})
@@ -343,41 +347,32 @@ def combine_seq_func_data(
                 "You should have 'Position', 'Well', and 'Plate'. "
                 f"Your shared columns are: {shared_cols}"
             )
-
+    
     # Merge data_df and seq_df on shared columns and fill missing w/ NaN
-    return data_df.merge(seq_df, how='outer')
+    merged_data = data_df.merge(seq_df, how='outer')
+    return merged_data
 
 def activity_plot(
     df, 
-    plate, 
-    parent, 
-    missing, 
-    value, 
-    color_levels,
+    plate,
+    value,
+    missing,
     activity_range,
-    title
+    title,
+    sort_counter,
+    center_cmap,
+    known,
+    standard
 ):
-
-    temp_df = df.copy()
 
     # list of AAs
     AAs = list('ACDEFGHIKLMNPQRSTVWY')
 
-    for AA in missing:
-
-        # Create DataFrame for these values
-        temp_df = temp_df.append(
-            pd.DataFrame(
-                [[None] * (len(temp_df.columns))],
-                columns = temp_df.columns
-            ),
-            ignore_index=True
-        )
-        temp_df.at[len(temp_df) - 1, 'AA'] = AA
-    
+    # Copy and sort the sequence/function data
+    temp_df = df.copy()    
     temp_df = temp_df.sort_values('Sort')
     
-    # Placeholder plotting
+    # Opts for plotting
     opts = dict(
         width=600,
         height=500,
@@ -395,11 +390,11 @@ def activity_plot(
     hover = HoverTool(tooltips=tooltips)
 
     # Plot the data for which the AA is known
-    _df = temp_df[temp_df['AA'] != 'Unknown'].copy()
+    _df = temp_df[temp_df['Residue'] != 'Unknown'].copy()
     
     p = ns.viz.plot_bar(
         _df,
-        'AA',
+        'Residue',
         value_name=value,
         color=value,
         cmap='coolwarm'
@@ -408,21 +403,24 @@ def activity_plot(
     )
 
     # Plot the data w/ an unknown AA
-    _df = temp_df[temp_df['AA'] == 'Unknown'].copy()
+    _df = temp_df[temp_df['Residue'] == 'Unknown'].copy()
+    
+    # Create an empty DataFrame if there are no unknowns
     if len(_df) != 0:
         unknowns = True
     else:
         unknowns = False
         _df = pd.DataFrame({
-            'AA': ['Unknown'],
+            'Residue': ['Unknown'],
             value: [np.nan],
-            'Sort': 23
+            'Sort': sort_counter
         })
     
+    # Plot unknown activities if they exist and overlay with knowns
     if unknowns:
         p_unknown = ns.viz.plot_bar(
             _df,
-            'AA',
+            'Residue',
             value_name=value,
             color=value,
             cmap='coolwarm'
@@ -432,10 +430,6 @@ def activity_plot(
         })
 
         p = hv.Overlay([p, p_unknown])
-
-    # Center colormap
-    if color_levels is not None:
-        p = p.opts({'Bars': {'color_levels': color_levels}})
 
     # Place 'n.d.' for missing amino acids
     # Get the height for the text
@@ -460,7 +454,6 @@ def activity_plot(
     p = p.opts(**opts)
 
     # Relabel from AA
-    p.opts(xlabel='Residue')
     if title is not None:
         if not isinstance(title, str):
             raise ValueError(
@@ -468,6 +461,14 @@ def activity_plot(
         p.opts(title=title)
     if activity_range is not None:
         p.opts(ylim=activity_range)
+
+    if center_cmap == True:
+        center = temp_df[temp_df[known] == standard][value].mean()
+        color_levels = ns.viz._center_colormap(
+            temp_df[value].dropna(), center)
+        p.opts(
+            {'Bars': {'color_levels':color_levels}}
+        )
 
     return p
 
@@ -479,7 +480,7 @@ def count_plot(
 ):
     
     # Get observed AA counts
-    counts = temp_df['AA'].value_counts()
+    counts = temp_df['Residue'].value_counts()
 
     # Create DataFrame of counts, accounting for missing values
     count_dict = {
@@ -496,6 +497,7 @@ def count_plot(
 
     # Sort meaningfully, again...
     df_counts['Sort'] = df_counts['Residue'].replace(sort)
+    # return df_counts
     df_counts = df_counts.sort_values('Sort')
 
     # Make chart
@@ -521,9 +523,12 @@ def plot_variant_activities(
     min_seq_depth=10,
     hist=True,
     title=None,
-    color_levels=None,
+    center_cmap=None,
     activity_range=None,
-    hist_range=None
+    hist_range=None,
+    known=None,
+    variant=None,
+    standard=None,
 ):
     """
     Takes a DataFrame of single mutant sequence/fitness data and plots the
@@ -533,106 +538,170 @@ def plot_variant_activities(
     
     df = seq_func_data.copy()
 
+    # Remove rows w/o a known activity
+    df = df.loc[df[value].notna()]
+
+    # Add a 'Residue' column for tracking AAs and controls together
+    df['Residue'] = df['AA'].copy()
+
     # list of AAs
-    AAs = list('ACDEFGHIKLMNPQRSTVWY')
-
-    ##### Activity plot
-
-    ## TO-DO: Handle a dataframe that doesn't have positive/negative controls ##
-
-    # Find Parent
-    parent = f"Parent ({df['AA'][df['Type'] == 'Parent'].unique()[0]})"
+    AAs = list('ACDEFGHIKLMNPQRSTVWY*')
 
     # Set unknowns vs controls
     def set_knowns(df):
         
-        if df['Type'] == 'Negative':
-            df['AA'] = 'Negative'
-        elif df['Type'] == 'Sterile':
-            df['AA'] = 'Sterile'
-        elif df['Type'] == 'Parent':
-            df['AA'] = parent
-        elif pd.isna(df['AA']):
-            df['AA'] = 'Unknown'
-        elif df['AlignmentFrequency'] < min_align_freq:
-            df['AA'] = 'Unknown'
+        # Filter based on alignment frequency and sequencing depth
+        if df['AlignmentFrequency'] < min_align_freq:
+            df['Residue'] = 'Unknown'
         elif df['WellSeqDepth'] < min_seq_depth:
-            df['AA'] = 'Unknown'
+            df['Residue'] = 'Unknown'
+
+        # If the AA is NaN then set to unknown
+        elif pd.isna(df['AA']):
+            df['Residue'] = 'Unknown'
+
+        # If a sequence has multiple mutations (unexpected) set to unknown
         elif df['MutCount'] > 1:
-            df['AA'] = 'Unknown'
+            df['Residue'] = 'Unknown'
 
+        # Set controls if a type column passed
+        if known is not None:
+            if df[known] == variant:
+                pass
+            elif df[known] == standard:
+                df['Residue'] = standard_string
+            else:
+                df['Residue'] = df[known]
         return df
-
-    working_df = df.copy()
-    working_df = working_df.apply(set_knowns, axis=1)
     
+    # Set up dictionary for sorting meaningfully within the plotting loop
+    sort = {}
+
+    # If user passes a standard, use it as key for value 0 so that it
+    # displays first on the plot
+    if standard is not None:
+        standard_string = standard
+        sort[standard_string] = 0
+        
+        # Default behavior given a standard is to center the cmap
+        if center_cmap is None:
+            center_cmap = True
+
+    # Set the sort counter so that controls follow the variant library
+    sort_counter = 22
+
+    # If a column name for data type labels is passed, add the
+    # other controls/values in it to the sort dict in order of appearance.
+    # The order will be the same for all subplots of the HoloMap
+    if known is not None:
+        for _type in df[known].unique():
+            if _type not in [standard, variant]:
+
+                sort[_type] = sort_counter
+                sort_counter += 1
+
+    # Add an 'Unknown' sort as the last item in the sort
+    sort['Unknown'] = sort_counter
+
+    # Set known variants/AAs in sort: 1-21
+    sort.update({AA: i for i, AA in enumerate(AAs, 1)})
+    
+    # Initialize dictionaries for storing activity and AA count plots
     activity_plot_dict = {}
     histogram_plot_dict = {}
 
-    for plate in working_df['Plate'].unique():
-        temp_df = working_df.loc[working_df['Plate'] == plate].copy()
-        
-        # Sort meaningfully
-        sort = {
-            parent: 0,
-            # Known variants : 1-19, done in update line
-            'Negative': 21,
-            'Sterile': 22,
-            'Unknown': 23,
-        }
+    # Loop through the plates slice out one plate at a time
+    for plate in df['Plate'].unique():
+        temp_df = df.loc[df['Plate'] == plate].copy()
 
-        sort.update({AA: i for i, AA in enumerate(AAs, 1)})
+        # Loop through the positions that appear on this plate and slice out
+        for position in temp_df['Position'].unique():
+            temp_df = temp_df.loc[temp_df['Position'] == position].copy()
 
-        temp_df['Sort'] = temp_df['AA'].replace(sort)
+            # if standard is not None:
+            #     standard_series = temp_df.loc[temp_df[known]
+            #                                     == standard]['AA'].unique()
+            #     # Maybe warn if parent is not all the same?
+            #     if len(standard_series) > 1:
+            #         warning_text = (
+            #             f"Your standards for {plate} " +\
+            #             f"have different sequences: {standard_series}"
+            #         )
+            #         warnings.warn(warning_text)
 
-        # Find missing AAs
-        missing = tuple(set(AAs) - set(temp_df['AA'].unique()))
-        
-        #### Activity Plot ####
-        p = activity_plot(
-            temp_df, 
-            plate, 
-            parent, 
-            missing, 
-            value,
-            color_levels=color_levels,
-            activity_range=activity_range,
-            title=title
-        )
-        
-        ##### Histogram #####
-        if hist:
+            # Requires standard_string and sets controls, variants, and unknowns
+            temp_df = temp_df.apply(set_knowns, axis=1)
 
-            p_counts = count_plot(
-                temp_df,
-                missing,
-                sort,
-                hist_range=hist_range
+            # Find which AAs are missing from this plate/position
+            missing = tuple(set(AAs) - set(temp_df['Residue'].unique()))
+
+            # Loop through the missing AAs and add them to the DataFrame
+            # so they still appear (empty) in the bar-plot
+            for AA in missing:
+
+                # Append row for the missing AA
+                temp_df = temp_df.append(
+                    pd.DataFrame(
+                    [[None] * (len(temp_df.columns))],
+                    columns=temp_df.columns
+                    ),
+                    ignore_index=True
+                )
+
+                # Set the AA value for new row to the missing AA value
+                temp_df.at[len(temp_df) - 1, 'Residue'] = AA           
+
+            # Make the sort column based on the sort dictionary made
+            # outside of the loop (so axes on subplots match)
+            temp_df['Sort'] = temp_df['Residue'].replace(sort)
+
+            #### Activity Plot ####
+            p = activity_plot(
+                df=temp_df, 
+                plate=plate,
+                value=value,
+                missing=missing,
+                activity_range=activity_range,
+                title=title,
+                sort_counter=sort_counter,
+                center_cmap=center_cmap,
+                known=known,
+                standard=standard
             )
 
-            # Since we are plotting the histogram, remove xlabel from activity plot
-            p.opts(xlabel='')
-            
-            histogram_plot_dict[plate] = p_counts
-        
-        activity_plot_dict[plate] = p
+            ##### Histogram #####
+            if hist:
+                p_counts = count_plot(
+                    temp_df,
+                    missing,
+                    sort,
+                    hist_range=hist_range
+                )
 
+                # Since we are plotting the histogram, remove xlabel from activity plot
+                p.opts(xlabel='')
+                
+                # Store the count histograms in a dictionary
+                histogram_plot_dict[plate + ': ' + str(position)] = p_counts
+            
+            # Store the activity plots in a histogram
+            activity_plot_dict[f"{plate}: {position}"] = p
+
+    # Generate a HoloMap of the activity plots
     activity_hmap = hv.HoloMap(
         activity_plot_dict,
-        kdims='Plate'
+        kdims=['Plate: Position']
     ).opts(
         {'Bars': {'framewise': True}}
     )
 
     if hist:
-        
+        # Generate a HoloMap of the count histograms
         count_hmap = hv.HoloMap(
             histogram_plot_dict,
-            kdims='Plate'
+            kdims=['Plate: Position']
         )
-
         return (activity_hmap+count_hmap).cols(1)
 
     else:
-        # print('No histogram')
         return activity_hmap
