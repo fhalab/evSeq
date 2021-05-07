@@ -1,0 +1,1428 @@
+
+
+20200710-184820
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\RefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\ssSeq_Output\20200710-184820 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\TrpB-Single_S164_L001_I1_001.fastq.gz
+The identified read length for this run was: 69
+
+Error Encountered: No variable sites detected in one of the forward or reverse reference sequences.
+
+20200710-190524
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\RefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\ssSeq_Output
+fastq_r: 
+analysis only: False
+input_readlength: 150
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\GitHub\ssSeq\ssSeq_Output\20200710-190524 
+    
+
+Error Encountered: No fastq or fastq.gz files found in target folder.
+
+20200710-190540
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\RefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\ssSeq_Output
+fastq_r: 
+analysis only: False
+input_readlength: 150
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\GitHub\ssSeq\ssSeq_Output\20200710-190540 
+    
+
+Error Encountered: No fastq or fastq.gz files found in target folder.
+
+20200710-190640
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\RefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston
+fastq_r: 
+analysis only: False
+input_readlength: 150
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\GitHub\ssSeq\ssSeq_Output\20200710-190640 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\TrpB-Single_S164_L001_I1_001.fastq.gz
+
+Warning: 
+No sequences passed alignment QC for 'Plate02'. Consider lowering filtering thresholds.
+
+Warning: 
+No sequences passed alignment QC for 'Plate01'. Consider lowering filtering thresholds.
+
+Run completed. Log may contain warnings.
+
+20200710-192415
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\RefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston
+fastq_r: 
+analysis only: False
+input_readlength: 150
+troubleshoot mode: True
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\ssSeq_Output\20200710-192415 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\TrpB-Single_S164_L001_I1_001.fastq.gz
+
+Warning: 
+No sequences passed alignment QC for 'Plate02'. Consider lowering filtering thresholds.
+
+Warning: 
+No sequences passed alignment QC for 'Plate01'. Consider lowering filtering thresholds.
+
+Run completed. Log may contain warnings.
+
+20200723-153439
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\RefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston
+fastq_r: 
+analysis only: False
+input_readlength: 150
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\ssSeq_Output\ssSeq_Output\20200723-153439 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\TrpB-Single_S164_L001_I1_001.fastq.gz
+
+Error Encountered: 
+Unhandled exception encountered: '[Errno 2] No such file or directory: 'C:\\Users\\kejoh\\OneDrive - California Institute of Technology\\ArnoldLab\\Projects\\TrpB_landscape\\sequencing\\07102020 - Kadina Johnston\\ssSeq_Output\\ssSeq_Output\\20200723-153439\\Qualities/TrpB-Single_S164_L001_R1_001-TrpB-Single_S164_L001_R2_001-ReadQualPlot.html''
+
+20200723-153740
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\RefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston
+fastq_r: 
+analysis only: False
+input_readlength: 150
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\ssSeq_Output\20200723-153740 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\TrpB-Single_S164_L001_I1_001.fastq.gz
+
+Error Encountered: Your read length does not capture all variable positions in the reference sequence provided.
+                 Your forward read captures 3 variable positions and the reverse 2 variable positions, while
+                 your input sequence has 6 variable positions.
+
+20200723-154357
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\RefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston
+fastq_r: 
+analysis only: False
+input_readlength: 150
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\ssSeq_Output\20200723-154357 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\TrpB-Single_S164_L001_I1_001.fastq.gz
+
+Warning: 
+No sequences passed alignment QC for 'Plate02'. Consider lowering filtering thresholds.
+
+Warning: 
+No sequences passed alignment QC for 'Plate01'. Consider lowering filtering thresholds.
+
+Run completed. Log may contain warnings.
+
+20200723-161529
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\RefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston
+fastq_r: 
+analysis only: False
+input_readlength: 150
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.25
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\ssSeq_Output\20200723-161529 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\TrpB-Single_S164_L001_I1_001.fastq.gz
+
+Warning: All wells associated with Plate02 have a read depth <=10.Be careful comparing heatmaps between this plate and others.Be careful using this data; sequencing was not good.
+
+Warning: All wells associated with Plate01 have a read depth <=10.Be careful comparing heatmaps between this plate and others.Be careful using this data; sequencing was not good.
+
+Run completed. Log may contain warnings.
+
+20200723-174353
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\RefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston
+fastq_r: 
+analysis only: False
+input_readlength: 150
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 25
+alignment filter: 0.1
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\ssSeq_Output\20200723-174353 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_landscape\sequencing\07102020 - Kadina Johnston\TrpB-Single_S164_L001_I1_001.fastq.gz
+
+Warning: All wells associated with Plate02 have a read depth <=10.Be careful comparing heatmaps between this plate and others.Be careful using this data; sequencing was not good.
+
+Warning: All wells associated with Plate01 have a read depth <=10.Be careful comparing heatmaps between this plate and others.Be careful using this data; sequencing was not good.
+
+Run completed. Log may contain warnings.
+
+20200821-173205
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08212020 - Kadina Johnston\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08212020 - Kadina Johnston
+fastq_r: 
+analysis only: False
+input_readlength: 150
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08212020 - Kadina Johnston\ssSeq_Output\20200821-173205 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08212020 - Kadina Johnston\2step_S296_L001_I1_001.fastq.gz
+
+Run completed. Log may contain warnings.
+
+20200821-174157
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08212020 - Kadina Johnston\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08212020 - Kadina Johnston
+fastq_r: 
+analysis only: False
+input_readlength: 150
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 20
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08212020 - Kadina Johnston\ssSeq_Output\20200821-174157 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08212020 - Kadina Johnston\2step_S296_L001_I1_001.fastq.gz
+
+Run completed. Log may contain warnings.
+
+20200828-155629
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08212020 - Kadina Johnston\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp1
+fastq_r: 
+analysis only: True
+input_readlength: 150
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\ssSeq_Output\20200828-155629 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp1\exp1_S241_L001_I1_001.fastq.gz
+
+Run completed. Log may contain warnings.
+
+20200828-155951
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08212020 - Kadina Johnston\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp1
+fastq_r: 
+analysis only: True
+input_readlength: 150
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp2\ssSeq_Output\20200828-155951 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp1\exp1_S241_L001_I1_001.fastq.gz
+
+Run completed. Log may contain warnings.
+
+20200829-162233
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp1\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp1
+fastq_r: 
+analysis only: False
+input_readlength: 150
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp1\ssSeq_Output\ssSeq_Output\20200829-162233 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp1\exp1_S241_L001_I1_001.fastq.gz
+
+Error Encountered: The following dual index plate-well pairs do not exist in IndexMap.csv:
+DI01-D02
+DI01-F06
+DI01-F09
+DI01-H07
+DI01-H01
+DI01-C01
+DI01-G05
+DI01-C06
+DI01-D04
+DI01-H10
+DI01-C12
+DI01-D07
+DI01-B04
+DI01-F10
+DI01-D09
+DI01-E06
+DI01-D03
+DI01-H09
+DI01-G10
+DI01-E03
+DI01-B07
+DI01-G03
+DI01-E04
+DI01-D11
+DI01-G08
+DI01-G09
+DI01-C09
+DI01-H05
+DI01-E10
+DI01-H02
+DI01-F08
+DI01-G11
+DI01-B08
+DI01-B03
+DI01-F04
+DI01-B09
+DI01-D10
+DI01-H08
+DI01-E11
+DI01-B02
+DI01-G02
+DI01-B05
+DI01-H12
+DI01-F07
+DI01-F01
+DI01-G07
+DI01-C03
+DI01-H04
+DI01-B01
+DI01-E07
+DI01-B12
+DI01-E09
+DI01-C08
+DI01-B11
+DI01-H03
+DI01-C11
+DI01-D08
+DI01-G06
+DI01-E12
+DI01-E01
+DI01-C02
+DI01-G04
+DI01-F02
+DI01-D01
+DI01-F11
+DI01-F12
+DI01-F03
+DI01-G01
+DI01-C04
+DI01-C05
+DI01-D05
+DI01-B06
+DI01-D06
+DI01-H06
+DI01-F05
+DI01-E08
+DI01-E05
+DI01-H11
+DI01-G12
+DI01-E02
+DI01-C07
+DI01-C10
+DI01-D12
+DI01-B10
+
+20200829-163313
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp1\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp1
+fastq_r: 
+analysis only: False
+input_readlength: 150
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp1\ssSeq_Output\ssSeq_Output\20200829-163313 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp1\exp1_S241_L001_I1_001.fastq.gz
+
+Run completed. Log may contain warnings.
+
+20200829-172312
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp1\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp1\barcode_fastqs\New folder
+fastq_r: 
+analysis only: False
+input_readlength: 150
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp1\barcode_fastqs\New folder\ssSeq_Output\20200829-172312 
+    
+
+Error Encountered: Could not match forward and reverse files. Make sure they have appropriate names.
+
+20200830-231318
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp1\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp1\barcode_fastqs\AACGATG
+fastq_r: 
+analysis only: False
+input_readlength: 150
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp1\barcode_fastqs\AACGATG\ssSeq_Output\20200830-231318 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+
+Error Encountered: 
+Unhandled exception encountered: ''SeqPair' object has no attribute 'r_qual_scores''
+
+20200901-162846
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_multisite_prediction\Sequencing\NGS\Analysis\20190826\RefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_multisite_prediction\Sequencing\NGS\Raw\20191018
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_multisite_prediction\Sequencing\NGS\Raw\20191018\ssSeq_Output\20200901-162846 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_multisite_prediction\Sequencing\NGS\Raw\20191018\BruceWittmannArnold-Lib4-2_S96_L001_I1_001.fastq.gz
+The identified read length for this run was: 80
+
+Error Encountered: 
+Unhandled exception encountered: '[Errno 2] No such file or directory: 'C:\\Users\\kejoh\\OneDrive - California Institute of Technology\\ArnoldLab\\Projects\\TrpB_multisite_prediction\\Sequencing\\NGS\\Raw\\20191018\\ssSeq_Output\\20200901-162846\\Qualities/BruceWittmannArnold-Lib4-2_S96_L001_R1_001.fastq-BruceWittmannArnold-Lib4-2_S96_L001_R2_001.fastq-ReadQualPlot.html''
+
+20200901-163015
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_multisite_prediction\Sequencing\NGS\Analysis\20190826\RefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_multisite_prediction\Sequencing\NGS\Raw\20191018
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_multisite_prediction\Sequencing\NGS\Raw\20191018\ssSeq_Output\20200901-163015 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_multisite_prediction\Sequencing\NGS\Raw\20191018\BruceWittmannArnold-Lib4-2_S96_L001_I1_001.fastq.gz
+The identified read length for this run was: 80
+
+Error Encountered: 
+Unhandled exception encountered: '[Errno 2] No such file or directory: 'C:\\Users\\kejoh\\OneDrive - California Institute of Technology\\ArnoldLab\\Projects\\TrpB_multisite_prediction\\Sequencing\\NGS\\Raw\\20191018\\ssSeq_Output\\20200901-163015\\Qualities/BruceWittmannArnold-Lib4-2_S96_L001_R1_001.fastq-BruceWittmannArnold-Lib4-2_S96_L001_R2_001.fastq-ReadQualPlot.html''
+
+20200901-163259
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_multisite_prediction\Sequencing\NGS\Analysis\20190826\RefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_multisite_prediction\Sequencing\NGS\Raw\20191011
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_multisite_prediction\Sequencing\NGS\Raw\20191011\ssSeq_Output\20200901-163259 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_multisite_prediction\Sequencing\NGS\Raw\20191011\Lib-2-Arnold_S131_L001_I1_001.fastq.gz
+The identified read length for this run was: 251
+
+Error Encountered: 
+Unhandled exception encountered: '[Errno 2] No such file or directory: 'C:\\Users\\kejoh\\OneDrive - California Institute of Technology\\ArnoldLab\\Projects\\TrpB_multisite_prediction\\Sequencing\\NGS\\Raw\\20191011\\ssSeq_Output\\20200901-163259\\Qualities/Lib-2-Arnold_S131_L001_R1_001.fastq-Lib-2-Arnold_S131_L001_R2_001.fastq-ReadQualPlot.html''
+
+20200901-163807
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_multisite_prediction\Sequencing\NGS\Analysis\20190826\RefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_multisite_prediction\Sequencing\NGS\Raw\20191011
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_multisite_prediction\Sequencing\NGS\Raw\20191011\ssSeq_Output\20200901-163807 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_multisite_prediction\Sequencing\NGS\Raw\20191011\Lib-2-Arnold_S131_L001_I1_001.fastq.gz
+The identified read length for this run was: 251
+
+Error Encountered: 
+Unhandled exception encountered: '[Errno 2] No such file or directory: 'C:\\Users\\kejoh\\OneDrive - California Institute of Technology\\ArnoldLab\\Projects\\TrpB_multisite_prediction\\Sequencing\\NGS\\Raw\\20191011\\ssSeq_Output\\20200901-163807\\Qualities/Lib-2-Arnold_S131_L001_R1_001.fastq-Lib-2-Arnold_S131_L001_R2_001.fastq-ReadQualPlot.html''
+
+20200901-164538
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_multisite_prediction\Sequencing\NGS\Analysis\20190826\RefSeqs_new_ssSeq.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_multisite_prediction\Sequencing\NGS\Raw\20191011
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_multisite_prediction\Sequencing\NGS\Raw\20191011\ssSeq_Output\20200901-164538 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\TrpB_multisite_prediction\Sequencing\NGS\Raw\20191011\Lib-2-Arnold_S131_L001_I1_001.fastq.gz
+The identified read length for this run was: 251
+
+Error Encountered: 
+Unhandled exception encountered: '[Errno 2] No such file or directory: 'C:\\Users\\kejoh\\OneDrive - California Institute of Technology\\ArnoldLab\\Projects\\TrpB_multisite_prediction\\Sequencing\\NGS\\Raw\\20191011\\ssSeq_Output\\20200901-164538\\Qualities/Lib-2-Arnold_S131_L001_R1_001.fastq-Lib-2-Arnold_S131_L001_R2_001.fastq-ReadQualPlot.html''
+
+20200901-164847
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08212020 - Kadina Johnston\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08212020 - Kadina Johnston
+fastq_r: 
+analysis only: False
+input_readlength: 150
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08212020 - Kadina Johnston\ssSeq_Output\20200901-164847 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08212020 - Kadina Johnston\2step_S296_L001_I1_001.fastq.gz
+
+Run completed. Log may contain warnings.
+
+20200901-165446
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191011\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191011
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191011\ssSeq_Output\20200901-165446 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191011\Lib-2-Arnold_S131_L001_I1_001.fastq.gz
+The identified read length for this run was: 251
+
+Warning: 
+No sequences passed alignment QC for 'Lib-2-Arnold'. Consider lowering filtering thresholds.
+
+Run completed. Log may contain warnings.
+
+20200901-170227
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20190812\Lib3\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20190812\Lib3
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20190812\Lib3\ssSeq_Output\20200901-170227 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20190812\Lib3\pf-lib3_S130_L001_I1_001.fastq.gz
+The identified read length for this run was: 151
+
+Warning: 
+No sequences passed alignment QC for 'pf-lib3'. Consider lowering filtering thresholds.
+
+Run completed. Log may contain warnings.
+
+20200901-170628
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20190812\Lib1\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20190812\Lib1
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20190812\Lib1\ssSeq_Output\20200901-170628 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20190812\Lib1\pf-lib1_S129_L001_I1_001.fastq.gz
+The identified read length for this run was: 151
+
+Warning: 
+No sequences passed alignment QC for 'pf-lib1'. Consider lowering filtering thresholds.
+
+Run completed. Log may contain warnings.
+
+20200901-171334
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20190826\Lib3\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20190826\Lib3
+fastq_r: 
+analysis only: True
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20190826\Lib3\ssSeq_Output\20200901-171334 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20190826\Lib3\pf5G8-lib3-2_S131_L001_I1_001.fastq.gz
+The identified read length for this run was: 80
+
+Run completed. Log may contain warnings.
+
+20200901-172248
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20190826\Lib4\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20190826\Lib4
+fastq_r: 
+analysis only: True
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20190826\Lib4\ssSeq_Output\20200901-172248 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20190826\Lib4\pf5G8-lib4_S132_L001_I1_001.fastq.gz
+The identified read length for this run was: 151
+
+Run completed. Log may contain warnings.
+
+20200901-180643
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\201901018\DefaultRefSeqs
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191018
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191018\ssSeq_Output\20200901-180643 
+    
+
+Error Encountered: The file or folder does not exist: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\201901018\DefaultRefSeqs
+
+20200901-180702
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\201901018\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191018
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191018\ssSeq_Output\20200901-180702 
+    
+
+Error Encountered: The file or folder does not exist: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\201901018\DefaultRefSeqs.csv
+
+20200901-180806
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191018\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191018
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191018\ssSeq_Output\20200901-180806 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191018\BruceWittmannArnold-Lib4-2_S96_L001_I1_001.fastq.gz
+The identified read length for this run was: 80
+
+Error Encountered: 
+Unhandled exception encountered: '[Errno 2] No such file or directory: 'C:\\Users\\kejoh\\OneDrive - California Institute of Technology\\ArnoldLab\\Projects\\NextGenSequencing\\data\\20191018\\ssSeq_Output\\20200901-180806\\Qualities/BruceWittmannArnold-Lib4-2_S96_L001_R1_001.fastq-BruceWittmannArnold-Lib4-2_S96_L001_R2_001.fastq-ReadQualPlot.html''
+
+20200901-180948
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191018\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191018
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191018\ssSeq_Output\20200901-180948 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191018\BruceWittmannArnold-Lib4-2_S96_L001_I1_001.fastq.gz
+The identified read length for this run was: 80
+
+Error Encountered: 
+Unhandled exception encountered: '[Errno 2] No such file or directory: 'C:\\Users\\kejoh\\OneDrive - California Institute of Technology\\ArnoldLab\\Projects\\NextGenSequencing\\data\\20191018\\ssSeq_Output\\20200901-180948\\Qualities/BruceWittmannArnold-Lib4-2_S96_L001_R1_001.fastq-BruceWittmannArnold-Lib4-2_S96_L001_R2_001.fastq-ReadQualPlot.html''
+
+20200901-181129
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191018\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191018
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191018\ssSeq_Output\20200901-181129 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191018\BruceWittmannArnold-Lib4-2_S96_L001_I1_001.fastq.gz
+The identified read length for this run was: 80
+
+Error Encountered: 
+Unhandled exception encountered: '[Errno 2] No such file or directory: 'C:\\Users\\kejoh\\OneDrive - California Institute of Technology\\ArnoldLab\\Projects\\NextGenSequencing\\data\\20191018\\ssSeq_Output\\20200901-181129\\Qualities/BruceWittmannArnold-Lib4-2_S96_L001_R1_001.fastq-BruceWittmannArnold-Lib4-2_S96_L001_R2_001.fastq-ReadQualPlot.html''
+
+20200901-181436
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191018\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191018
+fastq_r: 
+analysis only: True
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191018\ssSeq_Output\20200901-181436 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20191018\BruceWittmannArnold-Lib4-2_S96_L001_I1_001.fastq.gz
+The identified read length for this run was: 80
+
+Error Encountered: 
+Unhandled exception encountered: '[Errno 2] No such file or directory: 'C:\\Users\\kejoh\\OneDrive - California Institute of Technology\\ArnoldLab\\Projects\\NextGenSequencing\\data\\20191018\\ssSeq_Output\\20200901-181436\\Qualities/BruceWittmannArnold-Lib4-2_S96_L001_R1_001.fastq-BruceWittmannArnold-Lib4-2_S96_L001_R2_001.fastq-ReadQualPlot.html''
+
+20200902-115009
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp2\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp2
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp2\ssSeq_Output\20200902-115009 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\08282020 - Kadina Johnston\exp2\exp2_S242_L001_I1_001.fastq.gz
+The identified read length for this run was: 151
+
+Run completed. Log may contain warnings.
+
+20200903-000201
+----------------------------------------------------------------------------
+refseq: "C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200706\DefaultRefSeqs.csv"
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200706
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200706\ssSeq_Output\20200903-000201 
+    
+
+Error Encountered: The file or folder does not exist: "C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200706\DefaultRefSeqs.csv"
+
+20200903-000302
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200706\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200706
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200706\ssSeq_Output\20200903-000302 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200706\G1-RBC_S168_L001_I1_001.fastq.gz
+The identified read length for this run was: 151
+
+Warning: All wells associated with G1-RBC have a read depth <=10.Be careful comparing heatmaps between this plate and others.Be careful using this data; sequencing was not good.
+
+Run completed. Log may contain warnings.
+
+20200916-121755
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2
+fastq_r: 
+analysis only: False
+input_readlength: 150
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2\ssSeq_Output\20200916-121755 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2\exp2_S187_L001_I1_001.fastq.gz
+
+Error Encountered: No variable sites detected in one of the forward or reverse reference sequences.
+
+20200916-122020
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2
+fastq_r: 
+analysis only: False
+input_readlength: 150
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2\ssSeq_Output\20200916-122020 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2\exp2_S187_L001_I1_001.fastq.gz
+
+Warning: All wells associated with 105X have a read depth <=10.Be careful comparing heatmaps between this plate and others.Be careful using this data; sequencing was not good.
+
+Error Encountered: 
+Unhandled exception encountered: 'cannot convert float NaN to integer'
+
+20200916-123223
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2\ssSeq_Output\20200916-123223 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2\exp2_S187_L001_I1_001.fastq.gz
+The identified read length for this run was: 151
+
+Warning: All wells associated with 105X have a read depth <=10.Be careful comparing heatmaps between this plate and others.Be careful using this data; sequencing was not good.
+
+Error Encountered: 
+Unhandled exception encountered: 'cannot convert float NaN to integer'
+
+20200916-124501
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2\ssSeq_Output\20200916-124501 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2\exp2_S187_L001_I1_001.fastq.gz
+The identified read length for this run was: 151
+
+Warning: All wells associated with 105X have a read depth <=10.Be careful comparing heatmaps between this plate and others.Be careful using this data; sequencing was not good.
+
+Error Encountered: 
+Unhandled exception encountered: 'cannot convert float NaN to integer'
+
+20200916-124738
+----------------------------------------------------------------------------
+refseq: DefaultRefSeqs.csv
+source folder/fastq_f: .
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2\ssSeq_Output\20200916-124738 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 .\exp2_S187_L001_I1_001.fastq.gz
+The identified read length for this run was: 151
+
+Warning: All wells associated with 105X have a read depth <=10.Be careful comparing heatmaps between this plate and others.Be careful using this data; sequencing was not good.
+
+20200916-132402
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2\ssSeq_Output\20200916-132402 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2\exp2_S187_L001_I1_001.fastq.gz
+The identified read length for this run was: 151
+
+Warning: All wells associated with 105X have a read depth <=10.Be careful comparing heatmaps between this plate and others.Be careful using this data; sequencing was not good.
+
+Warning: All wells associated with 162X have a read depth <=10.Be careful comparing heatmaps between this plate and others.Be careful using this data; sequencing was not good.
+
+Warning: All wells associated with 184X have a read depth <=10.Be careful comparing heatmaps between this plate and others.Be careful using this data; sequencing was not good.
+
+Run completed. Log may contain warnings.
+
+20200916-133540
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2\ssSeq_Output\20200916-133540 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200814_TrpB_landscape\exp2\exp2_S187_L001_I1_001.fastq.gz
+The identified read length for this run was: 151
+
+Error Encountered: No variable sites detected in one of the forward or reverse reference sequences.
+
+20201016-184005
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200828 - Kadina Johnston\exp1\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201016_adapter_test
+fastq_r: 
+analysis only: True
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201016_adapter_test\ssSeq_Output\20201016-184005 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201016_adapter_test\adapter-test_S291_L001_I1_001.fastq.gz
+The identified read length for this run was: 150
+
+Run completed. Log may contain warnings.
+
+20201026-123234
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20200828 - Kadina Johnston\exp1\DefaultRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201023_adapter_test_162X
+fastq_r: 
+analysis only: True
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201023_adapter_test_162X\ssSeq_Output\20201026-123234 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201023_adapter_test_162X\Tm162X_S226_L001_I1_001.fastq.gz
+The identified read length for this run was: 151
+
+Run completed. Log may contain warnings.
+
+20201027-162914
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201016_adapter_test\DetailedRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201016_adapter_test
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: True
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201016_adapter_test\ssSeq_Output\20201027-162914 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201016_adapter_test\adapter-test_S291_L001_I1_001.fastq.gz
+The identified read length for this run was: 150
+
+Error Encountered: No variable sites detected in one of the forward or reverse reference sequences.
+
+20201027-163747
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201016_adapter_test\DetailedRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201016_adapter_test
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: True
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201016_adapter_test\ssSeq_Output\20201027-163747 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201016_adapter_test\adapter-test_S291_L001_I1_001.fastq.gz
+The identified read length for this run was: 150
+
+Error Encountered: Specified variable positons are not in the same reading frame. Aborting run.
+
+20201027-164733
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201016_adapter_test\DetailedRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201016_adapter_test
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: True
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201016_adapter_test\ssSeq_Output\20201027-164733 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201016_adapter_test\adapter-test_S291_L001_I1_001.fastq.gz
+The identified read length for this run was: 150
+
+Run completed. Log may contain warnings.
+
+20201027-170517
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201023_adapter_test_162X\DetailedRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201023_adapter_test_162X
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: True
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201023_adapter_test_162X\ssSeq_Output\20201027-170517 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201023_adapter_test_162X\Tm162X_S226_L001_I1_001.fastq.gz
+The identified read length for this run was: 151
+
+Run completed. Log may contain warnings.
+
+20201114-182456
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201030_adapter_test_others\DetailedRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201030_adapter_test_others\Pf5G8
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201030_adapter_test_others\Pf5G8\ssSeq_Output\20201114-182456 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201030_adapter_test_others\Pf5G8\Pf5G8_S229_L001_I1_001.fastq.gz
+The identified read length for this run was: 151
+
+Run completed. Log may contain warnings.
+
+20201114-183242
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201030_adapter_test_others\DetailedRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201030_adapter_test_others\RmaNOD_lq
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201030_adapter_test_others\RmaNOD_lq\ssSeq_Output\20201114-183242 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201030_adapter_test_others\RmaNOD_lq\RmaNOD_S231_L001_I1_001.fastq.gz
+The identified read length for this run was: 151
+
+Run completed. Log may contain warnings.
+
+20201114-183741
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201030_adapter_test_others\DetailedRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201030_adapter_test_others\Tm162X
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201030_adapter_test_others\Tm162X\ssSeq_Output\20201114-183741 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201030_adapter_test_others\Tm162X\Tm162X_S226_L001_I1_001.fastq.gz
+The identified read length for this run was: 151
+
+Run completed. Log may contain warnings.
+
+20201114-184408
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201030_adapter_test_others\DetailedRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201030_adapter_test_others\Tm292X
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201030_adapter_test_others\Tm292X\ssSeq_Output\20201114-184408 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\data\20201030_adapter_test_others\Tm292X\Tm292X_S230_L001_I1_001.fastq.gz
+The identified read length for this run was: 151
+
+Run completed. Log may contain warnings.
+
+20201117-160143
+----------------------------------------------------------------------------
+refseq: C:\Users\kejoh\GitHub\ssSeq\InstallationConfirmationData\DetailedRefSeqs.csv
+source folder/fastq_f: C:\Users\kejoh\GitHub\ssSeq\InstallationConfirmationData
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\OneDrive - California Institute of Technology\ArnoldLab\Projects\NextGenSequencing\Heatmap_fixes\ssSeq_Output\20201117-160143 
+    
+Identified Seq File Pairs:
+    Forward Reads: {}
+    Reverse Reads: {}
+    
+Unmatched Files in Folder:
+    
+	 C:\Users\kejoh\GitHub\ssSeq\InstallationConfirmationData\CHL1_S193_L001_R1_001.fastq
+The identified read length for this run was: 150
+
+Run completed. Log may contain warnings.
