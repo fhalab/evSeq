@@ -1,32 +1,39 @@
-#!/usr/bin/env python
+#!/usr/bin/env pythonw
 
 # Import relevant modules
-import argparse
 import os
 from time import strftime
 
 # Import relevant modules from ssSeqSupport.
-from Code.globals import N_CPUS
-from Code.logging import log_init, log_info, log_error
-from Code.input_processing import build_output_dirs
-from Code.run_deSeq import run_deseq
+from deSeq.logging import log_init, log_info, log_error
+from deSeq.run_deSeq import run_deseq
+from deSeq.globals import N_CPUS
+from deSeq.input_processing import build_output_dirs
+
+# Import gooey
+from gooey import Gooey, GooeyParser
 
 # Create a "main" function
+@Gooey(program_name = "deSeq",
+       required_cols = 1,
+       optional_cols = 1)
 def main():
 
     # Get the cwd
     cwd = os.getcwd()
 
-    # Instantiate argparser
-    parser = argparse.ArgumentParser()
+    # Instantiate GooeyParser
+    parser = GooeyParser(description = "User Interface for deSeq")
 
     # Add required arguments
     required_args_group = parser.add_argument_group("Required Arguments", 
                                                     "Arguments required for each run")
     required_args_group.add_argument("refseq", 
-                                     help = "csv containing reference sequences.")
+                                     help = "csv containing reference sequences.",
+                                     widget = "FileChooser")
     required_args_group.add_argument("folder",
-                                     help = "Folder containing fastq or fastq.gz files. Can also be forward fastq or fastq.gz file.")
+                                     help = "Folder containing fastq or fastq.gz files. Can also be forward fastq or fastq.gz file.",
+                                     widget = "DirChooser")
     
     
     # Add an argument group for passing in the reverse file
@@ -35,11 +42,13 @@ def main():
     io_args_group.add_argument("--fastq_r", 
                                      help = "Reverse fastq or fastq.gz file. Usually not needed.",
                                      required = False,
-                                     default = "")
+                                     default = "",
+                                     widget = "FileChooser")
     io_args_group.add_argument("--output", 
                                      help = "Save location for run.",
                                      required = False,
-                                     default = cwd)
+                                     default = cwd,
+                                     widget = "DirChooser")
     io_args_group.add_argument("--detailed_refseq",
                                      help = "Set if you are using different reference sequences by well",
                                      required = False, 
@@ -106,6 +115,7 @@ def main():
                                      type = int,
                                      default = None)
 
+
     # Parse the arguments
     CL_ARGS = vars(parser.parse_args())
         
@@ -115,22 +125,22 @@ def main():
     datetime = strftime("%Y%m%d-%H%M%S")
     output_dir = os.path.join(base_output, "deSeq_Output", datetime)
     CL_ARGS.update({"datetime": datetime, "output": output_dir})
-        
+
     # Build all output directories
     build_output_dirs(CL_ARGS)
-        
+    
     # Log CLArgs
     log_init(CL_ARGS)    
 
     # Run ssSeq
-#    try:
-    run_deseq(CL_ARGS)
-#    except Exception as e:
-#        log_error("\nUnhandled exception encountered: '{}'".format(e))
+    try:
+        run_deseq(CL_ARGS)
+    except Exception as e:
+        log_error("\nUnhandled exception encountered: '{}'".format(e))
     
     # Log that we have successfully completed the run
-    log_info("Run completed. Log may contain warnings.")
-    
+    log_info("\nRun completed. Log may contain warnings.")
+
 # Run main()
 if __name__ == "__main__":
     main()

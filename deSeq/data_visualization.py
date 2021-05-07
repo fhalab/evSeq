@@ -224,6 +224,11 @@ def make_heatmap(df, title):
     # residue labels
     def split_variant_labels(mutation_string):
         
+        num_mutations = len(mutation_string.split('_'))
+
+        if  num_mutations > 4:
+            return str(num_mutations)+' muts'
+
         mutation_string = mutation_string.replace('?','')
         new_line_mutations = mutation_string.replace('_','\n')
         
