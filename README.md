@@ -17,7 +17,7 @@ Table of Contents
     - [Installing Git](#installing-git)
     - [Opening a Terminal Window](#opening-a-terminal-window)
     - [Installing Anaconda](#installing-anaconda)
-    - [Construction of "GitRepos" Folder](#construction-of-%22gitrepos%22-folder)
+    - [Construction of "GitRepos" Folder](#construction-of-gitrepos-folder)
   - [General Instructions](#general-instructions)
     - [deSeq Installation](#deseq-installation)
     - [Conda Environment Setup](#conda-environment-setup)
@@ -27,6 +27,8 @@ Table of Contents
 - [Using deSeq](#using-deseq)
   - [Launching the GUI](#launching-the-gui)
     - [Open GUI with Double-Click](#open-gui-with-double-click)
+      - [Windows Users:](#windows-users)
+      - [Mac users](#mac-users)
     - [Open GUI with Command Line](#open-gui-with-command-line)
   - [Running deSeq with the GUI](#running-deseq-with-the-gui)
   - [Working through Command Line](#working-through-command-line)
@@ -93,11 +95,11 @@ For instance, in my case I would type
 
 After hitting "Enter" on your keyboard, you will notice that the prefix of your command line has changed. It will look something like the below after successfully executing the "cd" command:
 
-![Command line example](./GitImages/CommandLineExample.png "Command line example")
+![Command line example](./deSeq_support/GitImages/CommandLineExample.png "Command line example")
 
 From the deSeq GitHub page, find the green box labeled "Clone or download". A screenshot giving the box location is below. Click on this box, then copy the presented url.
 
-![Clone or download example](./GitImages/CloneDownloadImage.png "Clone or download example")
+![Clone or download example](./deSeq_support/GitImages/CloneDownloadImage.png "Clone or download example")
 
 Now in the command line, type
 
@@ -198,11 +200,11 @@ If deSeq was not added to your PATH and is not executable, then you can activate
 ## Running deSeq with the GUI
 Once the GUI is launched it should look like the below:
 
-![GUI](./GitImages/GUI.png "GUI")
+![GUI](./deSeq_support/GitImages/GUI.png "GUI")
 
 Note that the two required arguments are at the top of the GUI, details on these arguments can be found [here](#Required-Arguments). We can populate the fields with the test data given in [Example Data](#Example-Data), which will look like below:
 
-![Filled GUI](./GitImages/FilledGui.png "Filled GUI")
+![Filled GUI](./deSeq_support/GitImages/FilledGui.png "Filled GUI")
 
 Note that "refseq" is a file while "folder" is a folder. For more advanced use, other arguments can be accessed by scrolling down (These additional arguments are detailed in [OptionalArguments](#Optional-Arguments).). You will typically not need these arguments, however, and the standard deSeq run can be started by clicking "Start" once "refseq" and "folder" are populated. Once started, the progress of the program will be printed to the GUI along with any encountered warnings and errors.
 
@@ -277,11 +279,11 @@ This is a csv file outlining the expected amplicon sequence for a given plate or
 
 1. Make a copy of your amplicon sequence. The sequence should include only that DNA pertaining to the target gene. In other words, adapter sequences should not be present, but binding regions for your primers should be. An example is given in the below image, where only the regions of NodSeq04 and NodSeq05 which bind to the gene of interest are taken as part of the amplicon (amplicon is highlighted); the remaining sequence of NodSeq04 and NodSeq05 is hidden and will not be taken as part of the amplicon.
 
-![Example Amplicon](./GitImages/AmpliconExample.png "Example Amplicon")
+![Example Amplicon](./deSeq_support/GitImages/AmpliconExample.png "Example Amplicon")
 
 2. (OPTIONAL) Replace the bases at the known mutagenized positions with "NNN" as the codon. Doing so forces deSeq to return the sequence identified at these positions (e.g. from a site-saturation mutagenesis library), whether or not it matches the parent. If you know where your mutations will occur, this is the recommended way to use deSeq; any off-target mutations not given by "NNN" will still be identified and reported. As an example, the same sequence used above is modified to denote that amino acid positions 29, 39, 49, and 63 are expected to hold mutations -- the sequence at these positions will be returned whether or not it is the same as the reference sequence.
 
-![Example Mutagenized Amplicon](./GitImages/ExampleAmpliconNNN.png "Example Mutagenized Amplicon")
+![Example Mutagenized Amplicon](./deSeq_support/GitImages/ExampleAmpliconNNN.png "Example Mutagenized Amplicon")
 
 3. Using the amplicon sequence (or sequences, depending on your use case), construct the csv file to pass in as the refseq argument. There are two different styles of refseq file that you can pass in, each detailed in the below subsections.
 
@@ -373,18 +375,18 @@ Note that deSeq handles identified parent and dead wells differently from others
 ## Platemaps
 For each plate passed in via the "refseqs" file, a single platemap image will be generated; these images are contained in html files found in the "Platemaps" folder. An example image is given below for a 4-site multisite simultaneous saturation library:
 
-![Platemap Example](./GitImages/PlatemapExample.png "Platemap Example")
+![Platemap Example](./deSeq_support/GitImages/PlatemapExample.png "Platemap Example")
 
 The text within each well is the combination of amino acids (in 5' -> 3' order, as passed in in the "refseqs" file) with the highest alignment frequency for that well. The fill color of the well is the log sequencing depth, while the well border color is the alignment frequency of the well. Note that the border color is binned rather than existing on a continuous scale. Also note that, because the position information is not given, the output csv files in the previous section should be used for downstream processing -- these images are simply a nice way to quickly analyze your data.
 
 ## Qualities
 This folder contains histograms of the forward and reverse read quality scores for the sequencing run prior to any filtering or QC. For information on what the quality score is, see [here](https://www.illumina.com/content/dam/illumina-marketing/documents/products/technotes/technote_understanding_quality_scores.pdf) An example image from the "Qualities" folder is given below:
 
-![Good Q-Score Example](./GitImages/GoodQScoreExample.png "Good Q-Score Example")
+![Good Q-Score Example](./deSeq_support/GitImages/GoodQScoreExample.png "Good Q-Score Example")
 
 The example presented results from a good run -- as a heuristic, you typically want most reads above 30 in both the forward and reverse direction. Checking this file is critical, as it gives you insight into how confident you can be in your sequencing results. An example of a bad quality score histogram is below:
 
-![Bad Q-Score Example](./GitImages/BadQScoreExample.png "Bad Q-Score Example")
+![Bad Q-Score Example](./deSeq_support/GitImages/BadQScoreExample.png "Bad Q-Score Example")
 
 Note that most of the reverse reads have Q-scores below 30. If you have a histogram like this, it's highly likely that something went wrong at some stage of deSeq library prep/sequencing.
 
@@ -489,7 +491,7 @@ This section details generation of a deSeq library, including the one-pot two-st
 15. Load each pooled sample with gel to the agarose gel. Load 20 uL of the DNA ladder prepared earlier as reference. Immediately store the remaining pooled sample at -20 C.
 16. Run the gel at 130 V until the dye bands have sufficiently migrated. You will get a gel that looks something like the below. The two central bands in the above image are representative 300 bp amplicon libraries. The bordering wells are blanks or ladders. The lower MW band is primer dimer. The more failed colonies that you have in a plate, the brighter this band will be. If your fragment is 150 bp, you will need to run a longer gel to separate the desired band from the primer dimer. It is critical to remove as much primer dimer as possible from your sample. **Primer dimer will dominate your sequencing and cause it to fail.**
 
-![Gel Image Example](./GitImages/GelImageExample.png "Gel Image Example")
+![Gel Image Example](./deSeq_support/GitImages/GelImageExample.png "Gel Image Example")
 
 17. For each pool of variants, identify the desired band and excise it. Perform gel extraction (this method was developed using a [Zymoclean Gel DNA Recovery Kit](https://www.zymoresearch.com/collections/zymoclean-gel-dna-recovery-kits)). Elution should be in ddH2O.
 18. Measure the DNA concentration of each gel-extracted sample.
@@ -508,7 +510,7 @@ Unfortunately, multiplexed sequencing with 96 samples is still an order of magni
 ## Molecular Biology
 deSeq focuses the reads generated during NGS to DNA regions known to contain mutations (e.g. from site-saturation mutagenesis). The general procedure for deSeq for a single variant (e.g. one well in a plate) is shown in the below figure.
 
-![deSeq One Well](./GitImages/SingleWelldeSeq.png "deSeq One Well")
+![deSeq One Well](./deSeq_support/GitImages/SingleWelldeSeq.png "deSeq One Well")
 
 The above figure depicts a nested PCR, which is a *single* experimental step; it is broken down in the image for clarity. Mechanistically, this nested PCR works as follows:
 
@@ -519,7 +521,7 @@ The above figure depicts a nested PCR, which is a *single* experimental step; it
 
 Of course, the above steps detail the reaction for a single variant. The full deSeq library preparation protocol performs the above steps for every target variant. The bigger picture workflow is depicted in the below figure:
 
-![deSeq All Wells](./GitImages/AllWellsdeSeq.png "deSeq All Wells")
+![deSeq All Wells](./deSeq_support/GitImages/AllWellsdeSeq.png "deSeq All Wells")
 
 The above image depicts deSeq library prep for one plate, but the process is easily scaled to more than one plate just by using more than 96 barcode combinations (because there are 96 unique forward and reverse barcodes, 96^2 = 9604 are possible in theory, though in practice read depth often becomes too low after 10 plates are multiplexed). In step 1 in the above image, PCR is performed for all variants in a plate (or set of plates, depending on how many variants the user has), and inline barcoding is performed based on the position of each variant in a plate. Post PCR, the amplicons generated from the full plate are pooled and purified via gel extraction. At this point, the pool of amplicons is outsourced to a third party sequencing company, where a single Illumina barcode is attached to the pool using the illumina adapter sequences attached during the barcoding step. The pool is then run as a single sample in a multiplexed NGS run.
 

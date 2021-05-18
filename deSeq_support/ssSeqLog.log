@@ -1,0 +1,77 @@
+
+
+20200324-170925
+----------------------------------------------------------------------------
+source folder/fastq_f: InstallationConfirmationData/
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\GitHub\ssSeq\ssSeq_Output\20200324-170925 
+    
+Identified Seq File Pairs:
+	- Forward Reads: InstallationConfirmationData\CHL1_S193_L001_R1_001.fastq.gz 
+	- Reverse Reads: InstallationConfirmationData\CHL1_S193_L001_R2_001.fastq.gz
+Unmatched Files in Folder:
+The identified read length for this run was: 150
+Error Encountered: 
+Unhandled exception encountered: '[Errno 22] Invalid argument'
+
+20200324-171319
+----------------------------------------------------------------------------
+source folder/fastq_f: InstallationConfirmationData/
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\GitHub\ssSeq\ssSeq_Output\20200324-171319 
+    
+Identified Seq File Pairs:
+	- Forward Reads: InstallationConfirmationData\CHL1_S193_L001_R1_001.fastq.gz 
+	- Reverse Reads: InstallationConfirmationData\CHL1_S193_L001_R2_001.fastq.gz
+Unmatched Files in Folder:
+Error Encountered: 
+Unhandled exception encountered: '[Errno 22] Invalid argument'
+
+20200324-171414
+----------------------------------------------------------------------------
+source folder/fastq_f: GitHub/ssSeq/InstallationConfirmationData/
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\ssSeq_Output\20200324-171414 
+    
+Identified Seq File Pairs:
+	- Forward Reads: GitHub/ssSeq/InstallationConfirmationData\CHL1_S193_L001_R1_001.fastq.gz 
+	- Reverse Reads: GitHub/ssSeq/InstallationConfirmationData\CHL1_S193_L001_R2_001.fastq.gz
+Unmatched Files in Folder:
+
+20200324-193401
+----------------------------------------------------------------------------
+source folder/fastq_f: C:\Users\kejoh\GitHub\ssSeq\InstallationConfirmationData
+fastq_r: 
+analysis only: False
+input_readlength: None
+troubleshoot mode: False
+n jobs: 11
+Q-score cutoff: 30
+alignment filter: 0.5
+output folder: C:\Users\kejoh\GitHub\ssSeq\ssSeq_Output\ssSeq_Output\20200324-193401 
+    
+Identified Seq File Pairs:
+	- Forward Reads: C:\Users\kejoh\GitHub\ssSeq\InstallationConfirmationData\CHL1_S193_L001_R1_001.fastq.gz 
+	- Reverse Reads: C:\Users\kejoh\GitHub\ssSeq\InstallationConfirmationData\CHL1_S193_L001_R2_001.fastq.gz
+Unmatched Files in Folder:
+The identified read length for this run was: 150
+
+Run completed. Log may contain warnings.

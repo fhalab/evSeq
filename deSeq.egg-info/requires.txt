@@ -1,0 +1,11 @@
+biopython
+colorcet
+holoviews
+bokeh
+numpy
+pandas
+tqdm
+scipy
+gooey
+jupyterlab
+ninetysix
