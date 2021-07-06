@@ -1,8 +1,8 @@
-#ssSeq stuff
-*ssSeq_Output/ 
+#evSeq stuff
+*evSeq_Output/ 
 TestData/
-ssSeq_Support/*.log
-ssSeqLog.log
+evSeq_Support/*.log
+evSeqLog.log
 Validation
 
 # Development stuff
@@ -11,7 +11,7 @@ AlignmentDev/ParsedFilteredFastqs
 AlignmentDev/Alignments
 AlignmentDev/OutputCounts
 AlignmentDev/ValidationOutput
-deSeqValidation/
+evSeqValidation/
 
 # Temporary folder
 TEMP/

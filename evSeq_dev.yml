@@ -1,4 +1,4 @@
-name: deSeq_test
+name: evSeq
 channels:
   - anaconda
   - conda-forge
