@@ -1,7 +1,7 @@
 # Import third party modules
 import os.path
 
-# # Import ssSeqSupport variables
+# # Import functions
 from .globals import HOMEDIR, LOG_FILENAME
 
 # Write a function to log all cl_args passed in from each run

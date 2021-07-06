@@ -1,6 +1,6 @@
-# Import deSeq dependencies
-from .globals import (BP_TO_IND, AA_TO_IND, CODON_TABLE, AA_TO_IND, BP_ARRAY,
-                      AA_ARRAY)
+# Import evSeq dependencies
+from .util.globals import (BP_TO_IND, AA_TO_IND, CODON_TABLE, AA_TO_IND, 
+                           BP_ARRAY, AA_ARRAY)
 
 # Import other required modules
 import os
@@ -13,8 +13,8 @@ class Well():
     # Initialization assigns attributes, reference sequences, and sequence pairs
     def __init__(self, seqpairs, refseq_df_info, save_dir):
         
-        # Assign the sequence pairs as an attribute, unpack the refseq info, and store
-        # the expected variable basepair positions as attirbutes
+        # Assign the sequence pairs as an attribute, unpack the refseq info,
+        # and store the expected variable basepair positions as attirbutes
         self._all_seqpairs = seqpairs
         self._expected_variable_bp_positions = refseq_df_info["ExpectedVariablePositions"]
         self._index_plate = refseq_df_info["IndexPlate"]
@@ -22,7 +22,8 @@ class Well():
         self._well = refseq_df_info["Well"]
         self._reference_sequence = refseq_df_info["ReferenceSequence"]
         self._ref_len = len(self.reference_sequence)
-        self._in_frame_ind = refseq_df_info["InFrameBase"] - 1 #Input is 1-indexed, so subtract 1
+        # Input is 1-indexed, so subtract 1
+        self._in_frame_ind = refseq_df_info["InFrameBase"] - 1 
         self._bp_ind_start = refseq_df_info["BpIndStart"]
         self._aa_ind_start = refseq_df_info["AAIndStart"]
         
@@ -56,10 +57,9 @@ class Well():
         
         self._all_bp_counts = None
         self._all_aa_counts = None
-        
-    # Write a function to calculate the expected reference amino acid and base sequences
+
     def calculate_expected_arrays(self):
-    
+        """Calculates the expected reference amino acid and base sequences."""
         # Create arrays for storing expected results. 
         self._expected_bps = np.zeros([6, self.ref_len], dtype = int)
         self._expected_aas = np.zeros([23, self.n_aas], dtype = int)
@@ -92,10 +92,10 @@ class Well():
         # Calculate and store the amino acid reference sequence
         aa_ref_inds = np.argwhere(np.transpose(self.expected_aas == 1))[:, 1]
         self._reference_sequence_aa = "".join(AA_ARRAY[aa_ref_inds].tolist())
-        
-    # Write a function for calculating the expected variable amino acid positions
-    def calculate_expected_variable_aa_positions(self):
 
+    def calculate_expected_variable_aa_positions(self):
+        """Calculates the expected variable amino acid positions"""
+        
         # Get the number of expected variable basepair positions
         n_bp_positions = len(self.expected_variable_bp_positions)
         
@@ -128,10 +128,11 @@ class Well():
                 # Calculate the amino acid position 
                 self._expected_variable_aa_positions[position_counter] = int((codon[0] - self.in_frame_ind) / 3)
                 position_counter += 1
-                    
-    # Write a function that makes pairwise and runs qc on pairwise alignments and then identifies usable
-    # and paired alignments
+
     def align(self):
+        """Makes pairwise and runs qc on pairwise alignments and then
+        identifies usable and paired alignments.
+        """
         
         # Run alignment on all seqpairs
         for seqpair in self.all_seqpairs:
@@ -141,8 +142,8 @@ class Well():
         # Identify seqpairs that have at least one read passing alignment QC
         self._non_dud_alignments = tuple(filter(lambda x: not x.is_dud_post_alignment_qc(), self.all_seqpairs))
                 
-    # Write a function that analyzes alignments to generate count matrices
     def analyze_alignments(self, qual_thresh, variable_count):
+        """Analyzes alignments to generate count matrices."""
 
         # Get the number of duds. If there we have less alignments that our 
         # variable threhold, return False
@@ -158,17 +159,23 @@ class Well():
         # Loop over all non-dud seqpairs and record counts for each aa and sequence
         for pair_ind, seqpair in enumerate(self.non_dud_alignments):
             (self._all_bp_counts[pair_ind],
-             self._all_aa_counts[pair_ind]) = seqpair.analyze_alignment(self.in_frame_ind, self.ref_len,
-                                                                        self.n_aas, qual_thresh) 
+             self._all_aa_counts[pair_ind]) = \
+                seqpair.analyze_alignment(
+                    self.in_frame_ind,
+                    self.ref_len,
+                    self.n_aas,
+                    qual_thresh
+                ) 
             
         # Return true to signifify that we identified at least one non-dud.
         self._usable_reads = True
         return True
-                
-    # Write a function that calculates counts and frequencies by unit (e.g. amino acid or 
-    # base pair) and position in the sequence. 
+
     @staticmethod
     def build_unit_counts_generic(count_array):
+        """Calculates counts and frequencies by unit (e.g. amino acid or 
+        base pair) and position in the sequence.
+        """
         
         # Get the counts for each unit (e.g. an amino acid or base pair) at each
         # position. For both the aa and bp count matrices, the last row is the gap character.
@@ -191,7 +198,7 @@ class Well():
         return by_unit_counts, by_unit_frequency, by_position_counts
         
     def build_unit_count_matrices(self):
-        
+        """Initializes matrices for analysis."""
         # Run the generic count calculator for aas and bps, ignoring gaps
         (self._unit_bp_counts_no_gaps, 
          self._unit_bp_freqs_no_gaps,
@@ -199,11 +206,15 @@ class Well():
         (self._unit_aa_counts_no_gaps,
          self._unit_aa_freqs_no_gaps,
          self._aa_position_counts) = Well.build_unit_counts_generic(self.all_aa_counts)
-    
-    # Now write a generic function for identifying variable positions
+
     @staticmethod
-    def identify_variable_positions_generic(by_unit_frequency, expected_array, 
-                                            variable_thresh, expected_variable_positions):
+    def identify_variable_positions_generic(
+        by_unit_frequency,
+        expected_array, 
+        variable_thresh,
+        expected_variable_positions,
+    ):
+        """Generic function for identifying variable positions."""   
         
         # Get the total frequencies of each well
         total_frequencies = by_unit_frequency.sum(axis=0)
@@ -253,24 +264,31 @@ class Well():
         assert percentage_mutated <= 1
         
         return all_found, expected_variation, percentage_mutated
-        
-    # Write a function for identifying variable positions in both the amino acid
-    # and basepair counts
+
     def identify_variable_positions(self, variable_thresh):
+        """Identifies variable positions in both the amino acid and
+        basepair counts.
+        """
         
         # Find the variable basepair and amino acid positions. Note that gaps are not used 
         # when finding variable positions
         (self._all_variable_bp_positions, 
          self._variable_bp_type,
-         percent_bp_mutated) = Well.identify_variable_positions_generic(self.unit_bp_freqs_no_gaps,
-                                                                        self.expected_bps[:-1],
-                                                                        variable_thresh,
-                                                                        self.expected_variable_bp_positions)
+         percent_bp_mutated) = \
+            Well.identify_variable_positions_generic(
+                self.unit_bp_freqs_no_gaps,
+                self.expected_bps[:-1],
+                variable_thresh,
+                self.expected_variable_bp_positions
+            )
         (self._all_variable_aa_positions,
-         self._variable_aa_type, _) = Well.identify_variable_positions_generic(self.unit_aa_freqs_no_gaps,
-                                                                               self.expected_aas[:-1],
-                                                                               variable_thresh,
-                                                                               self.expected_variable_aa_positions)
+         self._variable_aa_type, _) = \
+            Well.identify_variable_positions_generic(
+                self.unit_aa_freqs_no_gaps,
+                self.expected_aas[:-1],
+                variable_thresh,
+                self.expected_variable_aa_positions
+            )
          
          # If there are >10% of positions mutated, throw a warning. The alignment
          # may not work correctly
@@ -278,12 +296,19 @@ class Well():
             return f"{self.index_plate}-{self.well}"
         else:
             return ""
-    
-    # Write a function that analyzes and reports unpaired counts
-    def analyze_unpaired_counts_generic(self, unit_freq_array, total_count_array, 
-                                        all_variable_positions, expectation_array,
-                                        unit_array, unit_type, variable_thresh,
-                                        pos_offset):
+
+    def analyze_unpaired_counts_generic(
+        self,
+        unit_freq_array,
+        total_count_array, 
+        all_variable_positions,
+        expectation_array,
+        unit_array,
+        unit_type,
+        variable_thresh,
+        pos_offset
+    ):
+        """Analyzes and reports unpaired counts."""
         
         # Define output columns
         unit_pos = f"{unit_type}Position" # Create a name for the unit position
@@ -291,10 +316,19 @@ class Well():
                    "AlignmentFrequency", "WellSeqDepth", "Flag")
         
         # Define a dataframe to use for dead wells
-        dead_df = pd.DataFrame([[self.index_plate, self.plate_nickname,
-                                 self.well, "#DEAD#", "#DEAD#", 0,
-                                 len(self.non_dud_alignments), "#DEAD#"]],
-                               columns = columns)
+        dead_df = pd.DataFrame(
+            [[
+                self.index_plate,
+                self.plate_nickname,
+                self.well,
+                "#DEAD#",
+                "#DEAD#",
+                0,
+                len(self.non_dud_alignments),
+                "#DEAD#"
+            ]],
+            columns=columns
+        )
         
         # If there are no reads, return that this is a dead well
         if not self.usable_reads:
@@ -319,10 +353,19 @@ class Well():
             average_counts_by_position = int(np.mean(total_count_array))
             
             # Create an output dataframe and return
-            output_df = pd.DataFrame([[self.index_plate, self.plate_nickname, self.well, 
-                                       "#PARENT#", "#PARENT#", 1 - variable_thresh,
-                                       average_counts_by_position, " -- ".join(flags)]],
-                                     columns = columns)
+            output_df = pd.DataFrame(
+                [[
+                    self.index_plate,
+                    self.plate_nickname,
+                    self.well, 
+                    "#PARENT#",
+                    "#PARENT#",
+                    1 - variable_thresh,
+                    average_counts_by_position,
+                    " -- ".join(flags)
+                ]],
+                columns=columns
+            )
             return output_df, output_df
                 
         # Get the variable frequencies
@@ -360,11 +403,12 @@ class Well():
         
         # Format for output and convert to a dataframe
         output_formatted = [None] * len(variable_positions)
-        for out_ind, (position, unit, freq, depth, exp_flag) in enumerate(zip(variable_positions, 
-                                                                              variable_units,
-                                                                              nonzero_freqs,
-                                                                              variable_total_counts,
-                                                                              variable_expectation)):
+        zipped = enumerate(zip(variable_positions,
+                               variable_units, 
+                               nonzero_freqs,
+                               variable_total_counts,
+                               variable_expectation))
+        for out_ind, (position, unit, freq, depth, exp_flag) in zipped:
             
             # Determine the final flags
             final_flags = flags.copy()
@@ -384,34 +428,51 @@ class Well():
         max_by_position = output_df.loc[max_inds]
         
         return output_df, max_by_position
-    
-    # Write a function that generates the unpaired analysis outputs for 
-    # both basepairs and amino acids
+
     def analyze_unpaired_counts(self, variable_thresh):
+        """Generates the unpaired analysis outputs for both basepairs
+        and amino acids.
+        """
         
         # Get the output format for basepairs
         (self._unpaired_bp_output,
-         self._unpaired_bp_output_max) = self.analyze_unpaired_counts_generic(self.unit_bp_freqs_no_gaps,
-                                                                              self.bp_position_counts,
-                                                                              self.all_variable_bp_positions,
-                                                                              self.variable_bp_type,
-                                                                              BP_ARRAY, "Bp", variable_thresh,
-                                                                              self.bp_ind_start)
+         self._unpaired_bp_output_max) = \
+            self.analyze_unpaired_counts_generic(
+                self.unit_bp_freqs_no_gaps,
+                self.bp_position_counts,
+                self.all_variable_bp_positions,
+                self.variable_bp_type,
+                BP_ARRAY,
+                "Bp",
+                variable_thresh,
+                self.bp_ind_start
+            )
         
         # Get the output format for amino acids
         (self._unpaired_aa_output,
-         self._unpaired_aa_output_max) = self.analyze_unpaired_counts_generic(self.unit_aa_freqs_no_gaps,
-                                                                              self.aa_position_counts,
-                                                                              self.all_variable_aa_positions,
-                                                                              self.variable_aa_type,
-                                                                              AA_ARRAY, "Aa", variable_thresh,
-                                                                              self.aa_ind_start)
-    
-    
-    # Write a function that analyzes and reports paired counts
-    def analyze_paired_counts_generic(self, variable_positions, all_counts, unit_array,
-                                      reference_sequence, variable_thresh, variable_count,
-                                      pos_offset):
+         self._unpaired_aa_output_max) = \
+            self.analyze_unpaired_counts_generic(
+                self.unit_aa_freqs_no_gaps,
+                self.aa_position_counts,
+                self.all_variable_aa_positions,
+                self.variable_aa_type,
+                AA_ARRAY,
+                "Aa",
+                variable_thresh,
+                self.aa_ind_start
+            )
+
+    def analyze_paired_counts_generic(
+        self,
+        variable_positions,
+        all_counts,
+        unit_array,
+        reference_sequence,
+        variable_thresh,
+        variable_count,
+        pos_offset
+    ):
+        """Analyzes and reports paired counts."""
         
         # Define output columns
         columns = ("IndexPlate", "Plate", "Well", "VariantCombo", "SimpleCombo",
@@ -533,26 +594,33 @@ class Well():
 
         # Convert output to a dataframe.
         return pd.DataFrame(output, columns = columns)
-                                      
-    # Analyze the paired data for both amino acids and basepairs                              
+                           
     def analyze_paired_counts(self, variable_thresh, variable_count):
+        """Analyzes the paired data for both amino acids and basepairs"""
+        self._paired_bp_output = \
+            self.analyze_paired_counts_generic(
+                self.all_variable_bp_positions,
+                self.all_bp_counts,
+                BP_ARRAY,
+                self.reference_sequence,
+                variable_thresh,
+                variable_count,
+                self.bp_ind_start
+            )
         
-        # Analyze the paired data for both amino acids and basepairs
-        self._paired_bp_output = self.analyze_paired_counts_generic(self.all_variable_bp_positions,
-                                                                    self.all_bp_counts, BP_ARRAY,
-                                                                    self.reference_sequence,
-                                                                    variable_thresh, variable_count,
-                                                                    self.bp_ind_start)
-        
-        self._paired_aa_output = self.analyze_paired_counts_generic(self.all_variable_aa_positions,
-                                                                    self.all_aa_counts, AA_ARRAY,
-                                                                    self.reference_sequence_aa,
-                                                                    variable_thresh, variable_count,
-                                                                    self.aa_ind_start)
-        
-    # Write a function that outputs adapterless fastq files for all paired end seqpairs
-    # Note that the reverse complement of 
+        self._paired_aa_output = \
+            self.analyze_paired_counts_generic(
+                self.all_variable_aa_positions,
+                self.all_aa_counts,
+                AA_ARRAY,
+                self.reference_sequence_aa,
+                variable_thresh,
+                variable_count,
+                self.aa_ind_start
+            )
+
     def write_fastqs(self):
+        """Outputs adapterless fastq files for all paired end seqpairs"""
         
         # Identify the paired end sequence pairs
         paired_end_alignments = tuple(filter(lambda x: x.is_paired(), self.all_seqpairs))
@@ -567,9 +635,9 @@ class Well():
             SeqIO.write(f_records_to_save, f, "fastq")
         with open(os.path.join(self.fasta_loc, "R", f"{self.index_plate}-{self.well}_R2.fastq"), "w") as f:
             SeqIO.write(r_records_to_save, f, "fastq")
-            
-    # Write a function that returns all pairwise alignments formatted for saving
+
     def format_alignments(self):
+        """Returns all pairwise alignments formatted for saving"""
         
         # Write a function that formats all alignments in a well
         formatted_alignments = [""] * int(len(self.all_seqpairs) * 5)

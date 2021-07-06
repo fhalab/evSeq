@@ -1,16 +1,15 @@
 #evSeq stuff
-*evSeq_Output/ 
+*evSeq_output/ 
 TestData/
-evSeq_Support/*.log
 evSeqLog.log
 Validation
 
 # Development stuff
-AlignmentDev/Msas
-AlignmentDev/ParsedFilteredFastqs
-AlignmentDev/Alignments
-AlignmentDev/OutputCounts
-AlignmentDev/ValidationOutput
+alignment_dev/Msas
+alignment_dev/ParsedFilteredFastqs
+alignment_dev/Alignments
+alignment_dev/OutputCounts
+alignment_dev/ValidationOutput
 evSeqValidation/
 
 # Temporary folder
@@ -94,8 +93,8 @@ docs/_build/
 target/
 
 # Jupyter Notebook
-# *.ipynb_checkpoints
-# *.ipynb
+*.ipynb_checkpoints
+*.ipynb
 
 # pyenv
 .python-version

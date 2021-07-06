@@ -1,4 +1,4 @@
-name: evSeq
+name: evSeq_dev
 channels:
   - anaconda
   - conda-forge

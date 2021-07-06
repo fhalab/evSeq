@@ -1,12 +1,12 @@
-# Import deSeq objects
-from .logging import log_info, log_warning
-from .input_validation import check_args
-from .input_processing import load_all, unzip_gz
+# Import evSeq objects
+from .util.logging import log_info, log_warning
+from .util.input_validation import check_args
+from .util.input_processing import load_all, unzip_gz
 from .seq_pair import SeqPair
 from .well import Well
 from .data_visualization import (generate_read_qual_chart, 
-                                generate_sequencing_heatmaps,
-                                save_heatmap_to_file)
+                                 generate_sequencing_heatmaps,
+                                 save_heatmap_to_file)
 
 # Import other required modules
 import os
@@ -199,8 +199,8 @@ def format_and_save_outputs(well_results, saveloc, return_alignments):
             log_warning(f"High mutational frequency in {warning}. You may "
                         "want to check alignments for accuracy.") 
 
-# Write a function that runs deSeq
-def run_deseq(cl_args):
+# Write a function that runs evSeq
+def run_evseq(cl_args):
    
     # Check the input arguments
     check_args(cl_args)

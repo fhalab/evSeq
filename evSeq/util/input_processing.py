@@ -131,17 +131,17 @@ def unzip_gz(filename):
     # Return the new name
     return new_name
 
-# Write a function that loads and checks the contents of IndexMap.csv
+# Write a function that loads and checks the contents of index_map.csv
 def load_dual_inds():
     
-    # Identify the expected location of IndexMap.csv
-    index_map_loc = os.path.join(HOMEDIR, "IndexMap.csv")
+    # Identify the expected location of index_map.csv
+    index_map_loc = os.path.join(HOMEDIR, "index_map.csv")
     
-    # Check to make sure that IndexMap.csv can be found as a file
+    # Check to make sure that index_map.csv can be found as a file
     if not os.path.exists(index_map_loc):
         print(index_map_loc)
         # Log an error
-        log_error("Cannot find 'IndexMap.csv' in ssSeq/ssSeqSupport/")
+        log_error("Cannot find 'index_map.csv'")
         
     # Load the file
     index_df = pd.read_csv(index_map_loc)
