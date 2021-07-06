@@ -1,45 +1,54 @@
-#!/usr/bin/env python
+#!/usr/bin/env pythonw
 
 # Import relevant modules
-import argparse
 import os
 from time import strftime
 
-# Import relevant modules from ssSeqSupport.
-from .globals import N_CPUS
-from .logging import log_init, log_info, log_error
-from .input_processing import build_output_dirs
-from .run_deSeq import run_deseq
+# Import relevant functions
+from .util.logging import log_init, log_info, log_error
+from .util.globals import N_CPUS
+from .util.input_processing import build_output_dirs
+from .run_evSeq import run_evseq
+
+# Import gooey
+from gooey import Gooey, GooeyParser
 
 # Create a "main" function
+@Gooey(program_name = "evSeq",
+       required_cols = 1,
+       optional_cols = 1)
 def main():
 
     # Get the cwd
     cwd = os.getcwd()
 
-    # Instantiate argparser
-    parser = argparse.ArgumentParser()
+    # Instantiate GooeyParser
+    parser = GooeyParser(description = "User Interface for evSeq")
 
     # Add required arguments
     required_args_group = parser.add_argument_group("Required Arguments", 
                                                     "Arguments required for each run")
     required_args_group.add_argument("refseq", 
-                                     help = "csv containing reference sequences.")
+                                     help = "csv containing reference sequences.",
+                                     widget = "FileChooser")
     required_args_group.add_argument("folder",
-                                     help = "Folder containing fastq or fastq.gz files. Can also be forward fastq or fastq.gz file.")
+                                     help = "Folder containing fastq or fastq.gz files. Can also be forward fastq or fastq.gz file.",
+                                     widget = "DirChooser")
     
     
     # Add an argument group for passing in the reverse file
     io_args_group = parser.add_argument_group("I/O",
-                                                    "Arguments specific to input/output of deSeq.")
+                                                    "Arguments specific to input/output of evSeq.")
     io_args_group.add_argument("--fastq_r", 
                                      help = "Reverse fastq or fastq.gz file. Usually not needed.",
                                      required = False,
-                                     default = "")
+                                     default = "",
+                                     widget = "FileChooser")
     io_args_group.add_argument("--output", 
                                      help = "Save location for run.",
                                      required = False,
-                                     default = cwd)
+                                     default = cwd,
+                                     widget = "DirChooser")
     io_args_group.add_argument("--detailed_refseq",
                                      help = "Set if you are using different reference sequences by well",
                                      required = False, 
@@ -95,7 +104,7 @@ def main():
     advanced_args_group = parser.add_argument_group("Advanced",
                                                     "Advanced use-case parameters")
     advanced_args_group.add_argument("--jobs", 
-                                     help = "Computer processors used. Must be between 1 and {}.".format(N_CPUS),
+                                     help = f"Computer processors used. Must be between 1 and {N_CPUS}.",
                                      required = False,
                                      dest = "jobs",
                                      default = N_CPUS - 1, 
@@ -106,6 +115,7 @@ def main():
                                      type = int,
                                      default = None)
 
+
     # Parse the arguments
     CL_ARGS = vars(parser.parse_args())
         
@@ -113,24 +123,24 @@ def main():
     # output directory from the two and add this to CLArgs as well.
     base_output = CL_ARGS["output"]
     datetime = strftime("%Y%m%d-%H%M%S")
-    output_dir = os.path.join(base_output, "deSeq_Output", datetime)
+    output_dir = os.path.join(base_output, "evSeq_output", datetime)
     CL_ARGS.update({"datetime": datetime, "output": output_dir})
-        
+
     # Build all output directories
     build_output_dirs(CL_ARGS)
-        
+    
     # Log CLArgs
     log_init(CL_ARGS)    
 
-    # Run ssSeq
-#    try:
-    run_deseq(CL_ARGS)
-#    except Exception as e:
-#        log_error("\nUnhandled exception encountered: '{}'".format(e))
+    # Run evSeq
+    try:
+        run_evseq(CL_ARGS)
+    except Exception as e:
+        log_error(f"\nUnhandled exception encountered: '{e}'")
     
     # Log that we have successfully completed the run
-    log_info("Run completed. Log may contain warnings.")
-    
+    log_info("\nRun completed. Log may contain warnings.")
+
 # Run main()
 if __name__ == "__main__":
     main()

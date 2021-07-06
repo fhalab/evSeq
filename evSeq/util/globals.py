@@ -6,11 +6,11 @@ import numpy as np
 # Get the number of CPUs available on the computer
 N_CPUS = cpu_count()
     
-# Get the the running location of deSeq and the logfile
+# Get the the running location of evSeq and the logfile
 HOMEDIR = os.path.dirname(os.path.realpath(__file__))
 
 # Get the name of the global logfile
-LOG_FILENAME = os.path.join(HOMEDIR, "..", "deSeqLog.log")
+LOG_FILENAME = os.path.join(HOMEDIR, "..", "evSeqLog.log")
 
 # Define global lengths
 BARCODE_LENGTH = 7

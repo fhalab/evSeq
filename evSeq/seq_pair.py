@@ -1,7 +1,7 @@
-# Import deSeq dependencies
-from .globals import (BARCODE_LENGTH, ADAPTER_LENGTH_F, ADAPTER_LENGTH_R,
+# Import evSeq dependencies
+from .util.globals import (BARCODE_LENGTH, ADAPTER_LENGTH_F, ADAPTER_LENGTH_R,
                       BP_TO_IND, AA_TO_IND, CODON_TABLE)
-from .alignment import deseq_align
+from .util.alignment import evseq_align
 
 # Import other required modules
 import numpy as np
@@ -9,8 +9,8 @@ import numpy as np
 # Define an object that holds BioPython SeqRecords
 class SeqPair():
     
-    # Record that we don't have forward or reverse information yet. Record that
-    # we don't have alignment information yet
+    # Record that we don't have forward or reverse information yet.
+    # Record that we don't have alignment information yet
     def __init__(self):
         
         # Did sequence pass QC?
@@ -20,9 +20,9 @@ class SeqPair():
         # Did alignments pass QC?
         self._use_f_alignment = False
         self._use_r_alignment = False
-            
-    # Assign forward reads
+
     def assign_f(self, f_record):
+        """Assign forward reads."""
         
         # Build summary stats
         self._f_barcode, self._f_len, self._f_average_q = self.calculate_read_stats(f_record)
@@ -35,13 +35,14 @@ class SeqPair():
     
     # Assign a paired reverse read
     def assign_r(self, r_record):
+        """Assign a paried reverse read."""
         
         # Build summary stats
         self._r_barcode, self._r_len, self._r_average_q = self.calculate_read_stats(r_record)
         
         # Assign the reverse barcode and adapterless sequence. 
-        # We want to have the reverse complement of this sequence to match
-        # the reference sequence
+        # We want to have the reverse complement of this sequence to
+        # match the reference sequence
         self._sliced_r = r_record[(BARCODE_LENGTH + ADAPTER_LENGTH_R):]
         self._r_adapterless = self.sliced_r.reverse_complement(id = True, description = True)
         
@@ -57,9 +58,9 @@ class SeqPair():
         average_quality = np.mean(record.letter_annotations["phred_quality"])
         
         return barcode, length, average_quality
-    
-    # Write a function that performs QC on reads
+
     def qc_reads(self, length_filter, average_q_cutoff):
+        """Performs QC on reads."""
         
         # Make sure forward reads pass the length and quality cutoff. Only run QC
         # if we actually recorded a forward read.
@@ -78,18 +79,18 @@ class SeqPair():
         
         # Make a pairwise alignment. Only align the reads we are using.
         if self.is_paired():
-            self._f_alignment = deseq_align(reference, self.f_adapterless.seq)
-            self._r_alignment = deseq_align(reference, self.r_adapterless.seq)
+            self._f_alignment = evseq_align(reference, self.f_adapterless.seq)
+            self._r_alignment = evseq_align(reference, self.r_adapterless.seq)
             
         # If we are only using forward read, handle this here
         elif self.use_f:
-            self._f_alignment = deseq_align(reference, self.f_adapterless.seq)
+            self._f_alignment = evseq_align(reference, self.f_adapterless.seq)
             self._r_alignment = None
             
         # If we are only using reverse read, handle this here
         elif self.use_r:
             self._f_alignment = None
-            self._r_alignment = deseq_align(reference, self.r_adapterless.seq)
+            self._r_alignment = evseq_align(reference, self.r_adapterless.seq)
             
         else:
             raise AssertionError("No reads to align in reference.")
@@ -150,8 +151,8 @@ class SeqPair():
 
             return good_alignment, last_dash
 
-    # Write a function that runs QC on a pair of alignments. This will set flags for whether
-    # or not an alignment is usable
+    # Write a function that runs QC on a pair of alignments. This will
+    # set flags for whether or not an alignment is usable
     def qc_alignments(self):
         
         # Run QC on the forward and reverse alignments

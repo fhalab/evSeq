@@ -4,7 +4,7 @@ from glob import glob
 import numpy as np
 import os.path
 
-# # Load ssSeqSupport modules
+# # Load functions
 from .logging import log_error, log_warning
 from .globals import ALLOWED_BASES_NO_DEG, ALLOWED_BASES, ALLOWED_WELLS, N_CPUS
 
@@ -20,7 +20,7 @@ def check_index_map(index_df):
     
     # If we are missing any columns, log an error and terminate
     if len(missing_cols) != 0:
-        log_error("Expected columns missing from IndexMap.csv: {}".format(missing_cols))
+        log_error(f"Expected columns missing from index_map.csv: {missing_cols}")
         
     # Make sure all combinations of F-BC and R-BC are unique
     bc_combos = [(fbc, rbc) for fbc, rbc in 
@@ -31,36 +31,36 @@ def check_index_map(index_df):
     
     # Report non-unique combos by throwing an error
     if len(non_unique_combos) > 0:
-        log_error("""FBC and RBC combos must be unique in IndexMap.csv.
-                  The following FBC, RBC combos are not unique: {}""".format(non_unique_combos))
+        log_error(f"""FBC and RBC combos must be unique in index_map.csv.
+                  The following FBC, RBC combos are not unique: {non_unique_combos}""")
         
     # Loop over each row in the input file
     for i, (_, row) in enumerate(index_df.iterrows()):
         
         # Check that each value is present. If not, throw an error.
         if any([row[col]==None for col in expected_cols]):
-            log_error("Empty value in row {} of IndexMap.csv.".format(i))
+            log_error(f"Empty value in row {i} of index_map.csv.")
             
         # Confirm that the forward barcode sequence is made up entirely of 'A', 'C', 
         # 'T', 'G', and 'N'.
         if any([char not in ALLOWED_BASES_NO_DEG for char in row["FBC"]]):
-            log_error("F-BC sequence in row {} has base other than 'A', 'C', 'T', or 'G'")
+            log_error(f"F-BC sequence in row {i} has base other than 'A', 'C', 'T', or 'G'")
         
         # Confirm that the reverse barcode sequence is made up entirely of 'A', 'C', 
         # 'T', 'G', and 'N'.
         if any([char not in ALLOWED_BASES_NO_DEG for char in row["RBC"]]):
-            log_error("R-BC sequence in row {} has base other than 'A', 'C', 'T', or 'G'")
+            log_error(f"R-BC sequence in row {i} has base other than 'A', 'C', 'T', or 'G'")
 
         # Confirm that the named well is a real well
         if row["Well"] not in ALLOWED_WELLS:
-            log_error("""Unexpected well in row {}: {} of reference sequence file. 
-                        Well must take form 'A##'""".format(i, row["Well"]))
+            log_error(f"""Unexpected well in row {i}: {row["Well"]} of reference sequence file. 
+                        Well must take form 'A##'""")
             
     # Confirm that all barcodes are the same length
     pairwise_check = np.equal(index_df["FBC"].str.len().values,
                               index_df["RBC"].str.len().values)
     if not all(pairwise_check):
-        log_error("Barcodes must all be the same length. Check IndexMap.csv")
+        log_error("Barcodes must all be the same length. Check index_map.csv")
 
 # Write a function that checks the validity of the reference sequence file
 def check_ref_seqs(ref_seqs_df, detailed_file):
@@ -85,7 +85,7 @@ def check_ref_seqs(ref_seqs_df, detailed_file):
     
     # If we are missing any columns, log an error and terminate the program
     if len(missing_cols) != 0:
-        log_error("Expected columns missing from refseq file: {}".format(missing_cols))
+        log_error(f"Expected columns missing from refseq file: {missing_cols}")
                 
     # Get unique plate names. Create a dictionary for confirming that a unique
     # plate nickname always goes with a unique index plate
@@ -106,12 +106,12 @@ def check_ref_seqs(ref_seqs_df, detailed_file):
         
         # Check that each value is present. If not, throw an error.
         if any([row[col]==None for col in expected_cols]):
-            log_error("Empty value in row {} of refseqs file.".format(i))
+            log_error(f"Empty value in row {i} of refseqs file.")
             
         # Confirm that the reference sequence is made up entirely of 'A', 'C', 
         # 'T', 'G', and 'N'.
         if any([char.upper() not in ALLOWED_BASES for char in row["ReferenceSequence"]]):
-            log_error("Reference sequence in row {} has base other than 'A', 'C', 'T', 'G', or 'N'".format(i))
+            log_error(f"Reference sequence in row {i} has base other than 'A', 'C', 'T', 'G', or 'N'")
                         
         # Make sure that the same plate nickname and dual index plate name always 
         # go together.
@@ -119,17 +119,15 @@ def check_ref_seqs(ref_seqs_df, detailed_file):
             index_to_nick_check[row["PlateName"]] = row["IndexPlate"]
         else:
             if index_to_nick_check[row["PlateName"]] != row["IndexPlate"]:
-                log_error("""Each plate nickname must be associated with a single dual index plate.
-                         In row {}, nickname {} is duplicated with index plate {}""".format(i, row["PlateName"],
-                                                                                            row["IndexPlate"]))
+                log_error(f"""Each plate nickname must be associated with a single dual index plate. In row {i}, nickname {row["PlateName"]} is duplicated with index plate {row["IndexPlate"]}""")
         
         # Additional row checks for a detailed file:
         if detailed_file:
             
             # Confirm that the named well is a real well
             if row["Well"] not in ALLOWED_WELLS:
-                log_error("""Unexpected well in row {}: {} of reference sequence file. 
-                          Well must take form 'A##'""".format(i, row["Well"]))
+                log_error(f"""Unexpected well in row {i}: {row["Well"]} of reference sequence file. 
+                          Well must take form 'A##'""")
           
     
     # Additional wholistic checks for a detailed file: Make sure that there are 
@@ -147,9 +145,9 @@ def check_ref_seqs(ref_seqs_df, detailed_file):
         
         # Throw an error if there are duplicates
         if len(duplicates) > 0:
-            log_error("""Each sample must have a unique index plate and well.
+            log_error(f"""Each sample must have a unique index plate and well.
                      The following combinations of plate and well occured more than once in the refseq file:
-                     {}""".format(set(duplicates)))
+                     {set(duplicates)}""")
            
 # Write a function that checks the arguments passed into the command line prompt
 def check_args(cl_args):
@@ -158,19 +156,19 @@ def check_args(cl_args):
     if not os.path.exists(cl_args["refseq"]):
         
         # Write the error and terminate the program
-        log_error("The file or folder does not exist: {}".format(cl_args["refseq"]))
+        log_error(f"The file or folder does not exist: {cl_args['refseq']}")
         
     # Confirm that the reference sequence csv file is indeed a file
     if not os.path.isfile(cl_args["refseq"]):
         
         # Write the error and terminate the pgoram
-        log_error("Specified refseq file is not a file: {}".format(cl_args["refseq"]))
+        log_error(f"Specified refseq file is not a file: {cl_args['refseq']}")
     
     # Confirm that the specified folder containing sequencing results exists 
     if not os.path.exists(cl_args["folder"]):
         
         # Write the error and terminate the program
-        log_error("The file or folder does not exist: {}".format(cl_args["folder"]))
+        log_error(f"The file or folder does not exist: {cl_args['folder']}")
     
     # Confirm that we have a folder or a file in the positional argument
     if os.path.isdir(cl_args["folder"]):
@@ -198,13 +196,14 @@ def check_args(cl_args):
         if not os.path.exists(cl_args["fastq_r"]):
             
             # Write the error and terminate the program
-            log_error("Specified fastq-r file does not exist: {}".format(cl_args["fastq_r"]))
+            log_error(f"Specified fastq-r file does not exist: {cl_args['fastq_r']}")
             
         # Check to be sure that the fastq_r flag contains a file
         if not os.path.isfile(cl_args["fastq_r"]):
             
             # Write the error and terminate the pgoram
-            log_error("Specified fastq-r file is not a file: {}".format(cl_args["fastq_r"]))
+            log_error(
+                f"Specified fastq-r file is not a file: {cl_args['fastq_r']}")
             
         # Check to be sure that the fastq_r flag contains a file and that it is
         # either a fastq or fastq.gz    

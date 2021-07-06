@@ -2,7 +2,6 @@
 import numpy as np
 import pandas as pd
 import os
-import warnings
 
 import holoviews as hv
 import colorcet as cc
@@ -11,7 +10,7 @@ from bokeh.layouts import row
 from bokeh.models import HoverTool
 import ninetysix as ns
 
-from .logging import log_warning
+from .util.logging import log_warning
 
 hv.extension('bokeh')
 hv.renderer('bokeh')
@@ -19,7 +18,7 @@ hv.renderer('bokeh')
 
 #### Heatmap ####
 def generate_sequencing_heatmaps(max_combo_df):
-    """Saves a heatmap html generated from from ssSeq data."""
+    """Saves a heatmap html generated from from evSeq data."""
     
     # Identify unique plates
     unique_plates = max_combo_df.Plate.unique()
@@ -56,7 +55,7 @@ def generate_sequencing_heatmaps(max_combo_df):
     if max_combo_df['logseqdepth'].max() <= center:
 
         # Log a warning
-        log_warning(f"All wells associated with {title} have a read depth <=10. "
+        log_warning(f"All wells associated with {plate} have a read depth <=10. "
                     "Be careful comparing heatmaps between this plate and others. "
                     "Be careful using this data; sequencing was not good.")
 
@@ -106,7 +105,9 @@ def stretch_color_levels(data, center, cmap):
 
 
 def make_heatmap(df, title):
-    """Generates a heatmap from ssSeq data using Holoviews with bokeh backend."""
+    """Generates a heatmap from evSeq data using Holoviews with
+    bokeh backend.
+    """
 
     # Convert SeqDepth to log for easier visualization.
     df['logseqdepth'] = np.log(df['WellSeqDepth'], out=np.zeros_like(df['WellSeqDepth'], dtype=float),
@@ -219,9 +220,10 @@ def make_heatmap(df, title):
         fill_alpha=0,
         line_alpha=1,
         legend_position='right',
-        size=box_size)
+        size=box_size,
+    )
 
-    # residue labels
+    # USe in apply statement for residue labels
     def split_variant_labels(mutation_string):
         
         num_mutations = len(mutation_string.split('_'))
@@ -251,7 +253,9 @@ def make_heatmap(df, title):
 
 #### Read quality chart ####
 def generate_read_qual_chart(seqpairs, output_dir):
-    """Makes histograms of read qualities and saves to designated location."""
+    """Makes histograms of read qualities and saves to designated
+    location.
+    """
     
     # Generate forward and reverse qualities
     all_qualities = [seqpair.read_quals() for seqpair in seqpairs]
@@ -296,7 +300,7 @@ def combine_seq_func_data(
     # If the well column of the data_df is not zero-padded, pad it
     data_df['Well'] = data_df['Well'].apply(ns.parsers.pad)
 
-    # Read in the results of deSeq
+    # Read in the results of evSeq
     seq_df = pd.read_csv(seq_output_path+'AminoAcids_Decoupled_Max.csv')
     
     # Find wells that have multiple mutations since this only works for
@@ -390,6 +394,7 @@ def activity_plot(
         ('Amino Acid', '@AA'),
         ('Seq. depth', '@WellSeqDepth'),
         ('Align. freq.', '@AlignmentFrequency'),
+        # Can't do f-string here, weird syntax for tooltips
         (value, '@{'+value+'}')
     ]
     hover = HoverTool(tooltips=tooltips)
@@ -535,10 +540,9 @@ def plot_variant_activities(
     variant=None,
     standard=None,
 ):
-    """
-    Takes a DataFrame of single mutant sequence/fitness data and plots the
-    activities of all sequences as well as a frequency histogram of each 
-    mutant.
+    """Takes a DataFrame of single mutant sequence/fitness data and 
+    plots the activities of all sequences as well as a frequency
+    histogram of each mutant.
     """
     
     df = seq_func_data.copy()
@@ -647,8 +651,8 @@ def plot_variant_activities(
                 # Append row for the missing AA
                 temp_df = temp_df.append(
                     pd.DataFrame(
-                    [[None] * (len(temp_df.columns))],
-                    columns=temp_df.columns
+                        [[None] * (len(temp_df.columns))],
+                        columns=temp_df.columns
                     ),
                     ignore_index=True
                 )
