@@ -8,8 +8,8 @@ import os.path
 from .logging import log_error, log_warning
 from .globals import ALLOWED_BASES_NO_DEG, ALLOWED_BASES, ALLOWED_WELLS, N_CPUS
 
-# Write a function that checks the validity of the index file
 def check_index_map(index_df):
+    """Checks the validity of the index file."""
     
     # Define the expected columns
     expected_cols = ("IndexPlate", "Well", "FBC", "RBC")
@@ -62,17 +62,23 @@ def check_index_map(index_df):
     if not all(pairwise_check):
         log_error("Barcodes must all be the same length. Check index_map.csv")
 
-# Write a function that checks the validity of the reference sequence file
 def check_ref_seqs(ref_seqs_df, detailed_file):
-    
-    # Define expected_cols based on whether we are expecting a detailed reference
-    # sequence file or not
-    if detailed_file:
-        expected_cols = ("PlateName", "IndexPlate", "Well", "ReferenceSequence",
-                         "InFrameBase", "BpIndStart", "AaIndStart")
-    else:
-        expected_cols = ("PlateName", "IndexPlate", "ReferenceSequence",
-                         "InFrameBase", "BpIndStart", "AaIndStart")
+    """Checks the validity of the reference sequence file."""
+    # Define expected_cols based on whether we are expecting a detailed
+    # referencesequence file or not
+    expected_cols = [
+        "PlateName",
+        "IndexPlate",
+        "Well",
+        "FPrimer",
+        "RPrimer",
+        "VariableRegion",
+        "InFrameBase",
+        "BpIndStart",
+        "AaIndStart"
+    ]
+    if not detailed_file:
+        expected_cols.remove("Well")
         
     # Identify columns missing from the reference sequence file
     ref_seq_cols = set(ref_seqs_df.columns)
@@ -108,10 +114,21 @@ def check_ref_seqs(ref_seqs_df, detailed_file):
         if any([row[col]==None for col in expected_cols]):
             log_error(f"Empty value in row {i} of refseqs file.")
             
-        # Confirm that the reference sequence is made up entirely of 'A', 'C', 
-        # 'T', 'G', and 'N'.
-        if any([char.upper() not in ALLOWED_BASES for char in row["ReferenceSequence"]]):
-            log_error(f"Reference sequence in row {i} has base other than 'A', 'C', 'T', 'G', or 'N'")
+        # Confirm that the reference sequences are made up entirely of 'A', 
+        # 'C', 'T', 'G', and 'N'.
+        if any([char.upper() not in ALLOWED_BASES for char in row["FPrimer"]]):
+            log_error(
+                f"Forward Primer input in row {i} has base other than 'A', 'C', 'T', 'G', or 'N'")
+        
+        if any([char.upper() not in ALLOWED_BASES for char in row["RPrimer"]]):
+            log_error(
+                f"Reverse Primer input in row {i} has base other than 'A', 'C', 'T', 'G', or 'N'"
+            )
+
+        if any([char.upper() not in ALLOWED_BASES for char in row["VariableRegion"]]):
+            log_error(
+                f"Variable Region input in row {i} has base other than 'A', 'C', 'T', 'G', or 'N'"
+            )
                         
         # Make sure that the same plate nickname and dual index plate name always 
         # go together.
@@ -148,9 +165,9 @@ def check_ref_seqs(ref_seqs_df, detailed_file):
             log_error(f"""Each sample must have a unique index plate and well.
                      The following combinations of plate and well occured more than once in the refseq file:
                      {set(duplicates)}""")
-           
-# Write a function that checks the arguments passed into the command line prompt
+
 def check_args(cl_args):
+    """Checks the arguments passed into the command line prompt."""
     
     # Confirm that the csv file with reference sequences exists
     if not os.path.exists(cl_args["refseq"]):

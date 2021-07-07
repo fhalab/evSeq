@@ -6,16 +6,18 @@ import numpy as np
 # Get the number of CPUs available on the computer
 N_CPUS = cpu_count()
     
-# Get the the running location of evSeq and the logfile
-HOMEDIR = os.path.dirname(os.path.realpath(__file__))
+# Get the the running location of evSeq.util and the logfile
+UTILDIR = os.path.dirname(os.path.realpath(__file__))
 
 # Get the name of the global logfile
-LOG_FILENAME = os.path.join(HOMEDIR, "..", "evSeqLog.log")
+LOG_FILENAME = os.path.join(UTILDIR, "../..", "evSeqLog.log")
 
 # Define global lengths
 BARCODE_LENGTH = 7
-ADAPTER_LENGTH_F = 20
-ADAPTER_LENGTH_R = 19
+ADAPTER_F = 'CACCCAAGACCACTCTCCGG'
+ADAPTER_LENGTH_F = len(ADAPTER_F)
+ADAPTER_R = 'CGGTGTGCGAAGTAGGTGC'
+ADAPTER_LENGTH_R = len(ADAPTER_R)
 
 # Define the allowed bases
 ALLOWED_BASES = {"A", "T", "C", "G", "N"}

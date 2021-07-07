@@ -1,6 +1,6 @@
 
-# Import deSeq objects
-from .globals import ALLOWED_WELLS, HOMEDIR
+# Import evSeq objects
+from .globals import ALLOWED_WELLS, UTILDIR, ADAPTER_F, ADAPTER_R
 from .logging import log_error, log_input_file
 from .input_validation import check_ref_seqs, check_index_map
 
@@ -12,9 +12,10 @@ import shutil
 import pandas as pd
 import numpy as np
 from glob import glob
+from Bio.Seq import Seq
 
-# Write a function that builds the output directory structure
 def build_output_dirs(cl_args):
+    """Builds the output directory structure."""
     
     # Build the folder structure if it does not exist
     if not os.path.exists(cl_args["output"]):
@@ -36,13 +37,14 @@ def build_output_dirs(cl_args):
     if cl_args["return_alignments"]:
         os.mkdir(os.path.join(cl_args["output"], "Alignments"))
 
-# Write a function that matches forward and reverse reads in a passed in folder
 def find_matches(input_folder):
+    """Matches forward and reverse reads in a passed in folder."""
     
     # Glob all potential sequencing files in the directory
     seqfiles = glob(os.path.join(input_folder, "*fastq*"))
     
-    # Define a generic regex to identify forward and reverse reads in the folder
+    # Define a generic regex to identify forward and reverse reads in the
+    # folder
     f_regex = re.compile("(.*)_R1_.*")
     r_regex = re.compile("(.*)_R2_.*")
     
@@ -55,15 +57,16 @@ def find_matches(input_folder):
     remaining_filenames = [filename for filename in seqfiles 
                            if filename not in f_filenames_set]
     
-    # Create a dictionary storing all forward files. Make the values None for now
+    # Create a dictionary storing all forward files. Make the values None
+    # for now
     filepairs = {filename: None for filename in f_filenames}
     
     # Create a dictionary linking a root name to f_filename
     root_to_f = {f_regex.search(filename).group(1): filename for 
                  filename in f_filenames}
     
-    # Loop over the remaining filenames and match to the forward files. Also record
-    # those filenames with no match
+    # Loop over the remaining filenames and match to the forward files. Also
+    # record those filenames with no match
     unmatched_files = []
     for filename in remaining_filenames:
         
@@ -109,7 +112,8 @@ def find_matches(input_folder):
         log_error("Could not match forward and reverse files. "
                   "Make sure they have appropriate names.")
     
-    # If more than 1 pair is identified, throw and error and terminate the program
+    # If more than 1 pair is identified, throw and error and terminate the 
+    # program
     if n_pairs > 1:
         log_error("More than 1 pair of sequencing files found in input directory.")
     
@@ -117,8 +121,8 @@ def find_matches(input_folder):
     forward_file, reverse_file = list(final_filepairs.items())[0]
     return forward_file, reverse_file, unmatched_files
 
-# This function unzips gz files
 def unzip_gz(filename):
+    """Unzips gz files."""
 
     # Find the name without the ".gz"
     new_name = os.path.splitext(filename)[0]
@@ -131,11 +135,11 @@ def unzip_gz(filename):
     # Return the new name
     return new_name
 
-# Write a function that loads and checks the contents of index_map.csv
 def load_dual_inds():
+    """Loads and checks the contents of index_map.csv."""
     
     # Identify the expected location of index_map.csv
-    index_map_loc = os.path.join(HOMEDIR, "index_map.csv")
+    index_map_loc = os.path.join(UTILDIR, "index_map.csv")
     
     # Check to make sure that index_map.csv can be found as a file
     if not os.path.exists(index_map_loc):
@@ -152,20 +156,37 @@ def load_dual_inds():
     # Return the index_df
     return index_df
 
-# Write a function that loads the reference sequence file, checks the integrity
-# of the input information, and generates an appropriate reference sequence dataframe
 def load_ref_seq(cl_args):
+    """Loads the reference sequence file, checks the integrity of the
+    input information, and generates an appropriate reference sequence
+    dataframe.
+    """
     
     # Load the reference sequence using pandas
     refseq_df = pd.read_csv(cl_args["refseq"])
     
     # Check the validity of the reference sequence file
     check_ref_seqs(refseq_df, cl_args["detailed_refseq"])
-    
-    # Convert all sequences to uppercase
-    anycase_refseqs = refseq_df.ReferenceSequence.values.tolist()
-    uppercase_refseqs = [refseq.upper() for refseq in anycase_refseqs]
-    refseq_df["ReferenceSequence"] = uppercase_refseqs
+
+    # Get the forward primer and remove the adaptor
+    f_primers = [seq.upper() for seq in refseq_df["FPrimer"]]
+    adaptorless_f_primers = [seq.replace(ADAPTER_F, '') for seq in f_primers]
+
+    r_primers = [seq.upper() for seq in refseq_df["RPrimer"]]
+    adaptorless_r_primers = [seq.replace(ADAPTER_R, '') for seq in r_primers]
+
+    # Reverse complement the reverse primer
+    r_seqs = [Seq(seq).reverse_complement() for seq in adaptorless_r_primers]
+
+    # Create a reference sequence from the primers and variable region
+    var_regions = [seq.upper() for seq in refseq_df["VariableRegion"]]
+    refseqs = [None for _ in var_regions]
+    zipped = enumerate(zip(adaptorless_f_primers, var_regions, r_seqs))
+    for i, (f, var, r) in zipped:
+        refseqs[i] = str(f + var + r)
+
+    # Save in dataframe
+    refseq_df["ReferenceSequence"] = refseqs
     
     # If this is not a detailed reference sequence, expand it
     if not cl_args["detailed_refseq"]:
@@ -187,8 +208,8 @@ def load_ref_seq(cl_args):
     # Output the ref_seq_df
     return refseq_df
 
-# Write a function that finds variable positions in a reference sequence.
 def find_codons_variable_positions(refseq, inframe_bp, plate, well):
+    """Finds variable positions in a reference sequence."""
     
     # Get the number of codons and number of variable positions
     n_codons = refseq.count("NNN")
@@ -243,12 +264,11 @@ def find_codons_variable_positions(refseq, inframe_bp, plate, well):
     
     return variable_positions
 
-# Write a function which constructs global objects from the index_df and 
-# ref_seq_df
 def construct_bcs_to_refseq(refseq_df, index_df):
+    """Constructs global objects from the index_df and ref_seq_df."""
     
     # Join on plate and well
-    merged_dfs = refseq_df.merge(index_df, on = ("IndexPlate", "Well"))
+    merged_dfs = refseq_df.merge(index_df, on=("IndexPlate", "Well"))
 
     # Make sure the length of the refseq df is the same as the length of the 
     # merged dfs. We do not want to have lost anything in the merge.
@@ -261,26 +281,30 @@ def construct_bcs_to_refseq(refseq_df, index_df):
     for row in merged_dfs.itertuples(index = False):
 
         # Find variable positions
-        variable_positions = find_codons_variable_positions(row.ReferenceSequence,
-                                                            row.InFrameBase,
-                                                            row.IndexPlate,
-                                                            row.Well)
+        variable_positions = find_codons_variable_positions(
+            row.ReferenceSequence,
+            row.InFrameBase,
+            row.IndexPlate,
+            row.Well,
+        )
 
         # Map barcode to reference sequence, plate, and well
-        bc_to_ref_plate_well[(row.FBC, row.RBC)] = {"IndexPlate": row.IndexPlate,
-                                                    "PlateName": row.PlateName,
-                                                    "Well": row.Well,
-                                                    "ReferenceSequence": row.ReferenceSequence,
-                                                    "InFrameBase": row.InFrameBase,
-                                                    "ExpectedVariablePositions": variable_positions,
-                                                    "BpIndStart": row.BpIndStart,
-                                                    "AAIndStart": row.AaIndStart}
+        bc_to_ref_plate_well[(row.FBC, row.RBC)] = {
+            "IndexPlate": row.IndexPlate,
+            "PlateName": row.PlateName,
+            "Well": row.Well,
+            "ReferenceSequence": row.ReferenceSequence,
+            "InFrameBase": row.InFrameBase,
+            "ExpectedVariablePositions": variable_positions,
+            "BpIndStart": row.BpIndStart,
+            "AAIndStart": row.AaIndStart,
+        }
         
     # Return the mapping of barcode pair to well information
     return bc_to_ref_plate_well
 
-# Write a function that loads everything. This wraps all functions defined above.
 def load_all(cl_args):
+    """Loads everything. This wraps all functions defined above."""
     
     # Find matching forward and reverse reads in a folder if the files are not
     # explicitly passed in together
