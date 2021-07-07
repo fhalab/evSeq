@@ -25,7 +25,7 @@ If you [cloned the repository](#installing-from-github) and are in the `evSeq` d
 ```
 conda env create -f evSeq.yml
 ```
-Otherwise download the file [here](https://github.com/fhalab/evSeq/blob/master/evSeq.yml) and follow the same command above, making sure that the path to the file's download location is included in the file argument (e.g., replace `evSeq.yml` with `Downloads/evSeq.yml` if the file is in the directory `Downloads`).
+Otherwise download the file [here](../../evSeq.yml) and follow the same command above, making sure that the path to the file's download location is included in the file argument (e.g., replace `evSeq.yml` with `Downloads/evSeq.yml` if the file is in the directory `Downloads`).
 
 This environment can subsequently be activated any time you want to run evSeq with:
 ```
