@@ -116,19 +116,11 @@ def check_ref_seqs(ref_seqs_df, detailed_file):
             
         # Confirm that the reference sequences are made up entirely of 'A', 
         # 'C', 'T', 'G', and 'N'.
-        if any([char.upper() not in ALLOWED_BASES for char in row["FPrimer"]]):
-            log_error(
-                f"Forward Primer input in row {i} has base other than 'A', 'C', 'T', 'G', or 'N'")
-        
-        if any([char.upper() not in ALLOWED_BASES for char in row["RPrimer"]]):
-            log_error(
-                f"Reverse Primer input in row {i} has base other than 'A', 'C', 'T', 'G', or 'N'"
-            )
-
-        if any([char.upper() not in ALLOWED_BASES for char in row["VariableRegion"]]):
-            log_error(
-                f"Variable Region input in row {i} has base other than 'A', 'C', 'T', 'G', or 'N'"
-            )
+        for col in ('FPrimer', 'RPrimer', 'VariableRegion'):
+            error_msg = f"{col} input in row {i} has base other than "\
+                         "'A', 'C', 'T', 'G', or 'N'"
+            if any([char.upper() not in ALLOWED_BASES for char in row[col]]):
+                log_error(error_msg)
                         
         # Make sure that the same plate nickname and dual index plate name always 
         # go together.
