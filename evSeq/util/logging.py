@@ -2,7 +2,7 @@
 import os.path
 
 # # Import functions
-from .globals import HOMEDIR, LOG_FILENAME
+from .globals import UTILDIR, LOG_FILENAME
 
 # Write a function to log all cl_args passed in from each run
 def log_init(cl_args):
