@@ -12,6 +12,9 @@ The general protocol is as follows:
     - Multiple purified `evSeq` samples can be further pooled together if using different pairs of `evSeq` dual-index barcodes (barcodes paltes DI01–DI08). This further spreads the NGS reads (and cost) among more variants, allowing up to 768 wells to be sequenced in a single multiplexed NGS experiment.
 5. Work up the .fastq files with the `evSeq` software (see [Computation](../index.md#computation)).
 
+## Inner Primer Design
+
+
 ---
 
 *Back to the [main page](../index.md).*

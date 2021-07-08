@@ -23,7 +23,7 @@ class Well():
         self._reference_sequence = refseq_df_info["ReferenceSequence"]
         self._ref_len = len(self.reference_sequence)
         # Input is 1-indexed, so subtract 1
-        self._in_frame_ind = refseq_df_info["InFrameBase"] - 1 
+        self._frame_dist = refseq_df_info["FrameDistance"]
         self._bp_ind_start = refseq_df_info["BpIndStart"]
         self._aa_ind_start = refseq_df_info["AAIndStart"]
         
@@ -33,7 +33,7 @@ class Well():
                                        f"{self.index_plate}-{self.well}.txt")
         
         # Get the number of aas in the reference sequence
-        self._n_aas = (self.ref_len - self.in_frame_ind) // 3
+        self._n_aas = (self.ref_len - self.frame_dist) // 3
         
         # Calculate the expected count frequencies for both basepairs and
         # amino acids assuming no sequencing errors and no changes to reference sequence
@@ -69,11 +69,11 @@ class Well():
             self._expected_bps[BP_TO_IND[bp], bp_ind] += 1
 
         # Caculate last readable bp for translation
-        last_readable_bp = self.in_frame_ind + self.n_aas * 3
+        last_readable_bp = self.frame_dist + self.n_aas * 3
         
         # Loop over the codons in the reference sequence and record
         aa_counter = 0
-        for chunker in range(self.in_frame_ind, last_readable_bp, 3):
+        for chunker in range(self.frame_dist, last_readable_bp, 3):
 
             # Identify the codon and translate
             codon = self.reference_sequence[chunker: chunker + 3]
@@ -126,7 +126,7 @@ class Well():
                 assert (codon[2] - codon[0]) == 2, "Codon positions not in order"
 
                 # Calculate the amino acid position 
-                self._expected_variable_aa_positions[position_counter] = int((codon[0] - self.in_frame_ind) / 3)
+                self._expected_variable_aa_positions[position_counter] = int((codon[0] - self.frame_dist) / 3)
                 position_counter += 1
 
     def align(self):
@@ -153,15 +153,15 @@ class Well():
             return False
         
         # Create matrices in which to store counts
-        self._all_bp_counts = np.zeros([n_non_duds, 6, self.ref_len], dtype = int)
-        self._all_aa_counts = np.zeros([n_non_duds, 23, self.n_aas], dtype = int)
+        self._all_bp_counts = np.zeros([n_non_duds, 6, self.ref_len], dtype=int)
+        self._all_aa_counts = np.zeros([n_non_duds, 23, self.n_aas], dtype=int)
         
         # Loop over all non-dud seqpairs and record counts for each aa and sequence
         for pair_ind, seqpair in enumerate(self.non_dud_alignments):
             (self._all_bp_counts[pair_ind],
              self._all_aa_counts[pair_ind]) = \
                 seqpair.analyze_alignment(
-                    self.in_frame_ind,
+                    self.frame_dist,
                     self.ref_len,
                     self.n_aas,
                     qual_thresh
@@ -575,8 +575,8 @@ class Well():
                 # Update the sequence
                 new_seq[pos] = unit
 
-                # Update the combo name. Add the offset to the position index to get
-                # the start id of the reference seqeunce
+                # Update the combo name. Add the offset to the position index 
+                # to get the start id of the reference seqeunce
                 combo_name[combo_ind] = f"{reference_sequence[pos]}{pos + pos_offset}{unit}"
                 
                 # Update the simple combo name
@@ -708,8 +708,8 @@ class Well():
         return self._n_aas
     
     @property
-    def in_frame_ind(self):
-        return self._in_frame_ind
+    def frame_dist(self):
+        return self._frame_dist
     
     @property
     def bp_ind_start(self):
