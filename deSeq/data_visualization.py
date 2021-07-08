@@ -143,7 +143,7 @@ def make_heatmap(df, title):
     # Get heights
     n_rows = len(df['Row'].unique())
     n_cols = len(df['Column'].unique())
-    height = int(50 * n_rows)
+    height = int(50* n_rows)
     width = height * n_cols // n_rows
 
     # add tooltips
@@ -167,7 +167,7 @@ def make_heatmap(df, title):
         cmap=cmap,
         height=height,
         width=width,
-        line_width=5,
+        line_width=4,
         clipping_colors={'NaN': '#DCDCDC'},
         color_levels=color_levels,
         tools=[hover],
@@ -202,7 +202,7 @@ def make_heatmap(df, title):
         bin_align_freq)
 
     # Set up size of the outline boxes
-    box_size = height // n_rows*1.15
+    box_size = height // n_rows*1.2
 
     # alignment frequency heatmap for edges around wells
     boxes = hv.Points(
@@ -215,7 +215,7 @@ def make_heatmap(df, title):
         line_color='AlignmentFrequencyBinned',
         line_join='miter',
         cmap=cmap,
-        line_width=8,
+        line_width=6,
         fill_alpha=0,
         line_alpha=1,
         legend_position='right',
@@ -241,7 +241,10 @@ def make_heatmap(df, title):
         _df,
         ['Column', 'Row'],
         'Labels',
-    ).opts(text_font_size='9pt', **opts)
+    ).opts(
+        text_font_size='8pt',
+        **opts
+    )
 
     # return formatted final plot
     return (hm*boxes*labels).opts(frame_height=550,
