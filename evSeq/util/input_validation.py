@@ -20,7 +20,9 @@ def check_index_map(index_df):
     
     # If we are missing any columns, log an error and terminate
     if len(missing_cols) != 0:
-        log_error(f"Expected columns missing from index_map.csv: {missing_cols}")
+        log_error(
+            f"Expected columns missing from index_map.csv: {missing_cols}"
+        )
         
     # Make sure all combinations of F-BC and R-BC are unique
     bc_combos = [(fbc, rbc) for fbc, rbc in 
@@ -73,7 +75,7 @@ def check_ref_seqs(ref_seqs_df, detailed_file):
         "FPrimer",
         "RPrimer",
         "VariableRegion",
-        "InFrameBase",
+        "FrameDistance",
         "BpIndStart",
         "AaIndStart"
     ]
@@ -100,9 +102,9 @@ def check_ref_seqs(ref_seqs_df, detailed_file):
     # Loop over each row in the input file and check the values
     for i, (_, row) in enumerate(ref_seqs_df.iterrows()):
         
-        # The InFrameBase must be between 1 and 3, inclusive.
-        if not (1 <= row["InFrameBase"] <= 3):
-            log_error(f"InFrameBase must be between 1 and 3. Check row {i}.")
+        # The FrameDistance must be between 1 and 3, inclusive.
+        if not (0 <= row["FrameDistance"] <= 2):
+            log_error(f"FrameDistance must be between 0 and 2. Check row {i}.")
             
         # The BpIndStart and AaIndStart must be positive or zero
         if row["BpIndStart"] < 0:

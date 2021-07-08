@@ -48,10 +48,9 @@ class SeqPair():
         
         # Note that we have reverse information
         self._use_r = True
-        
-    # Calculate summary stats for a read
+
     def calculate_read_stats(self, record):
-        
+        """Calculate summary stats for a read."""
         # Calculate relevant summary stats needed by both forward and reverse methods
         barcode = str(record.seq)[:BARCODE_LENGTH]
         length = len(record)
@@ -68,14 +67,14 @@ class SeqPair():
             if self.f_len < length_filter or self.f_average_q < average_q_cutoff:
                 self._use_f = False
                 
-        # Make sure reverse reads pass the length and quality cutoff. Only run QC
-        # if we actually recorded a forward read.
+        # Make sure reverse reads pass the length and quality cutoff. Only 
+        # run QC if we actually recorded a forward read.
         if self.use_r:
             if self.r_len < length_filter or self._r_average_q < average_q_cutoff:
                 self._use_r = False
-    
-    # Align forward and reverse reads to a reference sequence
+
     def align(self, reference):
+        """Align forward and reverse reads to a reference sequence."""
         
         # Make a pairwise alignment. Only align the reads we are using.
         if self.is_paired():
@@ -94,20 +93,22 @@ class SeqPair():
             
         else:
             raise AssertionError("No reads to align in reference.")
-        
-    # Write a function that runs QC on an alignment. We automatically discard an alignment
-    # with an insertion or deletion. 
+
     def qc_alignment(self, forward_check):
+        """Write a function that runs QC on an alignment. We
+        automatically discard an alignment with an insertion or
+        deletion.
+        """
         
-        # By default, this is a good alignment. If it fails the qc tests, then it
-        # will become a bad alignment
+        # By default, this is a good alignment. If it fails the qc tests, then
+        #  it will become a bad alignment
         good_alignment = True
         
         # Pull the appropriate alignment 
         test_alignment = self.f_alignment if forward_check else self.r_alignment
         
-        # If the alignment is None, this is a bad alignment (the original sequence
-        # failed qc) and we cannot conitnue.
+        # If the alignment is None, this is a bad alignment (the original 
+        # sequence failed qc) and we cannot conitnue.
         if test_alignment is None:
             return False, -1
         
@@ -151,17 +152,18 @@ class SeqPair():
 
             return good_alignment, last_dash
 
-    # Write a function that runs QC on a pair of alignments. This will
-    # set flags for whether or not an alignment is usable
     def qc_alignments(self):
-        
+        """Write a function that runs QC on a pair of alignments. This 
+        will set flags for whether or not an alignment is usable.
+        """
+
         # Run QC on the forward and reverse alignments
         self._use_f_alignment, self._first_dash = self.qc_alignment(True)
         self._use_r_alignment, self._last_dash = self.qc_alignment(False)
-        
-    # Build a composite alignment for paired ends
+
     def build_paired_composite_alignment(self):
-        
+        """Build a composite alignment for paired ends."""
+
         # Both forward and reverse reads must pass aligment qc to enable this 
         assert self.is_paired_post_alignment_qc(), "Cannot build composite from 1 read."
         
@@ -266,10 +268,9 @@ class SeqPair():
         assert reflength == len(composite_qual)
             
         return composite_seq, composite_qual, potential_counts
-    
-    # Build a pairwise composite alignment for non-paired ends
+
     def build_unpaired_composite_alignment(self):
-        
+        """Build a pairwise composite alignment for non-paired ends."""
         # First make sure that we are calling this function appropriately
         assert not self.is_paired_post_alignment_qc(), "This function only works for unpaired reads"
         
@@ -291,8 +292,10 @@ class SeqPair():
             # there are differences between existing qualities and the end of
             # the sequence
             forward_qual = self.f_adapterless.letter_annotations["phred_quality"]
-            composite_qual = np.concatenate((forward_qual, 
-                                             np.full(composite_length - len(forward_qual), np.inf)))
+            composite_qual = np.concatenate((
+                forward_qual,
+                np.full(composite_length - len(forward_qual), np.inf)
+            ))
             
         else:
             
@@ -308,11 +311,15 @@ class SeqPair():
             composite_seq = self.r_alignment.seqB
             
             # The qualities must be before the alignment. Prepend as many zeros
-            # as there are differences between existing qualities and the end of 
-            # the sequence
-            reverse_qual = self.r_adapterless.letter_annotations["phred_quality"]
-            composite_qual = np.concatenate((np.full(composite_length - len(reverse_qual), np.inf),
-                                             reverse_qual))
+            # as there are differences between existing qualities and the 
+            # end of the sequence
+            reverse_qual = (self.r_adapterless
+                                .letter_annotations["phred_quality"])
+
+            composite_qual = np.concatenate((
+                np.full(composite_length - len(reverse_qual), np.inf),
+                reverse_qual
+            ))
             
         # Assert that everything is the expected length
         assert composite_length == len(composite_seq)
@@ -320,9 +327,8 @@ class SeqPair():
             
         return composite_seq, composite_qual, potential_counts
     
-    # Write a function that builds a composite sequence regardless of alignment type
     def build_composite_alignment(self):
-        
+        """Builds a composite sequence regardless of alignment type."""
         # Complicated composite if this is paired end
         if self.is_paired_post_alignment_qc():
             return self.build_paired_composite_alignment()
@@ -330,12 +336,13 @@ class SeqPair():
         # Simple composite if this is not paired end
         else:
             return self.build_unpaired_composite_alignment()
-        
-    # Write a function for extracting information from the alignment
+
     def analyze_alignment(self, inframe_ind, ref_len, n_aas, qual_thresh):
+        """Extracts information from the alignment."""
         
         # Pull the composite alignment for the sequence
-        composite_sequence, composite_qual, potential_counts = self.build_composite_alignment()
+        composite_sequence, composite_qual, potential_counts =\
+                                    self.build_composite_alignment()
 
         # Create matrices in which to store counts
         bp_counts = np.zeros([6, ref_len], dtype = int)
@@ -343,8 +350,9 @@ class SeqPair():
 
         # Loop over the composite sequence up to the in-frame part
         base_ind = -1 # Initilaize for the case where inframe_ind is 0
-        for base_ind, (bp, qual) in enumerate(zip(composite_sequence[:inframe_ind],
-                                                  composite_qual[:inframe_ind])):
+        zipped = enumerate(zip(composite_sequence[:inframe_ind],
+                               composite_qual[:inframe_ind]))
+        for base_ind, (bp, qual) in zipped:
 
             # Only record counts if we meet a quality threshold
             if qual >= qual_thresh:
@@ -358,8 +366,9 @@ class SeqPair():
         codon_counter = 0
         
         # Loop over the remaining sequence that is in frame
-        for inframe_counter, (bp, qual) in enumerate(zip(composite_sequence[inframe_ind:],
-                                                         composite_qual[inframe_ind:])):
+        zipped = enumerate(zip(composite_sequence[inframe_ind:],
+                               composite_qual[inframe_ind:]))
+        for inframe_counter, (bp, qual) in zipped:
 
             # Update the base ind (this continues from our previous loop)
             base_ind += 1
@@ -421,9 +430,9 @@ class SeqPair():
             
         # Return the filled out count matrices
         return bp_counts, aa_counts
-    
-    # Write a function that returns read lengths
+
     def read_lengths(self):
+        """Get and return read lengths."""
         if self.is_paired():
             return [self.f_len, self.r_len]
         elif self.use_f:
@@ -432,9 +441,9 @@ class SeqPair():
             return [np.nan, self.r_len]
         else:
             raise AssertionError("No reads for which to return lengths.")
-        
-    # Write a function that returns read qualities
+
     def read_quals(self):
+        """Get and return qualities."""
         if self.is_paired():
             return [self.f_average_q, self.r_average_q]
         elif self.use_f:

@@ -12,6 +12,8 @@ Every-Variant Sequencing (`evSeq`) provides resources for extremely low cost mas
 #### [Theoretical overview](bio/theory.md)
 
 #### [Library preparation](bio/lib_prep.md)
+- [Inner Primer Design](bio/lib_prep.md#inner-primer-design)
+- 
 
 ### Computation
 #### [Programming basics](comp/basics.md)
@@ -20,7 +22,7 @@ Every-Variant Sequencing (`evSeq`) provides resources for extremely low cost mas
 - [Installing with PyPI (pip)](comp/installation.md#installing-from-pypi)
 - [Using the `evSeq` environment](comp/installation.md#using-the-evseq-environment)
 #### [Running `evSeq`](comp/usage.md)
-- [Confirming your installation](comp/usage.md#confirming-your-installation)
+- [Post Installation](comp/usage.md#post-installation)
 - [The `refseq` file](comp/usage.md#the-refseq-file)
 - [Using `evSeq` from the command line or GUI](comp/usage.md#using-evseq-from-the-command-line-or-gui)
 - [Using `evSeq` in a Python environment](comp/usage.md#using-evseq-in-a-python-environment)

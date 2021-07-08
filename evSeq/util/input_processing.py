@@ -168,25 +168,56 @@ def load_ref_seq(cl_args):
     # Check the validity of the reference sequence file
     check_ref_seqs(refseq_df, cl_args["detailed_refseq"])
 
-    # Get the forward primer and remove the adaptor
-    f_primers = [seq.upper() for seq in refseq_df["FPrimer"]]
-    adaptorless_f_primers = [seq.replace(ADAPTER_F, '') for seq in f_primers]
+    # Check the primers
+    for row in refseq_df.itertuples():
+        if ADAPTER_F not in row.FPrimer:
+            log_error(
+                f"Error in row {row.Index + 1} of refseq file: "
+                "FPrimer entry does not include known evSeq adapter."
+            )
+        if ADAPTER_R not in row.RPrimer:
+            log_error(
+                f"Error in row {row.Index + 1} of refseq file:"
+                "RPrimer entry does not include known evSeq adapter."
+            )
 
+    # Get the forward primer and remove adapter
+    f_primers = [seq.upper() for seq in refseq_df["FPrimer"]]
+    adapterless_f_primers = [seq.replace(ADAPTER_F, '') for seq in f_primers]
+
+    # Same for reverse
     r_primers = [seq.upper() for seq in refseq_df["RPrimer"]]
-    adaptorless_r_primers = [seq.replace(ADAPTER_R, '') for seq in r_primers]
+    adapterless_r_primers = [seq.replace(ADAPTER_R, '') for seq in r_primers]
 
     # Reverse complement the reverse primer
-    r_seqs = [Seq(seq).reverse_complement() for seq in adaptorless_r_primers]
+    r_seqs = [Seq(seq).reverse_complement() for seq in adapterless_r_primers]
 
     # Create a reference sequence from the primers and variable region
     var_regions = [seq.upper() for seq in refseq_df["VariableRegion"]]
     refseqs = [None for _ in var_regions]
-    zipped = enumerate(zip(adaptorless_f_primers, var_regions, r_seqs))
+    zipped = enumerate(zip(adapterless_f_primers, var_regions, r_seqs))
     for i, (f, var, r) in zipped:
         refseqs[i] = str(f + var + r)
 
+    # Adjust frame distance relative to refseq
+    bp_offsets = [len(seq) for seq in adapterless_f_primers]
+
+    # For a given N (bp offset), the FrameDistance change periodically
+    # according to (I + N) % 3
+    new_frame = [(I + N) % 3
+                 for N, I in zip(bp_offsets, refseq_df['FrameDistance'])]
+
+    # Now adjust the Bp and Aa IndStart to match refseq
+    new_bp = [I - N
+              for N, I in zip(bp_offsets, refseq_df['BpIndStart'])]
+    new_aa = [I - (N // 3)
+              for N, I in zip(bp_offsets, refseq_df['AaIndStart'])]
+
     # Save in dataframe
     refseq_df["ReferenceSequence"] = refseqs
+    refseq_df['FrameDistance'] = new_frame
+    refseq_df['BpIndStart'] = new_bp
+    refseq_df['AaIndStart'] = new_aa
     
     # If this is not a detailed reference sequence, expand it
     if not cl_args["detailed_refseq"]:
@@ -195,14 +226,14 @@ def load_ref_seq(cl_args):
         updated_ref_array = []
         for row in refseq_df.itertuples(index = False):
             updated_ref_array.extend([[row.PlateName, row.IndexPlate, well,
-                                       row.ReferenceSequence, row.InFrameBase,
+                                       row.ReferenceSequence, row.FrameDistance,
                                        row.BpIndStart, row.AaIndStart]
                                       for well in ALLOWED_WELLS])
 
         # Define the complete reference sequence dataframe
         refseq_df = pd.DataFrame(updated_ref_array,
                                  columns = ("PlateName", "IndexPlate", "Well",
-                                            "ReferenceSequence", "InFrameBase",
+                                            "ReferenceSequence", "FrameDistance",
                                             "BpIndStart", "AaIndStart"))
     
     # Output the ref_seq_df
@@ -258,7 +289,7 @@ def find_codons_variable_positions(refseq, inframe_bp, plate, well):
     assert all(refseq[pos] == "N" for pos in variable_positions), "Error in variable position calculation"
         
     # Validate that the provided in frame bp is correct
-    if (variable_positions[0] % 3) != (inframe_bp - 1):
+    if (variable_positions[0] % 3) != (inframe_bp):
         log_error(f"Error for {plate}-{well} refseq:"
                   "The provided in frame base does not match the frame of the provided variable codons.")
     
@@ -283,7 +314,7 @@ def construct_bcs_to_refseq(refseq_df, index_df):
         # Find variable positions
         variable_positions = find_codons_variable_positions(
             row.ReferenceSequence,
-            row.InFrameBase,
+            row.FrameDistance,
             row.IndexPlate,
             row.Well,
         )
@@ -294,7 +325,7 @@ def construct_bcs_to_refseq(refseq_df, index_df):
             "PlateName": row.PlateName,
             "Well": row.Well,
             "ReferenceSequence": row.ReferenceSequence,
-            "InFrameBase": row.InFrameBase,
+            "FrameDistance": row.FrameDistance,
             "ExpectedVariablePositions": variable_positions,
             "BpIndStart": row.BpIndStart,
             "AAIndStart": row.AaIndStart,
