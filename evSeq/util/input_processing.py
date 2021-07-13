@@ -202,7 +202,7 @@ def load_ref_seq(cl_args):
     # Adjust frame distance relative to refseq
     bp_offsets = [len(seq) for seq in adapterless_f_primers]
 
-    # For a given N (bp offset), the FrameDistance change periodically
+    # For a given N (bp offset), the FrameDistance changes periodically
     # according to (I + N) % 3
     new_frame = [(I + N) % 3
                  for N, I in zip(bp_offsets, refseq_df['FrameDistance'])]
@@ -210,8 +210,9 @@ def load_ref_seq(cl_args):
     # Now adjust the Bp and Aa IndStart to match refseq
     new_bp = [I - N
               for N, I in zip(bp_offsets, refseq_df['BpIndStart'])]
-    new_aa = [I - (N // 3)
-              for N, I in zip(bp_offsets, refseq_df['AaIndStart'])]
+    new_aa = [I - ((N+F) // 3)
+              for N, F, I, in 
+              zip(bp_offsets, new_frame, refseq_df['AaIndStart'])]
 
     # Save in dataframe
     refseq_df["ReferenceSequence"] = refseqs
