@@ -7,7 +7,7 @@ from time import strftime
 
 # Import relevant functions
 from .util.globals import N_CPUS
-from .util.logging import log_init, log_info
+from .util.logging import log_init, log_info, log_error
 from .util.input_processing import build_output_dirs
 from .run_evSeq import run_evseq
 
@@ -123,10 +123,10 @@ def main():
     log_init(CL_ARGS)
 
     # Run evSeq
-#    try:
-    run_evseq(CL_ARGS)
-#    except Exception as e:
-#        log_error("\nUnhandled exception encountered: '{e}'")
+    try:
+        run_evseq(CL_ARGS)
+    except Exception as e:
+       log_error("\nUnhandled exception encountered: '{e}'")
 
     # Log that we have successfully completed the run
     log_info("Run completed. Log may contain warnings.")
