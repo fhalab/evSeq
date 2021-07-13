@@ -6,7 +6,8 @@ import os.path
 
 # # Load functions
 from .logging import log_error, log_warning
-from .globals import ALLOWED_BASES_NO_DEG, ALLOWED_BASES, ALLOWED_WELLS, N_CPUS
+from .globals import (ALLOWED_BASES_NO_DEG, ALLOWED_BASES, 
+                      ALLOWED_WELLS, N_CPUS, ADAPTER_F, ADAPTER_R)
 
 def check_index_map(index_df):
     """Checks the validity of the index file."""
@@ -101,8 +102,20 @@ def check_ref_seqs(ref_seqs_df, detailed_file):
     
     # Loop over each row in the input file and check the values
     for i, (_, row) in enumerate(ref_seqs_df.iterrows()):
+
+        # Check the primers
+        if ADAPTER_F not in row["FPrimer"]:
+            log_error(
+                f"Error in row {row['Index']} of refseq file: "
+                "FPrimer entry does not include known evSeq adapter."
+            )
+        if ADAPTER_R not in row["RPrimer"]:
+            log_error(
+                f"Error in row {row['Index']} of refseq file:"
+                "RPrimer entry does not include known evSeq adapter."
+            )
         
-        # The FrameDistance must be between 1 and 3, inclusive.
+        # The FrameDistance must be between 0 and 2, inclusive.
         if not (0 <= row["FrameDistance"] <= 2):
             log_error(f"FrameDistance must be between 0 and 2. Check row {i}.")
             

@@ -156,31 +156,11 @@ def load_dual_inds():
     # Return the index_df
     return index_df
 
-def load_ref_seq(cl_args):
-    """Loads the reference sequence file, checks the integrity of the
-    input information, and generates an appropriate reference sequence
-    dataframe.
+def construct_ref_seq(refseq_df):
+    """Constructs a reference sequence based on the input sequences, and
+    adjusts indexes and parameters accordingly.
+    Returns 
     """
-    
-    # Load the reference sequence using pandas
-    refseq_df = pd.read_csv(cl_args["refseq"])
-    
-    # Check the validity of the reference sequence file
-    check_ref_seqs(refseq_df, cl_args["detailed_refseq"])
-
-    # Check the primers
-    for row in refseq_df.itertuples():
-        if ADAPTER_F not in row.FPrimer:
-            log_error(
-                f"Error in row {row.Index + 1} of refseq file: "
-                "FPrimer entry does not include known evSeq adapter."
-            )
-        if ADAPTER_R not in row.RPrimer:
-            log_error(
-                f"Error in row {row.Index + 1} of refseq file:"
-                "RPrimer entry does not include known evSeq adapter."
-            )
-
     # Get the forward primer and remove adapter
     f_primers = [seq.upper() for seq in refseq_df["FPrimer"]]
     adapterless_f_primers = [seq.replace(ADAPTER_F, '') for seq in f_primers]
@@ -211,10 +191,27 @@ def load_ref_seq(cl_args):
     new_bp = [I - N
               for N, I in zip(bp_offsets, refseq_df['BpIndStart'])]
     new_aa = [I - ((N+F) // 3)
-              for N, F, I, in 
+              for N, F, I, in
               zip(bp_offsets, new_frame, refseq_df['AaIndStart'])]
 
-    # Save in dataframe
+    return refseqs, new_frame, new_bp, new_aa
+
+def load_ref_seq(cl_args):
+    """Loads the reference sequence file, checks the integrity of the
+    input information, and generates an appropriate reference sequence
+    dataframe.
+    """
+    
+    # Load the reference sequence using pandas
+    refseq_df = pd.read_csv(cl_args["refseq"])
+    
+    # Check the validity of the reference sequence file
+    check_ref_seqs(refseq_df, cl_args["detailed_refseq"])
+
+    # Construct reference sequence
+    refseqs, new_frame, new_bp, new_aa = construct_ref_seq(refseq_df)
+
+    # Save new values in dataframe
     refseq_df["ReferenceSequence"] = refseqs
     refseq_df['FrameDistance'] = new_frame
     refseq_df['BpIndStart'] = new_bp
