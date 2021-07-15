@@ -157,9 +157,23 @@ def load_dual_inds():
     return index_df
 
 def construct_ref_seq(refseq_df):
-    """Constructs a reference sequence based on the input sequences, and
+    """
+    Constructs a reference sequence based on the input sequences, and
     adjusts indexes and parameters accordingly.
-    Returns 
+
+    Returns four lists:
+    -------------------
+    refseqs: list of strings (DNA seqs)
+        the new ReferenceSequence for each row in the refseq file.
+    new_frame: list of ints, ranging [0, 2]
+        the new FrameDistance, adjusted for the length of the FPrimer
+        seed region.
+    new_bp: list of ints
+        new BpStartInd, adjusted for the length of the FPrimer seed 
+        region.
+    new_aa: list of ints; usually ~ (new_bp // 3)
+        new AaStartInd, adjusted for the length of the FPrimer seed
+        region.
     """
     # Get the forward primer and remove adapter
     f_primers = [seq.upper() for seq in refseq_df["FPrimer"]]
@@ -191,8 +205,11 @@ def construct_ref_seq(refseq_df):
     new_bp = [I - N
               for N, I in zip(bp_offsets, refseq_df['BpIndStart'])]
     new_aa = [I - ((N+F) // 3)
-              for N, F, I, in
-              zip(bp_offsets, new_frame, refseq_df['AaIndStart'])]
+              for N, F, I, in zip(
+                  bp_offsets,
+                  refseq_df['FrameDistance'],
+                  refseq_df['AaIndStart'],
+              )]
 
     return refseqs, new_frame, new_bp, new_aa
 
