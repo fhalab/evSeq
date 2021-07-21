@@ -6,7 +6,7 @@ import pandas as pd
 from evSeq.util.globals import ADAPTER_F, ADAPTER_R
 from evSeq.util.input_processing import construct_ref_seq
 
-def test_default_construct_ref_seq():
+def test_construct_ref_seq():
 
     f_primer_seed = 'AAA'
     r_primer_seed = 'TTT'
@@ -45,7 +45,7 @@ def test_default_construct_ref_seq():
     assert new_aa == [idx - len(f_primer_seed) // 3 for idx in [aa_idx]]
 
 
-def test_default_construct_ref_seq_with_offsets():
+def test_construct_ref_seq_with_offsets():
 
     # If you change these, you will need to change some things below.
     # These are the simplest combos that test all possible change types,
@@ -119,11 +119,8 @@ def test_default_construct_ref_seq_with_offsets():
                       for idx, seed in zip(bp_idx, f_primer_seed)]
 
     # Test from comments in bp_aa_pairs above; expectation = pair[1] values
-    assert new_aa == [0, 0, 0, 0, 0, -1, 0, -1, -1]
+    assert new_aa == [0, 0, 0] + [0, 0, -1] + [0, -1, -1]
     # Test from function
     assert new_aa == [idx - ((len(seed)+dist) // 3)
                       for idx, dist, seed
                       in zip(aa_idx, f_dist, f_primer_seed)]
-
-def test_detailed_construct_ref_seq():
-    pass
