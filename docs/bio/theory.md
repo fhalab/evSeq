@@ -11,4 +11,6 @@ For protein engineering, protein variants that are arrayed into 96-well plates a
 
 ---
 
+*Next page: [Library Preparation](lib_prep.md).*
+
 *Back to the [main page](../index.md).*

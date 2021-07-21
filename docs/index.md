@@ -2,7 +2,10 @@
 
 Every Variant Sequencing (`evSeq`) provides resources for extremely low cost massively parallel sequencing of protein/enzyme variants arrayed in 96-well plates. This library preparation technique and data processing tool enables sequencing all variants produced during a protein engineering or biochemical mutagenesis experiment at a cost of cents per variant, even for labs that do not have expertise in or access to next-generation sequencing (NGS) technology.
 
-[Read the paper!](one_day...)
+### [Read the paper!](one_day...)
+
+### Read the Docs!
+Navigate to [individual pages below](#documentation) or [start at the beginning](bio/theory.md).
 
 ### Overview
 #### Workflow

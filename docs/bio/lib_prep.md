@@ -160,4 +160,6 @@ Finally, submit your samples and then work up the returned data using the provid
 
 ---
 
+*Next page, options:* | *[Computational Basics](../comp/basics.md)* | *[Installation](../comp/installation.md)* | *[Running `evSeq`](../comp/usage.md)* |
+
 *Back to the [main page](../index.md).*

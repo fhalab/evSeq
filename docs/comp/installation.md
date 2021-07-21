@@ -57,4 +57,6 @@ Once `evSeq` is installed and your environment is suitable, you should [confirm 
 
 ---
 
+*Next page: [Running `evSeq`](usage.md).*
+
 *Back to the [main page](../index.md).*
