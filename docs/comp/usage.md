@@ -88,8 +88,9 @@ There are a number of flags and optional arguments that can be passed for `evSeq
 | `variable_thresh` | Argument | This argument sets the threshold that determines whether or not a position is variable. In other words, if a position contains a non-reference sequence sequence at a given position at a fraction greater than `variable_thresh`, then it is a variable position. The default is `0.2`. Setting this value lower makes `evSeq` more sensitive to variation, while setting it higher makes it less sensitive. A value of 1, for instance, would find no variable positions. |
 | `variable_count` | Argument | This sets the count threshold for identifying "dead" wells. If a well has fewer sequences that pass QC than this value, then it is considered "dead". The default value is 10 (meaning only wells with fewer than 10 sequences are dead). |
 | `jobs` | Argument | This is the number of processors used by deSeq for data processing. By default, `evSeq` uses 1 less processor than are available on your computer. As with all multiprocessing programs, it is typically not recommended to use all available processors unless you are okay devoting all computer resources to the task (e.g. you don't want to be concurrently checking email, playing music, running another program, etc.). The number of jobs can be lowered to reduce the memory demands of `evSeq`. |
-| `read_length` | Argument | By default, `evSeq` will attempt to determine the read length from the fastq files. If this process is failing (e.g. due to heavy primer-dimer contamination), the read length can be manually set using this argument. |
+| `read_length` | Argument | By default, `evSeq` will attempt to determine the read length from the fastq files. If this process is failing (e.g., due to heavy primer-dimer contamination), the read length can be manually set using this argument. |
 
 ---
+*Next page: [Understanding the outputs](outputs.md).*
 
 *Back to the [main page](../index.md).*
