@@ -13,9 +13,8 @@ import ninetysix as ns
 
 from .logging import log_warning
 
-hv.extension('bokeh')
+# because the ninetysix package sets bokeh as the backend, we don't set it here
 hv.renderer('bokeh')
-
 
 #### Heatmap ####
 def generate_sequencing_heatmaps(max_combo_df):
@@ -64,7 +63,8 @@ def generate_sequencing_heatmaps(max_combo_df):
         center = max_combo_df['logseqdepth'].median()
 
     # set color levels
-    color_levels = stretch_color_levels(df['logseqdepth'], center, cmap)
+    # color_levels = stretch_color_levels(df['logseqdepth'], center, cmap)
+    color_levels = ns.viz._center_colormap(df['logseqdepth'], center)
 
     # Uniform color levels
     for _hm in hm_dict.values():
@@ -138,7 +138,8 @@ def make_heatmap(df, title):
         # Adjust the center
         center = df['logseqdepth'].median()
 
-    color_levels = stretch_color_levels(df['logseqdepth'], center, cmap)
+    # color_levels = stretch_color_levels(df['logseqdepth'], center, cmap)
+    color_levels = ns.viz._center_colormap(df['logseqdepth'], center)
 
     # Get heights
     n_rows = len(df['Row'].unique())
@@ -236,13 +237,22 @@ def make_heatmap(df, title):
     
     _df = df.copy()
     _df['Labels'] = _df['VariantCombo'].apply(split_variant_labels)
+
+    # Set the font size based on if #PARENT# is in a well and num of mutations
+    max_num_mutations = _df['Labels'].apply(lambda x: len(x.split('\n'))).max()
+    has_parent = ('#PARENT#' in _df['Labels'])
     
+    if max_num_mutations > 3 or has_parent:
+        label_fontsize = '8pt'
+    else:
+        label_fontsize = '10pt'
+
     labels = hv.Labels(
         _df,
         ['Column', 'Row'],
         'Labels',
     ).opts(
-        text_font_size='8pt',
+        text_font_size=label_fontsize,
         **opts
     )
 
@@ -512,17 +522,19 @@ def count_plot(
     p_counts = hv.Bars(
         df_counts,
         'Residue',
-        'Counts'
+        'Counts',
     ).opts(
         width=600,
         height=200,
-        xrotation=45
+        xrotation=45,
+        color='#DCDCDC'
     )
 
     if hist_range is not None:
         p_counts = p_counts.opts(ylim=hist_range)
     
     return p_counts
+
 
 def plot_variant_activities(
     seq_func_data,
