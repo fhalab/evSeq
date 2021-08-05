@@ -1,6 +1,7 @@
 # Import evSeq dependencies
-from .util.globals import (BP_TO_IND, AA_TO_IND, CODON_TABLE, AA_TO_IND, 
-                           BP_ARRAY, AA_ARRAY)
+from Bio.Seq import reverse_complement
+from .util.globals import (ADAPTER_F, ADAPTER_R, BP_TO_IND, AA_TO_IND,
+                           CODON_TABLE, AA_TO_IND, BP_ARRAY, AA_ARRAY)
 
 # Import other required modules
 import os
@@ -16,16 +17,16 @@ class Well():
         # Assign the sequence pairs as an attribute, unpack the refseq info,
         # and store the expected variable basepair positions as attirbutes
         self._all_seqpairs = seqpairs
-        self._expected_variable_bp_positions = refseq_df_info["ExpectedVariablePositions"]
-        self._index_plate = refseq_df_info["IndexPlate"]
-        self._plate_nickname = refseq_df_info["PlateName"]
-        self._well = refseq_df_info["Well"]
-        self._reference_sequence = refseq_df_info["ReferenceSequence"]
+        self._refseq_df_info = refseq_df_info
+        self._expected_variable_bp_positions = self._refseq_df_info["ExpectedVariablePositions"]
+        self._index_plate = self._refseq_df_info["IndexPlate"]
+        self._plate_nickname = self._refseq_df_info["PlateName"]
+        self._well = self._refseq_df_info["Well"]
+        self._reference_sequence = self._refseq_df_info["ReferenceSequence"]
         self._ref_len = len(self.reference_sequence)
-        # Input is 1-indexed, so subtract 1
-        self._frame_dist = refseq_df_info["FrameDistance"]
-        self._bp_ind_start = refseq_df_info["BpIndStart"]
-        self._aa_ind_start = refseq_df_info["AAIndStart"]
+        self._frame_dist = self._refseq_df_info["FrameDistance"]
+        self._bp_ind_start = self._refseq_df_info["BpIndStart"]
+        self._aa_ind_start = self._refseq_df_info["AAIndStart"]
         
         # Generate save locations for alignment files
         self._fasta_loc = os.path.join(save_dir, "ParsedFilteredFastqs")
@@ -36,7 +37,8 @@ class Well():
         self._n_aas = (self.ref_len - self.frame_dist) // 3
         
         # Calculate the expected count frequencies for both basepairs and
-        # amino acids assuming no sequencing errors and no changes to reference sequence
+        # amino acids assuming no sequencing errors and no changes to reference
+        # sequence
         self.calculate_expected_arrays()
         
         # Calculate the variable amino acid positions
@@ -178,7 +180,8 @@ class Well():
         """
         
         # Get the counts for each unit (e.g. an amino acid or base pair) at each
-        # position. For both the aa and bp count matrices, the last row is the gap character.
+        # position. For both the aa and bp count matrices, the last row is the
+        # gap character.
         # The gap character is ignored when generating counts
         by_unit_counts = count_array[:, :-1].sum(axis=0)
     
@@ -188,9 +191,12 @@ class Well():
         # Convert counts for each unit at each position to frequency for
         # each unit at each position. Return 0 if the by_position counts
         # are also 0 (avoid divide by 0 error)
-        by_unit_frequency = np.divide(by_unit_counts, by_position_counts,
-                                     out = np.zeros_like(by_unit_counts, dtype = float),
-                                     where = by_position_counts != 0)
+        by_unit_frequency = np.divide(
+            by_unit_counts,
+            by_position_counts,
+            out=np.zeros_like(by_unit_counts, dtype=float),
+            where=(by_position_counts != 0)
+        )
         
         # If not keeping gaps, return the by position counts as well as the
         # unit counts and frequencies. Otherwise, just return the unit counts
@@ -224,18 +230,19 @@ class Well():
         assert np.all(np.logical_or(np.isclose(total_frequencies, np.ones(total_length)),
                                     np.isclose(total_frequencies, np.zeros(total_length))))
 
-        # The only way we can have a total frequency of 0 is if we are in a gap region. 
-        # This is because we are explicitly ignoring gaps in this calculation. The next
-        # code identifies gaps
+        # The only way we can have a total frequency of 0 is if we are in a gap
+        # region. 
+        # This is because we are explicitly ignoring gaps in this calculation.
+        # The next code identifies gaps
         gap_positions = total_frequencies == 0
         
         # Get the length of the unit frequency first axis
         n_units = by_unit_frequency.shape[0]
 
         # Compare the unit frequency to the expected array.
-        # The furthest difference is 2 (e.g. if there are no reads matching to the
-        # expected sequence), so take the absolute value is taken and the full
-        # array divided by 2 to scale to a "percent different"
+        # The furthest difference is 2 (e.g. if there are no reads matching to
+        # the expected sequence), so take the absolute value is taken and the
+        # full array divided by 2 to scale to a "percent different"
         difference_from_expectation_absolute = np.abs(by_unit_frequency - expected_array[:n_units])
         average_difference_from_expectation = np.sum(difference_from_expectation_absolute, axis = 0)/2
 
@@ -253,7 +260,8 @@ class Well():
                                               identified_variable_positions)))
         all_found.sort()
                 
-        # Determine if the variation is expected or not. Return this along with all_found
+        # Determine if the variation is expected or not. Return this along with
+        # all_found
         expected_variation = np.array(["" if var in expected_set else "Unexpected Variation"
                                        for var in all_found])
         
@@ -270,8 +278,8 @@ class Well():
         basepair counts.
         """
         
-        # Find the variable basepair and amino acid positions. Note that gaps are not used 
-        # when finding variable positions
+        # Find the variable basepair and amino acid positions. Note that gaps
+        # are not used when finding variable positions
         (self._all_variable_bp_positions, 
          self._variable_bp_type,
          percent_bp_mutated) = \
@@ -290,8 +298,8 @@ class Well():
                 self.expected_variable_aa_positions
             )
          
-         # If there are >10% of positions mutated, throw a warning. The alignment
-         # may not work correctly
+         # If there are >10% of positions mutated, throw a warning. The 
+         # alignment may not work correctly
         if percent_bp_mutated > 0.1 and self.usable_reads:
             return f"{self.index_plate}-{self.well}"
         else:
@@ -313,7 +321,7 @@ class Well():
         # Define output columns
         unit_pos = f"{unit_type}Position" # Create a name for the unit position
         columns = ("IndexPlate", "Plate", "Well",  unit_pos, unit_type,
-                   "AlignmentFrequency", "WellSeqDepth", "Flag")
+                   "AlignmentFrequency", "WellSeqDepth", "Flags")
         
         # Define a dataframe to use for dead wells
         dead_df = pd.DataFrame(
@@ -381,8 +389,8 @@ class Well():
             return dead_df, dead_df
     
         # Pull the variable amino acid positons, their frequencies/counts, and 
-        # the associated amino acids. Also update positions for output: the offset
-        # is added to match the desired indexing of the user
+        # the associated amino acids. Also update positions for output: the 
+        # offset is added to match the desired indexing of the user
         variable_positions = (all_variable_positions[nonzero_inds[:, 0]]) + pos_offset
         variable_expectation = expectation_array[nonzero_inds[:, 0]]
         variable_total_counts = total_counts[nonzero_inds[:, 0]]
@@ -518,9 +526,10 @@ class Well():
         # Get the positions with variety
         variable_position_counts = paired_alignment_counts[:, :, variable_positions]
 
-        # Make sure all passed QC. This means that each variable position has at least
-        # one count. This works because amino acids are only counted if they pass QC:
-        # for all to pass QC they must all have a count at some position
+        # Make sure all passed QC. This means that each variable position has
+        # at least one count. This works because amino acids are only counted
+        # if they pass QC: for all to pass QC they must all have a count at
+        # some position
         all_pos_at_least_one_count = np.all(variable_position_counts.sum(axis=1) >= 1, axis = 1)
         passing_qc = variable_position_counts[all_pos_at_least_one_count].copy()
         
@@ -588,12 +597,13 @@ class Well():
             simple_combo = "".join(simple_combo)
 
             # Record output
-            output[unique_counter] = [self.index_plate, self.plate_nickname, self.well,
-                                     combo_name, simple_combo, n_positions,
-                                     unique_freqs[unique_counter], seq_depth, new_seq, None]
+            output[unique_counter] = [self.index_plate, self.plate_nickname,
+                                      self.well, combo_name, simple_combo,
+                                      n_positions, unique_freqs[unique_counter],
+                                      seq_depth, new_seq, None]
 
         # Convert output to a dataframe.
-        return pd.DataFrame(output, columns = columns)
+        return pd.DataFrame(output, columns=columns)
                            
     def analyze_paired_counts(self, variable_thresh, variable_count):
         """Analyzes the paired data for both amino acids and basepairs"""
@@ -619,8 +629,106 @@ class Well():
                 self.aa_ind_start
             )
 
+        # Remove the primeer seed regions from these outputs
+        self._remove_seed_regions()
+
+    def _remove_seed_regions(self):
+        """Removes the bases and amino acids corresponding to the seed
+        region of the analyzed `ReferenceSequence` (`VariantSequence`
+        from `analyze_paired_counts` method) to return the relevant
+        bases and amino acids to the `VariableRegion` frame.
+        """
+        # Get sequences
+        seqs = self._paired_bp_output['VariantSequence'].to_list()
+        flags = self._paired_bp_output['Flags'].to_list()
+        f_seed = self.refseq_df_info['FPrimer'].replace(ADAPTER_F, '')
+        r_seed = self.refseq_df_info['RPrimer'].replace(ADAPTER_R, '')
+        r_seed = reverse_complement(r_seed)
+
+        bad_f_seeds = [False for seq in seqs]
+        bad_r_seeds = [False for seq in seqs]
+
+        for i, seq in enumerate(seqs):
+
+            # Check forward seed
+            if seq[:len(f_seed)] != f_seed:
+                bad_f_seeds[i] = True
+
+            # Remove f_seed region
+            seq = seq[len(f_seed):]
+
+            # Check reverse seed
+            if seq[-len(r_seed):] != r_seed:
+                bad_r_seeds[i] = True
+
+            # Remove r_seed region
+            seq = seq[:-len(r_seed)]
+
+            # Update seq
+            seqs[i] = seq
+
+        self._paired_bp_output['VariantSequence'] = seqs
+
+        # Add warnings
+        f_warn = "Unexpected variation in forward primer seed."
+        r_warn = "Unexpected variation in reverse primer seed."
+        both_warn = "Unexpected variation in forward and reverse primer seed -- questionable sequencing."
+
+        if sum(bad_f_seeds) > 0:
+            for i, bad in enumerate(bad_f_seeds):
+                if bad:
+                    if flags[i] is None:
+                        flags[i] = f_warn
+
+        if sum(bad_r_seeds) > 0:
+            for i, bad in enumerate(bad_r_seeds):
+                if bad:
+                    if flags is None:
+                        flags[i] = r_warn
+                    elif flags[i] == f_warn:
+                        flags[i] = both_warn
+
+        self._paired_bp_output['Flags'] = flags
+
+        # Now do the same for the amino acid sequences
+        aa_seqs = self._paired_aa_output['VariantSequence'].to_list()
+
+        # Get old (VariableRegion-specific) FrameDistance
+        fdist = self.refseq_df_info['FrameDistance']
+        old_fdist = (fdist-len(f_seed)) % 3
+
+        # Use this to count the number of refseq bases translated
+        seed_base_len = len(f_seed[fdist:]) + old_fdist
+
+        # Convert to 3 codons/aas
+        seed_aa_len = seed_base_len // 3
+
+        # Do the same for the variable region
+        vr_base_full = self.refseq_df_info['VariableRegion']
+        vr_base_len = len(vr_base_full[old_fdist:])
+        vr_aa_len = vr_base_len // 3
+
+        # Remove this from each
+        for i, seq in enumerate(aa_seqs):
+            # Remove f_seed amino acids
+            seq = seq[seed_aa_len:]
+
+            # Keep only variable region amino acids
+            seq = seq[:vr_aa_len]
+
+            # Update
+            aa_seqs[i] = seq
+
+        # NOTE: warning flags not checked/added here because sequencing error
+        #  are not as clear as with the base pair analysis.
+
+        self._paired_aa_output['VariantSequence'] = aa_seqs
+
+
     def write_fastqs(self):
-        """Outputs adapterless fastq files for all paired end seqpairs"""
+        """Outputs adapterless fastq files for all paired end seqpairs
+        if "keep_parsed_fastqs" flag is passed.
+        """
         
         # Identify the paired end sequence pairs
         paired_end_alignments = tuple(filter(lambda x: x.is_paired(), self.all_seqpairs))
@@ -670,6 +778,10 @@ class Well():
     @property
     def all_seqpairs(self):
         return self._all_seqpairs
+
+    @property
+    def refseq_df_info(self):
+        return self._refseq_df_info
         
     @property
     def expected_variable_bp_positions(self):

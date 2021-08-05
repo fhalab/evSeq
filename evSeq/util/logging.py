@@ -34,7 +34,8 @@ Input/Output Arguments:
     output: {cl_args["output"]}
     detailed_refseq: {cl_args["detailed_refseq"]}
     analysis_only: {cl_args["analysis_only"]}
-    stop_after_fastq: {cl_args["stop_after_fastq"]}
+    only_parse_fastqs: {cl_args["only_parse_fastqs"]}
+    keep_parsed_fastqs: {cl_args["keep_parsed_fastqs"]}
     return_alignments: {cl_args["return_alignments"]}
     
 Read Analysis:

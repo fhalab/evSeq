@@ -1,7 +1,7 @@
 # Import evSeq objects
 from .util.logging import log_info, log_warning
 from .util.input_validation import check_args
-from .util.input_processing import load_all, unzip_gz
+from .util.input_processing import load_all
 from .seq_pair import SeqPair
 from .well import Well
 from .data_visualization import (generate_read_qual_chart, 
@@ -18,22 +18,26 @@ from itertools import chain
 from functools import partial
 from multiprocessing import Pool
 from tqdm import tqdm
-            
-# Write a function for loading and pairing fastq files
-def build_seqpairs(f_loc, r_loc):
+import gzip
 
-    # Unzip the files if need be
-    if "fastq.gz" in f_loc:
-        f_loc = unzip_gz(f_loc)
-    if "fastq.gz" in r_loc:
-        r_loc = unzip_gz(r_loc)
+
+def build_seqpairs(f_loc, r_loc):
+    """Load and pair fastq file entries."""
 
     # Create a dictionary that links id to sequence object
     id_to_reads = {}
     
     # Load and parse forward reads
     print("Loading forward reads...")
-    all_f_recs = list(SeqIO.parse(f_loc, "fastq"))
+
+    # Determine how to open file if zipped or not
+    f_opener, f_encoding = (gzip.open, 'rt') if "fastq.gz" in f_loc \
+                      else (open, 'r')
+
+    # Store as list in memory
+    with f_opener(f_loc, f_encoding) as handle:
+        all_f_recs = list(SeqIO.parse(handle, "fastq"))
+
     for f_record in tqdm(all_f_recs, desc = "Parsing forward reads..."):
         temp_record = SeqPair()
         temp_record.assign_f(f_record)
@@ -41,7 +45,15 @@ def build_seqpairs(f_loc, r_loc):
     
     # Associate reverse reads with the forward
     print("Loading reverse reads...")
-    all_r_recs = list(SeqIO.parse(r_loc, "fastq"))
+
+    # Determine how to open
+    r_opener, r_encoding = (gzip.open, 'rt') if "fastq.gz" in r_loc \
+        else (open, 'r')
+
+    # Store as list
+    with r_opener(r_loc, r_encoding) as handle:
+        all_r_recs = list(SeqIO.parse(handle, "fastq"))
+    
     for r_record in tqdm(all_r_recs, "Pairing reverse reads..."):
 
         # If there is no partern in id_to_reads, create a new object 
@@ -58,9 +70,15 @@ def build_seqpairs(f_loc, r_loc):
     # Return all records
     return tuple(id_to_reads.values())
 
-# Write a function for filtering out bad seqpairs
-def qc_seqpairs(all_seqpairs, read_length, length_cutoff, average_q_cutoff):
-    
+
+def qc_seqpairs(
+    all_seqpairs,
+    read_length,
+    length_cutoff,
+    average_q_cutoff
+):
+    """Filters out bad seqpairs."""
+
     print("Running read qc...")
     
     # If we don't have the read length determine it
@@ -84,8 +102,9 @@ def qc_seqpairs(all_seqpairs, read_length, length_cutoff, average_q_cutoff):
     
     return no_duds
 
-# Write a function for assigning seqpairs to a well
+
 def assign_seqpairs_to_well(filtered_seqpairs, bc_to_ref_plate_well, savedir):
+    """Assigning seqpairs to a well."""
 
     # Loop over all seqpairs and assign to wells
     print("Assigning sequences to wells...")
@@ -111,9 +130,15 @@ def assign_seqpairs_to_well(filtered_seqpairs, bc_to_ref_plate_well, savedir):
     return [Well(pair, bc_to_ref_plate_well[well_id], savedir) 
             for well_id, pair in well_pairs.items()] 
 
-# Write a function that can process a single well
-def process_well(well, return_alignments = False, bp_q_cutoff = 30, 
-                 variable_thresh = 0.1, variable_count = 1):
+
+def process_well(
+    well,
+    return_alignments=False,
+    bp_q_cutoff=30,
+    variable_thresh=0.1,
+    variable_count=1,
+):
+    """Processes a single well."""
     
     # Define a frequency warning variable
     freq_warning = ""
@@ -152,8 +177,8 @@ def process_well(well, return_alignments = False, bp_q_cutoff = 30,
             formatted_alignments, freq_warning) 
     
 def format_and_save_outputs(well_results, saveloc, return_alignments):
-
-    # Write a function that processes the output of analyzing all wells
+    """Processes the output of analyzing all wells and saves results
+    to the disk."""
     unpacked_output = tuple(zip(*well_results))
 
     # Concatenate all dataframes
@@ -173,15 +198,15 @@ def format_and_save_outputs(well_results, saveloc, return_alignments):
     # Loop over all dataframes, sort by plate and well, and save
     savenames = ("Bases_Decoupled_All.csv", "Bases_Decoupled_Max.csv",
                 "AminoAcids_Decoupled_All.csv", "AminoAcids_Decoupled_Max.csv",
-                 "Bases_Coupled_All.csv", "Combos_Coupled_All.csv",
-                 "Bases_Coupled_Max.csv", "Combos_Coupled_Max.csv")
+                 "Bases_Coupled_All.csv", "AminoAcids_Coupled_All.csv",
+                 "Bases_Coupled_Max.csv", "AminoAcids_Coupled_Max.csv")
     for savename, output_df in zip(savenames, chain(full_dfs, max_outs)):
 
         # Sort by plate and well
-        output_df.sort_values(by = ["IndexPlate", "Well"], inplace = True)
+        output_df = output_df.sort_values(by=["IndexPlate", "Well"])
 
         # Save the dataframe
-        output_df.to_csv(os.path.join(saveloc, "OutputCounts", savename), index = False)
+        output_df.to_csv(os.path.join(saveloc, "OutputCounts", savename), index=False)
         
     # Generate heatmaps from the Combos_Coupled_Max dataframe
     heatmaps = generate_sequencing_heatmaps(max_outs[-1])
@@ -199,9 +224,9 @@ def format_and_save_outputs(well_results, saveloc, return_alignments):
             log_warning(f"High mutational frequency in {warning}. You may "
                         "want to check alignments for accuracy.") 
 
-# Write a function that runs evSeq
-def run_evseq(cl_args):
-   
+
+def run_evSeq(cl_args):
+    """Runs the evSeq protocol. Should be run from command line."""
     # Check the input arguments
     check_args(cl_args)
     
@@ -229,29 +254,32 @@ def run_evseq(cl_args):
                                         cl_args["output"])
     
     # Save the fastq files
-    print("Saving fastq files...")
-    for well in all_wells:
-        well.write_fastqs()
+    if cl_args["keep_parsed_fastqs"] or cl_args["only_parse_fastqs"]:
+        print("Saving parsed well-filtered fastq files...")
+        for well in all_wells:
+            well.write_fastqs()
 
-    # Return if we stop after fastq
-    if cl_args["stop_after_fastq"]:
-        return
+        # Return if we stop after fastq
+        if cl_args["only_parse_fastqs"]:
+            return
         
     # Complete the multiprocessing function, then process all wells
     complete_multiprocessor = partial(process_well, 
                                       bp_q_cutoff = cl_args["bp_q_cutoff"],
                                       return_alignments = cl_args["return_alignments"],
                                       variable_thresh = cl_args["variable_thresh"],
-                                     variable_count = cl_args["variable_count"])
+                                      variable_count = cl_args["variable_count"])
         
     # Multiprocess to handle wells
     with Pool(cl_args["jobs"]) as p:
-        processed_well_results = list(tqdm(p.imap_unordered(complete_multiprocessor, all_wells),
-                                      desc = "Processing wells:", total = len(all_wells)))  
+        processed_well_results = list(tqdm(
+            p.imap_unordered(complete_multiprocessor, all_wells),
+            desc="Processing wells:", total=len(all_wells))
+        )  
     
     # Handle processed output. This saves the summary dataframes, generates 
     # platemaps, and saves alignments (if requested)
     print("Saving outputs to disk...")
-    format_and_save_outputs(processed_well_results, 
+    format_and_save_outputs(processed_well_results,
                             cl_args["output"],
                             cl_args["return_alignments"])
