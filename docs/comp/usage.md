@@ -11,16 +11,16 @@ The primary user inputs that are required are contained in the `refseq` file, wh
 ### Default `refseq`
 This form of the file assumes the same reference sequence in each well of the analyzed plates and requires eight columns: `PlateName`, `IndexPlate`, and `FPrimer`, `RPrimer`, `VariableRegion`, `FrameDistance`, `BpIndStart`, and `AaIndStart`. These columns are detailed below:
 
-| Column | Description |
-|:-------|-------------|
-| `PlateName` | This is a nickname given to the plate. For instance, if you performed `evSeq` on a plate that you called "Plate1", you would put "Plate1" in this column. |
-| `IndexPlate` | This is the `evSeq` index plate used for library preparation corresponding to the plate in `PlateName`. For instance, if I prepared "Plate1" using index plate 2, I would write "DI02" in the `IndexPlate` column. Allowed barcode names are `DI01` through `DI08`. |
-| `FPrimer` | This is the sequence-specific forward primer you used to create the amplicon for attaching `evSeq` barcodes, including the `evSeq` adapter regions. It should be input exactly as ordered from your oligo supplier, 5' - 3'. |
-| `RPrimer` | This is the sequence-specific reverse primer you used to create the amplicon for attaching `evSeq` barcodes, including the `evSeq` adapter regions. It should be input exactly as ordered from your oligo supplier, 5' - 3'. Do *not* use the reverse complement. |
-| `VariableRegion` | This is the entire region between the 3' ends of each primer used to generate the `evSeq` amplicon, 5' - 3'. This is called the "variable region" as it is the sequenced region that can vary meaningfully, since the primers should be invariant. If a specific codon has been specifically mutagenized, this codon may be replaced by "NNN". See below for more details. |
-| `FrameDistance` | Distance (in base pairs) from the 3' end of `FPrimer` to the first in-frame codon in your `VariableRegion`. **This is required for accurate translation of sequences.** For a given `evSeq` run, 2 in 3 times the sequence used will be out of reading frame with the full amplicon, so this is important to check. As an example, if the 3' end of your `FPrimer` ends on the last base of a codon, your `VariableRegion` is in-frame and this is argument should be `0`. If `FPrimer` ends on the second base of a codon (e.g., is shifted back 1 bp), then your first in-frame base is 1 base away and this argument should be `1`. Note that if "NNN" is used in the `VariableRegion`, `evSeq` will double check that you correctly defined this argument — with no "NNN" it will assume you are correct. |
-| `BpIndStart` | This argument tells the program what index the first base in the variable region belongs to. This is useful for formatting the outputs, as any variation identified in `evSeq` can be output at the index corresponding to the full gene, rather than the amplicon. |
-| `AaIndStart` | This argument tells the program what index the first *in-frame* amino acid in the variable region belongs to. This means that if your `FrameDistance` argument is not `0`, `AaIndStart` should not be the position of the codon your variable region starts in but rather the next one, since the first codon is not in frame. |
+| Column | Data Type | Description |
+|:-------|:----------|-------------|
+| `PlateName` | `str` | This is a nickname given to the plate. For instance, if you performed `evSeq` on a plate that you called "Plate1", you would put "Plate1" in this column. |
+| `IndexPlate` | `DI0X`, `X=[1,8]` | This is the `evSeq` index plate used for library preparation corresponding to the plate in `PlateName`. For instance, if "Plate1" weere prepared using index plate 2, `IndexPlate` would be `DI02`. Allowed barcode names are `DI01` through `DI08`. |
+| `FPrimer` | `str`, DNA Sequence | This is the sequence-specific forward primer you used to create the amplicon for attaching `evSeq` barcodes, including the `evSeq` adapter regions. It should be input exactly as ordered from your oligo supplier, 5' - 3'. |
+| `RPrimer` | `str`, DNA Sequence | This is the sequence-specific reverse primer you used to create the amplicon for attaching `evSeq` barcodes, including the `evSeq` adapter regions. It should be input exactly as ordered from your oligo supplier, 5' - 3'. Do *not* use the reverse complement. |
+| `VariableRegion` | `str`, DNA Sequence | This is the entire region between the 3' ends of each primer used to generate the `evSeq` amplicon, 5' - 3'. This is called the "variable region" as it is the sequenced region that can vary meaningfully, since the primers should be invariant. If a specific codon has been specifically mutagenized, this codon may be replaced by "NNN". See below for more details. |
+| `FrameDistance` | `int`, `[0,1,2]` | Distance (in base pairs) from the 3' end of `FPrimer` to the first in-frame codon in your `VariableRegion`. **This is required for accurate translation of sequences.** For a given `evSeq` run, 2 in 3 times the sequence used will be out of reading frame with the full amplicon, so this is important to check. As an example, if the 3' end of your `FPrimer` ends on the last base of a codon, your `VariableRegion` is in-frame and this is argument should be `0`. If `FPrimer` ends on the second base of a codon (e.g., is shifted back 1 bp), then your first in-frame base is 1 base away and this argument should be `1`. Note that if "NNN" is used in the `VariableRegion`, `evSeq` will double check that you correctly defined this argument — with no "NNN" it will assume you are correct. |
+| `BpIndStart` | `int`, `[0,inf]` | This argument tells the program what index the first base in the variable region belongs to. This is useful for formatting the outputs, as any variation identified in `evSeq` can be output at the index corresponding to the full gene, rather than the amplicon. |
+| `AaIndStart` | `int`, `[0,inf]` | This argument tells the program what index the first *in-frame* amino acid in the variable region belongs to. This means that if your `FrameDistance` argument is not `0`, `AaIndStart` should not be the position of the codon your variable region starts in but rather the next one, since the first codon is not in frame. |
 
 #### Example
 ```
@@ -28,8 +28,8 @@ This form of the file assumes the same reference sequence in each well of the an
 5'-AAAAAAAAAAGGGGGGGGGGG-3'
              |||||||||||--------VariableRegion------->
 5'-CCCCCCCCCCGGGGGGGGGGGTNNNTTTTTTTT...TTTTTTTTTTTTTTTGGGGGGGGGGGGCCCCCCCCCC-3'
-   FrameDistance = 1 -> x|||                          ||||||||||||
-              codon idx: 123                       3'-CCCCCCCCCCCCAAAAAAAAAA-5'
+   FrameDistance = 1 -> x                             ||||||||||||
+                                                   3'-CCCCCCCCCCCCAAAAAAAAAA-5'
                                                       <-------RPrimer-------
 ```
 In this simple example, the `FPrimer` sequence is `AAAAAAAAAAGGGGGGGGGGG` and the `RPrimer` sequence is `AAAAAAAAAACCCCCCCCCCCC`, with the `A` regions corresponding to the `evSeq` adapter regions and the `G/C` regions corresponding to the directional sequence-specific regions. The `VariableRegion` is the area between them, `TNNNTTTTTTTT...TTTTTTTTTTTTTTT`. The `NNN` sequence specifies the correct reading frame, and the 3' base of `FPrimer` is 1 base away from this in-frame codon (indicated with the `x`), therefore `FrameDistance` is `1`. If the `VariableRegion` started as base 35 in the gene, `BpIndStart` would be 35 and `AaIndStart` would correspond to the position of the `NNN` codon, which would be position 12 (the first base of this codon is base 36, which is the 12th codon overall).
@@ -61,15 +61,10 @@ evSeq -h
 or see [below](#optional-arguments).
 
 ### GUI
-# Descripe how to launch; fix with `py2app` and `py2exe`?
+# Describe how to launch; fix with `py2app` and `py2exe`?
 [need to fix it for Mac still?]
 
 Once opened, you will see two required arguments — the `refseq` and `folder` args — at the top of the GUI. Details on the `refseq` argument is described [above](#the-refseq-file), and the GUI should provide a description of what the `folder` contains. For more advanced use, other arguments can be accessed by scrolling down. (These additional arguments are detailed in [Optional Arguments](#optional-arguments)). You will typically not need these arguments, however, and the standard `evSeq` run can be started by clicking `Start` once `refseq` and `folder` are populated. Once started, the progress of the program will be printed to the GUI along with any encountered warnings and errors.
-
-## Using `evSeq` tools in a Python environment
-Although `evSeq` has mostly been written to be used as a command line tool, its various functions can be imported and used like any other package in a Python environment, such as a Jupyter Notebook. We also provide specific tools to aid in further processing and visualizing data from `evSeq`.
-
-[blah]
 
 ## Optional Arguments
 There are a number of flags and optional arguments that can be passed for `evSeq`, all detailed in the table below:
@@ -80,7 +75,8 @@ There are a number of flags and optional arguments that can be passed for `evSeq
 | `output` | Argument | By default, `deSeq` will save to the current working directory (command line) or the `evSeq` Git repository folder (GUI). The default save location can be overwritten with this argument. |
 | `detailed_refseq` | Flag | Set this flag (check the box in the GUI) when passing in a detailed reference sequence file. See [Detailed refseq](#detailed-refseq) for more information. |
 | `analysis_only` | Flag | Set this flag (check the box in the GUI) to only perform Q-score analysis on the input fastq files. The only output in this case will be the [quality score histograms](outputs.md#qualities).|
-| `stop_after_fastq` | Flag | Set this flag to stop `evSeq` after generation of fastq files. Counts, platemaps, and alignments will not be returned in this case. |
+| `only_parse_fastqs` | Flag | Set this flag to stop `evSeq` after generation of parsed, well-filtered fastq files. Counts, platemaps, and alignments will not be returned in this case. Used in case the well-specific fastq sequences are desired but not the entire `evSeq` analysis. |
+| `keep_parsed_fastqs` | Flag | Set this flag to save parsed, well-filtered fastq files as in `only_parse_fastqs`  but to also finish the regular `evSeq` run. |
 | `return_alignments` | Flag | Set this flag to return alignments along with the `evSeq` output. Note that this flag is ignored if either `analysis_only` or `stop_after_fastq` are used. |
 | `average_q_cutoff` | Argument | During initial sequencing QC, `evSeq` will discard any sequence with an average quality score below this value. The default value is 25. |
 | `bp_q_cutoff` | Argument | Bases with a q-score below this value are ignored when counting the number of sequences aligned at each position. For the coupled outputs (see below), counts are only returned if all bases in the combination pass. The default value is 30. |
