@@ -9,10 +9,7 @@ from time import strftime
 from .util.globals import N_CPUS
 from .util.logging import log_init, log_info, log_error
 from .util.input_processing import build_output_dirs
-from .run_evSeq import run_evseq
-
-# Create a "main" function
-
+from .run_evSeq import run_evSeq
 
 def main():
 
@@ -26,7 +23,7 @@ def main():
     required_args_group = parser.add_argument_group("Required Arguments",
                                                     "Arguments required for each run")
     required_args_group.add_argument("refseq",
-                                     help="csv containing reference sequences.")
+                                     help="csv containing reference sequence information.")
     required_args_group.add_argument("folder",
                                      help="Folder containing fastq or fastq.gz files. Can also be forward fastq or fastq.gz file.")
 
@@ -49,12 +46,16 @@ def main():
                                help="Stop the run after analyzing read qualities",
                                required=False,
                                action="store_true")
-    io_args_group.add_argument("--stop_after_fastq",
-                               help="Stop the run after generation of fastq files",
+    io_args_group.add_argument("--only_parse_fastqs",
+                               help="Stop the run after generation of well-separated parsed filtered fastq files",
                                required=False,
                                action="store_true")
     io_args_group.add_argument("--return_alignments",
                                help="Save the constructed alignments to files",
+                               required=False,
+                               action="store_true")
+    io_args_group.add_argument("--keep_parsed_fastqs",
+                               help="Whether or not to keep the well-separated parsed filtered fastq files.",
                                required=False,
                                action="store_true")
 
@@ -86,7 +87,7 @@ def main():
                                 default=0.2,
                                 type=float)
     variable_group.add_argument("--variable_count",
-                                help="Wells with less reads than this are considered to contain nothing.",
+                                help="Wells with fewer reads than this are considered to contain nothing.",
                                 required=False,
                                 default=10,
                                 type=int)
@@ -109,24 +110,24 @@ def main():
     # Parse the arguments
     CL_ARGS = vars(parser.parse_args())
 
-    # Identify the cwd and start time and add to the "CLArgs" dict. Also create an
-    # output directory from the two and add this to CLArgs as well.
+    # Identify the cwd and start time and add to the "CLArgs" dict. Also create
+    # an output directory from the two and add this to CLArgs as well.
     base_output = CL_ARGS["output"]
     datetime = strftime("%Y%m%d-%H%M%S")
-    output_dir = os.path.join(base_output, "evSeq_output", datetime)
+    output_dir = os.path.join(base_output, "evSeqOutput", datetime)
     CL_ARGS.update({"datetime": datetime, "output": output_dir})
 
     # Build all output directories
     build_output_dirs(CL_ARGS)
 
-    # Log CLArgs
+    # Log CL_ARGS
     log_init(CL_ARGS)
 
     # Run evSeq
     try:
-        run_evseq(CL_ARGS)
+        run_evSeq(CL_ARGS)
     except Exception as e:
-       log_error("\nUnhandled exception encountered: '{e}'")
+       log_error(f"\nUnhandled exception encountered: '{e}'")
 
     # Log that we have successfully completed the run
     log_info("Run completed. Log may contain warnings.")

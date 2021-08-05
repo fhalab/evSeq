@@ -21,21 +21,35 @@ def build_output_dirs(cl_args):
     if not os.path.exists(cl_args["output"]):
         os.makedirs(cl_args["output"])
     
-    # Build required folders
-    os.mkdir(os.path.join(cl_args["output"], "Qualities"))
+    # Set up required folders based on type of run
+    if cl_args["analysis_only"]:
+        folders = ["Qualities"]
+    if cl_args["only_parse_fastqs"]:
+        folders = [
+            "Qualities",
+            os.path.join("ParsedFilteredFastqs", "F"),
+            os.path.join("ParsedFilteredFastqs", "R"),
+        ]
+    else:
+        # Standard run
+        folders = [
+            "Qualities",
+            "OutputCounts",
+            "Platemaps"
+        ]
     
-    # Build folders that only occur if we don't stop too early
-    if not cl_args["analysis_only"]:
-        fastq_folder = os.path.join(cl_args["output"], "ParsedFilteredFastqs")
-        os.makedirs(os.path.join(fastq_folder, "F"))
-        os.makedirs(os.path.join(fastq_folder, "R"))
-    if not cl_args["stop_after_fastq"]:
-        os.mkdir(os.path.join(cl_args["output"], "OutputCounts"))
-        os.mkdir(os.path.join(cl_args["output"], "Platemaps"))
-     
-    # Build optional folders for the outputs
+    # Add folders for noon-standard run
+    if cl_args["keep_parsed_fastqs"]:
+        folders = folders + [
+            os.path.join("ParsedFilteredFastqs", "F"),
+            os.path.join("ParsedFilteredFastqs", "R")
+        ]
     if cl_args["return_alignments"]:
-        os.mkdir(os.path.join(cl_args["output"], "Alignments"))
+        folders.append("Alignments")
+
+    # Build required folders
+    for folder in folders:
+        os.mkdir(os.path.join(cl_args["output"], folder))
 
 def find_matches(input_folder):
     """Matches forward and reverse reads in a passed in folder."""
@@ -120,20 +134,6 @@ def find_matches(input_folder):
     # Return the dictionary matching files as well as the unmatched files
     forward_file, reverse_file = list(final_filepairs.items())[0]
     return forward_file, reverse_file, unmatched_files
-
-def unzip_gz(filename):
-    """Unzips gz files."""
-
-    # Find the name without the ".gz"
-    new_name = os.path.splitext(filename)[0]
-    
-    # Unzip and resave the file
-    with gzip.open(filename, 'rb') as f_in:
-        with open(new_name, 'wb') as f_out:
-            shutil.copyfileobj(f_in, f_out)
-                
-    # Return the new name
-    return new_name
 
 def load_dual_inds():
     """Loads and checks the contents of index_map.csv."""
@@ -241,6 +241,8 @@ def load_ref_seq(cl_args):
         updated_ref_array = []
         for row in refseq_df.itertuples(index = False):
             updated_ref_array.extend([[row.PlateName, row.IndexPlate, well,
+                                       row.FPrimer, row.RPrimer,
+                                       row.VariableRegion,
                                        row.ReferenceSequence, row.FrameDistance,
                                        row.BpIndStart, row.AaIndStart]
                                       for well in ALLOWED_WELLS])
@@ -248,6 +250,8 @@ def load_ref_seq(cl_args):
         # Define the complete reference sequence dataframe
         refseq_df = pd.DataFrame(updated_ref_array,
                                  columns = ("PlateName", "IndexPlate", "Well",
+                                            "FPrimer", "RPrimer",
+                                            "VariableRegion",
                                             "ReferenceSequence", "FrameDistance",
                                             "BpIndStart", "AaIndStart"))
     
@@ -339,6 +343,9 @@ def construct_bcs_to_refseq(refseq_df, index_df):
             "IndexPlate": row.IndexPlate,
             "PlateName": row.PlateName,
             "Well": row.Well,
+            "FPrimer": row.FPrimer,
+            "RPrimer": row.RPrimer,
+            "VariableRegion": row.VariableRegion,
             "ReferenceSequence": row.ReferenceSequence,
             "FrameDistance": row.FrameDistance,
             "ExpectedVariablePositions": variable_positions,
