@@ -1,30 +1,23 @@
 from setuptools import find_packages, setup
-from setuptools.command.develop import develop
 from setuptools.command.install import install
 
 
-# Classes for shortcut executable/application
-class PostDevelopCommand(develop):
-    """Post-installation for development mode."""
-
-    def run(self):
-        develop.run(self)
-        from pyshortcuts import make_shortcut
-        make_shortcut(
-            script='gui/evSeq_gui.py',
-            name='evSeq',
-        )
-
 class PostInstallCommand(install):
-    """Post-installation for installation mode."""
+    """Post-installation for installation mode. Creates an executable/
+    application to make a shortcut on the Desktop that opens the GUI
+    and runs it from the install environment.
+    """
 
     def run(self):
         install.run(self)
-        from pyshortcuts import make_shortcut
-        make_shortcut(
-            script='gui/evSeq_gui.py',
-            name='evSeq',
-        )
+        try:
+            from pyshortcuts import make_shortcut
+            make_shortcut(
+                script='evSeq/gui.py',
+                name='evSeq',
+            )
+        except ImportError:
+            pass
 
 with open('README.md', 'r', encoding='utf-8') as f:
     long_description = f.read()
@@ -72,11 +65,10 @@ setup(
             'evSeq = evSeq.cmd:main'
         ],
         'gui_scripts': [
-            'evSeq-GUI = gui.evSeq_gui:main'
+            'evSeq-GUI = evSeq.gui:main'
         ]
     },
     cmdclass={
-        'develop': PostDevelopCommand,
         'install': PostInstallCommand,
     }
 )
