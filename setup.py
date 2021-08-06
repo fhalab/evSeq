@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 with open('README.md', 'r', encoding='utf-8') as f:
     long_description = f.read()
 
-with open('deSeq/__init__.py', 'r') as f:
+with open('evSeq/__init__.py', 'r') as f:
     init = f.readlines()
 
 for line in init:
@@ -15,7 +15,7 @@ for line in init:
         __version__ = line.split("'")[-2]
 
 setup(
-    name='deSeq',
+    name='evSeq',
     version=__version__,
     author=__author__,
     author_email=__email__,
@@ -42,10 +42,10 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'deSeq = deSeq.cmd:main'
+            'evSeq = evSeq.cmd:main'
         ],
         'gui_scripts': [
-            'deSeq-GUI = deSeq.gui:main'
+            'evSeq-GUI = evSeq.gui:main'
         ]
     }
 )

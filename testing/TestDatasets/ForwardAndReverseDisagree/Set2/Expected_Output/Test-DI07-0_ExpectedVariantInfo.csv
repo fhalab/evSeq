@@ -1,3 +1,0 @@
-Plate,Well,F-BC,R-BC,VariantCombo,AlignmentFrequency,WellSeqDepth,R1,R2
-DI07,B10,GCCATGA,TTCCTGC,FSSF,1.0,8,./TestDatasets/ForwardAndReverseDisagree/Set2/TestData_R1_test.fastq,./TestDatasets/ForwardAndReverseDisagree/Set2/TestData_R2_test.fastq
-DI07,C06,CACCTCA,AGCTCGT,YSSC,1.0,1,./TestDatasets/ForwardAndReverseDisagree/Set2/TestData_R1_test.fastq,./TestDatasets/ForwardAndReverseDisagree/Set2/TestData_R2_test.fastq
