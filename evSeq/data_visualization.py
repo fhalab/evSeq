@@ -12,9 +12,8 @@ import ninetysix as ns
 
 from .util.logging import log_warning
 
-hv.extension('bokeh')
+# because the ninetysix package sets bokeh as the backend, we don't set it here
 hv.renderer('bokeh')
-
 
 #### Heatmap ####
 def generate_sequencing_heatmaps(max_combo_df):
@@ -63,7 +62,7 @@ def generate_sequencing_heatmaps(max_combo_df):
         center = max_combo_df['logseqdepth'].median()
 
     # set color levels
-    color_levels = stretch_color_levels(df['logseqdepth'], center, cmap)
+    color_levels = ns.viz._center_colormap(df['logseqdepth'], center)
 
     # Uniform color levels
     for _hm in hm_dict.values():
@@ -81,28 +80,6 @@ def save_heatmap_to_file(heatmaps, outputdir):
     
     file_path = os.path.join(outputdir, "Platemaps", "Platemaps")
     hv.renderer('bokeh').save(heatmaps, file_path)
-
-def stretch_color_levels(data, center, cmap):
-    """Stretch a color map so that its center is at `center`. Taken
-    from hw4.2 solutions to 2019 bebi103a, probably with permission. 
-    This is best for centering divergent color maps.
-    """
-    # don't allow a color map with only one color
-    if len(cmap) == 1:
-        raise RuntimeError("Must have `len(cmap)` > 1.")
-    
-    # Scale dist
-    dist = max(max(data) - center, center - 0)
-    dist += dist / 100
-
-    color_levels = list(np.linspace(center-dist, center+dist, len(cmap)+1))
-
-    # Ignore if only one value is present
-    if len(np.unique(color_levels)) == 1:
-        color_levels = None
-    
-    return color_levels
-
 
 def make_heatmap(df, title):
     """Generates a heatmap from evSeq data using Holoviews with
@@ -139,12 +116,13 @@ def make_heatmap(df, title):
         # Adjust the center
         center = df['logseqdepth'].median()
 
-    color_levels = stretch_color_levels(df['logseqdepth'], center, cmap)
+    # center colormap
+    color_levels = ns.viz._center_colormap(df['logseqdepth'], center)
 
     # Get heights
     n_rows = len(df['Row'].unique())
     n_cols = len(df['Column'].unique())
-    height = int(50 * n_rows)
+    height = int(50* n_rows)
     width = height * n_cols // n_rows
 
     # add tooltips
@@ -168,7 +146,7 @@ def make_heatmap(df, title):
         cmap=cmap,
         height=height,
         width=width,
-        line_width=5,
+        line_width=4,
         clipping_colors={'NaN': '#DCDCDC'},
         color_levels=color_levels,
         tools=[hover],
@@ -203,7 +181,7 @@ def make_heatmap(df, title):
         bin_align_freq)
 
     # Set up size of the outline boxes
-    box_size = height // n_rows*1.15
+    box_size = height // n_rows*1.2
 
     # alignment frequency heatmap for edges around wells
     boxes = hv.Points(
@@ -216,7 +194,7 @@ def make_heatmap(df, title):
         line_color='AlignmentFrequencyBinned',
         line_join='miter',
         cmap=cmap,
-        line_width=8,
+        line_width=6,
         fill_alpha=0,
         line_alpha=1,
         legend_position='right',
@@ -238,12 +216,24 @@ def make_heatmap(df, title):
     
     _df = df.copy()
     _df['Labels'] = _df['VariantCombo'].apply(split_variant_labels)
+
+    # Set the font size based on if #PARENT# is in a well and num of mutations
+    max_num_mutations = _df['Labels'].apply(lambda x: len(x.split('\n'))).max()
+    has_parent = ('#PARENT#' in _df['Labels'])
     
+    if max_num_mutations > 3 or has_parent:
+        label_fontsize = '8pt'
+    else:
+        label_fontsize = '10pt'
+
     labels = hv.Labels(
         _df,
         ['Column', 'Row'],
         'Labels',
-    ).opts(text_font_size='9pt', **opts)
+    ).opts(
+        text_font_size=label_fontsize,
+        **opts
+    )
 
     # return formatted final plot
     return (hm*boxes*labels).opts(frame_height=550,
@@ -514,17 +504,19 @@ def count_plot(
     p_counts = hv.Bars(
         df_counts,
         'Residue',
-        'Counts'
+        'Counts',
     ).opts(
         width=600,
         height=200,
-        xrotation=45
+        xrotation=45,
+        color='#DCDCDC'
     )
 
     if hist_range is not None:
         p_counts = p_counts.opts(ylim=hist_range)
     
     return p_counts
+
 
 def plot_variant_activities(
     seq_func_data,
