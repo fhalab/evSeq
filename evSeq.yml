@@ -16,5 +16,6 @@ dependencies:
   - jupyterlab
   - pip
   - pip:
+    - pyshortcuts
     - ninetysix
-    - evSeq
+    - .

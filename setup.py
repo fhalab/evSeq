@@ -1,4 +1,30 @@
 from setuptools import find_packages, setup
+from setuptools.command.develop import develop
+from setuptools.command.install import install
+
+
+# Classes for shortcut executable/application
+class PostDevelopCommand(develop):
+    """Post-installation for development mode."""
+
+    def run(self):
+        develop.run(self)
+        from pyshortcuts import make_shortcut
+        make_shortcut(
+            script='gui/evSeq_gui.py',
+            name='evSeq',
+        )
+
+class PostInstallCommand(install):
+    """Post-installation for installation mode."""
+
+    def run(self):
+        install.run(self)
+        from pyshortcuts import make_shortcut
+        make_shortcut(
+            script='gui/evSeq_gui.py',
+            name='evSeq',
+        )
 
 with open('README.md', 'r', encoding='utf-8') as f:
     long_description = f.read()
@@ -34,6 +60,7 @@ setup(
         'scipy',
         'gooey',
         'jupyterlab',
+        'pyshortcuts',
         'ninetysix'
     ],
     classifiers=[
@@ -45,7 +72,11 @@ setup(
             'evSeq = evSeq.cmd:main'
         ],
         'gui_scripts': [
-            'evSeq-GUI = evSeq.gui:main'
+            'evSeq-GUI = gui.evSeq_gui:main'
         ]
+    },
+    cmdclass={
+        'develop': PostDevelopCommand,
+        'install': PostInstallCommand,
     }
 )

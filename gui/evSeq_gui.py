@@ -3,12 +3,21 @@
 # Import relevant modules
 import os
 from time import strftime
+import subprocess
+import warnings
+
+# Try to activate the environment
+try:
+    subprocess.run("conda activate evSeq", shell=True)
+except Exception as e:
+    # Assume no environment is installed
+    warnings.warn("No `evSeq` environment found. Running from base.")
 
 # Import relevant functions
-from .util.logging import log_init, log_info, log_error
-from .util.globals import N_CPUS
-from .util.input_processing import build_output_dirs
-from .run_evSeq import run_evSeq
+from evSeq.util.logging import log_init, log_info, log_error
+from evSeq.util.globals import N_CPUS
+from evSeq.util.input_processing import build_output_dirs
+from evSeq.run_evSeq import run_evSeq
 
 # Import gooey
 from gooey import Gooey, GooeyParser
@@ -18,7 +27,7 @@ from gooey import Gooey, GooeyParser
        required_cols = 1,
        optional_cols = 1)
 def main():
-
+    
     # Get the cwd
     cwd = os.getcwd()
 
