@@ -3,15 +3,6 @@
 # Import relevant modules
 import os
 from time import strftime
-import subprocess
-import warnings
-
-# Try to activate the environment
-try:
-    subprocess.run("conda activate evSeq", shell=True)
-except Exception as e:
-    # Assume no environment is installed
-    warnings.warn("No `evSeq` environment found. Running from base.")
 
 # Import relevant functions
 from evSeq.util.logging import log_init, log_info, log_error
