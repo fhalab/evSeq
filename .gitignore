@@ -1,5 +1,5 @@
-#evSeq stuff
-*evSeq_output/ 
+# evSeq stuff
+*evSeqOutput/ 
 TestData/
 evSeqLog.log
 Validation
@@ -126,5 +126,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
 # Images
 .svg
