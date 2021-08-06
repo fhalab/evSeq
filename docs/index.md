@@ -9,12 +9,11 @@ Navigate to [individual pages below](#documentation) or [start at the overview](
 
 ### General Overview
 #### Workflow
-![Workflow](assets/overview.png)
-#### Example Output (1 of 8 plates)
-![Output](assets/platemap.png)
+The `evSeq` workflow
+![Workflow](assets/figure2.svg)
 
 #### Sequence-Function Data
-## fig 3
+![SeqFunc](assets/figure3.svg)
 
 ## Documentation
 ### Biology
@@ -22,6 +21,7 @@ Navigate to [individual pages below](#documentation) or [start at the overview](
 
 #### [Library preparation](bio/lib_prep.md)
 - [Inner Primer Design](bio/lib_prep.md#inner-primer-design)
+- [Inner Primer Test PCR](bio/lib_prep.md#inner-primer-test-pcr)
 - [PCR Protocol](bio/lib_prep.md#pcr-protocol)
 - [PCR Product Purification](bio/lib_prep.md#pcr-product-purification)
 
@@ -49,3 +49,5 @@ Navigate to [individual pages below](#documentation) or [start at the overview](
 ### Troubleshooting
 - [Poor reverse read quality](troubleshooting.md#poor-reverse-read-quality)
 - [Poor alignments but good quality](troubleshooting.md#poor-alignments-but-good-quality)
+- [Windows: `CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'`](troubleshooting.md#windows-commandnotfounderror-your-shell-has-not-been-properly-configured-to-use-conda-activate)
+- [macOS: `PermissionError: [Errno 1] Operation not permitted`](troubleshooting.md#macos-permissionerror-errno-1-operation-not-permitted)

@@ -1,5 +1,5 @@
 # Library Preparation
-![Library Preparation](../assets/lib_prep.png)
+![Library Preparation](../assets/figure1.svg)
 ## General Protocol
 The general protocol is as follows:
 1. Design and order primers that flank your region-of-interest and will generate a NGS-suitable amplicon. [Jump to Inner Primer Design.](#inner-primer-design)
@@ -39,7 +39,7 @@ R: 5’ - CGGTGTGCGAAGTAGGTGCXXXXXXXXXXXXXXXX – 3’
 
 where `X` signifies the seed region binding to your target gene.
 
-1. Once you have your primers in hand, you should run a test case to make sure that they work for `evSeq` before using them to process full plates. The procedure given below in [PCR Protocol](#pcr-protocol) should be used, but just scaled down to handle one or a few wells for testing purposes.
+1. Once you have your primers in hand, you should run a test case to make sure that they work for `evSeq` before using them to process full plates. The procedure given below in [PCR Protocol](#pcr-protocol) can be scaled down to handle one or a few wells for testing purposes, as described in [Inner Primer Test PCR](#inner-primer-test-pcr).
 
 <a id="tips-and-tricks"></a>
 Some things to keep in mind when designing primers:
