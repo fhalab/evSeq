@@ -63,7 +63,6 @@ def generate_sequencing_heatmaps(max_combo_df):
         center = max_combo_df['logseqdepth'].median()
 
     # set color levels
-    # color_levels = stretch_color_levels(df['logseqdepth'], center, cmap)
     color_levels = ns.viz._center_colormap(df['logseqdepth'], center)
 
     # Uniform color levels
@@ -82,28 +81,6 @@ def save_heatmap_to_file(heatmaps, outputdir):
     
     file_path = os.path.join(outputdir, "Platemaps", "Platemaps")
     hv.renderer('bokeh').save(heatmaps, file_path)
-
-def stretch_color_levels(data, center, cmap):
-    """Stretch a color map so that its center is at `center`. Taken
-    from hw4.2 solutions to 2019 bebi103a, probably with permission. 
-    This is best for centering divergent color maps.
-    """
-    # don't allow a color map with only one color
-    if len(cmap) == 1:
-        raise RuntimeError("Must have `len(cmap)` > 1.")
-    
-    # Scale dist
-    dist = max(max(data) - center, center - 0)
-    dist += dist / 100
-
-    color_levels = list(np.linspace(center-dist, center+dist, len(cmap)+1))
-
-    # Ignore if only one value is present
-    if len(np.unique(color_levels)) == 1:
-        color_levels = None
-    
-    return color_levels
-
 
 def make_heatmap(df, title):
     """Generates a heatmap from ssSeq data using Holoviews with bokeh backend."""
@@ -138,7 +115,7 @@ def make_heatmap(df, title):
         # Adjust the center
         center = df['logseqdepth'].median()
 
-    # color_levels = stretch_color_levels(df['logseqdepth'], center, cmap)
+    # center colormap
     color_levels = ns.viz._center_colormap(df['logseqdepth'], center)
 
     # Get heights
