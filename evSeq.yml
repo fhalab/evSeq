@@ -14,8 +14,8 @@ dependencies:
   - scipy
   - gooey
   - jupyterlab
-  - pip
+  - pip>=21.1
   - pip:
     - pyshortcuts
     - ninetysix
-    - .
+    - . --use-feature="in-tree-build"
