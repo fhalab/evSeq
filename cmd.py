@@ -6,10 +6,10 @@ import os
 from time import strftime
 
 # Import relevant functions
-from .util.globals import N_CPUS
-from .util.logging import log_init, log_info, log_error
-from .util.input_processing import build_output_dirs
-from .run_evSeq import run_evSeq
+from evSeq.util.globals import N_CPUS
+from evSeq.util.logging import log_init, log_info, log_error
+from evSeq.util.input_processing import build_output_dirs
+from evSeq.run_evSeq import run_evSeq
 
 def main():
 
