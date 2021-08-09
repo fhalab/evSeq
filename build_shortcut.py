@@ -4,8 +4,11 @@ from pyshortcuts import make_shortcut
 
 def main():
     make_shortcut(
-        'gui.py',
-        'evSeq'
+        script='gui.py',
+        name='evSeq',
+        terminal=False,
+        startmenu=False,
+        icon='icons/program_icon'
     )
 
 if __name__ == '__main__':

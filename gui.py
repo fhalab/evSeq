@@ -5,6 +5,7 @@ import os
 from time import strftime
 
 # Import relevant functions
+import evSeq
 from evSeq.util.logging import log_init, log_info, log_error
 from evSeq.util.globals import N_CPUS
 from evSeq.util.input_processing import build_output_dirs
@@ -13,14 +14,15 @@ from evSeq.run_evSeq import run_evSeq
 # Import gooey
 from gooey import Gooey, GooeyParser
 
+# Get the path to evSeq repo
+evSeq_path = os.path.dirname(os.path.dirname(os.path.abspath(evSeq.__file__)))
+
 # Create a "main" function
 @Gooey(program_name = "evSeq",
        required_cols = 1,
-       optional_cols = 1)
+       optional_cols = 1,
+       image_dir=os.path.join(evSeq_path, 'icons'))
 def main():
-    
-    # Get the cwd
-    cwd = os.getcwd()
 
     # Instantiate GooeyParser
     parser = GooeyParser(description = "User Interface for evSeq")
@@ -39,15 +41,10 @@ def main():
     # Add an argument group for passing in the reverse file
     io_args_group = parser.add_argument_group("I/O",
                                                     "Arguments specific to input/output of evSeq.")
-    io_args_group.add_argument("--fastq_r", 
-                                     help="Reverse fastq or fastq.gz file. Usually not needed.",
-                                     required=False,
-                                     default="",
-                                     widget="FileChooser")
     io_args_group.add_argument("--output", 
-                                     help="Save location for run.",
+                                     help="Save location for run. Defaults to same location as 'folder'.",
                                      required=False,
-                                     default=cwd,
+                                     default=None, # updated below
                                      widget="DirChooser")
     io_args_group.add_argument("--detailed_refseq",
                                      help="Set if you are using different reference sequences by well",
@@ -69,6 +66,11 @@ def main():
                                help="Whether or not to keep the well-separated parsed filtered fastq files.",
                                required=False,
                                action="store_true")
+    io_args_group.add_argument("--fastq_r",
+                               help="Reverse fastq or fastq.gz file. Usually not needed.",
+                               required=False,
+                               default="",
+                               widget="FileChooser")
     
     
     # Add read analysis parameters argument group
@@ -122,7 +124,14 @@ def main():
 
     # Parse the arguments
     CL_ARGS = vars(parser.parse_args())
-        
+
+    # Determine output folder default
+    if CL_ARGS['fastq_r'] == '':
+        default_output = CL_ARGS['folder']
+    else:
+        default_output = os.path.dirname(CL_ARGS['folder'])
+    if CL_ARGS['output'] is None:
+        CL_ARGS['output'] = default_output
     # Identify the cwd and start time and add to the "CLArgs" dict. Also create
     # an output directory from the two and add this to CLArgs as well.
     base_output = CL_ARGS["output"]

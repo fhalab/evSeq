@@ -30,12 +30,8 @@ def main():
     # Add an argument group for passing in the reverse file
     io_args_group = parser.add_argument_group("I/O",
                                               "Arguments specific to input/output of evSeq.")
-    io_args_group.add_argument("--fastq_r",
-                               help="Reverse fastq or fastq.gz file. Usually not needed.",
-                               required=False,
-                               default="")
     io_args_group.add_argument("--output",
-                               help="Save location for run.",
+                               help="Save location for run. Defaults to current working directory.",
                                required=False,
                                default=cwd)
     io_args_group.add_argument("--detailed_refseq",
@@ -58,6 +54,10 @@ def main():
                                help="Whether or not to keep the well-separated parsed filtered fastq files.",
                                required=False,
                                action="store_true")
+    io_args_group.add_argument("--fastq_r",
+                               help="Reverse fastq or fastq.gz file. Usually not needed.",
+                               required=False,
+                               default="")
 
     # Add read analysis parameters argument group
     params_args_group = parser.add_argument_group("Read Analysis",
