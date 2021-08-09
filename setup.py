@@ -69,10 +69,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'evSeq = cmd:main'
-        ],
-        'gui_scripts': [
-            'evSeq-GUI = gui:main'
+            'evSeq = evSeq.cmd:main'
         ]
     },
     cmdclass={
