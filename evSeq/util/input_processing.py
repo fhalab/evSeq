@@ -7,8 +7,6 @@ from .input_validation import check_ref_seqs, check_index_map
 # Import other required modules
 import re
 import os
-import gzip
-import shutil
 import pandas as pd
 import numpy as np
 from glob import glob

@@ -11,6 +11,9 @@ from evSeq.util.logging import log_init, log_info, log_error
 from evSeq.util.input_processing import build_output_dirs
 from evSeq.run_evSeq import run_evSeq
 
+# For fancy progress bar
+import tqdm
+
 def main():
 
     # Get the cwd
@@ -106,6 +109,10 @@ def main():
                                      required=False,
                                      type=int,
                                      default=None)
+    advanced_args_group.add_argument("--fancy_progress_bar", 
+                                     help="EXPERIMENTAL, but usually works. Uses tqdm.gui to create a pop-out progress bar that shows instantaneous and average rates of processing.",
+                                     required=False,
+                                     action="store_true")
 
     # Parse the arguments
     CL_ARGS = vars(parser.parse_args())
@@ -123,9 +130,14 @@ def main():
     # Log CL_ARGS
     log_init(CL_ARGS)
 
+    if CL_ARGS['fancy_progress_bar']:
+        tqdm_fn = tqdm.gui.tqdm
+    else:
+        tqdm_fn = tqdm.tqdm
+
     # Run evSeq
     try:
-        run_evSeq(CL_ARGS)
+        run_evSeq(CL_ARGS, tqdm_fn)
     except Exception as e:
        log_error(f"\nUnhandled exception encountered: '{e}'")
 

@@ -67,6 +67,7 @@ setup(
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
     ],
+    package_data={'evSeq': ['util/index_map.csv']},
     entry_points={
         'console_scripts': [
             'evSeq = evSeq.cmd:main'
