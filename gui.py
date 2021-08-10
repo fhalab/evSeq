@@ -14,6 +14,9 @@ from evSeq.run_evSeq import run_evSeq
 # Import gooey
 from gooey import Gooey, GooeyParser
 
+# For fancy progress bar
+import tqdm
+
 # Get the path to evSeq repo
 evSeq_path = os.path.dirname(os.path.dirname(os.path.abspath(evSeq.__file__)))
 
@@ -21,7 +24,13 @@ evSeq_path = os.path.dirname(os.path.dirname(os.path.abspath(evSeq.__file__)))
 @Gooey(program_name = "evSeq",
        required_cols = 1,
        optional_cols = 1,
-       image_dir=os.path.join(evSeq_path, 'icons'))
+       image_dir=os.path.join(evSeq_path, 'icons'),
+       progress_regex=r"^Progress: (?P<percent>\d+)%$",
+       progress_expr="percent",
+       hide_progress_msg=True,
+       timing_options = {'show_time_remaining': True,
+                         'hide_time_remaining_on_complete': True})
+
 def main():
 
     # Instantiate GooeyParser
@@ -120,6 +129,10 @@ def main():
                                      required=False,
                                      type=int,
                                      default=None)
+    advanced_args_group.add_argument("--fancy_progress_bar", 
+                                     help="EXPERIMENTAL, but usually works. Uses tqdm.gui to create a pop-out progress bar that shows instantaneous and average rates of processing.",
+                                     required=False,
+                                     action="store_true")
 
 
     # Parse the arguments
@@ -132,8 +145,9 @@ def main():
         default_output = os.path.dirname(CL_ARGS['folder'])
     if CL_ARGS['output'] is None:
         CL_ARGS['output'] = default_output
-    # Identify the cwd and start time and add to the "CLArgs" dict. Also create
-    # an output directory from the two and add this to CLArgs as well.
+    
+    # Identify the start time and add to the "CL_ARGS" dict. Also create
+    # an output directory from the two and add this to CL_ARGS as well.
     base_output = CL_ARGS["output"]
     datetime = strftime("%Y%m%d-%H%M%S")
     output_dir = os.path.join(base_output, "evSeqOutput", datetime)
@@ -142,12 +156,18 @@ def main():
     # Build all output directories
     build_output_dirs(CL_ARGS)
     
-    # Log CLArgs
-    log_init(CL_ARGS)    
+    # Log CL_ARGS
+    log_init(CL_ARGS)
+
+    if CL_ARGS['fancy_progress_bar']:
+        tqdm_fn = tqdm.gui.tqdm
+    else:
+        def blank(iterable, desc=None, total=None): return iterable
+        tqdm_fn = blank # do nothing
 
     # Run evSeq
     try:
-        run_evSeq(CL_ARGS)
+        run_evSeq(CL_ARGS, tqdm_fn)
     except Exception as e:
         log_error(f"\nUnhandled exception encountered: '{e}'")
     

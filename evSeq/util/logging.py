@@ -2,7 +2,7 @@
 import os.path
 
 # # Import functions
-from .globals import UTILDIR, LOG_FILENAME
+from .globals import LOG_FILENAME
 
 # Write a function to log all cl_args passed in from each run
 def log_init(cl_args):
@@ -50,6 +50,7 @@ Position Identification:
 Advanced:
     jobs: {cl_args["jobs"]}
     read_length: {cl_args["read_length"]}
+    fancy_progress_bar: {cl_args["fancy_progress_bar"]}
 
 Logged Messages:
     """

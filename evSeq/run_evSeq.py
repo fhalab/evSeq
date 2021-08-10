@@ -17,44 +17,57 @@ from Bio import SeqIO
 from itertools import chain
 from functools import partial
 from multiprocessing import Pool
-from tqdm import tqdm
+import tqdm
 import gzip
 
 
-def build_seqpairs(f_loc, r_loc):
+def build_seqpairs(f_loc, r_loc, tqdm_fn=tqdm.tqdm):
     """Load and pair fastq file entries."""
 
     # Create a dictionary that links id to sequence object
     id_to_reads = {}
-    
-    # Load and parse forward reads
-    print("Loading forward reads...")
 
-    # Determine how to open file if zipped or not
+    # Determine how to open files if zipped or not
     f_opener, f_encoding = (gzip.open, 'rt') if "fastq.gz" in f_loc \
                       else (open, 'r')
+    r_opener, r_encoding = (gzip.open, 'rt') if "fastq.gz" in r_loc \
+                      else (open, 'r')
 
-    # Store as list in memory
+    # Store reads as list in memory
+    print("Loading forward reads...")
     with f_opener(f_loc, f_encoding) as handle:
         all_f_recs = list(SeqIO.parse(handle, "fastq"))
 
-    for f_record in tqdm(all_f_recs, desc = "Parsing forward reads..."):
+    # For Gooey (non-tqdm) progress
+    simple = True if tqdm_fn.__name__ == 'blank' else False
+    
+    # Parse the forward reads
+    if simple:
+        print('Parsing forward reads...')
+        percents = list(range(0, 101))
+    for i, f_record in enumerate(tqdm_fn(all_f_recs,
+                                         desc="Parsing forward reads..."), 1):
         temp_record = SeqPair()
         temp_record.assign_f(f_record)
         id_to_reads[f_record.id] = temp_record
+
+        # For simple Gooey progress
+        if simple:
+            percent = 100*(i / len(all_f_recs))
+            if int(percent) == percents[0]:
+                progress = percents.pop(0)
+                print(f"Progress: {progress}%")
     
     # Associate reverse reads with the forward
     print("Loading reverse reads...")
-
-    # Determine how to open
-    r_opener, r_encoding = (gzip.open, 'rt') if "fastq.gz" in r_loc \
-        else (open, 'r')
-
-    # Store as list
     with r_opener(r_loc, r_encoding) as handle:
         all_r_recs = list(SeqIO.parse(handle, "fastq"))
     
-    for r_record in tqdm(all_r_recs, "Pairing reverse reads..."):
+    if simple:
+        print('Pairing reverse reads...')
+        percents = list(range(0, 101))
+    for i, r_record in enumerate(tqdm_fn(all_r_recs,
+                                         desc="Pairing reverse reads..."), 1):
 
         # If there is no partern in id_to_reads, create a new object 
         # and continue
@@ -66,6 +79,13 @@ def build_seqpairs(f_loc, r_loc):
         # Otherwise, attach the reverse record
         else:
             id_to_reads[r_record.id].assign_r(r_record)
+
+        # For simple Gooey progress
+        if simple:
+            percent = 100*(i / len(all_r_recs))
+            if int(percent) == percents[0]:
+                progress = percents.pop(0)
+                print(f"Progress: {progress}%")
             
     # Return all records
     return tuple(id_to_reads.values())
@@ -136,7 +156,7 @@ def process_well(
     return_alignments=False,
     bp_q_cutoff=30,
     variable_thresh=0.1,
-    variable_count=1,
+    variable_count=1
 ):
     """Processes a single well."""
     
@@ -225,7 +245,7 @@ def format_and_save_outputs(well_results, saveloc, return_alignments):
                         "want to check alignments for accuracy.") 
 
 
-def run_evSeq(cl_args):
+def run_evSeq(cl_args, tqdm_fn=tqdm.tqdm):
     """Runs the evSeq protocol. Should be run from command line."""
     # Check the input arguments
     check_args(cl_args)
@@ -234,7 +254,7 @@ def run_evSeq(cl_args):
     forward_file, reverse_file, bc_to_ref_plate_well = load_all(cl_args)
     
     # Pair all sequences
-    all_seqpairs = build_seqpairs(forward_file, reverse_file)
+    all_seqpairs = build_seqpairs(forward_file, reverse_file, tqdm_fn)
     
     # Generate quality plots
     generate_read_qual_chart(all_seqpairs, cl_args["output"])
@@ -272,10 +292,21 @@ def run_evSeq(cl_args):
         
     # Multiprocess to handle wells
     with Pool(cl_args["jobs"]) as p:
-        processed_well_results = list(tqdm(
+        iterator = tqdm_fn(
             p.imap_unordered(complete_multiprocessor, all_wells),
-            desc="Processing wells:", total=len(all_wells))
-        )  
+            desc="Processing wells...",
+            total=len(all_wells)
+        )
+        # For Gooey (non-tqdm) progress
+        simple = True if tqdm_fn.__name__ == 'blank' else False
+        if simple:
+            processed_well_results = [_ for _ in all_wells]
+            for i, processed_well_result in enumerate(iterator, 1):
+                processed_well_results[i] = processed_well_result
+                percent = int(100*(i / len(all_wells)))
+                print(f"Progress: {percent}%")
+        else:
+            processed_well_results = list(iterator)
     
     # Handle processed output. This saves the summary dataframes, generates 
     # platemaps, and saves alignments (if requested)
