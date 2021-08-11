@@ -1,9 +1,19 @@
-#ssSeq stuff
-*ssSeq_Output/ 
+# evSeq stuff
+*evSeqOutput/ 
 TestData/
-ssSeq_Support/*.log
-ssSeqLog.log
+evSeqLog.log
 Validation
+
+# Development stuff
+alignment_dev/Msas
+alignment_dev/ParsedFilteredFastqs
+alignment_dev/Alignments
+alignment_dev/OutputCounts
+alignment_dev/ValidationOutput
+evSeqValidation/
+
+# Temporary folder
+TEMP/
 
 # vscode
 .vscode/
@@ -116,3 +126,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Images
+.svg

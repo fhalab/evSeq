@@ -1,0 +1,21 @@
+name: evSeq
+channels:
+  - anaconda
+  - conda-forge
+dependencies:
+  - biopython>=1.78
+  - colorcet
+  - holoviews>=1.14.3
+  - bokeh>=2.3.2
+  - numpy
+  - pandas
+  - python>=3.7
+  - tqdm
+  - scipy
+  - gooey
+  - jupyterlab
+  - pip>=21.1
+  - pip:
+    - pyshortcuts
+    - ninetysix
+    - . --use-feature="in-tree-build"
