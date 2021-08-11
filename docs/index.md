@@ -8,12 +8,13 @@ Every Variant Sequencing (`evSeq`) provides resources for extremely low cost mas
 Navigate to [individual pages below](#documentation) or [start at the overview](bio/theory.md).
 
 ### General Overview
-#### Workflow
-The `evSeq` workflow
+#### The `evSeq` workflow
 ![Workflow](assets/figure2.png)
+**A)** Laboratory procedure. **B)** Computational procedure.
 
-#### Sequence-Function Data
+#### Construct and visualize sequence-function pairs
 ![SeqFunc](assets/figure3.png)
+Sequencing eight site-saturation libraries (768 wells) in a single `evSeq` run and combining this with activity data to create low-cost sequence-function data. **A)** Enzyme and active-site structure highlighting mutated residues. **B)** Heatmap of the number of identified variants/mutations ("counts") for each position mutated ("library") from processed `evSeq` data. **C)** Heatmap of the average activity ("normalized rate") for each variant/mutantion in each library. **D)** Counts for a single library, also showing the number of unidentified wells. **E)** Activity for a single library, showing biological replicates. (Inset displays the mutated residue in this library.)
 
 ## Documentation
 ### Biology
@@ -38,10 +39,13 @@ The `evSeq` workflow
   - [The `refseq` file](comp/usage.md#the-refseq-file)
   - [`folder`](comp/usage.md#folder)
 - [Optional Arguments](comp/usage.md#optional-arguments)
-#### [Understanding the outputs](comp/outputs.html)
-- [Qualities](comp/outputs.html#qualities)
-- [OutputCounts](comp/outputs.html#outputcounts)
-- [Platemaps](comp/outputs.html#platemaps)
+#### [Understanding the Outputs](comp/outputs.html)
+- [`Qualities`](comp/outputs.html#qualities)
+- [`OutputCounts`](comp/outputs.html#outputcounts)
+- [`Platemaps`](comp/outputs.html#platemaps)
+- [`evSeqLog`](comp/outputs.html#evSeqLog)
+- [`ParsedFilteredFastqs`](comp/outputs.html#parsedfilteredfastqs)
+- [`Alignments`](comp/outputs.html#alignments)
 
 <!--
 #### [Using `evSeq` tools in a Python environment](comp/additional.html)

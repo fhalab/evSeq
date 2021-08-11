@@ -4,7 +4,7 @@ Every Variant Sequencing (`evSeq`) is a library preparation technique designed t
 
 For detailed information, [read the docs at the `evSeq` website.](fhalab.github.io/evSeq/)
 
-### General workflow
+### The `evSeq` workflow
 ![Workflow](docs/assets/figure2.png)
 **A)** Laboratory procedure. **B)** Computational procedure.
 
