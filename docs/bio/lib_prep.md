@@ -1,5 +1,5 @@
 # Library Preparation
-![Library Preparation](../assets/figure1.svg)
+![Library Preparation](../assets/figure1.png)
 ## General Protocol
 The general protocol is as follows:
 1. Design and order primers that flank your region-of-interest and will generate a NGS-suitable amplicon. [Jump to Inner Primer Design.](#inner-primer-design)
@@ -14,9 +14,38 @@ The general protocol is as follows:
     - Multiple purified `evSeq` samples can be further pooled together if using different pairs of `evSeq` dual-index barcodes (barcode plates DI01–DI08). This further spreads the NGS reads (and cost) among more variants, allowing up to 768 wells to be sequenced in a single multiplexed NGS experiment.
 4. Work up the .fastq files with the `evSeq` software. [Jump to the Computation resources.](../index.md#computation)
 
+## Dual-Index Barcode Plates
+Barcoded amplicons are mapped back to wells using their forward and reverse (dual-indexed) barcode sequences. To reduce costs, `evSeq` uses only two plates of unique barcode (or "outer") primers—one for the forward primers and one for the reverse—which are combined in different ways to create eight possible dual-indexed primer plates.
+
+The sequences in each well of the Forward and Reverse BC plates can be found [on this sheet](../../lib_prep_tools/evSeq_barcode_primer_seqs.csv).
+
+Each of the eight dual-indexed plates are created by combining the Forward BC rows with a different set of Reverse BC rows according to the following scheme:
+1. Every DI plate is stamped (A01 -> A01, etc.) directly with the Forward BC plate.
+2. Row A of the Reverse BC plate goes into the *N*th row (A=1, B=2, etc.) of plate DI0*N*, and the rest of the rows are shifted similarly.
+   1. *E.g.*, Reverse BC Row A goes into DI02 Row B, DI03 Row C, ..., DI08 Row H, while Reverse BC Row B gies into DI02 Row C, DI03 Row D, ..., DI08 Row A.
+   2. DI01 is simply the exact combination of the Forward and Reverse BC plates.
+
+This operation creates pairings that look like this:
+
+| DI Plate | DI Plate Row | Forward BC Row | Reverse BC Row |
+|-------|:---------:|:--------------:|:--------------:|
+| DI01 | A | A | A |
+| DI01 | B | B | B |
+| DI01 | C | C | C |
+| ... | ... | ... | ... |
+| DI01 | H | H | H |
+| ... | ... | ... | ... |
+| DI02 | A | A | H |
+| DI02 | B | B | A |
+| DI02 | C | C | B |
+| ... | ... | ... | ... |
+| DI02 | H | H | G |
+| ... | ... | ... | ... |
+
+such that the barcode pair in `DI01-A01` is `F_A01` + `R_A01`, whereas the barcode pair in `DI02-A01` is `F_A01` + `R_H01`, etc. This information is an integral part of the `evSeq` package and can be found [here](../../evSeq/util/index_map.csv), but should not need to be edited in any way if following the procedures described here.
+
 ## Inner Primer Design
-This section details design of inner primers. It is assumed that you already have access to the outer primer dual indexing plates. Spreadsheets preformatted for ordering barcoding primers from IDT can be found [here.](./PrimerOrderSheets/IdtBarcodePrimers.xlsx)
-# TODO: fix link ^^
+This section details design of inner primers. It is assumed that you already have access to the outer primer dual-indexing plates described above.
 
 To use `evSeq`, you need to amplify the region that you want to sequence as well as append barcode primers to the resultant amplicon. Your inner primers are thus made up of two parts: (1) a "seed" region which binds to the gene of interest and (2) the "adapter" region which allows the outer, barcode primers to bind and amplify to attach the barcodes. Follow the below to design your primers:
 
