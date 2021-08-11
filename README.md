@@ -17,7 +17,7 @@ Sequencing eight site-saturation libraries (768 wells) in a single `evSeq` run a
 ```
 git clone https://github.com/fhalab/evSeq.git
 cd evSeq
-conda env create -f evSeq.yml
+conda env create -f envs/evSeq.yml
 ```
 `evSeq` is then installed inside the environment and can be run as described below when the `evSeq` environment is active.
 

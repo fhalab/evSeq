@@ -5,7 +5,7 @@ The recommended way to install `evSeq` invloves cloning the reopsitory from GitH
 ```
 git clone https://github.com/fhalab/evSeq.git
 cd evSeq
-conda env create -f evSeq.yml
+conda env create -f envs/evSeq.yml
 ```
 
 ### Using the `evSeq` environment
@@ -20,24 +20,22 @@ conda deactivate
 ## Standard `pip` Install and Dependencies
 Advanced users: If you would rather not use the `evSeq` environment described above and run in a custom environment (or, if you're a brave soul, your base environment), below are the `evSeq` dependencies, most of which are available through `conda` (only `ninetysix` and `pyshortcuts` require `pip`, but they are small packages with few dependencies).
 
-The `evSeq` dependencies are explicitly listed in the `evSeq.yml` environment file:
+The `evSeq` dependencies are explicitly listed in the `evSeq.yml` environment file and `setup.py` requirements:
 ```yml
-# evSeq without GUI
-- biopython>=1.78
-- colorcet
-- holoviews>=1.14.3
-- bokeh>=2.3.2
+- python>=3.7
 - numpy
 - pandas
-- python>=3.7
-- tqdm
+- biopython>=1.78
 - scipy
-- ninetysix
-
-# With GUI, also need:
+- tqdm
+- holoviews
+- bokeh
+- colorcet
 - gooey
 - pyshortcuts
+- ninetysix
 ```
+Jupyter installs are not listed here or in the `setup.py` requirements as they are not necessary if you do not plan to use any of the additional data visualization tools.
 
 Releases of `evSeq` are hosted on the [Python Package Index (PyPI)](https://pypi.org/project/evseq/), and thus can be `pip` installed in the standard way. From any location, run
 ```

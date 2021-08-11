@@ -1,0 +1,36 @@
+name: evSeq
+dependencies:
+  
+  # Standard
+  - python>=3.7
+  - numpy
+  - pandas
+  
+  # Computation/processing
+  - biopython>=1.78
+  - scipy
+  - tqdm
+  
+  # Data visualization
+  - holoviews
+  - bokeh
+  - colorcet
+  
+  # Jupyter Lab
+  - jupyter
+  - jupyterlab
+
+  # pip>=21.1 for in-tree-build
+  - pip>=21.1
+  
+  - pip:
+    
+    # For GUI+shortcut
+    - gooey
+    - pyshortcuts
+    
+    # Helps data processing and visualization
+    - ninetysix
+    
+    # Install of evSeq
+    - ../. --use-feature="in-tree-build"

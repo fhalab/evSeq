@@ -1,0 +1,36 @@
+name: evSeq_dev
+dependencies:
+  
+  # Standard
+  - python>=3.7
+  - numpy
+  - pandas
+  
+  # Computation/processing
+  - biopython>=1.78
+  - scipy
+  - tqdm
+  
+  # Data visualization
+  - holoviews
+  - bokeh
+  - colorcet
+  
+  # Jupyter
+  - jupyter
+  - jupyterlab
+
+  # pip
+  - pip
+  
+  - pip:
+    
+    # For GUI+shortcut
+    - gooey
+    - pyshortcuts
+    
+    # Helps data processing and visualization
+    - ninetysix
+    
+    # Editable install of evSeq
+    - -e ../.
