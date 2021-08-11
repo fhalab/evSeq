@@ -4,9 +4,9 @@ from .util.input_validation import check_args
 from .util.input_processing import load_all
 from .seq_pair import SeqPair
 from .well import Well
-from .data_visualization import (generate_read_qual_chart, 
-                                 generate_sequencing_heatmaps,
-                                 save_heatmap_to_file)
+from .data_visualization import (generate_qualplot, 
+                                 generate_platemaps,
+                                 save_platemap_to_file)
 
 # Import other required modules
 import os
@@ -229,8 +229,8 @@ def format_and_save_outputs(well_results, saveloc, return_alignments):
         output_df.to_csv(os.path.join(saveloc, "OutputCounts", savename), index=False)
         
     # Generate heatmaps from the Combos_Coupled_Max dataframe
-    heatmaps = generate_sequencing_heatmaps(max_outs[-1])
-    save_heatmap_to_file(heatmaps, saveloc)
+    heatmaps = generate_platemaps(max_outs[-1])
+    save_platemap_to_file(heatmaps, saveloc)
 
     # Loop over and save all alignments if asked to do so
     if return_alignments:
@@ -257,7 +257,7 @@ def run_evSeq(cl_args, tqdm_fn=tqdm.tqdm):
     all_seqpairs = build_seqpairs(forward_file, reverse_file, tqdm_fn)
     
     # Generate quality plots
-    generate_read_qual_chart(all_seqpairs, cl_args["output"])
+    generate_qualplot(all_seqpairs, cl_args["output"])
     
     # Return if we stop after plot qualities
     if cl_args["analysis_only"]:

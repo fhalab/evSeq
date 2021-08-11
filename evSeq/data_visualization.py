@@ -16,8 +16,8 @@ from .util.logging import log_warning
 hv.renderer('bokeh')
 
 #### Heatmap ####
-def generate_sequencing_heatmaps(max_combo_df):
-    """Saves a heatmap html generated from from evSeq data."""
+def generate_platemaps(max_combo_df):
+    """Saves a plate heatmap html generated from from evSeq data."""
     
     # Identify unique plates
     unique_plates = max_combo_df.Plate.unique()
@@ -32,7 +32,7 @@ def generate_sequencing_heatmaps(max_combo_df):
         df = max_combo_df.loc[max_combo_df.Plate == plate].copy()
     
         # generate a holoviews plot
-        hm_dict[plate] = make_heatmap(df, title=plate)
+        hm_dict[plate] = plot_platemap(df, title=plate)
 
     # make logseqdepth column
     max_combo_df['logseqdepth'] = np.log(
@@ -76,13 +76,13 @@ def generate_sequencing_heatmaps(max_combo_df):
 
     return hm_holomap
 
-def save_heatmap_to_file(heatmaps, outputdir):
+def save_platemap_to_file(heatmaps, outputdir):
     
     file_path = os.path.join(outputdir, "Platemaps", "Platemaps")
     hv.renderer('bokeh').save(heatmaps, file_path)
 
-def make_heatmap(df, title):
-    """Generates a heatmap from evSeq data using Holoviews with
+def plot_platemap(df, title):
+    """Generates a plate heatmap from evSeq data using Holoviews with
     bokeh backend.
     """
 
@@ -242,7 +242,7 @@ def make_heatmap(df, title):
                                   show_legend=True)
 
 #### Read quality chart ####
-def generate_read_qual_chart(seqpairs, output_dir):
+def generate_qualplot(seqpairs, output_dir):
     """Makes histograms of read qualities and saves to designated
     location.
     """
@@ -351,9 +351,8 @@ def combine_seq_func_data(
     merged_data = data_df.merge(seq_df, how='outer')
     return merged_data
 
-def activity_plot(
+def SSM_activity_plot(
     df, 
-    plate,
     value,
     missing,
     activity_range,
@@ -363,6 +362,9 @@ def activity_plot(
     known,
     standard
 ):
+    """Plots activities of each mutation assuming the data corresponds
+    to a site-saturation mutagenesis (SSM) library.
+    """
 
     # list of AAs
     AAs = list('ACDEFGHIKLMNPQRSTVWY')
@@ -478,6 +480,9 @@ def count_plot(
     sort,
     hist_range
 ):
+    """Creates a bar plot of the number of occurences of each mutation
+    in a site-saturation mutagenesis (SSM) library.
+    """
     
     # Get observed AA counts
     counts = temp_df['Residue'].value_counts()
@@ -518,7 +523,7 @@ def count_plot(
     return p_counts
 
 
-def plot_variant_activities(
+def plot_SSM_activities(
     seq_func_data,
     value,
     min_align_freq=0.8,
@@ -657,9 +662,8 @@ def plot_variant_activities(
             temp_df['Sort'] = temp_df['Residue'].replace(sort)
 
             #### Activity Plot ####
-            p = activity_plot(
-                df=temp_df, 
-                plate=plate,
+            p = SSM_activity_plot(
+                df=temp_df,
                 value=value,
                 missing=missing,
                 activity_range=activity_range,
@@ -667,7 +671,7 @@ def plot_variant_activities(
                 sort_counter=sort_counter,
                 center_cmap=center_cmap,
                 known=known,
-                standard=standard
+                standard=standard,
             )
 
             ##### Histogram #####
@@ -676,7 +680,7 @@ def plot_variant_activities(
                     temp_df,
                     missing,
                     sort,
-                    hist_range=hist_range
+                    hist_range=hist_range,
                 )
 
                 # Since we are plotting the histogram, remove xlabel from activity plot
