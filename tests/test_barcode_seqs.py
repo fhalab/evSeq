@@ -8,7 +8,7 @@ import pandas as pd
 
 import evSeq
 from evSeq.util.globals import ADAPTER_F, ADAPTER_R
-from evSeq.util.index_plate_mapper import index_plate_maker
+from evSeq.util import index_plate_maker, check_barcode_pairings
 
 # Define Nextera adapter seqs
 NXT_I5_F = 'TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG'
@@ -16,10 +16,10 @@ NXT_I7_R = 'GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG'
 
 # Get the path to evSeq repo as root
 root = str(Path(os.path.abspath(evSeq.__file__)).parents[1])
-primer_seqs_path = os.path.join(root,
-                            'lib_prep_tools',
-                            'evSeq_barcode_primer_seqs.csv')
-index_path = os.path.join(root, 'evSeq', 'util', 'index_map.csv')
+PRIMER_SEQS_PATH = os.path.join(root,
+                                'lib_prep_tools',
+                                'evSeq_barcode_primer_seqs.csv')
+INDEX_PATH = os.path.join(root, 'evSeq', 'util', 'index_map.csv')
     
 
 def test_barcode_primer_file():
@@ -27,7 +27,7 @@ def test_barcode_primer_file():
     for Nextera NGS prep and for evSeq analysis.
     """
     # Import seqs and names
-    primer_df = pd.read_csv(primer_seqs_path)
+    primer_df = pd.read_csv(PRIMER_SEQS_PATH)
 
     # Create empty list to check
     bad_seqs = []
@@ -52,23 +52,18 @@ def test_barcode_primer_file():
 
 def test_pairings():
     """Confirms no duplicated barcode pairs in index_map.csv"""
-    pairings_df = pd.read_csv(index_path)
-
-    pairings_df['Combo'] = pairings_df['FBC'] + pairings_df['RBC']
-    pairings_df['Name'] = pairings_df['IndexPlate'] + '-' + pairings_df['Well']
-    counts = pairings_df['Combo'].value_counts()
-    bad_combos = counts[counts > 1].index.to_list()
-    if bad_combos:
-        bad_wells = pairings_df[pairings_df['Combo'].isin(bad_combos)]['Name']
-        assert False, \
-        f'Degenerate well pairings in index_map.csv! Check {list(bad_wells)}'
+    check_barcode_pairings(
+        INDEX_PATH,
+        FBC_col='FBC',
+        RBC_col='RBC',
+    )
 
 
 def test_mappings():
     """Confirms that primer combinations are mapped correctly to barcodes."""
     # Import data
-    primer_df = pd.read_csv(primer_seqs_path)
-    index_df = pd.read_csv(index_path)
+    primer_df = pd.read_csv(PRIMER_SEQS_PATH)
+    index_df = pd.read_csv(INDEX_PATH)
 
     # If test_barcode_file() passed, create new column with barcodes
     try:

@@ -444,3 +444,44 @@ def save_csv(df, filename):
     df.to_csv(filename, index=False)
     path = str(Path(filename).resolve())
     print(f"DataFrame saved at '{path}'.")
+
+
+def check_barcode_pairings(
+    index_map,
+    FBC_col=None,
+    RBC_col=None,
+):
+    """Confirms no duplicated barcode pairs in index_map.csv"""
+    if isinstance(index_map, str):
+        index_df = pd.read_csv(index_map)
+    else:
+        index_df = index_map
+
+    # Guess columns
+    if FBC_col is None:
+        if 'FBC' in index_df.columns:
+            FBC_col = 'FBC'
+        elif 'FBCSource' in index_df.columns:
+            FBC_col = 'FBCSource'
+    if FBC_col not in index_df.columns:
+        raise ValueError(
+            'Could not find column corresponding to Forward Barcode (FBC_col)'
+        )
+    if RBC_col is None:
+        if 'RBC' in index_df.columns:
+            RBC_col = 'RBC'
+        elif 'RBCSource' in index_df.columns:
+            RBC_col = 'RBCSource'
+    if RBC_col not in index_df.columns:
+        raise ValueError(
+            'Could not find column corresponding to Reverse Barcode (RBC_col)'
+        )
+
+    index_df['Combo'] = index_df[FBC_col] + index_df[RBC_col]
+    index_df['Name'] = index_df['IndexPlate'] + '-' + index_df['Well']
+    counts = index_df['Combo'].value_counts()
+    bad_combos = counts[counts > 1].index.to_list()
+    if bad_combos:
+        bad_wells = index_df[index_df['Combo'].isin(bad_combos)]['Name']
+        assert False, \
+            f'Degenerate well pairings in index_map.csv! Check {list(bad_wells)}'
