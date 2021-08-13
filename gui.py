@@ -1,5 +1,9 @@
 #!/usr/bin/env pythonw
-
+"""
+Code for running evSeq via a graphical user interface (GUI). This can
+either be accessed via a shortcut on the Desktop (if not moved after
+istallation) or via `python [path]/[to]/gui.py`.
+"""
 # Import relevant modules
 import os
 from time import strftime

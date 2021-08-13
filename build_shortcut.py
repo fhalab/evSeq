@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Create a clickable shortcut to run evSeq from the corect environment
+Create a clickable shortcut to run evSeq from the correct environment
 """
 from pyshortcuts import make_shortcut
 import os
