@@ -1,3 +1,7 @@
+"""
+Data visualization functions for evSeq output data.
+"""
+
 # Import required modules
 import numpy as np
 import pandas as pd
@@ -13,11 +17,30 @@ import ninetysix as ns
 from .util.logging import log_warning
 
 # because the ninetysix package sets bokeh as the backend, we don't set it here
+# otherwise we would need:
+# hv.extension('bokeh')
 hv.renderer('bokeh')
 
 #### Heatmap ####
-def generate_platemaps(max_combo_df):
-    """Saves a plate heatmap html generated from from evSeq data."""
+def generate_platemaps(max_combo_data):
+    """Saves a plate heatmap html generated from from evSeq data.
+    
+    Input:
+    ------
+    max_combo_data: path (str) or DartaFrame
+        Path to 'Combos_Coupled_Max.csv' from an evSeq experiment or
+        a pandas DataFrame of that file.
+    
+    Returns:
+    --------
+    hm_holomap: an interactive Platemap
+    """
+
+    # Convert to dataframe if necessary
+    if isinstance(max_combo_data, str):
+        max_combo_df = pd.read_csv(max_combo_data)
+    else:
+        max_combo_df = max_combo_data.copy()
     
     # Identify unique plates
     unique_plates = max_combo_df.Plate.unique()
@@ -32,7 +55,7 @@ def generate_platemaps(max_combo_df):
         df = max_combo_df.loc[max_combo_df.Plate == plate].copy()
     
         # generate a holoviews plot
-        hm_dict[plate] = plot_platemap(df, title=plate)
+        hm_dict[plate] = _make_platemap(df, title=plate)
 
     # make logseqdepth column
     max_combo_df['logseqdepth'] = np.log(
@@ -81,14 +104,19 @@ def save_platemap_to_file(heatmaps, outputdir):
     file_path = os.path.join(outputdir, "Platemaps", "Platemaps")
     hv.renderer('bokeh').save(heatmaps, file_path)
 
-def plot_platemap(df, title):
+def _make_platemap(df, title):
     """Generates a plate heatmap from evSeq data using Holoviews with
     bokeh backend.
+
+    Called via `generate_platemaps`; see docs there.
     """
 
     # Convert SeqDepth to log for easier visualization.
-    df['logseqdepth'] = np.log(df['WellSeqDepth'], out=np.zeros_like(df['WellSeqDepth'], dtype=float),
-                               where=df['WellSeqDepth'] != 0)
+    df['logseqdepth'] = np.log(
+        df['WellSeqDepth'],
+        out=np.zeros_like(df['WellSeqDepth'], dtype=float),
+        where=(df['WellSeqDepth'] != 0)
+    )
 
     # Create necessary Row and Column values and sort
     df['Row'] = df.apply(lambda row: row['Well'][0], axis=1)
@@ -138,8 +166,14 @@ def plot_platemap(df, title):
     # generate the heatmap
     hm = hv.HeatMap(
         df,
-        ['Column', 'Row'],
-        ['logseqdepth','VariantCombo','AlignmentFrequency','WellSeqDepth','Well']
+        kdims=['Column', 'Row'],
+        vdims=[
+            'logseqdepth',
+            'VariantCombo',
+            'AlignmentFrequency',
+            'WellSeqDepth',
+            'Well'
+        ],
     ).opts(
         **opts,
         colorbar=True,
@@ -172,7 +206,6 @@ def plot_platemap(df, title):
     
     # Bin alignment frequencies for easier viz
     bins = ['0.95+', '0.90-0.95', '0.80-0.90','<0.80']
-    # colors = bokeh.palettes.Plasma5
     colors = ['#337D1F', '#94CD35', '#FFC300', '#C62C20']
     cmap = {bin: color for bin, color in zip(bins, colors)}
 
@@ -249,10 +282,14 @@ def generate_qualplot(seqpairs, output_dir):
     
     # Generate forward and reverse qualities
     all_qualities = [seqpair.read_quals() for seqpair in seqpairs]
-    f_qual_counts = np.unique([int(qual[0]) for qual in all_qualities if not np.isnan(qual[0])],
-                              return_counts = True)
-    r_qual_counts = np.unique([int(qual[1]) for qual in all_qualities if not np.isnan(qual[1])],
-                              return_counts = True)
+    f_qual_counts = np.unique(
+        [int(qual[0]) for qual in all_qualities if not np.isnan(qual[0])],
+        return_counts=True
+    )
+    r_qual_counts = np.unique(
+        [int(qual[1]) for qual in all_qualities if not np.isnan(qual[1])],
+        return_counts=True
+    )
         
     # Plot counts
     p_f = plot_read_qual(f_qual_counts).opts(title='Forward Read Quality')
@@ -265,7 +302,8 @@ def generate_qualplot(seqpairs, output_dir):
     )
 
     # Output as html
-    bokeh.io.output_file(os.path.join(output_dir, "Qualities", "QualityPlot.html"))
+    filename = os.path.join(output_dir, "Qualities", "QualityPlot.html")
+    bokeh.io.output_file(filename)
     bokeh.io.save(p)
 
 def plot_read_qual(counts):
@@ -284,14 +322,31 @@ def plot_read_qual(counts):
 ### SEQUENCE-FUNCTION PLOTTING ###
 def combine_seq_func_data(
     data_df,
-    seq_output_path
-    ):
+    evseq_output_dir
+):
+    """Function to combine evSeq data with function data to generate
+    sequence-function pairs.
+
+    Inputs:
+    -------
+    data_df: DataFrame
+        DataFrame containing function/activity data.
+    evseq_output_dir: path (str)
+        Path to the location of the evSeqOutput directory corresponding
+        to the variants used to obtain function data.
+
+    Returns:
+    --------
+    merged_data: DataFrame
+        Cleaned, merged sequence-function data containing all columns
+        from data_df and the evSeq output file.
+    """
 
     # If the well column of the data_df is not zero-padded, pad it
     data_df['Well'] = data_df['Well'].apply(ns.parsers.pad)
 
     # Read in the results of evSeq
-    seq_df = pd.read_csv(seq_output_path+'AminoAcids_Decoupled_Max.csv')
+    seq_df = pd.read_csv(evseq_output_dir+'AminoAcids_Decoupled_Max.csv')
     
     # Find wells that have multiple mutations since this only works for
     # single-mutant libraries
@@ -302,7 +357,8 @@ def combine_seq_func_data(
     # Get the number of mutations in a sequence for later filtering
     seq_df['MutCount'] = seq_df.apply(
         lambda x: mut_count_dict[x['Plate'], x['Well']], 
-        axis=1)
+        axis=1
+    )
 
     # Rename columns for downstream use
     seq_df = seq_df.rename(
@@ -351,7 +407,7 @@ def combine_seq_func_data(
     merged_data = data_df.merge(seq_df, how='outer')
     return merged_data
 
-def SSM_activity_plot(
+def _make_SSM_activity_plot(
     df, 
     value,
     missing,
@@ -360,10 +416,14 @@ def SSM_activity_plot(
     sort_counter,
     center_cmap,
     known,
-    standard
+    standard,
+    jitter,
+    unknown_jitter,
 ):
     """Plots activities of each mutation assuming the data corresponds
     to a site-saturation mutagenesis (SSM) library.
+
+    Called via `plot_SSM_activities`; see docs there.
     """
 
     # list of AAs
@@ -379,6 +439,12 @@ def SSM_activity_plot(
         height=500,
         xrotation=45
     )
+
+    # Set up jitter
+    if jitter is None:
+        jitter = 0
+    if unknown_jitter is None:
+        unknown_jitter = jitter
 
     # Create tooltips for plotting
     tooltips = [
@@ -399,7 +465,8 @@ def SSM_activity_plot(
         'Residue',
         value_name=value,
         color=value,
-        cmap='coolwarm'
+        cmap='coolwarm',
+        jitter=jitter,
     ).opts(
         {'Scatter': dict(tools=[hover])}
     )
@@ -425,7 +492,8 @@ def SSM_activity_plot(
             'Residue',
             value_name=value,
             color=value,
-            cmap='coolwarm'
+            cmap='coolwarm',
+            jitter=unknown_jitter,
         ).opts({
             'Bars': dict(line_alpha=0, fill_alpha=0),
             'Scatter': dict(tools=[hover])
@@ -464,7 +532,7 @@ def SSM_activity_plot(
     if activity_range is not None:
         p.opts(ylim=activity_range)
 
-    if center_cmap == True:
+    if center_cmap:
         center = temp_df[temp_df[known] == standard][value].mean()
         color_levels = ns.viz._center_colormap(
             temp_df[value].dropna(), center)
@@ -474,14 +542,16 @@ def SSM_activity_plot(
 
     return p
 
-def count_plot(
+def _make_count_plot(
     temp_df,
     missing,
     sort,
-    hist_range
+    counts_range
 ):
     """Creates a bar plot of the number of occurences of each mutation
     in a site-saturation mutagenesis (SSM) library.
+
+    Called via `plot_SSM_activities`; see docs/code there.
     """
     
     # Get observed AA counts
@@ -517,8 +587,8 @@ def count_plot(
         color='#DCDCDC'
     )
 
-    if hist_range is not None:
-        p_counts = p_counts.opts(ylim=hist_range)
+    if counts_range is not None:
+        p_counts = p_counts.opts(ylim=counts_range)
     
     return p_counts
 
@@ -528,18 +598,78 @@ def plot_SSM_activities(
     value,
     min_align_freq=0.8,
     min_seq_depth=10,
-    hist=True,
+    counts=True,
     title=None,
-    center_cmap=None,
+    center_cmap=True,
     activity_range=None,
-    hist_range=None,
+    counts_range=None,
     known=None,
     variant=None,
     standard=None,
+    jitter=None,
+    unknown_jitter=None,
 ):
-    """Takes a DataFrame of single mutant sequence/fitness data and 
-    plots the activities of all sequences as well as a frequency
-    histogram of each mutant.
+    """Takes a DataFrame of single mutant sequence/fitness data (see
+    `combine_seq_func_data`) and plots the activities of all sequences
+    as well as a frequency plot of each mutant.
+
+    Inputs:
+    -------
+    seq_func_data: DataFrame
+        Output of (or of the same form as) `combine_seq_func_data`.
+        Effectively a list of sequence-function pairs + extra info.
+    value: str
+        The name of the column that corresponds to the function data.
+    min_align_freq: float, default 0.8
+        The minimum alignment frequency of the variants to plot. You
+        will likely want to increase this, not lower it. If it is
+        lowered, you will have fewer in the 'Unknown' column at the
+        expense of accuracy, as mixed populations will be more likely to
+        count for the plotted activity values. You can hover and
+        discover points with bade alignment frequency, however.
+    min_seq_depth: int, default 10
+        The minimum sequencing depth (non-log scale) of the variants to
+        plot. You will liekly want to increase this, not lower it.
+    counts: bool, default True
+        Whether or not to create a bar plot for the observations of each
+        amino acid (the variant counts) below the main activity plot.
+    title: str, default None
+        Title of the plot.
+    center_cmap: bool, default True
+        Whether or not to center the colormap around `standard`. This
+        will switch to False if a `standard` is not passed.
+    activity_range: tuple, default None
+        The range of the activity plot. Defaults to (0, max(data)*1.2).
+        Useful to check when data has some values below 0, but bars will
+        not look as nice. Keep 0 as min unless your negative values are
+        significant/important.
+    counts_range: tuple, default None
+        The range of the counts bar plot. Same as `activity_range` but
+        negative values are not possible.
+    known: str, default None
+        The name of the column that contains control information. E.g.,
+        if a column 'Controls' specifies Parent v. Negative v. Variant,
+        known='Controls'. Requires that the `variant` argument also be
+        filled out.
+    variant: str, default None
+        If `known` is not None, then this value specifies the name of
+        the variant entries in the `known` column. E.g., from the 
+        example in `known` above, variant='Variant'.
+    standard: str, default None
+        Similar to `variant`, but not necessary (although very useful).
+        If you have a positive control/parent protein standard for
+        comparison, this string specifies the rows containing these. 
+        E.g., from the example in `known` above, standard='Parent'.
+    jitter: float [0,1], default None
+        How much jitter to add to the points. Defaults to zero.
+    unknown_jitter: float [0,1], default None
+        How much jitter to add to the points in the Unknown column,
+        since there may be more there than any other column. If `jitter`
+        is not None and this is None, defaults to the value of `jitter`.
+
+    Returns:
+    --------
+    activity plot: Interactive Holoviews HoloMap
     """
     
     df = seq_func_data.copy()
@@ -589,9 +719,9 @@ def plot_SSM_activities(
         standard_string = standard
         sort[standard_string] = 0
         
-        # Default behavior given a standard is to center the cmap
-        if center_cmap is None:
-            center_cmap = True
+    # Default behavior given a standard is to center the cmap
+    if standard is None:
+        center_cmap = False
 
     # Set the sort counter so that controls follow the variant library
     sort_counter = 22
@@ -600,6 +730,15 @@ def plot_SSM_activities(
     # other controls/values in it to the sort dict in order of appearance.
     # The order will be the same for all subplots of the HoloMap
     if known is not None:
+        if variant is None:
+            raise ValueError(
+                'Unspecified `variant` argument. \n\n'
+                'The `variant` argument should not be None if `known` '\
+                'is not None. Of the following values in your `known` '\
+                f'column "{known}", which one corresponds to the wells'\
+                f' with protein variants? \n\n'\
+                f'Options: {df[known].unique()}'
+            )
         for _type in df[known].unique():
             if _type not in [standard, variant]:
 
@@ -614,7 +753,7 @@ def plot_SSM_activities(
     
     # Initialize dictionaries for storing activity and AA count plots
     activity_plot_dict = {}
-    histogram_plot_dict = {}
+    count_plot_dict = {}
 
     # Loop through the plates slice out one plate at a time
     for plate in df['Plate'].unique():
@@ -623,17 +762,6 @@ def plot_SSM_activities(
         # Loop through the positions that appear on this plate and slice out
         for position in temp_df['Position'].unique():
             temp_df = temp_df.loc[temp_df['Position'] == position].copy()
-
-            # if standard is not None:
-            #     standard_series = temp_df.loc[temp_df[known]
-            #                                     == standard]['AA'].unique()
-            #     # Maybe warn if parent is not all the same?
-            #     if len(standard_series) > 1:
-            #         warning_text = (
-            #             f"Your standards for {plate} " +\
-            #             f"have different sequences: {standard_series}"
-            #         )
-            #         warnings.warn(warning_text)
 
             # Requires standard_string and sets controls, variants, and unknowns
             temp_df = temp_df.apply(set_knowns, axis=1)
@@ -662,7 +790,7 @@ def plot_SSM_activities(
             temp_df['Sort'] = temp_df['Residue'].replace(sort)
 
             #### Activity Plot ####
-            p = SSM_activity_plot(
+            p = _make_SSM_activity_plot(
                 df=temp_df,
                 value=value,
                 missing=missing,
@@ -672,22 +800,24 @@ def plot_SSM_activities(
                 center_cmap=center_cmap,
                 known=known,
                 standard=standard,
+                jitter=jitter,
+                unknown_jitter=unknown_jitter,
             )
 
             ##### Histogram #####
-            if hist:
-                p_counts = count_plot(
+            if counts:
+                p_counts = _make_count_plot(
                     temp_df,
                     missing,
                     sort,
-                    hist_range=hist_range,
+                    counts_range=counts_range,
                 )
 
                 # Since we are plotting the histogram, remove xlabel from activity plot
                 p.opts(xlabel='')
                 
                 # Store the count histograms in a dictionary
-                histogram_plot_dict[plate + ': ' + str(position)] = p_counts
+                count_plot_dict[plate + ': ' + str(position)] = p_counts
             
             # Store the activity plots in a histogram
             activity_plot_dict[f"{plate}: {position}"] = p
@@ -700,10 +830,10 @@ def plot_SSM_activities(
         {'Bars': {'framewise': True}}
     )
 
-    if hist:
+    if counts:
         # Generate a HoloMap of the count histograms
         count_hmap = hv.HoloMap(
-            histogram_plot_dict,
+            count_plot_dict,
             kdims=['Plate: Position']
         )
         return (activity_hmap+count_hmap).cols(1)
