@@ -398,7 +398,7 @@ def generate_index_map(
     if isinstance(barcode_plate_seqs, str):
         primer_df = pd.read_csv(barcode_plate_seqs)
     else:
-        primer_df = barcode_plate_seqs
+        primer_df = barcode_plate_seqs.copy()
 
     def trim_seqs_to_bcs(row):
         """Trims a barcode primer sequence to just its barcode"""
@@ -455,7 +455,7 @@ def check_barcode_pairings(
     if isinstance(index_map, str):
         index_df = pd.read_csv(index_map)
     else:
-        index_df = index_map
+        index_df = index_map.copy()
 
     # Guess columns
     if FBC_col is None:
