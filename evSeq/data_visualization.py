@@ -22,7 +22,7 @@ from .util.logging import log_warning
 hv.renderer('bokeh')
 
 #### Heatmap ####
-def generate_platemaps(max_combo_data):
+def generate_platemaps(max_combo_data, cmap=None):
     """Saves a plate heatmap html generated from from evSeq data.
     
     Input:
@@ -30,6 +30,13 @@ def generate_platemaps(max_combo_data):
     max_combo_data: path (str) or DartaFrame
         Path to 'Combos_Coupled_Max.csv' from an evSeq experiment or
         a pandas DataFrame of that file.
+    cmap: list-like or str, default None
+        The colormap to use for the well outline indicating alignment
+        frequency. If None, defaults to a Plasma-like (colorcet.bmy)
+        colormap. If 'stoplight', uses a green-yellow-red colormap (not 
+        the most colorblind friendly, but highly intuitive). Otherwise
+        you may pass any list -like object containing four colors (e.g.,
+        ['#337D1F', '#94CD35', '#FFC300', '#C62C20'] for 'stoplight').
     
     Returns:
     --------
@@ -55,7 +62,7 @@ def generate_platemaps(max_combo_data):
         df = max_combo_df.loc[max_combo_df.Plate == plate].copy()
     
         # generate a holoviews plot
-        hm_dict[plate] = _make_platemap(df, title=plate)
+        hm_dict[plate] = _make_platemap(df, title=plate, cmap=cmap)
 
     # make logseqdepth column
     max_combo_df['logseqdepth'] = np.log(
@@ -66,9 +73,6 @@ def generate_platemaps(max_combo_data):
         ),
         where=max_combo_df['WellSeqDepth'] != 0
     )
-
-    # logseqdepth heatmap
-    cmap = list(reversed(cc.CET_D9))
 
     # Set the center
     center = np.log(10)
@@ -104,7 +108,7 @@ def save_platemap_to_file(heatmaps, outputdir):
     file_path = os.path.join(outputdir, "Platemaps", "Platemaps")
     hv.renderer('bokeh').save(heatmaps, file_path)
 
-def _make_platemap(df, title):
+def _make_platemap(df, title, cmap=None):
     """Generates a plate heatmap from evSeq data using Holoviews with
     bokeh backend.
 
@@ -128,7 +132,7 @@ def _make_platemap(df, title):
     opts = dict(invert_yaxis=True, title=title, show_legend=True)
 
     # logseqdepth heatmap
-    cmap = list(reversed(cc.CET_D9))
+    seq_depth_cmap = list(reversed(cc.CET_D9))
 
     # Set the center
     center = np.log(10)
@@ -177,7 +181,7 @@ def _make_platemap(df, title):
     ).opts(
         **opts,
         colorbar=True,
-        cmap=cmap,
+        cmap=seq_depth_cmap,
         height=height,
         width=width,
         line_width=4,
@@ -206,8 +210,20 @@ def _make_platemap(df, title):
     
     # Bin alignment frequencies for easier viz
     bins = ['0.95+', '0.90-0.95', '0.80-0.90','<0.80']
-    colors = ['#337D1F', '#94CD35', '#FFC300', '#C62C20']
-    cmap = {bin: color for bin, color in zip(bins, colors)}
+    if cmap is None:
+        cmap = [cc.bmy[int((1.1-i)*len(cc.bmy))]
+                for i in [0.95, 0.9, 0.8, 0.4]]
+    if 'stoplight' in cmap:
+        cmap = ['#337D1F', '#94CD35', '#FFC300', '#C62C20']
+    else:
+        # Validate colormap
+        if not isinstance(cmap, (list, tuple)):
+            raise ValueError('cmap argument must be a list or tuple')
+        if len(cmap) > 4:
+            raise ValueError(
+                'cmap argument has too many entries; only 4 should be passed'
+            )
+    cmap = {bin: color for bin, color in zip(bins, cmap)}
 
     # apply binning function to the AlignmentFrequency
     df['AlignmentFrequencyBinned'] = df['AlignmentFrequency'].apply(
