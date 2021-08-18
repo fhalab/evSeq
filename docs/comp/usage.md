@@ -9,7 +9,7 @@ This step is optional; running example files as described below will also confir
 ### Running example files
 **[refer to GUI and command line or in a python environment sections, and use [path_to_file] to test.]**
 
-Once comfortable with the GUI or command line, example data can be found in [InstallationConfirmationData](./InstallationConfirmationData) for you to test your installation. The file "DefaultRefSeqs.csv" should be used as "refseq" and the whole folder should be used as "folder". Details on these arguments can be found in [Required Arguments](#required-arguments). Additional optional arguments can also be passed in to `evSeq`; they are detailed in [Optional Arguments](#optional-arguments).
+Once comfortable with the GUI or command line, example data can be found in [InstallationConfirmationData](./InstallationConfirmationData) for you to test your installation. The file "DefaultRefSeq.csv" should be used as "refseq" and the whole folder should be used as "folder". Details on these arguments can be found in [Required Arguments](#required-arguments). Additional optional arguments can also be passed in to `evSeq`; they are detailed in [Optional Arguments](#optional-arguments).
 
 For common problems encountered when using `evSeq`, please reference [Troubleshooting](../troubleshooting.md). -->
 
@@ -47,7 +47,7 @@ You will see two required arguments — the `refseq` and `folder` args — at th
 ### The `refseq` file
 The primary user inputs that are required are contained in the `refseq` file, which contains information that allows the `evSeq` software to know how to process each well. From the information contained in this file, `evSeq` will construct reference sequences for each plate (or well, if using a Detailed `refseq` file) and analyze the NGS data accordingly.
 #### Default `refseq`
-An example Default `refseq` format is given in the `evSeq` GitHub repository [here](../../examples/refseqs/DefaultRefSeqs.csv).
+An example Default `refseq` format is given in the `evSeq` GitHub repository [here](../../examples/refseqs/DefaultRefSeq.csv).
 
 This form of the file assumes the same reference sequence in each well of the analyzed plates and requires eight columns: `PlateName`, `IndexPlate`, `FPrimer`, `RPrimer`, `VariableRegion`, `FrameDistance`, `BpIndStart`, and `AaIndStart`. These columns are detailed below:
 
@@ -83,7 +83,7 @@ In this simple example, the `FPrimer` sequence is `AAAAAAAAAAGGGGGGGGGGG` and th
 As currently deployed, up to 8 plates (`DI01`–`DI08`) can be input in a single `evSeq` run. No more than 8 rows should thus ever be filled in this form of `refseq` file.
 
 ### Detailed `refseq`
-An example Detailed `refseq` format is given in the `evSeq` GitHub repository [here](../../examples/refseqs/DetailedRefSeqs.csv).
+An example Detailed `refseq` format is given in the `evSeq` GitHub repository [here](../../examples/refseqs/DetailedRefSeq.csv).
 
 This form of the file allows for a different reference sequence in each _well_ of the analyzed plates, rather than the same reference sequence in every well of a given plate. In addition to the column headers given in [Default `refseq`](#default-refseq), this form of the file has a required `Well` column, enabling specification of a different `FPrimer`, `RPrimer`, and `VariableRegion` for each well in the input plates. As currently deployed, up to 8 plates (`DI01`–`DI08`) can be input in a single `evSeq` run, so no more than 768 rows should ever be filled in this form of `refseq` file.
 

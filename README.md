@@ -1,8 +1,12 @@
 `evSeq`
 =======
-Every Variant Sequencing (`evSeq`) is a library preparation technique designed to slot neatly into existing protein engineering workflows to enable extremely low cost massively parallel sequencing of heterologously expressed protein variants arrayed in 96-well plates.
+Every Variant Sequencing (`evSeq`) is a library preparation and analysis protocol designed to slot neatly into existing protein engineering workflows to enable extremely low cost massively parallel sequencing of heterologously expressed protein variants arrayed in 96-well plates. This workflow enables sequencing all variants produced during a protein engineering or biochemical mutagenesis experiment at a cost of cents per variant, even for labs that do not have expertise in or access to next-generation sequencing (NGS) technology.
 
-For detailed information, [read the docs at the `evSeq` website.](fhalab.github.io/evSeq/)
+### Read the Paper!
+This repository accompanies the work ["evSeq: Cost-Effective Amplicon Sequencing of Every Variant in Protein Mutant Libraries"](LINK_TO_PAPER). If you use this tool, please [cite us](LINK_TO_PAGE_WITH_CITATION_FORMATS).
+
+### Read the Docs!
+For detailed information and interactive walkthroughs, [read the docs at the `evSeq` website.](fhalab.github.io/evSeq/)
 
 ### The `evSeq` workflow
 ![Workflow](docs/assets/figure2.png)
@@ -10,7 +14,7 @@ For detailed information, [read the docs at the `evSeq` website.](fhalab.github.
 
 ### Construct and visualize sequence-function pairs
 ![SeqFunc](docs/assets/figure3.png)
-Sequencing eight site-saturation libraries (768 wells) in a single `evSeq` run and combining this with activity data to create low-cost sequence-function data. **A)** Enzyme and active-site structure highlighting mutated residues. **B)** Heatmap of the number of identified variants/mutations ("counts") for each position mutated ("library") from processed `evSeq` data. **C)** Heatmap of the average activity ("normalized rate") for each variant/mutantion in each library. **D)** Counts for a single library, also showing the number of unidentified wells. **E)** Activity for a single library, showing biological replicates. (Inset displays the mutated residue in this library.)
+Sequencing eight site-saturation libraries (768 wells) in a single `evSeq` run and combining this with activity data to create low-cost sequence-function data. **A)** Enzyme and active-site structure highlighting mutated residues. **B)** Heatmap of the number of identified variants/mutations ("counts") for each position mutated ("library") from processed `evSeq` data. **C)** Heatmap of the average activity ("normalized rate") for each variant/mutation in each library. **D)** Counts for a single library, also showing the number of unidentified wells. **E)** Activity for a single library, showing biological replicates. (Inset displays the mutated residue in this library.)
 
 ### Installation
 *RECOMMENDED.* Use the `evSeq` environment:
@@ -31,7 +35,7 @@ The correct packages should be automatically installed and a GUI shortcut is als
 
 ### Usage
 #### Command Line
-Running `evSeq` from the command line is the most straightforward way to use the program. Thanks to `setuptools` `entry_points`, `evSeq` can be accessed from the command line after installation as if it were added to `PATH` by running:
+Thanks to `setuptools` `entry_points`, `evSeq` can be accessed from the command line after installation as if it were added to `PATH` by running:
 ```
 evSeq refseq folder --OPTIONAL_ARGS ARG_VALUE --FLAGS
 ```
