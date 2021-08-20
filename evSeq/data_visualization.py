@@ -468,6 +468,7 @@ def _make_SSM_activity_plot(
         ('Amino Acid', '@AA'),
         ('Seq. depth', '@WellSeqDepth'),
         ('Align. freq.', '@AlignmentFrequency'),
+        ('Mutations', '@MutCount'),
         # Can't do f-string here, weird syntax for tooltips
         (value, '@{'+value+'}')
     ]
@@ -614,6 +615,7 @@ def plot_SSM_activities(
     value,
     min_align_freq=0.8,
     min_seq_depth=10,
+    max_muts=1,
     counts=True,
     title=None,
     center_cmap=True,
@@ -646,6 +648,12 @@ def plot_SSM_activities(
     min_seq_depth: int, default 10
         The minimum sequencing depth (non-log scale) of the variants to
         plot. You will liekly want to increase this, not lower it.
+    max_muts: int, default 1
+        The maximum allowable mutations found in the variant. For single
+        SSM libraries you should only have one. Can be increased if your
+        mutations are synonymous. This does not apply to known controls,
+        since the code assumed these are not variable. If you have known
+        bad controls, filter these beforehand.
     counts: bool, default True
         Whether or not to create a bar plot for the observations of each
         amino acid (the variant counts) below the main activity plot.
@@ -712,8 +720,8 @@ def plot_SSM_activities(
         elif pd.isna(df['AA']):
             df['Residue'] = 'Unknown'
 
-        # If a sequence has multiple mutations (unexpected) set to unknown
-        elif df['MutCount'] > 1:
+        # If a sequence has unacceptable number of mutations set to unknown
+        elif df['MutCount'] > max_muts:
             df['Residue'] = 'Unknown'
 
         # Set controls if a type column passed
