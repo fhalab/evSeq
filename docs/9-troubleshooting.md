@@ -31,4 +31,4 @@ This is a security issue for software being run on macOS, and can be solved by f
 
 ---
 
-*Back to the [main page](../index.md).*
+*Back to the [main page](index.md).*

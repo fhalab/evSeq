@@ -11,7 +11,7 @@ This step is optional; running example files as described below will also confir
 
 Once comfortable with the GUI or command line, example data can be found in [InstallationConfirmationData](./InstallationConfirmationData) for you to test your installation. The file "DefaultRefSeq.csv" should be used as "refseq" and the whole folder should be used as "folder". Details on these arguments can be found in [Required Arguments](#required-arguments). Additional optional arguments can also be passed in to `evSeq`; they are detailed in [Optional Arguments](#optional-arguments).
 
-For common problems encountered when using `evSeq`, please reference [Troubleshooting](../troubleshooting.md). -->
+For common problems encountered when using `evSeq`, please reference [Troubleshooting](8-troubleshooting.md). -->
 
 ## Using `evSeq` from the command line or GUI
 ### Command line
@@ -32,14 +32,15 @@ or see [below](#optional-arguments).
 conda activate evSeq
 ```
 to activate it.
+
 ### GUI
 Upon installation, `evSeq` automatically installs a shortcut onto your Desktop that will launch the `evSeq` GUI with a double-click. If `evSeq` was installed in the `evSeq` environment, the GUI will always run from that environment without you needing to activate it.
 
-The GUI is designed for use by non-programming experts. If you are comfortable with a command line interface, that is the recommended way to use `evSeq`. If using the GUI, make sure you check the log file after each run to check for warnings or errors encountered. See details on the log file [here](outputs.html#evSeqLog).
+The GUI is designed for use by non-programming experts. If you are comfortable with a command line interface, that is the recommended way to use `evSeq`. If using the GUI, make sure you check the log file after each run to check for warnings or errors encountered. See details on the log file [here](5-outputs.html#evSeqLog).
 
 Once opened, you should see a window that looks like this:
 
-![gui interface](../assets/gui.png)
+![gui interface](assets/gui.png)
 
 You will see two required arguments — the `refseq` and `folder` args — at the top of the GUI. Details on the `refseq` argument are given [below](#the-refseq-file), and the GUI should provide a description of what the `folder` contains. For more advanced use, other arguments can be accessed by scrolling down. (These additional arguments are detailed in [Optional Arguments](#optional-arguments)). You will typically not need these arguments, however, and the standard `evSeq` run can be started by clicking `Start` once `refseq` and `folder` are populated. Once started, the progress of the program will be printed to the GUI along with any encountered warnings and errors.
 
@@ -47,7 +48,7 @@ You will see two required arguments — the `refseq` and `folder` args — at th
 ### The `refseq` file
 The primary user inputs that are required are contained in the `refseq` file, which contains information that allows the `evSeq` software to know how to process each well. From the information contained in this file, `evSeq` will construct reference sequences for each plate (or well, if using a Detailed `refseq` file) and analyze the NGS data accordingly.
 #### Default `refseq`
-An example Default `refseq` format is given in the `evSeq` GitHub repository [here](../../examples/refseqs/DefaultRefSeq.csv).
+An example Default `refseq` format is given in the `evSeq` GitHub repository [here](../examples/refseqs/DefaultRefSeq.csv).
 
 This form of the file assumes the same reference sequence in each well of the analyzed plates and requires eight columns: `PlateName`, `IndexPlate`, `FPrimer`, `RPrimer`, `VariableRegion`, `FrameDistance`, `BpIndStart`, and `AaIndStart`. These columns are detailed below:
 
@@ -83,7 +84,7 @@ In this simple example, the `FPrimer` sequence is `AAAAAAAAAAGGGGGGGGGGG` and th
 As currently deployed, up to 8 plates (`DI01`–`DI08`) can be input in a single `evSeq` run. No more than 8 rows should thus ever be filled in this form of `refseq` file.
 
 ### Detailed `refseq`
-An example Detailed `refseq` format is given in the `evSeq` GitHub repository [here](../../examples/refseqs/DetailedRefSeq.csv).
+An example Detailed `refseq` format is given in the `evSeq` GitHub repository [here](../examples/refseqs/DetailedRefSeq.csv).
 
 This form of the file allows for a different reference sequence in each _well_ of the analyzed plates, rather than the same reference sequence in every well of a given plate. In addition to the column headers given in [Default `refseq`](#default-refseq), this form of the file has a required `Well` column, enabling specification of a different `FPrimer`, `RPrimer`, and `VariableRegion` for each well in the input plates. As currently deployed, up to 8 plates (`DI01`–`DI08`) can be input in a single `evSeq` run, so no more than 768 rows should ever be filled in this form of `refseq` file.
 
@@ -95,7 +96,7 @@ This is the folder containing the fastq or fastq.gz files generated during next-
 1. Look in this folder to find all filenames containing `_R1_` or `_R2_`.
 2. Match forward and reverse files by the name preceding the identified `_R1_` or `_R2_`. For instance, the files `CHL1_S193_L001_R1_001.fastq.gz` and `CHL1_S193_L001_R2_001.fastq.gz` would be matched because the text preceding the `_R1_` and `_R2_`, `CHL1_S193_L001`, matches for both files. The file with the `_R1_` is designated the forward read file and the file with the `_R2_` is designated the reverse read file.
 
-Note that both files without a `_R1_` or `_R2_` in their name and files for which no matching partner is identified will be ignored; all ignored files are recorded in the [log file](outputs.html#evseqlog). If multiple forward-reverse file pairs are identified, `evSeq` will raise an error.
+Note that both files without a `_R1_` or `_R2_` in their name and files for which no matching partner is identified will be ignored; all ignored files are recorded in the [log file](5-outputs.html#evseqlog). If multiple forward-reverse file pairs are identified, `evSeq` will raise an error.
 
 In special cases the forward read file can be passed in as the folder argument and the reverse read file can be passed in as the optional argument `fastq_r`. See the entry on `fastq_r` in the [Optional Arguments](#optional-arguments) section for more detail.
 
@@ -108,7 +109,7 @@ There are a number of flags and optional arguments that can be passed for `evSeq
 | `fastq_r` | Argument | This argument is only available for command line use. If a case arises where, for whatever reason, `evSeq` cannot auto-identify the forward and reverse read files, this option acts as a failsafe. Instead of passing the folder containing the forward and reverse files in to the `folder` required argument, pass in the forward read file as the `folder` argument and the reverse read file as this optional argument. |
 | `output` | Argument | By default, `deSeq` will save to the current working directory (command line) or the `evSeq` Git repository folder (GUI). The default save location can be overwritten with this argument. |
 | `detailed_refseq` | Flag | Set this flag (check the box in the GUI) when passing in a detailed reference sequence file. See [Detailed refseq](#detailed-refseq) for more information. |
-| `analysis_only` | Flag | Set this flag (check the box in the GUI) to only perform Q-score analysis on the input fastq files. The only output in this case will be the [quality score histograms](outputs.html#qualities).|
+| `analysis_only` | Flag | Set this flag (check the box in the GUI) to only perform Q-score analysis on the input fastq files. The only output in this case will be the [quality score histograms](5-outputs.html#qualities).|
 | `only_parse_fastqs` | Flag | Set this flag to stop `evSeq` after generation of parsed, well-filtered fastq files. Counts, platemaps, and alignments will not be returned in this case. Used in case the well-specific fastq sequences are desired but not the entire `evSeq` analysis. |
 | `keep_parsed_fastqs` | Flag | Set this flag to save parsed, well-filtered fastq files as in `only_parse_fastqs`  but to also finish the regular `evSeq` run. |
 | `return_alignments` | Flag | Set this flag to return alignments along with the `evSeq` output. Note that this flag is ignored if either `analysis_only` or `stop_after_fastq` are used. |
@@ -125,6 +126,6 @@ There are a number of flags and optional arguments that can be passed for `evSeq
 | `fancy_progress_bar` | Flag | Launches a `tqdm.gui` instance for intensive `evSeq` processes to give you a better estimate for performance/time remaining on your run. While `tqdm.gui` is still in experimental/alpha stages (which it will warn you about), we have not found any problems with this as of yet. |
 
 ---
-*Next page: [Understanding the outputs](outputs.html).*
+*Next page: [Understanding the outputs](5-outputs.html).*
 
-*Back to the [main page](../index.md).*
+*Back to the [main page](index.md).*

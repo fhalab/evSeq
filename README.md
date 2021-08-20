@@ -45,11 +45,11 @@ For information on optional arguments and flags, run
 ```
 evSeq -h
 ```
-or visit [the usage page](fhalab.github.io/evSeq/comp/usage.html#optional-arguments).
+or visit [the usage page](fhalab.github.io/evSeq/4-usage.html#optional-arguments).
 
 #### GUI
 `evSeq` is also installed with a GUI for greater accessibility. After installing `evSeq`, you will find a new shortcut/app/executable on your Desktop, which you can double-click to launch the evSeq GUI:
 
 ![gui](docs/assets/gui.png)
 
-More can be read about it [here](fhalab.github.io/evSeq/comp/usage.html#GUI).
+More can be read about it [here](fhalab.github.io/evSeq/4-usage.html#GUI).

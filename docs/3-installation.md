@@ -1,5 +1,5 @@
 # Installation
-For non-programmers and those unfamiliar with [Anaconda](https://www.anaconda.com/) or [GitHub](https://www.github.com), see the [programing basics page](basics.md) for information on how to set up your computer environment to run `evSeq`.
+For non-programmers and those unfamiliar with [Anaconda](https://www.anaconda.com/) or [GitHub](https://www.github.com), see the [programing basics page](2-basics.md) for information on how to set up your computer environment to run `evSeq`.
 ## Installing from GitHub with the `conda` environment
 The recommended way to install `evSeq` invloves cloning the reopsitory from GitHub and then creating the [`conda` environment](https://conda.io/projects/conda/en/latest/user-guide/concepts/environments.html) from the included `evSeq.yml` file, as follows:
 ```
@@ -43,10 +43,10 @@ pip install evSeq
 ```
 
 ## Confirming your installation
-Once `evSeq` is installed and your environment is suitable, you should [confirm your installation](comp/usage.md#confirming-your-installation).
+Once `evSeq` is installed and your environment is suitable, you should [confirm your installation](4-usage.md#confirming-your-installation).
 
 ---
 
-*Next page: [Running `evSeq`](usage.md).*
+*Next page: [Running `evSeq`](4-usage.md).*
 
-*Back to the [main page](../index.md).*
+*Back to the [main page](index.md).*

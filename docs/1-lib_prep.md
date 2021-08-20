@@ -1,5 +1,5 @@
 # Library Preparation
-![Library Preparation](../assets/figure1.png)
+![Library Preparation](assets/figure1.png)
 ## General Protocol
 The general protocol is as follows:
 1. Design and order primers that flank your region-of-interest and will generate a NGS-suitable amplicon. [Jump to Inner Primer Design.](#inner-primer-design)
@@ -12,12 +12,12 @@ The general protocol is as follows:
     - After initial amplicon generation (~10 cycles), add the `evSeq` barcode primers to append well-specific barcodes to each amplicon.
 3. Pool each well of the PCR plate together, purify, and then send for a paired-end NGS run. [Jump to PCR Product Purification.](#pcr-product-purification)
     - Multiple purified `evSeq` samples can be further pooled together if using different pairs of `evSeq` dual-index barcodes (barcode plates DI01–DI08). This further spreads the NGS reads (and cost) among more variants, allowing up to 768 wells to be sequenced in a single multiplexed NGS experiment.
-4. Work up the .fastq files with the `evSeq` software. [Jump to the Computation resources.](../index.md#computation)
+4. Work up the .fastq files with the `evSeq` software. [Jump to the Computation resources.](index.md#computation)
 
 ## Dual-Index Barcode Plates
 Barcoded amplicons are mapped back to wells using their forward and reverse (dual-indexed) barcode sequences. To reduce costs, `evSeq` uses only two plates of unique barcode (or "outer") primers—one for the forward primers and one for the reverse—which are combined in different ways to create eight possible dual-indexed primer plates.
 
-The sequences in each well of the Forward and Reverse BC plates can be found [on this sheet](../../lib_prep_tools/evSeq_barcode_primer_seqs.csv).
+The sequences in each well of the Forward and Reverse BC plates can be found [on this sheet](../lib_prep_tools/evSeq_barcode_primer_seqs.csv).
 
 Each of the eight dual-indexed plates are created by combining the Forward BC rows with a different set of Reverse BC rows according to the following scheme:
 1. Every DI plate is stamped (A01 -> A01, etc.) directly with the Forward BC plate.
@@ -42,7 +42,7 @@ This operation creates pairings that look like this:
 | DI02 | H | H | G |
 | ... | ... | ... | ... |
 
-such that the barcode pair in `DI01-A01` is `F_A01` + `R_A01`, whereas the barcode pair in `DI02-A01` is `F_A01` + `R_H01`, etc. This information is an integral part of the `evSeq` package and can be found [here](../../evSeq/util/index_map.csv), but should not need to be edited in any way if following the procedures described here.
+such that the barcode pair in `DI01-A01` is `F_A01` + `R_A01`, whereas the barcode pair in `DI02-A01` is `F_A01` + `R_H01`, etc. This information is an integral part of the `evSeq` package and can be found [here](../evSeq/util/index_map.csv), but should not need to be edited in any way if following the procedures described here.
 
 ## Inner Primer Design
 This section details design of inner primers. It is assumed that you already have access to the outer primer dual-indexing plates described above.
@@ -79,6 +79,7 @@ Some things to keep in mind when designing primers:
 4. If you choose to overlap your forward and reverse reads, you get double the coverage at a position, which means greater confidence in your variant calls. Choosing whether or not to overlap forward and reverse reads is a tradeoff between sequencing depth at a target site and the number of sites that can be targeted with a single primer pair.
 5. The more samples you add to a run, the lower your coverage of each sample, and so the lower your confidence in your variant calls.
 6. If you design primers efficiently, you should be able to reuse the same sets for multiple different gene regions.
+
 ## PCR Protocol
 This section details generation of an `evSeq` library, including the one-pot two-step PCR needed to append inline barcodes (note that the PCR can also be performed as one-pot, one-step by adding both sets of primers together, though we have seen greater success rates with the two-step approach). It assumes you have already designed and ordered inner primers according to the protocol in the previous section as well as have access to dual indexed barcode plates. In addition to these, you will need the following (links are provided to the specific products we used where possible).
 
@@ -87,7 +88,7 @@ This section details generation of an `evSeq` library, including the one-pot two
 - [ThermoPol Buffer (10X)](https://www.neb.com/products/b9004-thermopol-reaction-buffer#Product%20Information)
 - DMSO (100%)
 - dNTPs (10 mM)
-- Inner Primer Mix (10 µM each primer)
+- Inner Primer Mix (10 µM *each* primer)
 - Half-skirted PCR plates
 - [Thermalcycler-safe PCR sealing film](https://www.bio-rad.com/en-us/sku/msb1001-microseal-b-pcr-plate-sealing-film-adhesive-optical?ID=msb1001)
 - Dual-Index `evSeq` Barcode Plates (1 µM each primer)
@@ -99,6 +100,7 @@ This section details generation of an `evSeq` library, including the one-pot two
 - [Gel DNA Recovery Kit](https://www.zymoresearch.com/collections/zymoclean-gel-dna-recovery-kits)
 
 You will also need overnight culture to use as template for the PCR. The culture may be either fresh overnight culture or frozen and thawed before use. Decreases in PCR efficiency are seen the longer the overnight culture is at temperatures above freezing; multiple freeze-thaw cycles have minimal effect on PCR efficiency, presumably because the template plasmid stays intact, even if the cells do not.
+
 ### Inner Primer Test PCR
 As stated in the previous section, it is recommended that you test the inner primers in a single PCR to confirm that they perform the first step of amplification properly. You should perform this reaction using overnight culture containing a suitable template (e.g., cells containing your parent plasmid). If this test works, the full plate protocol with the barcodes _should_ work. However, if this test works and the barcode PCR does not work, or if you want to confirm that the barcode PCR with definitely work, you may use the outer barcodes as well, either in a one-step or two-step PCR. (For the two-step PCR, follow the thermal cycle shown in the [full protocol](#full-protocol) below.)
 
@@ -142,7 +144,7 @@ Once you have confirmed that your primers amplify your region of interest, you c
 The library preparation protocol follows:
 
 1. One day before library preparation, begin overnight cultures of your plates containing cells harboring library variants. Alternatively, you may freeze your overnight cultures and thaw them as needed.
-2. Prepare the Taq polymerase primary mastermix using the calculator found [here](../../lib_prep_tools/MastermixCalculator.xlsx). Note that "inner primer" refers to a 10 µM mixture of both the forward and reverse inner primers (i.e., 10 µM *each*).
+2. Prepare the Taq polymerase primary mastermix using the calculator found [here](../lib_prep_tools/MastermixCalculator.xlsx). Note that "inner primer" refers to a 10 µM mixture of both the forward and reverse inner primers (i.e., 10 µM *each*).
 3. For each plate of variants you want to submit for sequencing:
     1. Add 7 µL of primary mastermix to each well of a half-skirted plate. Unless you are actively adding reagent, keep this plate on ice until you put it in the thermalcycler.
     2. Add 1 µL of overnight cell cultures to each well. 
@@ -182,13 +184,13 @@ The library preparation protocol follows:
 8. Run the gel at 130 V until the dye bands have sufficiently migrated. Imaging the gel, you may see a lower MW band ~75 bp, especially in the one-step PCR protocol. This is primer dimer, and it is critical to remove as much primer dimer as possible from your sample. **Primer dimer will dominate your sequencing and cause it to fail.** For small amplicons, it is recommmended to run your samples on a longer 2% gel, so that there is more time to separate your desired amplicon from primer dimer.
 9. For each pool of variants, identify the desired band and excise it. Perform gel extraction (this method was developed using a [Zymoclean Gel DNA Recovery Kit](https://www.zymoresearch.com/collections/zymoclean-gel-dna-recovery-kits)). Elution should be in ddH2O.
 10. Measure the DNA concentration of each gel-extracted sample.
-11. Finally, use the calculator found [here](../../lib_prep_tools/LibDilCalculator.xlsx) to create 15 µL at 5 ng/µL of combined pool of DNA of each of the plate samples. This is the sample that you will submit to multiplexed next-generation sequencing.
+11. Finally, use the calculator found [here](../lib_prep_tools/LibDilCalculator.xlsx) to create 15 µL at 5 ng/µL of combined pool of DNA of each of the plate samples. This is the sample that you will submit to multiplexed next-generation sequencing.
     1.  This is standard for multiplexed MiSeq runs, but your NGS provider may request different numbers, in which case you should follow their requests.
 
-Finally, submit your samples and then work up the returned data using the provided [Computational software](../index.md#computation).
+Finally, submit your samples and then work up the returned data using the provided [Computational software](index.md#computation).
 
 ---
 
-*Next page, options:* | *[Computational Basics](../comp/basics.md)* | *[Installation](../comp/installation.md)* | *[Running `evSeq`](../comp/usage.md)* |
+*Next page, options:* | *[Computational Basics](2-basics.md)* | *[Installation](3-installation.md)* | *[Running `evSeq`](4-usage.md)* |
 
-*Back to the [main page](../index.md).*
+*Back to the [main page](index.md).*

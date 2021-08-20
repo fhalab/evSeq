@@ -1,7 +1,7 @@
 # Computational Basics
 ## Useful information for non-programmers
 
-This section details installation of high level dependencies: `Git Bash` (Windows users), `git`, and `Anaconda`. If you have installed and are familiar with these items, you can skip this section and move on to [Installation](installation.md). Installation on Linux is not detailed here, as we just assume you know what you're doing. Once this section is completed, continue to [installation](installation.md).
+This section details installation of high level dependencies: `Git Bash` (Windows users), `git`, and `Anaconda`. If you have installed and are familiar with these items, you can skip this section and move on to [Installation](3-installation.md). Installation on Linux is not detailed here, as we just assume you know what you're doing. Once this section is completed, continue to [installation](3-installation.md).
 
 ### Installing `Git`
 #### Windows users
@@ -26,10 +26,10 @@ conda init bash
 Install `Anaconda` following the instructions [here](https://docs.anaconda.com/anaconda/install/mac-os/).
 
 ### Construction of a Folder for holding `Git` repositories
-The next step will be to install `evSeq`, as described in [Installation](installation.md). The recommended way involves cloning the `evSeq` repository from `GitHub`. If you have not worked with Git repos before, we recommend creating a folder where you can store all of them. Wherever seems reasonable to you (most likely your home directory), create a folder called `git` or `GitRepos` or whatever seems best for you. Navigate to this folder (`cd folder_name`) and perform installation from there.
+The next step will be to install `evSeq`, as described in [Installation](3-installation.md). The recommended way involves cloning the `evSeq` repository from `GitHub`. If you have not worked with Git repos before, we recommend creating a folder where you can store all of them. Wherever seems reasonable to you (most likely your home directory), create a folder called `git` or `GitRepos` or whatever seems best for you. Navigate to this folder (`cd folder_name`) and perform installation from there.
 
 ---
 
-*Next page: [Installation](installation.md).*
+*Next page: [Installation](3-installation.md).*
 
-*Back to the [main page](../index.md).*
+*Back to the [main page](index.md).*

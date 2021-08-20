@@ -864,3 +864,73 @@ def plot_SSM_activities(
 
     else:
         return activity_hmap
+
+
+def check_distributions(
+    df,
+    bins=50,
+    violin=True,
+):
+    """
+    Generates visualizations of the distribution(s) of sequencing
+    depth for a given set of evSeq data.
+    
+    Inputs:
+    -------
+    df: pandas DataFrame
+        Any evSeq OutputCounts file (must contain WellSeqDepth column)
+    bins: int, default 50
+        Number of bins for the histogram plot.
+    violin: bool, default True
+        Whether or not to plot a Violin plot with distributions
+        separated by Plate to check for plate-specific differences.
+        
+    Returns:
+    --------
+    holoviews plot of distribution(s)
+    """
+
+    # Grab only non-dead variants
+    for column in ('VariantCombo', 'Bp', 'Aa'):
+        if column in df.columns:
+            clean_depths = df.loc[df[column] != '#DEAD#']['WellSeqDepth']
+            continue
+
+    # Bin the data
+    binned = np.histogram(
+        clean_depths,
+        bins=bins,
+    )
+
+    # Create a histogram
+    p = hv.Histogram(
+        binned,
+        kdims='Sequencing Depth',
+        vdims='Counts',
+    ).opts(
+        color='#DCDCDC',
+    )
+
+    # Plot the median as a vertical line
+    p = p*hv.VLine(
+        clean_depths.median()
+    ).opts(
+        color='black',
+        line_width=2,
+    )
+
+    if violin:
+
+        # Look at the per-plate distributions on a Violin chart to check for outliers
+        p_viol = hv.Violin(
+            df.loc[df['VariantCombo'] != '#DEAD#'],
+            kdims='Plate',
+            vdims='WellSeqDepth',
+        ).opts(
+            violin_fill_color='#DCDCDC',
+            xrotation=45,
+        )
+
+        p = p + p_viol
+
+    return p

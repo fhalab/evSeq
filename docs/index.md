@@ -6,7 +6,7 @@ Every Variant Sequencing (`evSeq`) is a library preparation and analysis protoco
 This repository accompanies the work ["evSeq: Cost-Effective Amplicon Sequencing of Every Variant in Protein Mutant Libraries"](LINK_TO_PAPER). If you use this tool, please [cite us](LINK_TO_PAGE_WITH_CITATION_FORMATS).
 
 ### Read the Docs!
-Navigate to [individual pages below](#documentation) or [start at the overview](bio/theory.md).
+Navigate to [individual pages below](#documentation) or [start at the overview](0-theory.md).
 
 ### General Overview
 #### The `evSeq` workflow
@@ -19,42 +19,55 @@ Sequencing eight site-saturation libraries (768 wells) in a single `evSeq` run a
 
 ## Documentation
 ### Biology
-#### [Theoretical overview](bio/theory.md)
+#### [Theoretical overview](0-theory.md)
 
-#### [Library preparation](bio/lib_prep.md)
-- [Dual-Index Barcode Plates](bio/lib_prep.md#dual-index-barcode-plates)
-- [Inner Primer Design](bio/lib_prep.md#inner-primer-design)
-- [Inner Primer Test PCR](bio/lib_prep.md#inner-primer-test-pcr)
-- [PCR Protocol](bio/lib_prep.md#pcr-protocol)
-- [PCR Product Purification](bio/lib_prep.md#pcr-product-purification)
+#### [Library preparation](1-lib_prep.md)
+- [Dual-Index Barcode Plates](1-lib_prep.md#dual-index-barcode-plates)
+- [Inner Primer Design](1-lib_prep.md#inner-primer-design)
+- [Inner Primer Test PCR](1-lib_prep.md#inner-primer-test-pcr)
+- [PCR Protocol](1-lib_prep.md#pcr-protocol)
+- [PCR Product Purification](1-lib_prep.md#pcr-product-purification)
 
 ### Computation
-#### [Computational basics](comp/basics.md)
-#### [Installation](comp/installation.md)
-- [Installing from GitHub with the `conda` environment](comp/installation.md#installing-from-github-with-the-conda-environment)
-- [Standard `pip` Install and Dependencies](comp/installation.md#standard-pip-install-and-dependencies)
-#### [Running `evSeq`](comp/usage.md)
-- [Post Installation](comp/usage.md#post-installation)
-- [Using `evSeq` from the command line or GUI](comp/usage.md#using-evseq-from-the-command-line-or-gui)
-- [Required Arguments](comp/usage.md#required-arguments)
-  - [The `refseq` file](comp/usage.md#the-refseq-file)
-  - [`folder`](comp/usage.md#folder)
-- [Optional Arguments](comp/usage.md#optional-arguments)
-#### [Understanding the Outputs](comp/outputs.html)
-- [`Qualities`](comp/outputs.html#qualities)
-- [`OutputCounts`](comp/outputs.html#outputcounts)
-- [`Platemaps`](comp/outputs.html#platemaps)
-- [`evSeqLog`](comp/outputs.html#evSeqLog)
-- [`ParsedFilteredFastqs`](comp/outputs.html#parsedfilteredfastqs)
-- [`Alignments`](comp/outputs.html#alignments)
+#### [Computational basics](2-basics.md)
+#### [Installation](3-installation.md)
+- [Installing from GitHub with the `conda` environment](3-installation.md#installing-from-github-with-the-conda-environment)
+- [Standard `pip` Install and Dependencies](3-installation.md#standard-pip-install-and-dependencies)
+#### [Running `evSeq`](4-usage.md)
+- [Post Installation](4-usage.md#post-installation)
+- [Using `evSeq` from the command line or GUI](4-usage.md#using-evseq-from-the-command-line-or-gui)
+- [Required Arguments](4-usage.md#required-arguments)
+  - [The `refseq` file](4-usage.md#the-refseq-file)
+  - [`folder`](4-usage.md#folder)
+- [Optional Arguments](4-usage.md#optional-arguments)
+#### [Understanding the Outputs](5-outputs.html)
+- [`Qualities`](5-outputs.html#qualities)
+- [`OutputCounts`](5-outputs.html#outputcounts)
+- [`Platemaps`](5-outputs.html#platemaps)
+- [`evSeqLog`](5-outputs.html#evSeqLog)
+- [`ParsedFilteredFastqs`](5-outputs.html#parsedfilteredfastqs)
+- [`Alignments`](5-outputs.html#alignments)
 
-<!--
-#### [Using `evSeq` tools in a Python environment](comp/additional.html)
-- [Running `evSeq` functions]()
-- [Mapping sequence to function]()
--->
+### Additional Examples
+Below are a collection of Jupyter Notebooks (rendered as documents) with examples on how to get the most out of `evSeq`. If you want to run them on your own, they can be found in the [examples](../examples/) directory of the `evSeq` repository.
+#### [Using `evSeq` data](6-using_evseq_data.html)
+- [Importing and viewing `evSeq` data](6-using_evseq_data.html#importing-and-viewing-evseq-data)
+- [Pairing sequence to function](6-using_evseq_data.html#pairing-sequence-to-function)
+- [Analyzing single-site-saturation libraries](6-using_evseq_data.html#analyzing-single-site-saturation-libraries)
+- [`evSeq` for multisite libraries](6-using_evseq_data.html#evseq-for-multisite-libraries)
+- [Creating figure-worthy visualizations](6-using_evseq_data.html#creating-figure-worthy-visualizations)
+- [Submitting to Protαβank and other databases](6-using_evseq_data.html#submitting-to-protαβank-and-other-databases)
+- [Miscellaneous visualizations](6-using_evseq_data.html#miscellaneous-visualizations)
+
+#### [Creating barcode/index pairs](7-index_mapping.html)
+- [Using new barcode primers](7-index_mapping.html#using-new-barcode-primers)
+- [Creating new index pair mappings](7-index_mapping.html#creating-new-index-pair-mappings)
+
+#### [Running evSeq in a Jupyter Notebook](8-full_demo.html)
+- To run this notebook on your own, open it in the `evSeq` repository and run it from its current location (found as [evSeq/examples/8-full_demo.ipynb](../evSeq/examples/8-full_demo.ipynb))
+
 ### Troubleshooting
-- [Poor reverse read quality](troubleshooting.md#poor-reverse-read-quality)
-- [Poor results but good quality sequencing](troubleshooting.md#poor-results-but-good-quality-sequencing)
-- [Windows: `CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'`](troubleshooting.md#windows-commandnotfounderror-your-shell-has-not-been-properly-configured-to-use-conda-activate)
-- [macOS: `PermissionError: [Errno 1] Operation not permitted`](troubleshooting.md#macos-permissionerror-errno-1-operation-not-permitted)
+- [Poor reverse read quality](9-troubleshooting.md#poor-reverse-read-quality)
+- [Poor results but good quality sequencing](9-troubleshooting.md#poor-results-but-good-quality-sequencing)
+- [Windows: `CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'`](9-troubleshooting.md#windows-commandnotfounderror-your-shell-has-not-been-properly-configured-to-use-conda-activate)
+- [macOS: `PermissionError: [Errno 1] Operation not permitted`](9-troubleshooting.md#macos-permissionerror-errno-1-operation-not-permitted)
