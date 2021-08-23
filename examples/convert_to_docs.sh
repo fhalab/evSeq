@@ -52,7 +52,7 @@ do
     echo -e "---\nlayout: default\n---\n" > $new_path
 
     # Convert to html and add to html file
-    jupyter nbconvert $nb --to html --stdout --TagRemovePreprocessor.remove_input_tags='["hide_input"]' >> $new_path
+    jupyter nbconvert $nb --to html --stdout --TagRemovePreprocessor.remove_input_tags hide_input >> $new_path
 
     # Update the relative path links to current directory
     sed -i '' -e 's&../docs/&./&g' $new_path

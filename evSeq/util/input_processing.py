@@ -22,7 +22,8 @@ def build_output_dirs(cl_args):
     # Set up required folders based on type of run
     if cl_args["analysis_only"]:
         folders = ["Qualities"]
-    if cl_args["only_parse_fastqs"]:
+
+    elif cl_args["only_parse_fastqs"]:
         folders = [
             "Qualities",
             os.path.join("ParsedFilteredFastqs", "F"),
@@ -36,7 +37,7 @@ def build_output_dirs(cl_args):
             "Platemaps"
         ]
     
-    # Add folders for noon-standard run
+    # Add folders for non-standard run
     if cl_args["keep_parsed_fastqs"]:
         folders = folders + [
             os.path.join("ParsedFilteredFastqs", "F"),
@@ -47,7 +48,7 @@ def build_output_dirs(cl_args):
 
     # Build required folders
     for folder in folders:
-        os.mkdir(os.path.join(cl_args["output"], folder))
+        os.makedirs(os.path.join(cl_args["output"], folder), exist_ok=True)
 
 def find_matches(input_folder):
     """Matches forward and reverse reads in a passed in folder."""

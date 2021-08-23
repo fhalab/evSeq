@@ -13972,44 +13972,12 @@ a.anchor-link {
     </script>
     <!-- End of mathjax configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">import</span> <span class="nn">os</span>
 
-<span class="k">def</span> <span class="nf">env_check</span><span class="p">(</span><span class="n">silent</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Checks first that the user is in an evSeq environment, then</span>
-<span class="sd">    checks that evSeq can be imported (regardless of env). If neither</span>
-<span class="sd">    pf these are accomplised, raises error. Otherwise, warns or prints</span>
-<span class="sd">    status of env/import, unless `silent` is True.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">env_check</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;CONDA_DEFAULT_ENV&#39;</span><span class="p">]</span>
-    <span class="k">if</span> <span class="s1">&#39;evSeq&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">env</span><span class="p">:</span>
-        <span class="n">env_check</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">silent</span><span class="p">:</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Not in an evSeq environment&#39;</span><span class="p">)</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">evSeq</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">silent</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Successfully imported evSeq&#39;</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-        <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Could not import evSeq&#39;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">env_check</span><span class="p">:</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s1"> or activate environment&#39;</span>
-        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
-            
-<span class="n">env_check</span><span class="p">()</span>
-</pre></div>
-
-     </div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Running-evSeq-in-a-Jupyter-Notebook">Running <code>evSeq</code> in a Jupyter Notebook<a class="anchor-link" href="#Running-evSeq-in-a-Jupyter-Notebook">&#182;</a></h1>
 </div>
-</div>
-</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell    celltag_hide_input">
 
 <div class="jp-Cell-outputWrapper">
 
@@ -14032,18 +14000,247 @@ a.anchor-link {
 
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Jupyter Notebooks are excellent tools for reproducible code. If you are a frequent Jupyter Lab user, every step of <code>evSeq</code>—from running, to analysis of generated HTML plots, to post-processing—can be done directly in the Jupyter Lab interface.</p>
+<p>Jupyter Notebooks allow code to be run effectively from the command line interface by using a <code>!</code> in front of the line. Furthermore, variables can be defined declaratively in python and then passed into the command within <code>{}</code> brackets.</p>
+<p>The run will take anywhere from a couple of minutes (if you have many processors availble) to upwards of 20–30 minutes, if you have few or use the flag <code>--jobs 1</code> (or some other low number) to reduce the multiprocessing jobs.</p>
+<p>Not all runs will take this long. This run processes 5 plates of high-quality sequencing for multi-site libraries, making it extensive to process in return for excellent results.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define the refseq and folder</span>
+<span class="n">refseq</span> <span class="o">=</span> <span class="s1">&#39;refseqs/DefaultRefSeq.csv&#39;</span>
+<span class="n">folder</span> <span class="o">=</span> <span class="s1">&#39;../data/multisite_runs/&#39;</span>
+
+<span class="c1"># Pass to evSeq and run</span>
+<span class="o">!</span>evSeq <span class="o">{</span>refseq<span class="o">}</span> <span class="o">{</span>folder<span class="o">}</span>
 </pre></div>
 
      </div>
 </div>
 </div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>Loading forward reads...
+Parsing forward reads...: 100%|██████| 403077/403077 [00:21&lt;00:00, 18581.71it/s]
+Loading reverse reads...
+Pairing reverse reads...: 100%|███████| 403077/403077 [00:55&lt;00:00, 7217.18it/s]
+Running read qc...
+Assigning sequences to wells...
+Processing wells...: 100%|████████████████████| 480/480 [13:12&lt;00:00,  1.65s/it]
+Saving outputs to disk...
+High mutational frequency in DI01-C02. You may want to check alignments for accuracy.
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>You should see a warning of <code>High mutational frequency in DI01-C02. You may want to check alignments for accuracy.</code>. This is expected.</p>
+<h3 id="Viewing-the-results">Viewing the results<a class="anchor-link" href="#Viewing-the-results">&#182;</a></h3><p>You can view the results directly in Jupyter Lab. To view plots, navigate to the output directory in the file explorer on the left:</p>
+<p><code>evSeqOutput/date-time/</code></p>
+<p>and then click on a plot (e.g., <code>Qualities/QualityPlot.html</code>). Then, in the top left corner of the new tab that opens click <code>Trust HTML</code> to allow Jupyter Lab to render the plot.</p>
+<h3 id="Running-with-other-arguments-and-flags">Running with other arguments and flags<a class="anchor-link" href="#Running-with-other-arguments-and-flags">&#182;</a></h3><p>As stated above, the <code>!</code> runs code directly as if it were run from the command line, making <code>evSeq</code> run here as if it were run from the command line and allowing variables to be passed in within <code>{}</code>. Arguments and flags can be passed in as shown in the examples below:</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># # Analysis-only run of evSeq, using a flag</span>
+<span class="c1"># !evSeq {refseq} {folder} --analysis_only</span>
+
+<span class="c1"># # Save the output in the &#39;data&#39; folder</span>
+<span class="c1"># !evSeq {refseq} {folder} --output ../data/</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="A-standard-call-for-running-evSeq">A standard call for running <code>evSeq</code><a class="anchor-link" href="#A-standard-call-for-running-evSeq">&#182;</a></h3><p>You could even create formatted lists/dictionaries declaratively in python that are passed to the standard call <code>!evSeq {refseq} {folder} {flags} {args}</code>.</p>
+<p>The cell code below could reasonably used for any evSeq run, updating flags and args where appropriate and uncommenting the last line. If any flags and/or args are used, commenting out or removing any lines between the brackets will run the program with only those remaining (including if none are remaining).</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define the refseq and folder</span>
+<span class="n">refseq</span> <span class="o">=</span> <span class="s1">&#39;refseqs/DefaultRefSeq.csv&#39;</span>
+<span class="n">folder</span> <span class="o">=</span> <span class="s1">&#39;../data/multisite_runs/&#39;</span>
+
+<span class="c1"># Set up flags (&#39;--&#39; not needed)</span>
+<span class="n">flags</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;keep_parsed_fastqs&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;return_alignments&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># Set up args and their values</span>
+<span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;output&#39;</span><span class="p">:</span> <span class="s1">&#39;../data/&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;read_length&#39;</span><span class="p">:</span> <span class="mi">150</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Format</span>
+<span class="n">flags</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;--</span><span class="si">{</span><span class="n">flag</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">flag</span> <span class="ow">in</span> <span class="n">flags</span><span class="p">])</span>
+<span class="n">args</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;--</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">arg</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+
+<span class="c1"># Check on them</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Running evSeq with the following parameters:</span>
+<span class="s2">--------------------------------------------</span>
+
+<span class="s2">refseq file: </span><span class="si">{</span><span class="n">refseq</span><span class="si">}</span><span class="s2"></span>
+
+<span class="s2">fastq location: </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2"></span>
+
+<span class="s2">Flags: </span><span class="si">{</span><span class="n">flags</span><span class="si">}</span><span class="s2"></span>
+
+<span class="s2">Args + values: </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="c1"># Run in evSeq</span>
+<span class="c1"># !evSeq {refseq} {folder} {flags} {args}</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>
+Running evSeq with the following parameters:
+--------------------------------------------
+
+refseq file: refseqs/DefaultRefSeq.csv
+
+fastq location: ../data/multisite_runs/
+
+Flags: --keep_parsed_fastqs --return_alignments
+
+Args + values: --output ../data/ --read_length 150
+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Comparing-to-expected-evSeqOutput">Comparing to expected <code>evSeqOutput</code><a class="anchor-link" href="#Comparing-to-expected-evSeqOutput">&#182;</a></h1>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">from</span> <span class="nn">evSeq.util</span> <span class="kn">import</span> <span class="n">compare_to_expected</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>The function <code>compare_to_expected</code> takes in paths to a folder inside <code>evSeqOutput</code> and compares each <code>OutputCounts</code> file, expecting them to be identical (allowing rooms for small numerical errors). This passes silently or raises an <code>AssertionError</code> after printing out the mismatched file(s) and associated problem(s).</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Path to expected results</span>
+<span class="n">expected_path</span> <span class="o">=</span> <span class="s1">&#39;../data/multisite_runs/evSeqOutput/expected/&#39;</span>
+
+<span class="c1"># Get the most recent run from this folder</span>
+<span class="c1"># Adjust this path if necessary</span>
+<span class="n">recent_path</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;evSeqOutput/*&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Compare</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Comparing expected results to results in &quot;</span><span class="si">{</span><span class="n">recent_path</span><span class="si">}</span><span class="s1">&quot;.&#39;</span><span class="p">)</span>
+<span class="n">compare_to_expected</span><span class="p">(</span><span class="n">recent_path</span><span class="p">,</span> <span class="n">expected_path</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>Comparing expected results to results in &#34;evSeqOutput/20210823-143304&#34;.
+</pre>
+</div>
+</div>
+
+</div>
+
 </div>
 
 </div>

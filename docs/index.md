@@ -1,4 +1,4 @@
-## Every Variant Sequencing: No sequence-function pair left behind.
+## No sequence-function pair left behind.
 
 Every Variant Sequencing (`evSeq`) is a library preparation and analysis protocol designed to slot neatly into existing protein engineering workflows to enable extremely low cost massively parallel sequencing of heterologously expressed protein variants arrayed in 96-well plates. This workflow enables sequencing all variants produced during a protein engineering or biochemical mutagenesis experiment at a cost of cents per variant, even for labs that do not have expertise in or access to next-generation sequencing (NGS) technology.
 
@@ -63,7 +63,7 @@ Below are a collection of Jupyter Notebooks (rendered as documents) with example
 - [Using new barcode primers](7-index_mapping.html#using-new-barcode-primers)
 - [Creating new index pair mappings](7-index_mapping.html#creating-new-index-pair-mappings)
 
-#### [Running evSeq in a Jupyter Notebook](8-full_demo.html)
+#### [Running `evSeq` in a Jupyter Notebook](8-full_demo.html)
 - To run this notebook on your own, open it in the `evSeq` repository and run it from its current location (found as [evSeq/examples/8-full_demo.ipynb](../evSeq/examples/8-full_demo.ipynb))
 
 ### Troubleshooting

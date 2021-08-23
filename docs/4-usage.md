@@ -1,17 +1,41 @@
 # Running `evSeq`
 
 ## Post Installation
-*Under development*
-<!-- ### Confirming your installation
-This step is optional; running example files as described below will also confirm that your `evSeq` installation is generally functional.
+### Running example data
+To confirm that `evSeq` has been installed and works on your machine, we have provided test datasets that work with the example `refseqs`. You have three options for running this:
+#### Via Jupyter Notebook
+A demo notebook can be found as [evSeq/examples/8-full_demo.ipynb](../evSeq/examples/8-full_demo.ipynb) which effectively runs `evSeq` via the command line. This is also rendered as documentation [here](8-full_demo.html). The end of the notebook uses the outputs of this run and compares them to the expected output given the provided example data.
+#### Via Command Line
+General info on running `evSeq` from the command line can be found [below](#command-line).
 
-**[shell script that runs lots of things]**
-### Running example files
-**[refer to GUI and command line or in a python environment sections, and use [path_to_file] to test.]**
+First, you will need to activate your conda environment (if using it) with
+```
+conda activate evSeq
+```
+To run the example files, first navigate to the `examples` folder of the `evSeq` repository:
+```
+cd path/to/evSeq/examples
+```
+From here, run `evSeq` as follows:
+```
+evSeq refseqs/DefaultRefSeq.csv ../data/multisite_runs
+```
+This should start the run and create an `evSeqOutput` folder in the current working directory (`evSeq/examples`) with a timestamped results folder. Once the run has finished, confirm it has done so without errors (they will be sent to the standard output and the log file) and compare the results to the expected results in `evSeq/data/multisite_runs/evSeqOutput/expected`. You can find example code for comparing these in the demo documentation in the above section, using the function `compare_to_expected` from `evSeq.util`.
 
-Once comfortable with the GUI or command line, example data can be found in [InstallationConfirmationData](./InstallationConfirmationData) for you to test your installation. The file "DefaultRefSeq.csv" should be used as "refseq" and the whole folder should be used as "folder". Details on these arguments can be found in [Required Arguments](#required-arguments). Additional optional arguments can also be passed in to `evSeq`; they are detailed in [Optional Arguments](#optional-arguments).
+#### Via GUI
+General info on running `evSeq` from the GUI can be found [below](#gui).
 
-For common problems encountered when using `evSeq`, please reference [Troubleshooting](8-troubleshooting.md). -->
+First, double click the `evSeq` shortcut on the Desktop (if you have not moved it to another location). This will open the GUI; it may take a minute, especially the first time opening it.
+
+In the GUI, click on the `refseq` selector and navigate to the `examples` folder (`path/to/evSeq/examples`) and select `DefaultRefSeq.csv`.
+
+For `folder`, navigate to the `data` folder (`path/to/evSeq/data`) and select `multisite_runs`.
+
+Then click `Start`.
+
+This should start the run and create a new timestamped results folder in the `evSeqOutput` directory already present in `multisite_runs` folder (the same location as the `folder` argument). Once the run has finished, confirm it has done so without errors (they will be sent to the GUI console and the log file) and compare the results to the expected results in `evSeq/data/multisite_runs/evSeqOutput/expected`. You can find code for comparing these in the demo documentation in the above section, or do so visually by comparing the `Platemaps.html` files.
+### Troubleshooting
+For common problems encountered when using `evSeq`, please reference [Troubleshooting](8-troubleshooting.md).
 
 ## Using `evSeq` from the command line or GUI
 ### Command line
