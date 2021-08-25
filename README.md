@@ -7,20 +7,20 @@ Every Variant Sequencing (`evSeq`) is a library preparation and analysis protoco
 This repository accompanies the work ["evSeq: Cost-Effective Amplicon Sequencing of Every Variant in Protein Mutant Libraries"](LINK_TO_PAPER). If you use this tool, please [cite us](LINK_TO_PAGE_WITH_CITATION_FORMATS).
 
 ### Read the Docs!
-For detailed information and interactive walkthroughs, [read the docs at the `evSeq` website.](fhalab.github.io/evSeq/)
+For detailed information and interactive walkthroughs, [read the docs at the `evSeq` website.](https://fhalab.github.io/evSeq/)
 
 #### Quick links to common resources:
 ##### Biology
-- [Inner Primer Design](fhalab.github.io/evSeq/1-lib_prep.md#inner-primer-design)
-- [PCR Protocol](fhalab.github.io/evSeq/1-lib_prep.md#pcr-protocol)
-- [PCR Product Purification](fhalab.github.io/evSeq/1-lib_prep.md#pcr-product-purification)
+- [Inner Primer Design](https://fhalab.github.io/evSeq/1-lib_prep.html#inner-primer-design)
+- [PCR Protocol](https://fhalab.github.io/evSeq/1-lib_prep.html#pcr-protocol)
+- [PCR Product Purification](https://fhalab.github.io/evSeq/1-lib_prep.html#pcr-product-purification)
 
 ##### Computation
-- [The `refseq` file](fhalab.github.io/evSeq/4-usage.md#the-refseq-file)
-- [Understanding the `OutputCounts`](fhalab.github.io/evSeq/5-outputs.html#outputcounts)
-- [Running `evSeq` in a Jupyter Notebook](fhalab.github.io/evSeq/8-full_demo.html)
+- [The `refseq` file](https://fhalab.github.io/evSeq/4-usage.html#the-refseq-file)
+- [Understanding the `OutputCounts`](https://fhalab.github.io/evSeq/5-outputs.html#outputcounts)
+- [Running `evSeq` in a Jupyter Notebook](https://fhalab.github.io/evSeq/8-full_demo.html)
 
-##### [Troubleshooting](9-troubleshooting.md)
+##### [Troubleshooting](https://fhalab.github.io/evSeq/9-troubleshooting.md)
 
 ### The `evSeq` workflow
 ![Workflow](docs/assets/figure2.png)
@@ -59,11 +59,11 @@ For information on optional arguments and flags, run
 ```
 evSeq -h
 ```
-or visit [the usage page](fhalab.github.io/evSeq/4-usage.html#optional-arguments).
+or visit [the usage page](https://fhalab.github.io/evSeq/4-usage.html#optional-arguments).
 
 #### GUI
 `evSeq` is also installed with a GUI for greater accessibility. After installing `evSeq`, you will find a new shortcut/app/executable on your Desktop, which you can double-click to launch the evSeq GUI:
 
 ![gui](docs/assets/gui.png)
 
-More can be read about it [here](fhalab.github.io/evSeq/4-usage.html#GUI).
+More can be read about it [here](https://fhalab.github.io/evSeq/4-usage.html#GUI).
