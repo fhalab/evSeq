@@ -1,13 +1,26 @@
 `evSeq`
 =======
-### No sequence-function pair left behind
-Every Variant Sequencing (`evSeq`) is a library preparation and analysis protocol designed to slot neatly into existing protein engineering workflows to enable extremely low cost massively parallel sequencing of heterologously expressed protein variants arrayed in 96-well plates. This workflow enables sequencing all variants produced during a protein engineering or biochemical mutagenesis experiment at a cost of cents per variant, even for labs that do not have expertise in or access to next-generation sequencing (NGS) technology.
+### *No sequence-function pair left behind*
+Every Variant Sequencing (`evSeq`) is a library preparation and analysis protocol that **slots neatly into existing workflows to enable extremely low-cost, massively parallel sequencing of protein variants**. Designed for heterologously expressed protein variants arrayed in 96-well plates (or similar), this workflow enables **sequencing all variants** produced during a protein engineering or biochemical mutagenesis experiment at a cost of **cents per variant**, even for labs that do not have expertise in or access to next-generation sequencing (NGS) technology.
 
 ### Read the Paper!
 This repository accompanies the work ["evSeq: Cost-Effective Amplicon Sequencing of Every Variant in Protein Mutant Libraries"](LINK_TO_PAPER). If you use this tool, please [cite us](LINK_TO_PAGE_WITH_CITATION_FORMATS).
 
 ### Read the Docs!
 For detailed information and interactive walkthroughs, [read the docs at the `evSeq` website.](fhalab.github.io/evSeq/)
+
+#### Quick links to common resources:
+##### Biology
+- [Inner Primer Design](fhalab.github.io/evSeq/1-lib_prep.md#inner-primer-design)
+- [PCR Protocol](fhalab.github.io/evSeq/1-lib_prep.md#pcr-protocol)
+- [PCR Product Purification](fhalab.github.io/evSeq/1-lib_prep.md#pcr-product-purification)
+
+##### Computation
+- [The `refseq` file](fhalab.github.io/evSeq/4-usage.md#the-refseq-file)
+- [Understanding the `OutputCounts`](fhalab.github.io/evSeq/5-outputs.html#outputcounts)
+- [Running `evSeq` in a Jupyter Notebook](fhalab.github.io/evSeq/8-full_demo.html)
+
+##### [Troubleshooting](9-troubleshooting.md)
 
 ### The `evSeq` workflow
 ![Workflow](docs/assets/figure2.png)

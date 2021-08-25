@@ -1,5 +1,5 @@
 # Computational Basics
-## Useful information for non-programmers
+## Useful information for new/non-programmers
 
 This section details installation of high level dependencies: `Git Bash` (Windows users), `git`, and `Anaconda`. If you have installed and are familiar with these items, you can skip this section and move on to [Installation](3-installation.md). Installation on Linux is not detailed here, as we just assume you know what you're doing. Once this section is completed, continue to [installation](3-installation.md).
 
@@ -26,7 +26,21 @@ conda init bash
 Install `Anaconda` following the instructions [here](https://docs.anaconda.com/anaconda/install/mac-os/).
 
 ### Construction of a Folder for holding `Git` repositories
-The next step will be to install `evSeq`, as described in [Installation](3-installation.md). The recommended way involves cloning the `evSeq` repository from `GitHub`. If you have not worked with Git repos before, we recommend creating a folder where you can store all of them. Wherever seems reasonable to you (most likely your home directory), create a folder called `git` or `GitRepos` or whatever seems best for you. Navigate to this folder (`cd folder_name`) and perform installation from there.
+The next step will be to install `evSeq`, as described in [Installation](3-installation.md). The recommended way involves cloning the `evSeq` repository from `GitHub`. If you have not worked with Git repos before, we recommend creating a folder where you can store all of them. Wherever seems reasonable to you (most likely your home directory), create a folder called `git_repos` or `GitRepos` or whatever seems best for you. Navigate to this folder and perform installation from there.
+
+As an example from the command line, you would perform the following to make a folder named `git_repos`:
+```
+# Change directories (cd) to your home directory (~)
+cd ~
+
+# Make the directory (mkdir) named 'git_repos'
+mkdir git_repos
+
+# Change directories to this new directory
+cd git_repos
+```
+
+From here you will clone the `evSeq` repository and then install it as described on the next page.
 
 ---
 

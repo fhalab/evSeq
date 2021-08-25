@@ -14019,7 +14019,7 @@ a.anchor-link {
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p><em>IMPORTANT:</em> <code>evSeq</code> has only been tested thoroughly with the provided barcode sequencing primers and dual-index plates given in the <code>index_map.csv</code> file found <a href="../evSeq/util/index_map.csv">here</a>. Any changes to this file in your own repo/installation have not been tested and validated by us, so use at your own risk. We <em>have</em> seen barcodes be incompatible with the rest of the <code>evSeq</code> machinery! This has only happened for one barcode out of 192 (~0.5% chance), but caution should be exercised. Additionally, our adapter regions have been thoroughly tested, and previous iterations have caused significant issues. We do not recommend changing these.</p>
-<h2 id="Using-new-barcode-primers">Using new barcode primers<a class="anchor-link" href="#Using-new-barcode-primers">&#182;</a></h2><p>Barcodes in the NGS results are parsed with the <code>index_map.csv</code> to assign forward and reverse barcode pairs back to specific plate-well positions. This index map is prepared via a given method for pairing barcodes from the forward and reverse master barcode primer plates. In the event that you need more/different barcodes, they can be ordered and updated via creating a new file in the same format as the barcode primer file found <a href="../lib_prep_tools/evSeq_barcode_primer_seqs.csv">here</a>. The 'Sequence' column contains the <code>evSeq</code> adapter sequences:</p>
+<h2 id="Using-new-barcode-primers">Using new barcode primers<a class="anchor-link" href="#Using-new-barcode-primers">&#182;</a></h2><p>Barcodes in the NGS results are parsed with the <code>index_map.csv</code> to assign forward and reverse barcode pairs back to specific plate-well positions. This index map is prepared via a given method for pairing barcodes from the forward and reverse master barcode primer plates. In the event that you need more/different barcodes, they can be ordered and updated via creating a new file in the same format as the barcode primer file found <a href="https://github.com/fhalab/evSeq/blob/master/lib_prep_tools/evSeq_barcode_primer_seqs.csv">here</a>. The 'Sequence' column contains the <code>evSeq</code> adapter sequences:</p>
 
 <pre><code>Forward: 'CACCCAAGACCACTCTCCGG'
 Reverse: 'CGGTGTGCGAAGTAGGTGC'</code></pre>
@@ -14699,7 +14699,7 @@ Reverse: 'CGGTGTGCGAAGTAGGTGC'</code></pre>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Once you have a new layout, you may pair this layout with a list of your forward and reverse barcode primers (following the same format as <a href="../lib_prep_tools/evSeq_barcode_primer_seqs.csv">the standard barcode primer file</a> to generate actual barcode pairings with the function <code>generate_index_map</code>:</p>
+<p>Once you have a new layout, you may pair this layout with a list of your forward and reverse barcode primers (following the same format as <a href="https://github.com/fhalab/evSeq/blob/master/lib_prep_tools/evSeq_barcode_primer_seqs.csv">the standard barcode primer file</a> to generate actual barcode pairings with the function <code>generate_index_map</code>:</p>
 
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
@@ -14882,6 +14882,14 @@ Reverse: 'CGGTGTGCGAAGTAGGTGC'</code></pre>
 </div>
 </div>
 
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<hr>
+<p><em>Next page: <a href="8-full_demo.html">Running <code>evSeq</code> in a Jupyter Notebook</a>.</em></p>
+<p><em>Back to the <a href="index.html">main page</a>.</em></p>
+
+</div>
 </div>
 </body>
 

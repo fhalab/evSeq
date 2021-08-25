@@ -1,0 +1,12 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+// Change 64rem default to 70rem to show full heatmaps
+.main-content {
+
+  @include large {
+    max-width: 70rem;
+  }
+}

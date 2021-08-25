@@ -1,11 +1,11 @@
-# Running `evSeq`
+# Running evSeq
 
 ## Post Installation
 ### Running example data
 To confirm that `evSeq` has been installed and works on your machine, we have provided test datasets that work with the example `refseqs`. You have three options for running this:
-#### Via Jupyter Notebook
-A demo notebook can be found as [evSeq/examples/8-full_demo.ipynb](../evSeq/examples/8-full_demo.ipynb) which effectively runs `evSeq` via the command line. This is also rendered as documentation [here](8-full_demo.html). The end of the notebook uses the outputs of this run and compares them to the expected output given the provided example data.
-#### Via Command Line
+#### - via Jupyter Notebook
+A demo notebook can be found in [examples/8-full_demo.ipynb](https://github.com/fhalab/evSeq/blob/master/examples/8-full_demo.ipynb) which effectively runs `evSeq` via the command line. This is also rendered as documentation [here](8-full_demo.html). The end of the notebook uses the outputs of this run and compares them to the expected output given the provided example data.
+#### - via Command Line
 General info on running `evSeq` from the command line can be found [below](#command-line).
 
 First, you will need to activate your conda environment (if using it) with
@@ -22,7 +22,7 @@ evSeq refseqs/DefaultRefSeq.csv ../data/multisite_runs
 ```
 This should start the run and create an `evSeqOutput` folder in the current working directory (`evSeq/examples`) with a timestamped results folder. Once the run has finished, confirm it has done so without errors (they will be sent to the standard output and the log file) and compare the results to the expected results in `evSeq/data/multisite_runs/evSeqOutput/expected`. You can find example code for comparing these in the demo documentation in the above section, using the function `compare_to_expected` from `evSeq.util`.
 
-#### Via GUI
+#### - via GUI
 General info on running `evSeq` from the GUI can be found [below](#gui).
 
 First, double click the `evSeq` shortcut on the Desktop (if you have not moved it to another location). This will open the GUI; it may take a minute, especially the first time opening it.
@@ -35,9 +35,9 @@ Then click `Start`.
 
 This should start the run and create a new timestamped results folder in the `evSeqOutput` directory already present in `multisite_runs` folder (the same location as the `folder` argument). Once the run has finished, confirm it has done so without errors (they will be sent to the GUI console and the log file) and compare the results to the expected results in `evSeq/data/multisite_runs/evSeqOutput/expected`. You can find code for comparing these in the demo documentation in the above section, or do so visually by comparing the `Platemaps.html` files.
 ### Troubleshooting
-For common problems encountered when using `evSeq`, please reference [Troubleshooting](8-troubleshooting.md).
+For common problems encountered when using `evSeq`, please reference [Troubleshooting](9-troubleshooting.md).
 
-## Using `evSeq` from the command line or GUI
+## Using evSeq from the command line or GUI
 ### Command line
 Thanks to `setuptools` `entry_points`, `evSeq` can be accessed from the command line after installation as if it were added to `PATH` by running:
 ```
@@ -72,16 +72,16 @@ You will see two required arguments — the `refseq` and `folder` args — at th
 ### The `refseq` file
 The primary user inputs that are required are contained in the `refseq` file, which contains information that allows the `evSeq` software to know how to process each well. From the information contained in this file, `evSeq` will construct reference sequences for each plate (or well, if using a Detailed `refseq` file) and analyze the NGS data accordingly.
 #### Default `refseq`
-An example Default `refseq` format is given in the `evSeq` GitHub repository [here](../examples/refseqs/DefaultRefSeq.csv).
+An example Default `refseq` format is given in the `evSeq` GitHub repository [here](https://github.com/fhalab/evSeq/blob/master/examples/refseqs/DefaultRefSeq.csv).
 
 This form of the file assumes the same reference sequence in each well of the analyzed plates and requires eight columns: `PlateName`, `IndexPlate`, `FPrimer`, `RPrimer`, `VariableRegion`, `FrameDistance`, `BpIndStart`, and `AaIndStart`. These columns are detailed below:
 
 | Column | Type | Description |
 |:-------|:----------|-------------|
 | `PlateName` | `str` | This is a nickname given to the plate. For instance, if you performed `evSeq` on a plate that you called "Plate1", you would put "Plate1" in this column. |
-| `IndexPlate` | `DI0X`, `X=[1,8]` | This is the `evSeq` index plate used for library preparation corresponding to the plate in `PlateName`. For instance, if "Plate1" weere prepared using index plate 2, `IndexPlate` would be `DI02`. Allowed barcode names are `DI01` through `DI08`. |
-| `FPrimer` | `str`, DNA Sequence | This is the sequence-specific forward primer you used to create the amplicon for attaching `evSeq` barcodes, including the `evSeq` adapter regions. It should be input exactly as ordered from your oligo supplier, 5' - 3'. |
-| `RPrimer` | `str`, DNA Sequence | This is the sequence-specific reverse primer you used to create the amplicon for attaching `evSeq` barcodes, including the `evSeq` adapter regions. It should be input exactly as ordered from your oligo supplier, 5' - 3'. Do *not* use the reverse complement. |
+| `IndexPlate` | `DI0X`, `X=[1,8]` | This is the `evSeq` index plate used for library preparation corresponding to the plate in `PlateName`. For instance, if "Plate1" were prepared using index plate 2, `IndexPlate` would be `DI02`. Allowed barcode names are `DI01` through `DI08`, as given in [the index map file](https://github.com/fhalab/evSeq/blob/master/evSeq/util/index_map.csv). |
+| `FPrimer` | `str`, DNA Sequence | This is the forward inner primer you used to create the amplicon for attaching `evSeq` barcodes, including the `evSeq` adapter regions. It should be input exactly as ordered from your oligo supplier, 5' - 3'. |
+| `RPrimer` | `str`, DNA Sequence | This is the reverse inner primer you used to create the amplicon for attaching `evSeq` barcodes, including the `evSeq` adapter regions. It should be input exactly as ordered from your oligo supplier, 5' - 3'. **Do not use the reverse complement.** |
 | `VariableRegion` | `str`, DNA Sequence | This is the entire region between the 3' ends of each primer used to generate the `evSeq` amplicon, 5' - 3'. This is called the "variable region" as it is the sequenced region that can vary meaningfully, since the primers should be invariant. If a specific codon has been specifically mutagenized, this codon may be replaced by "NNN". See below for more details. |
 | `FrameDistance` | `int`, `[0,1,2]` | Distance (in base pairs) from the 3' end of `FPrimer` to the first in-frame codon in your `VariableRegion`. **This is required for accurate translation of sequences.** For a given `evSeq` run, 2 in 3 times the sequence used will be out of reading frame with the full amplicon, so this is important to check. As an example, if the 3' end of your `FPrimer` ends on the last base of a codon, your `VariableRegion` is in-frame and this is argument should be `0`. If `FPrimer` ends on the second base of a codon (e.g., is shifted back 1 bp), then your first in-frame base is 1 base away and this argument should be `1`. Note that if "NNN" is used in the `VariableRegion`, `evSeq` will double check that you correctly defined this argument — with no "NNN" it will assume you are correct. |
 | `BpIndStart` | `int`, `[0,inf]` | This argument tells the program what index the first base in the variable region belongs to. This is useful for formatting the outputs, as any variation identified in `evSeq` can be output at the index corresponding to the full gene, rather than the amplicon. |
@@ -108,7 +108,7 @@ In this simple example, the `FPrimer` sequence is `AAAAAAAAAAGGGGGGGGGGG` and th
 As currently deployed, up to 8 plates (`DI01`–`DI08`) can be input in a single `evSeq` run. No more than 8 rows should thus ever be filled in this form of `refseq` file.
 
 ### Detailed `refseq`
-An example Detailed `refseq` format is given in the `evSeq` GitHub repository [here](../examples/refseqs/DetailedRefSeq.csv).
+An example Detailed `refseq` format is given in the `evSeq` GitHub repository [here](https://github.com/fhalab/evSeq/blob/master/examples/refseqs/DetailedRefSeq.csv).
 
 This form of the file allows for a different reference sequence in each _well_ of the analyzed plates, rather than the same reference sequence in every well of a given plate. In addition to the column headers given in [Default `refseq`](#default-refseq), this form of the file has a required `Well` column, enabling specification of a different `FPrimer`, `RPrimer`, and `VariableRegion` for each well in the input plates. As currently deployed, up to 8 plates (`DI01`–`DI08`) can be input in a single `evSeq` run, so no more than 768 rows should ever be filled in this form of `refseq` file.
 
@@ -120,7 +120,7 @@ This is the folder containing the fastq or fastq.gz files generated during next-
 1. Look in this folder to find all filenames containing `_R1_` or `_R2_`.
 2. Match forward and reverse files by the name preceding the identified `_R1_` or `_R2_`. For instance, the files `CHL1_S193_L001_R1_001.fastq.gz` and `CHL1_S193_L001_R2_001.fastq.gz` would be matched because the text preceding the `_R1_` and `_R2_`, `CHL1_S193_L001`, matches for both files. The file with the `_R1_` is designated the forward read file and the file with the `_R2_` is designated the reverse read file.
 
-Note that both files without a `_R1_` or `_R2_` in their name and files for which no matching partner is identified will be ignored; all ignored files are recorded in the [log file](5-outputs.html#evseqlog). If multiple forward-reverse file pairs are identified, `evSeq` will raise an error.
+Note that both files without a `_R1_` or `_R2_` in their name and files for which no matching partner is identified will be ignored; all ignored files are recorded in the [log file](5-outputs.html#evSeqLog-files). If multiple forward-reverse file pairs are identified, `evSeq` will raise an error.
 
 In special cases the forward read file can be passed in as the folder argument and the reverse read file can be passed in as the optional argument `fastq_r`. See the entry on `fastq_r` in the [Optional Arguments](#optional-arguments) section for more detail.
 
@@ -133,7 +133,7 @@ There are a number of flags and optional arguments that can be passed for `evSeq
 | `fastq_r` | Argument | This argument is only available for command line use. If a case arises where, for whatever reason, `evSeq` cannot auto-identify the forward and reverse read files, this option acts as a failsafe. Instead of passing the folder containing the forward and reverse files in to the `folder` required argument, pass in the forward read file as the `folder` argument and the reverse read file as this optional argument. |
 | `output` | Argument | By default, `deSeq` will save to the current working directory (command line) or the `evSeq` Git repository folder (GUI). The default save location can be overwritten with this argument. |
 | `detailed_refseq` | Flag | Set this flag (check the box in the GUI) when passing in a detailed reference sequence file. See [Detailed refseq](#detailed-refseq) for more information. |
-| `analysis_only` | Flag | Set this flag (check the box in the GUI) to only perform Q-score analysis on the input fastq files. The only output in this case will be the [quality score histograms](5-outputs.html#qualities).|
+| `analysis_only` | Flag | Set this flag (check the box in the GUI) to only perform Q-score analysis on the input fastq files. The only output in this case will be the [quality score histograms](5-outputs.html#Qualities).|
 | `only_parse_fastqs` | Flag | Set this flag to stop `evSeq` after generation of parsed, well-filtered fastq files. Counts, platemaps, and alignments will not be returned in this case. Used in case the well-specific fastq sequences are desired but not the entire `evSeq` analysis. |
 | `keep_parsed_fastqs` | Flag | Set this flag to save parsed, well-filtered fastq files as in `only_parse_fastqs`  but to also finish the regular `evSeq` run. |
 | `return_alignments` | Flag | Set this flag to return alignments along with the `evSeq` output. Note that this flag is ignored if either `analysis_only` or `stop_after_fastq` are used. |

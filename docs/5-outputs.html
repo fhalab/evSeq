@@ -13989,7 +13989,7 @@ a.anchor-link {
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Understanding-the-Outputs">Understanding the Outputs<a class="anchor-link" href="#Understanding-the-Outputs">&#182;</a></h1><p>The output location of <code>evSeq</code> is controlled with the <code>--output</code> optional argument (see <a href="4-usage.md#optional-arguments">here</a>). If the "output" argument is not set, then evSeq will save to the current working directory (command line) or the same location as the <code>folder</code> argument (GUI). If the save location has not previously been used, then <code>evSeq</code> will create a folder titled <code>evSeqOutput</code> in the output location which contains a folder giving the date-time of the run initialization (in <code>yyyymmdd-hhmmss</code> format). If the save location has been previously used, then evSeq will add another date-time folder with the previously generated <code>evSeqOutput</code> folder. All <code>evSeq</code> outputs of a specific run are contained in the associated date-time folder. The below sections detail the folders found within the date-time folder.</p>
+<h1 id="Understanding-the-Outputs">Understanding the Outputs<a class="anchor-link" href="#Understanding-the-Outputs">&#182;</a></h1><p>The output location of <code>evSeq</code> is controlled with the <code>--output</code> optional argument (see <a href="4-usage.html#optional-arguments">here</a>). If the "output" argument is not set, then evSeq will save to the current working directory (command line) or the same location as the <code>folder</code> argument (GUI). If the save location has not previously been used, then <code>evSeq</code> will create a folder titled <code>evSeqOutput</code> in the output location which contains a folder giving the date-time of the run initialization (in <code>yyyymmdd-hhmmss</code> format). If the save location has been previously used, then evSeq will add another date-time folder with the previously generated <code>evSeqOutput</code> folder. All <code>evSeq</code> outputs of a specific run are contained in the associated date-time folder. The below sections detail the folders found within the date-time folder.</p>
 
 </div>
 </div>
@@ -14098,7 +14098,7 @@ a.anchor-link {
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Note that most of the reverse reads have Q-scores below 30. If you have a histogram like this, it's highly likely that something went wrong at some stage of <code>evSeq</code> library prep/sequencing. See the <a href="8-troubleshooting.md#poor-reverse-read-quality">troubleshooting page</a> for more details.</p>
+<p>Note that most of the reverse reads have Q-scores below 30. If you have a histogram like this, it's highly likely that something went wrong at some stage of <code>evSeq</code> library prep/sequencing. See the <a href="9-troubleshooting.html#poor-reverse-read-quality">troubleshooting page</a> for more details.</p>
 
 </div>
 </div>
@@ -14203,7 +14203,7 @@ a.anchor-link {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Interactive Platemap</span>
-<span class="n">IFrame</span><span class="p">(</span><span class="s1">&#39;assets/Platemaps.html&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1420</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">680</span><span class="p">)</span>
+<span class="n">IFrame</span><span class="p">(</span><span class="s1">&#39;assets/Platemaps.html&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1010</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">810</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14226,8 +14226,8 @@ a.anchor-link {
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
 
         <iframe
-            width="1420"
-            height="680"
+            width="1010"
+            height="810"
             src="assets/Platemaps.html"
             frameborder="0"
             allowfullscreen
@@ -14246,7 +14246,7 @@ a.anchor-link {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>As can be seen from the plot about, these are interactive and contain toggles to choose between plates (when multiple plates are being analyzed by <code>evSeq</code>) and extra information about each well when hovering over them.</p>
 <p>The text within each well is the combination of amino acids (in 5' -&gt; 3' order, as passed in in the <code>refseq</code> file) with the highest alignment frequency for that well. The fill color of the well is the log sequencing depth, while the well border color is the alignment frequency of the well. Note that the border color is binned rather than existing on a continuous scale. Also note that, because the position information is not given, the output csv files in the previous section should be used for downstream processing — these images are simply a nice way to quickly analyze your data.</p>
-<h2 id="evSeqLog"><code>evSeqLog</code><a class="anchor-link" href="#evSeqLog">&#182;</a></h2><p><code>evSeq</code> keeps a log of every run. A single log is output for each <code>evSeq</code> run as <code>RunSpecificLog.txt</code> in that run's <code>evSeqOutput</code> folder. However, a continuous log is also stored within the local <code>evSeq</code> install repository and can be found here: <code>evSeqLog.log</code>. Information captured by the log file includes:</p>
+<h2 id="evSeqLog-files"><code>evSeqLog</code> files<a class="anchor-link" href="#evSeqLog-files">&#182;</a></h2><p><code>evSeq</code> keeps a log of every run. A single log is output for each <code>evSeq</code> run as <code>RunSpecificLog.txt</code> in that run's <code>evSeqOutput</code> folder. However, a continuous log is also stored within the local <code>evSeq</code> install repository and can be found here: <code>evSeqLog.log</code>. Information captured by the log file includes:</p>
 <ol>
 <li>The start time of the <code>evSeq</code> run, given as <code>yyyymmdd-hhmmss</code> followed by a series of underscores. This is the first line of each log block.</li>
 <li>The values of all parameters input to <code>evSeq</code>. Note that if parameters are unspecified, the log records the default parameters.</li>
@@ -14266,7 +14266,8 @@ a.anchor-link {
 <p>The alignment file is ordered in blocks of paired forward and reverse reads. Each block begins with "Alignment #:", followed by a forward alignment and/or a reverse alignment. Note that if a sequence did not pass QC, its alignment is not included in the block; if both sequences in a pair did not pass QC, then no alignments are reported, <strong>BUT</strong> a header ("Alignment #") is still made in the file. The rational for including a header is to allow the user to see how many sequences could have potentially been aligned versus how many were capable of being aligned based on set QC parameters.</p>
 <p>Note that just because an alignment is present in these files, it does not mean that it was used for analysis, sequences that pass initial QC will not necessarily pass alignment QC. In particular, any returned sequence that shows an insertion or deletion is automatically discarded and not used for analysis. The alignment files can be used to identify sequences that likely have insertions or deletions present.</p>
 <hr>
-<p><em>Back to the <a href="index.md">main page</a>.</em></p>
+<p><em>Next page: <a href="6-using_evseq_data.html">Using <code>evSeq</code> data</a>.</em></p>
+<p><em>Back to the <a href="index.html">main page</a>.</em></p>
 
 </div>
 </div>

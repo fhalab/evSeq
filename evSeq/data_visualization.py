@@ -22,7 +22,11 @@ from .util.logging import log_warning
 hv.renderer('bokeh')
 
 #### Heatmap ####
-def generate_platemaps(max_combo_data, cmap=None):
+def generate_platemaps(
+    max_combo_data,
+    cmap=None,
+    widget_location='top_left',
+):
     """Saves a plate heatmap html generated from from evSeq data.
     
     Input:
@@ -37,6 +41,11 @@ def generate_platemaps(max_combo_data, cmap=None):
         the most colorblind friendly, but highly intuitive). Otherwise
         you may pass any list -like object containing four colors (e.g.,
         ['#337D1F', '#94CD35', '#FFC300', '#C62C20'] for 'stoplight').
+    widget_location: string, default 'top_left'
+        Location of the widget for navigating plots. Must be one of:
+        ['left', 'bottom', 'right', 'top', 'top_left', 'top_right',
+        'bottom_left', 'bottom_right', 'left_top', 'left_bottom', 
+        'right_top', 'right_bottom'].
     
     Returns:
     --------
@@ -100,6 +109,9 @@ def generate_platemaps(max_combo_data, cmap=None):
         hm_dict, 
         kdims=['Plate']
     )
+
+    # Update widget location
+    hv.output(widget_location=widget_location)
 
     return hm_holomap
 
@@ -246,7 +258,7 @@ def _make_platemap(df, title, cmap=None):
         line_width=6,
         fill_alpha=0,
         line_alpha=1,
-        legend_position='right',
+        legend_position='top',
         size=box_size,
     )
 
@@ -626,6 +638,7 @@ def plot_SSM_activities(
     standard=None,
     jitter=None,
     unknown_jitter=None,
+    widget_location='right',
 ):
     """Takes a DataFrame of single mutant sequence/fitness data (see
     `combine_seq_func_data`) and plots the activities of all sequences
@@ -690,6 +703,11 @@ def plot_SSM_activities(
         How much jitter to add to the points in the Unknown column,
         since there may be more there than any other column. If `jitter`
         is not None and this is None, defaults to the value of `jitter`.
+    widget_location: string, default 'right'
+        Location of the widget for navigating plots. Must be one of:
+        ['left', 'bottom', 'right', 'top', 'top_left', 'top_right',
+        'bottom_left', 'bottom_right', 'left_top', 'left_bottom', 
+        'right_top', 'right_bottom'].
 
     Returns:
     --------
@@ -860,10 +878,15 @@ def plot_SSM_activities(
             count_plot_dict,
             kdims=['Plate: Position']
         )
-        return (activity_hmap+count_hmap).cols(1)
+        p_return = (activity_hmap+count_hmap).cols(1)
 
     else:
-        return activity_hmap
+        p_return = activity_hmap
+
+    # Update widget location
+    hv.output(widget_location=widget_location)
+
+    return p_return
 
 
 def check_distributions(

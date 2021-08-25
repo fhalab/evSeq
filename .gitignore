@@ -2,6 +2,10 @@
 *evSeqOutput/ 
 evSeqLog.log
 
+# Site stuff
+_site
+Gemfile*
+
 # Temporary folder
 TEMP/
 

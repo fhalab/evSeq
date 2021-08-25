@@ -19,3 +19,10 @@ Then execute the script with
 If no arguments are given, the script will convert _all_ notebooks in this directory (except the demo notebook, since that will take a long time; you must explicitly pass the demo notebook as an argument to run it). Otherwise it will only convert those passed as arguments.
 
 If you want a cell's input to be hidden (e.g., like the `env_check()` function definition), add a tag (in the gears tab) called `'hide_input'` and the input will be hidden in the final HTML.
+
+### Other notes:
+You can re-render the `outputs` doc (which is a notebook) with `./convert_to_docs.sh ../docs/5-outputs.ipynb`.
+
+An annoying one: For notebooks that are rendered to html files, you must link to `.html` files, even if that file is natively a markdown (`.md`) file. E.g., linking back to `index.md` should actually be `index.html`.
+
+To top it off, the anchor syntax in `.html` files is different than in `.md` files. For `.md` files, it is all lowercase. For `.html` files, it is case sensitive.
