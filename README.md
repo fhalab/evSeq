@@ -17,14 +17,30 @@ For detailed information and interactive walkthroughs, [read the docs at the `ev
 
 ##### Computation
 - [The `refseq` file](https://fhalab.github.io/evSeq/4-usage.html#the-refseq-file)
-- [Understanding the `OutputCounts`](https://fhalab.github.io/evSeq/5-outputs.html#outputcounts)
+- [`OutputCounts`](https://fhalab.github.io/evSeq/5-outputs.html#OutputCounts)
 - [Running `evSeq` in a Jupyter Notebook](https://fhalab.github.io/evSeq/8-full_demo.html)
 
 ##### [Troubleshooting](https://fhalab.github.io/evSeq/9-troubleshooting.md)
 
 ### The `evSeq` workflow
 ![Workflow](docs/assets/figure2.png)
-**A)** Laboratory procedure. **B)** Computational procedure.
+**A)** All that's required to perform the `evSeq` laboratory procedure is:
+
+- a 96-well thermalcycler
+- standard PCR reagents and materials
+- access to an NGS provider
+- two 96-well plates of `evSeq` barcoding ("outer") primers
+- a pair of region-specific `evSeq`-compatible ("inner") primers
+- 96-well plate(s) of cultures containing DNA encoding protein variants
+- a 12-channel 10 µL pipette is also helpful
+
+**That's it.**
+
+Due to the two-primer, culture-based PCR methodology employed by `evSeq`, only a new pair of inner primers needs to be ordered when targeting new regions/sequences and no DNA isolation needs to be performed.
+
+**B)** Once the sequences are returned by the NGS provider, the computational workup can be performed on a standard laptop by users with little-to-no computational experience.
+
+The amplicons prepared with `evSeq` can yield nearly 1000 high-quality protein variant sequences for the just cost of the multiplexed NGS run (typically ~$100 from commercial sequencing providers).
 
 ### Construct and visualize sequence-function pairs
 ![SeqFunc](docs/assets/figure3.png)

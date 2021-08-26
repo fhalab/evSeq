@@ -18,7 +18,7 @@ The general protocol is as follows:
 ## Dual-Index Barcode Plates
 Barcoded amplicons are mapped back to wells using their forward and reverse (dual-indexed) barcode sequences. To reduce costs, `evSeq` uses only two plates of unique barcode (or "outer") primers—one for the forward primers and one for the reverse—which are combined in different ways to create eight possible dual-indexed (DI) primer plates.
 
-The sequences in each well of the Forward and Reverse barcode (FBC and RBC, respectively) plates can be found [on this sheet](../lib_prep_tools/evSeq_barcode_primer_seqs.csv).
+The sequences in each well of the Forward and Reverse barcode (FBC and RBC, respectively) plates can be found [on this sheet](https://github.com/fhalab/evSeq/blob/master/lib_prep_tools/evSeq_barcode_primer_seqs.csv).
 
 Each of the eight DI plates are created by combining the FBC rows with a different set of RBC rows according to the following scheme:
 1. Every DI plate is stamped (A01 -> A01, etc.) directly with the FBC plate.
@@ -43,7 +43,7 @@ This operation creates pairings that look like this:
 | DI02 | H | H | G |
 | ... | ... | ... | ... |
 
-such that the barcode pair in `DI01-A01` is `F_A01` + `R_A01`, whereas the barcode pair in `DI02-A01` is `F_A01` + `R_H01`, etc. This information is an integral part of the `evSeq` package and can be found [here](../evSeq/util/index_map.csv), but should not need to be edited in any way if following the procedures described here. However, for different use cases, [tools are provided](7-index_mapping.html) to create and validate new DI plates.
+such that the barcode pair in `DI01-A01` is `F_A01` + `R_A01`, whereas the barcode pair in `DI02-A01` is `F_A01` + `R_H01`, etc. This information is an integral part of the `evSeq` package and can be found [here](https://github.com/fhalab/evSeq/blob/master/evSeq/util/index_map.csv), but should not need to be edited in any way if following the procedures described here. However, for different use cases, [tools are provided](7-index_mapping.html) to create and validate new DI plates.
 
 ## Inner Primer Design
 This section details design of inner primers. It is assumed that you already have access to the outer primer dual-indexing plates described above.
@@ -150,7 +150,7 @@ Once you have confirmed that your primers amplify your region of interest, you c
 The library preparation protocol follows:
 
 1. One day before library preparation, begin overnight cultures of your plates containing cells harboring library variants. Alternatively, you may freeze your overnight cultures and thaw them as needed.
-2. Prepare the Taq polymerase primary mastermix using the calculator found [here](../lib_prep_tools/MastermixCalculator.xlsx). Note that "inner primer" refers to a 10 µM mixture of both the forward and reverse inner primers (i.e., 10 µM *each*).
+2. Prepare the Taq polymerase primary mastermix using the calculator found [here](https://github.com/fhalab/evSeq/blob/master/lib_prep_tools/MastermixCalculator.xlsx?raw=true). Note that "inner primer" refers to a 10 µM mixture of both the forward and reverse inner primers (i.e., 10 µM *each*).
 3. For each plate of variants you want to submit for sequencing:
     1. Add 7 µL of primary mastermix to each well of a half-skirted plate. Unless you are actively adding reagent, keep this plate on ice until you put it in the thermalcycler.
     2. Add 1 µL of overnight cell cultures to each well. 
@@ -191,7 +191,7 @@ The library preparation protocol follows:
 8. Run the gel at 130 V until the dye bands have sufficiently migrated. When imaging the gel, you may see a lower MW band at ~75 bp, especially in the one-step PCR protocol. This is primer dimer, and it is critical to remove as much primer dimer as possible from your sample. **Primer dimer will dominate your sequencing and cause it to fail.** For small amplicons, it is recommmended to run your samples on a longer 2% gel, so that there is more time to separate your desired amplicon from primer dimer.
 9. For each pool of variants, identify the desired band and excise it. Perform gel extraction (this method was developed using a [Zymoclean Gel DNA Recovery Kit](https://www.zymoresearch.com/collections/zymoclean-gel-dna-recovery-kits)). Elution should be in ddH2O.
 10. Measure the DNA concentration of each gel-extracted sample.
-11. Finally, use the calculator found [here](../lib_prep_tools/LibDilCalculator.xlsx) to create 15 µL at 5 ng/µL of combined pool of DNA of each of the plate samples. This is the sample that you will submit to multiplexed next-generation sequencing.
+11. Finally, use the calculator found [here](https://github.com/fhalab/evSeq/blob/master/lib_prep_tools/LibDilCalculator.xlsx?raw=true) to create 15 µL at 5 ng/µL of combined pool of DNA of each of the plate samples. This is the sample that you will submit to multiplexed next-generation sequencing.
     1.  This is standard for multiplexed MiSeq runs, but your NGS provider may request different numbers, in which case you should follow their requests.
 
 Finally, submit your samples and then work up the returned data using the provided [Computational software](index.md#computation).
