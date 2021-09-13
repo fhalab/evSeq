@@ -17,7 +17,7 @@ Navigate to [individual pages below](#documentation) or [start at the overview](
 
 ##### Computation
 - [The `refseq` file](4-usage.md#the-refseq-file)
-- [Understanding the `OutputCounts`](5-outputs.html#outputcounts)
+- [`OutputCounts`](5-outputs.html#OutputCounts)
 - [Running `evSeq` in a Jupyter Notebook](8-full_demo.html)
 
 ##### [Troubleshooting](9-troubleshooting.md)
