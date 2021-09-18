@@ -32,7 +32,7 @@ For detailed information and interactive walkthroughs, [read the docs at the `ev
 - two 96-well plates of `evSeq` barcoding ("outer") primers
 - a pair of region-specific `evSeq`-compatible ("inner") primers
 - 96-well plate(s) of cultures containing DNA encoding protein variants
-- a 12-channel 10 µL pipette is also helpful
+- a 12-channel 10 µL pipette is also helpful; robotic support could be developed to replace many manual pipetting steps
 
 **That's it.**
 
@@ -40,7 +40,7 @@ Due to the two-primer, culture-based PCR methodology employed by `evSeq`, only a
 
 **B)** Once the sequences are returned by the NGS provider, the computational workup can be performed on a standard laptop by users with little-to-no computational experience.
 
-The amplicons prepared with `evSeq` can yield nearly 1000 high-quality protein variant sequences for the just cost of the multiplexed NGS run (typically ~$100 from commercial sequencing providers).
+The amplicons prepared with `evSeq` can yield nearly 1000 high-quality protein variant sequences for the just cost of the multiplexed NGS run (typically ~$100 from commercial sequencing providers and even less from in-house providers).
 
 ### Construct and visualize sequence-function pairs
 ![SeqFunc](docs/assets/figure3.png)
