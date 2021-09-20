@@ -26,6 +26,7 @@ dependencies:
   - pip:
     
     # For GUI+shortcut
+    - wxpython>=4.1.0
     - gooey==1.0.8.1
     - pyshortcuts==1.8.0
     
