@@ -163,7 +163,7 @@ The library preparation protocol follows:
 | 2 | 95 | 20 s |
 | 3 | TD 63 -> 53 | 20 s |
 | 4 | 68 | 30 s |
-| 5 | Return to 2, 10x |
+| 5 | Return to 2, 9x |
 | 6 | 4 | Hold |
 
 6. Once the cycles have finished, stamp (i.e., A01 primers into A01 PCR, A02 primers into A02 PCR, etc.) 2 µL of a pre-prepared 1 µM dual-indexed barcode plate into each reaction of the half-skirted plate. For each plate that will be submitted as a single sequencing sample, you must use a different dual-indexed plate. At maximum you may submit 8 plates (one each of `DI01`–`DI08`) at a time given the default `evSeq` protocol.
@@ -173,7 +173,7 @@ The library preparation protocol follows:
 |:-----|-----|------|
 | 7 | 95 | 20 s |
 | 8 | 68 | 50 s |
-| 9 | Return to 6, 25x |
+| 9 | Return to 6, 24x |
 | 10 | 68 | 5 min |
 | 11 | 4 | Hold |
 
@@ -182,9 +182,9 @@ The library preparation protocol follows:
 ## PCR Product Purification
 1. While the reactions run, prepare a large enough 2% agarose gel to accommodate all of your samples (you will be loading ~120 µL of product from each plate into a gel). The agarose gel must have SYBR Gold added directly to it prior to casting (SYBR comes in 10,000x, so add 1 µL/10 mL of gel).
 2. Prepare DNA ladder by combining 10 µL 100 bp ladder, 70 µL ddH2O, and 16 µL loading dye without SDS.
-3. Add 8 µL 10 mM EDTA (pH = 8.1) to 12 PCR tubes per plate. EDTA will be used to quench the reactions pre-pooling. Once you have started pooling reactions, you must be ready to immediately move on to the gel extraction step. **Do not pool reactions and let them sit.**
+3. Add 10 µL 100 mM EDTA (pH = 8.1) to 12 PCR tubes per plate. EDTA will be used to quench the reactions pre-pooling. Once you have started pooling reactions, you must be ready to immediately move on to the gel extraction step. **Do not pool reactions and let them sit.**
    - This is to reduce the potential for recombination of amplicons from different wells. Although the potential for recombination to make it through filtering and alter your results is low due to the nature of the dual-index primers, it is not impossible. Even then, needing to filter out reads necessarily reduces your well sequencing depth.
-4. Row-wise, add 5 µL of completed PCR product to the EDTA-filled tubes from step 3 (making 12 combined tubes per plate, 1 per column in the original plate).
+4. Row-wise, add 5 µL of completed PCR product to the EDTA-filled tubes from step 3 (making 12 combined tubes per plate, 1 per column in the original plate). This results in a final concentration of 20 mM EDTA.
 5. In a new 1.7 mL tube, add 40 µL from each of the 12 PCR tubes made in the previous step to make one complete pool for each plate. You should have the same number of 1.7 mL tubes as PCR plates.
 6. To 100 µL of each pool, add 20 µL of 6x gel loading dye (without SDS).
 7. Load each pooled sample with gel to the agarose gel. Load 20 µL of the DNA ladder prepared earlier as reference. Immediately store the remaining pooled sample at -20 C.
