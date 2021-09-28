@@ -49,6 +49,7 @@ def build_seqpairs(f_loc, r_loc, tqdm_fn=tqdm.tqdm):
                                          desc="Parsing forward reads..."), 1):
         temp_record = SeqPair()
         temp_record.assign_f(f_record)
+        assert f_record.id not in id_to_reads, "Duplicate IDs detected"
         id_to_reads[f_record.id] = temp_record
 
         # For simple Gooey progress
@@ -66,6 +67,7 @@ def build_seqpairs(f_loc, r_loc, tqdm_fn=tqdm.tqdm):
     if simple:
         print('Pairing reverse reads...')
         percents = list(range(0, 101))
+    observed_reads = set()
     for i, r_record in enumerate(tqdm_fn(all_r_recs,
                                          desc="Pairing reverse reads..."), 1):
 
@@ -78,8 +80,10 @@ def build_seqpairs(f_loc, r_loc, tqdm_fn=tqdm.tqdm):
 
         # Otherwise, attach the reverse record
         else:
+            assert r_record.id not in observed_reads, "Duplicate ID found"
+            observed_reads.add(r_record.id)
             id_to_reads[r_record.id].assign_r(r_record)
-
+            
         # For simple Gooey progress
         if simple:
             percent = 100*(i / len(all_r_recs))
