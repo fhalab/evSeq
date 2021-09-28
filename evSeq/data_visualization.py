@@ -394,11 +394,11 @@ def combine_seq_func_data(
     )
     
     # Remove dead sequencing wells
-    seq_df = seq_df.loc[(seq_df['Flag'] != '#DEAD#')].copy()
+    seq_df = seq_df.loc[(seq_df['Flags'] != '#DEAD#')].copy()
 
     # Remove sequencing wells with a flag
     # allow wells w/ 'Unexpected Variation' if MutCount is 1
-    inds = (seq_df['Flag'].isna()) | ((seq_df['Flag'] == 'Unexpected Variation') & (seq_df['MutCount'] < 2))
+    inds = (seq_df['Flags'].isna()) | ((seq_df['Flags'] == 'Unexpected Variation') & (seq_df['MutCount'] < 2))
 
     seq_df = seq_df.loc[inds].copy()
 
