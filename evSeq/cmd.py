@@ -2,6 +2,7 @@
 
 # Import relevant modules
 import argparse
+import warnings
 import os
 from time import strftime
 
@@ -136,10 +137,11 @@ def main():
         tqdm_fn = tqdm.tqdm
 
     # Run evSeq
-    try:
-        run_evSeq(CL_ARGS, tqdm_fn)
-    except Exception as e:
-       log_error(f"\nUnhandled exception encountered: '{e}'")
+    # try:
+    warnings.warn("You took off unhandled exceptions")
+    run_evSeq(CL_ARGS, tqdm_fn)
+    # except Exception as e:
+    #    log_error(f"\nUnhandled exception encountered: '{e}'")
 
     # Log that we have successfully completed the run
     log_info("Run completed. Log may contain warnings.")
