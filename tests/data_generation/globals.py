@@ -2,9 +2,18 @@
 import numpy as np
 import pandas as pd
 import random
+import os
 
-# Import codon table for support
-from .data_generation_utils import CustomCodonTable
+# Get location of the globals.py file
+GLOBALS_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Range of BP ind start
+BP_IND_START_MIN = 0
+BP_IND_START_MAX = 400000
+
+# Range of AA ind start
+AA_IND_START_MIN = 0
+AA_IND_START_MAX = 10000
 
 # Reference sequence bounds (IN NUMBER OF AAS!!)
 MIN_REFSEQ_LEN = 50
@@ -78,18 +87,30 @@ Q_SCORE_BASE = 33
 # Allowed nucleotides
 ALLOWED_NUCLEOTIDES = ("A", "T", "C", "G")
 
-# Codon table and allowed amino acid characters
-CODON_TABLE = CustomCodonTable()
-ALLOWED_AAS = tuple(sorted(list(CODON_TABLE.aa_to_codon.keys())))
-INT_TO_AA = dict(enumerate(ALLOWED_AAS))
-N_AAS = len(ALLOWED_AAS)
-
 # Random number generators
 RANDOM_SEED = sum(ord(char) for char in "PDawg")
 NP_RNG = np.random.default_rng(RANDOM_SEED)
 RANDOM_RNG = random.Random(RANDOM_SEED)
 
 # Barcode file
-INDEX_DF = pd.read_csv("../evSeq/util/index_map.csv")
+INDEX_DF = pd.read_csv(os.path.join(GLOBALS_DIR, "../../evSeq/util/index_map.csv"))
 N_INDICES = len(INDEX_DF)
 N_PLATES = len(INDEX_DF.IndexPlate.unique())
+
+# Names of the columns in the refseq file
+REFSEQ_COL_NAMES = (
+    "PlateName",
+    "IndexPlate",
+    "Well",
+    "FPrimer",
+    "RPrimer",
+    "VariableRegion",
+    "FrameDistance",
+    "BpIndStart",
+    "AaIndStart"   
+)
+
+# Save location for test runs
+SAVELOC = os.path.join(GLOBALS_DIR, "../test_data")
+if not os.path.isdir(SAVELOC):
+    os.mkdir(SAVELOC)

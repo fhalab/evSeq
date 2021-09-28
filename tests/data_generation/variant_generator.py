@@ -3,9 +3,10 @@ import tests.data_generation.globals as test_glob
 
 # Import testing globals that never change
 from tests.data_generation.globals import (
-    MIN_PERC_MUTATED, MAX_PERC_MUTATED, ALLOWED_AAS, CODON_TABLE, 
-    MIN_NOISE_PERC, MAX_NOISE_PERC, RESCUE_FREQ, ALLOWED_NUCLEOTIDES
+    MIN_PERC_MUTATED, MAX_PERC_MUTATED, MIN_NOISE_PERC, MAX_NOISE_PERC,
+    RESCUE_FREQ, ALLOWED_NUCLEOTIDES
 )
+from tests.data_generation.custom_codon_table import CODON_TABLE, ALLOWED_AAS
 
 # Import 3rd party modules
 import warnings
@@ -297,4 +298,28 @@ class FakeVariant():
         """
         Builds output files for the different `OutputCounts`
         """
+        
         pass  
+    
+    def build_variable_region(self, include_nnn):
+        """
+        Builds the variable region for the variant. This includes "NNN" in the
+        locations where we expect there to be variability.
+        """
+        self.well.refseq.codon_refseq
+        self.mutated_positions
+        
+        # Get a copy of the reference sequence
+        new_refseq = self.well.refseq.codon_refseq.copy()
+        
+        # Add "NNN" to all positions with variability
+        if include_nnn:
+            for pos in self.mutated_positions:
+                new_refseq[pos] = "NNN"
+            
+        # Complete the reference sequence
+        return "".join(
+            self.well.refseq.frameshift_bp_front +
+            new_refseq + 
+            self.well.refseq.frameshift_bp_back
+            )

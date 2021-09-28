@@ -334,8 +334,8 @@ class FakeWell():
         complete_r_qual = start_r_q + reverse_qs
 
         # Record fastq entries
-        r1 = f"Test{i}\n{complete_f_seq}\n+\n{complete_f_qual}"
-        r2 = f"Test{i}\n{complete_r_seq}\n+\n{complete_r_qual}"
+        r1 = f"@Test{i}\n{complete_f_seq}\n+\n{complete_f_qual}"
+        r2 = f"@Test{i}\n{complete_r_seq}\n+\n{complete_r_qual}"
         
         return r1, r2
     
@@ -403,6 +403,30 @@ class FakeWell():
         
         return forward_reads, reverse_reads
     
+    def build_refseq_entry(self, include_nnn):
+        """
+        Builds a row in the refseq.csv file for the well. Includes "NNN" for the
+        first variant if requested.
+        """
+        # Get the variable region
+        if self.dud_well:
+            variable_region = self.refseq.variable_region
+        else:
+            variable_region = self.variants[0].build_variable_region(include_nnn)
+        
+        return (
+            self.platenickname,
+            self.platename,
+            self.wellname,
+            self.refseq.f_primer,
+            self.refseq.r_primer,
+            variable_region,
+            self.refseq.frame_distance,
+            self.refseq.bp_ind_start,
+            self.refseq.aa_ind_start
+        )
+        
+    
     def build_output_counts(self):
         """
         Builds output files for the different `OutputCounts`
@@ -426,3 +450,8 @@ class FakeWell():
     @property
     def base_refseq(self):
         return "".join(self.refseq.codon_refseq)
+    
+    @property
+    def platenickname(self):
+        return f"TestPlate{self.platename[2:]}"
+    

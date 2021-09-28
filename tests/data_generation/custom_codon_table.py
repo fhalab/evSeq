@@ -27,3 +27,9 @@ class CustomCodonTable():
                 self.aa_to_codon[aa].append(codon)
             else:
                 self.aa_to_codon[aa] = [codon]
+                
+# Instantiate a default codon table and allowed amino acid characters
+CODON_TABLE = CustomCodonTable()
+ALLOWED_AAS = tuple(sorted(list(CODON_TABLE.aa_to_codon.keys())))
+INT_TO_AA = dict(enumerate(ALLOWED_AAS))
+N_AAS = len(ALLOWED_AAS)

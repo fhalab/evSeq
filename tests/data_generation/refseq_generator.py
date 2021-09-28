@@ -3,18 +3,21 @@ import tests.data_generation.globals as test_glob
 
 # Import testing globals that never change
 from tests.data_generation.globals import (
-    MIN_REFSEQ_LEN, MAX_REFSEQ_LEN, N_AAS, INT_TO_AA, CODON_TABLE, 
-    FRAMESHIFT_MIN, FRAMESHIFT_MAX, ALLOWED_NUCLEOTIDES, PRIMER_MAX_LEN,
-    PRIMER_MIN_LEN
+    MIN_REFSEQ_LEN, MAX_REFSEQ_LEN, FRAMESHIFT_MIN, FRAMESHIFT_MAX,
+    ALLOWED_NUCLEOTIDES, PRIMER_MAX_LEN, PRIMER_MIN_LEN, AA_IND_START_MIN,
+    AA_IND_START_MAX, BP_IND_START_MAX, BP_IND_START_MIN
+)
+from tests.data_generation.custom_codon_table import (
+    N_AAS, INT_TO_AA, CODON_TABLE
 )
 
 # Import evSeq globals needed for testing
 from evSeq.util.globals import (
-    ADAPTER_LENGTH_F, ADAPTER_LENGTH_R, BARCODE_LENGTH
+    ADAPTER_F, ADAPTER_LENGTH_F, ADAPTER_LENGTH_R, ADAPTER_R, BARCODE_LENGTH
 )
 
 # Import utils
-from .data_generation_utils import QualityGenerator
+from .data_generation_utils import QualityGenerator, reverse_complement
 
 # Import 3rd party modules
 import numpy as np
@@ -57,6 +60,10 @@ class FakeRefseq():
                                     ADAPTER_LENGTH_F +
                                     ADAPTER_LENGTH_R +
                                     2 * BARCODE_LENGTH)
+        
+        # Set the bp and aa ind starts
+        self.bp_ind_start = test_glob.NP_RNG.integers(BP_IND_START_MIN, BP_IND_START_MAX)
+        self.aa_ind_start = test_glob.NP_RNG.integers(AA_IND_START_MIN, AA_IND_START_MAX)
     
     def define_refseq_windows(self, readlength):
         """
@@ -138,4 +145,33 @@ class FakeRefseq():
             self.codon_refseq +
             self.frameshift_bp_back +
             self.primer_seed_r
+        )
+        
+    @property
+    def f_primer(self):
+        """
+        Returns the forward primer for the reference sequence.
+        """
+        return ADAPTER_F + "".join(self.primer_seed_f)
+    
+    @property
+    def r_primer(self):
+        """
+        Returns the reverse primer for the reference sequence.
+        """
+        return ADAPTER_R + reverse_complement("".join(self.primer_seed_f))
+    
+    @property
+    def frame_distance(self):
+        """
+        Where we expect the first in-frame base to be. 
+        """
+        return self.frameshift_front
+    
+    @property
+    def variable_region(self):
+        return "".join(
+            self.frameshift_bp_front +
+            self.codon_refseq +
+            self.frameshift_bp_back
         )
