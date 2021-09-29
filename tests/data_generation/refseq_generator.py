@@ -159,7 +159,7 @@ class FakeRefseq():
         """
         Returns the reverse primer for the reference sequence.
         """
-        return ADAPTER_R + reverse_complement("".join(self.primer_seed_f))
+        return ADAPTER_R + reverse_complement("".join(self.primer_seed_r))
     
     @property
     def frame_distance(self):

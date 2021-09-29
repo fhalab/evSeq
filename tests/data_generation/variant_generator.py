@@ -190,10 +190,9 @@ class FakeVariant():
         # Create two quality score arrays. One is for the forward read and the other
         # is for the reverse reads
         self.f_quals = np.tile(self.well.refseq.base_variable_qualities.copy(),
-                          (self.total_counts, 1))
+                               (self.total_counts, 1))
         self.r_quals = self.f_quals.copy()
-        min_existing_q = self.f_quals.min()
-        bad_qual_q = min_existing_q - 2
+        bad_qual_q = self.well.config.bp_q_cutoff - 1
 
         # Add noise to positions. Adjust counts and qualities accordingly.
         for noisy_read, noisy_position_array, noisy_bp_array in \
@@ -211,8 +210,7 @@ class FakeVariant():
                 # codon/amino acid as low quality. The other one is kept fine. We also
                 # mutate the low-quality codon again (this should never be counted, providing
                 # a test to make sure that we are appropriately ignoring codons)
-                rescue_check = (double_count_pos and (test_glob.NP_RNG.uniform() < RESCUE_FREQ))
-                rescue = True if rescue_check else False
+                rescue = (double_count_pos and (test_glob.NP_RNG.uniform() < RESCUE_FREQ))
 
                 # Get the base index for the noisy position
                 noisy_base_index_zero = noisy_pos * 3
@@ -258,8 +256,17 @@ class FakeVariant():
                     # Adjust the counts. 
                     self.expected_aa_counts[noisy_pos] -= count_adj
                     self.expected_bp_counts[actual_base_ind] -= count_adj
+                    
+        # If any of the the qualities have an average below the average allowed,
+        # this becomes a dud well
+        forward_test = (np.any(self.f_quals.mean(axis = 1) < 
+                               self.well.config.average_q_cutoff))
+        reverse_test = (np.any(self.r_quals.mean(axis = 1) < 
+                               self.well.config.average_q_cutoff))
+        if forward_test or reverse_test:
+            self.well.dud_well = True
         
-    def build_perfect_reads(self):
+    def build_perfect_reads(self, variant_id):
         """
         Assigns a `perfect_reads` variable to the instance.
         """
@@ -286,11 +293,12 @@ class FakeVariant():
             assert len(full_forward_bp) == len(full_rev_bp)    
             
             # Record fastq entries
+            variant_name = f"{self.well.platename}_{self.well.wellname}_variant{variant_id}_{i}"
             fastq_r1[i], fastq_r2[i] = self.well.build_fastq_entry(full_forward_bp,
                                                                    full_rev_bp,
                                                                    full_forward_q,
                                                                    full_rev_q,
-                                                                   i)
+                                                                   variant_name)
 
         return fastq_r1, fastq_r2        
     

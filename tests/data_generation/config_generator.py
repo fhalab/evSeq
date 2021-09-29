@@ -46,5 +46,5 @@ class Config():
         # mutagenesis windows for the amino acids, which encompasses the last amino acids
         # captured in full by the readlength. 
         for refseq in self.refseqs:
-            refseq.assign_qualities(max(self.average_q_cutoff, self.bp_q_cutoff) + 1)
+            refseq.assign_qualities(self.average_q_cutoff + 1)
             refseq.define_refseq_windows(self.readlength)

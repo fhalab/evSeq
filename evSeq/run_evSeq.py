@@ -20,7 +20,6 @@ from multiprocessing import Pool
 import tqdm
 import gzip
 
-
 def build_seqpairs(f_loc, r_loc, tqdm_fn=tqdm.tqdm):
     """Load and pair fastq file entries."""
 

@@ -55,8 +55,6 @@ class FakeWell():
             self.variants = [FakeVariant(self, abundance, minimum_reads_per_variant) for
                              abundance in variant_abundances]
          
-        warnings.warn("Add `murder` to list of functions")
-    
     def assign_n_variants(self):
         """
         Determines how many variants are in the well.
@@ -158,11 +156,6 @@ class FakeWell():
         
     def build_indel_reads(self, n_indels):
         
-        # Choose how many sequences to add of each flavor.
-        corruption_levels = test_glob.NP_RNG.integers(MIN_DUD_READS,
-                                            MAX_DUD_READS,
-                                            size = 3)
-
         # Get the base sequences and qualities
         f_indel_reads = [list(self.base_refseq) for _ in range(n_indels)]
         f_indel_qs = [self.refseq.base_variable_qualities.copy() for _ in range(n_indels)]
@@ -179,12 +172,10 @@ class FakeWell():
 
             # Set targets
             if read_target:
-                fastq_list = r1s
                 mutable_positions = self.refseq.forward_readable_aas
                 indel_reads = f_indel_reads
                 indel_qs = f_indel_qs
             else:
-                fastq_list = r2s
                 mutable_positions = self.refseq.reverse_readable_aas
                 indel_reads = r_indel_reads
                 indel_qs = r_indel_qs
@@ -230,7 +221,7 @@ class FakeWell():
                                                     r_indel_reads[i],
                                                     f_indel_qs[i],
                                                     r_indel_qs[i],
-                                                    i)
+                                                    f"{self.platename}_{self.wellname}_indel_{i}")
         
         return r1s, r2s        
         
@@ -249,7 +240,7 @@ class FakeWell():
                                                                         bad_seq_copy,
                                                                         bad_seq_qual,
                                                                         bad_seq_qual,
-                                                                        i)
+                                                                        f"{self.platename}_{self.wellname}_lowq_{i}")
             
         return forward_bad_q, reverse_bad_q
     
@@ -294,7 +285,8 @@ class FakeWell():
 
             # Create entries
             r1[i], r2[i] = self.build_fastq_entry(newseq_f, newseq_r,
-                                                  newq_f, newq_r, i)
+                                                  newq_f, newq_r, 
+                                                  f"{self.platename}_{self.wellname}_short_{i}")
             
         return r1, r2  
             
@@ -304,7 +296,7 @@ class FakeWell():
                           full_rev_bp,
                           full_forward_q, 
                           full_rev_q, 
-                          i):
+                          read_id):
         """
         Sequences and qs should be in the order we expect to see them in the fastq (e.g,
         the reverse complement should be taken of the forward seq before going into
@@ -334,8 +326,8 @@ class FakeWell():
         complete_r_qual = start_r_q + reverse_qs
 
         # Record fastq entries
-        r1 = f"@Test{i}\n{complete_f_seq}\n+\n{complete_f_qual}"
-        r2 = f"@Test{i}\n{complete_r_seq}\n+\n{complete_r_qual}"
+        r1 = f"@{read_id}\n{complete_f_seq}\n+\n{complete_f_qual}"
+        r2 = f"@{read_id}\n{complete_r_seq}\n+\n{complete_r_qual}"
         
         return r1, r2
     
@@ -391,8 +383,8 @@ class FakeWell():
         reverse_reads = []
 
         # Build perfect reads
-        for variant in self.variants:
-            f_perfect, r_perfect = variant.build_perfect_reads()
+        for i, variant in enumerate(self.variants):
+            f_perfect, r_perfect = variant.build_perfect_reads(i)
             forward_reads.extend(f_perfect)
             reverse_reads.extend(r_perfect)
 
