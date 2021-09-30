@@ -66,7 +66,7 @@ MAX_N_READS = 101
 # Bounds on number of mutations per sequence (as a fraction
 # of the number of amino acids captured by the read-length)
 MIN_PERC_MUTATED = 0.0
-MAX_PERC_MUTATED = 0.2
+MAX_PERC_MUTATED = 0.05
 
 # Number of amino acids that can have noise added to them (as
 # a fraction of the number of amino acids that have been mutated)
@@ -83,6 +83,9 @@ MAX_DUD_READS = 11
 
 # Base for quality score calculation
 Q_SCORE_BASE = 33
+
+# How many mutations can be next to each other at max?
+MAX_BORDERING_MUTS = 3
 
 # Allowed nucleotides
 ALLOWED_NUCLEOTIDES = ("A", "T", "C", "G")
