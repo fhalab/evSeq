@@ -110,6 +110,18 @@ REFSEQ_COL_NAMES = (
     "AaIndStart"   
 )
 
+# Names of the columns in the output files
+DECOUPLED_AA_COL_NAMES = (
+    "IndexPlate",
+    "Plate",
+    "Well",
+    "AaPosition",
+    "Aa",
+    "AlignmentFrequency",
+    "WellSeqDepth",
+    "Flags"
+)
+
 # Save location for test runs
 SAVELOC = os.path.join(GLOBALS_DIR, "../test_data")
 if not os.path.isdir(SAVELOC):

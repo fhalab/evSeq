@@ -172,11 +172,11 @@ class FakeWell():
 
             # Set targets
             if read_target:
-                mutable_positions = self.refseq.forward_readable_aas
+                mutable_positions = self.refseq.forward_readable_aas[:-1] 
                 indel_reads = f_indel_reads
                 indel_qs = f_indel_qs
             else:
-                mutable_positions = self.refseq.reverse_readable_aas
+                mutable_positions = self.refseq.reverse_readable_aas[1:]
                 indel_reads = r_indel_reads
                 indel_qs = r_indel_qs
 

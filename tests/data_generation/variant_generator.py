@@ -42,8 +42,6 @@ class FakeVariant():
         Chooses the variable positions for the variant and assigns mutant
         amino acids/codons.
         """
-        warnings.warn("You need to make sure that the amino acid returned is different"
-                      " from the existing one. Same goes for the nucleotides.")
         # Get the number of mutations to make
         n_mutable_positions = len(self.well.refseq.mutable_aa_inds)
         min_n_muts = int(MIN_PERC_MUTATED * n_mutable_positions)
@@ -88,18 +86,18 @@ class FakeVariant():
         """
         # Create base mutant sequences based on the refseq
         self.base_mut_aa_seq = self.well.refseq.aa_refseq.copy()
-        base_mut_codon_seq = self.well.refseq.codon_refseq.copy()
+        self.base_mut_codon_seq = self.well.refseq.codon_refseq.copy()
 
         # Loop over the mutated positions and add to the base sequence
         assert len(self.mutated_positions) == len(self.variable_aas)
         assert len(self.mutated_positions) == len(self.variable_codons)
         for i, mutated_pos in enumerate(self.mutated_positions):
             self.base_mut_aa_seq[mutated_pos] = self.variable_aas[i]
-            base_mut_codon_seq[mutated_pos] = self.variable_codons[i]
+            self.base_mut_codon_seq[mutated_pos] = self.variable_codons[i]
 
         # Create forward and reverse copies of the codon sequences. Make as many copies
         # as there are variants for the refseq
-        self.mut_codon_seqs_f = [base_mut_codon_seq.copy() for _ in range(self.total_counts)]
+        self.mut_codon_seqs_f = [self.base_mut_codon_seq.copy() for _ in range(self.total_counts)]
         self.mut_codon_seqs_r = deepcopy(self.mut_codon_seqs_f)
         
     def id_noisy_positions(self):
@@ -163,16 +161,15 @@ class FakeVariant():
                                      self.total_counts)
 
         # Double positions in the counts where we have overlap 
-        for i, mutant_pos in enumerate(self.mutated_positions):
-            if mutant_pos in self.well.refseq.double_count_inds:
+        for mutant_pos in self.well.refseq.double_count_inds:
+        
+            # Double aa counts
+            expected_aa_counts[mutant_pos] *= 2
 
-                # Double aa counts
-                expected_aa_counts[i] *= 2
-
-                # Double bp counts
-                bp_start_ind = i * 3
-                for bp_ind in range(bp_start_ind, bp_start_ind + 3):
-                    expected_bp_counts[bp_ind] *= 2
+            # Double bp counts
+            bp_start_ind = mutant_pos * 3
+            for bp_ind in range(bp_start_ind, bp_start_ind + 3):
+                expected_bp_counts[bp_ind] *= 2
 
         return expected_aa_counts, expected_bp_counts
         
@@ -229,7 +226,7 @@ class FakeVariant():
                         qual_opts = [self.f_quals, self.r_quals]
                         codon_opts = [self.mut_codon_seqs_f, self.mut_codon_seqs_r]
 
-                        # Choose which quality and sequence array will be update
+                        # Choose which quality and sequence array will be updated
                         target_ind = 0 if test_glob.NP_RNG.uniform() < 0.5 else 1
                         target_qual_array = qual_opts[target_ind]
                         target_codon_list = codon_opts[target_ind]
@@ -254,9 +251,9 @@ class FakeVariant():
                         self.r_quals[noisy_read, actual_base_ind] = bad_qual_q
 
                     # Adjust the counts. 
-                    self.expected_aa_counts[noisy_pos] -= count_adj
-                    self.expected_bp_counts[actual_base_ind] -= count_adj
-                    
+                    self.expected_bp_counts[actual_base_ind] -= count_adj    
+                self.expected_aa_counts[noisy_pos] -= count_adj
+                                        
         # If any of the the qualities have an average below the average allowed,
         # this becomes a dud well
         forward_test = (np.any(self.f_quals.mean(axis = 1) < 
@@ -313,10 +310,7 @@ class FakeVariant():
         """
         Builds the variable region for the variant. This includes "NNN" in the
         locations where we expect there to be variability.
-        """
-        self.well.refseq.codon_refseq
-        self.mutated_positions
-        
+        """        
         # Get a copy of the reference sequence
         new_refseq = self.well.refseq.codon_refseq.copy()
         

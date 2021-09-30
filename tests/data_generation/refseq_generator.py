@@ -74,14 +74,14 @@ class FakeRefseq():
         # the last readable is the last amino acid  captured in full by the readlength, considering
         # the primer binding region, the adapter machinery, and the barcode.
         effective_readlength = readlength - BARCODE_LENGTH
-        max_readable_aa_ind_f = (effective_readlength - self.frameshift_front -
-                                 ADAPTER_LENGTH_F - self.primer_seed_len_f) // 3
-        min_readable_aa_ind_r = int(np.ceil((effective_readlength - self.frameshift_back - 
-                                             ADAPTER_LENGTH_R - self.primer_seed_len_r) / 3))
+        readable_f_window = (effective_readlength - self.frameshift_front -
+                             ADAPTER_LENGTH_F - self.primer_seed_len_f) // 3
+        readable_r_window = ((effective_readlength - self.frameshift_back - 
+                              ADAPTER_LENGTH_R - self.primer_seed_len_r) // 3)
         
         # Make sure we don't break the bounds of the readable region
-        max_readable_aa_ind_f = min(max_readable_aa_ind_f, self.refseq_len)
-        min_readable_aa_ind_r = max(self.refseq_len - min_readable_aa_ind_r, 0)
+        max_readable_aa_ind_f = min(readable_f_window, self.refseq_len)
+        min_readable_aa_ind_r = max(self.refseq_len - readable_r_window, 0)
         
         # Define the readable positions
         self.forward_readable_aas = list(range(0, max_readable_aa_ind_f))
