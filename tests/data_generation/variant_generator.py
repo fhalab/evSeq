@@ -3,7 +3,7 @@ import tests.data_generation.globals as test_glob
 
 # Import testing globals that never change
 from tests.data_generation.globals import (
-    MIN_PERC_MUTATED, MAX_PERC_MUTATED, MIN_NOISE_PERC, MAX_NOISE_PERC,
+    MAX_BORDERING_MUTS, MIN_PERC_MUTATED, MAX_PERC_MUTATED, MIN_NOISE_PERC, MAX_NOISE_PERC,
     RESCUE_FREQ, ALLOWED_NUCLEOTIDES
 )
 from tests.data_generation.custom_codon_table import CODON_TABLE, ALLOWED_AAS
@@ -49,11 +49,42 @@ class FakeVariant():
         self.n_variable_positions = test_glob.NP_RNG.integers(min_n_muts, max_n_muts)
         
         # Decide on the positions that will be varied within the variant
-        # This must be in the readable region. 
-        self.mutated_positions = test_glob.NP_RNG.choice(self.well.refseq.mutable_aa_inds, 
-                                               size = self.n_variable_positions,
-                                               replace = False)
-        self.mutated_positions.sort()
+        # This must be in the readable region. We keep trying with random draws
+        # until we meet the criteria that there can be no more than N mutations
+        # next to one another.
+        while True:
+            
+            # Make mutations and order from highest to lowest
+            self.mutated_positions = test_glob.NP_RNG.choice(self.well.refseq.mutable_aa_inds, 
+                                                size = self.n_variable_positions,
+                                                replace = False)
+            self.mutated_positions.sort()
+            
+            # By default, we do not go through the loop again
+            go_again = False
+            
+            # Make sure there are no groupings of more than `MAX_BORDERING_MUTS`
+            # next to one another.
+            mut_dists = np.ediff1d(self.mutated_positions)
+            ones_in_a_row = 0
+            for dist in mut_dists:
+                
+                # Record how many we have seen next to one another. If we have
+                # a distance greater than 1, reset the counter
+                if dist == 1:
+                    ones_in_a_row += 1
+                else:
+                    ones_in_a_row = 0
+                    
+                # Break the loop if we hit the max bordering muts. We need to 
+                # make a new sample
+                if ones_in_a_row == MAX_BORDERING_MUTS:
+                    go_again = True
+                    break
+                
+            # If we are not going again, break the while loop. We have our samples.
+            if not go_again:
+                break
         
         # Choose variable amino acids
         self.variable_aas = test_glob.RANDOM_RNG.choices(ALLOWED_AAS, k = self.n_variable_positions)
