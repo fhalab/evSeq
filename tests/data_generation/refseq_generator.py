@@ -79,13 +79,28 @@ class FakeRefseq():
         readable_r_window = ((effective_readlength - self.frameshift_back - 
                               ADAPTER_LENGTH_R - self.primer_seed_len_r) // 3)
         
-        # Make sure we don't break the bounds of the readable region
+        # Make sure we don't break the bounds of the readable region. We don't
+        # allow mutations at the first and last positions during testing (this is
+        # because insertions end up randomly placed as the aligned prefs to add
+        # a base or two to get better alignment)
         max_readable_aa_ind_f = min(readable_f_window, self.refseq_len)
         min_readable_aa_ind_r = max(self.refseq_len - readable_r_window, 0)
         
-        # Define the readable positions
+        # Define the readable positions in each direction
         self.forward_readable_aas = list(range(0, max_readable_aa_ind_f))
         self.reverse_readable_aas = list(range(min_readable_aa_ind_r, self.refseq_len))
+        
+        # Remove the last element from the forward and first from the reverse.
+        # Remove these positions in the other direction list
+        last_f_el = self.forward_readable_aas.pop()
+        first_r_el = self.reverse_readable_aas.pop(0)
+        
+        if first_r_el in self.forward_readable_aas:
+            self.forward_readable_aas.remove(first_r_el)
+        if last_f_el in self.reverse_readable_aas:
+            self.reverse_readable_aas.remove(last_f_el)
+        
+        # Get all mutable positions
         mutable_aa_inds = self.forward_readable_aas + self.reverse_readable_aas
                 
         # Get only unique mutable inds
