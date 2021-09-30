@@ -161,7 +161,7 @@ class SeqPair():
         self._use_f_alignment, self._first_dash = self.qc_alignment(True)
         self._use_r_alignment, self._last_dash = self.qc_alignment(False)
 
-    def build_paired_composite_alignment(self):
+    def build_paired_composite_alignment(self, qual_thresh):
         """Build a composite alignment for paired ends."""
 
         # Both forward and reverse reads must pass aligment qc to enable this 
@@ -244,9 +244,15 @@ class SeqPair():
             count_inds = np.arange(first_r_char_ind, post_forward_dash_ind)
             for i in range(middle_size):
 
-                # If the characters in the forward and reverse reads agree, add
+                # If the characters in the forward and reverse reads agree, AND
+                # both have a quality higher than the threshold, add
                 # an extra count to the potential count matrix
-                if middle_r_seq[i] == middle_f_seq[i]:
+                double_count_check = (
+                   (middle_r_seq[i] == middle_f_seq[i]) and
+                   (middle_f_qual[i] >= qual_thresh) and
+                   (middle_r_qual[i] >= qual_thresh) 
+                )
+                if double_count_check:
                     potential_counts[count_inds[i]] += 1
 
                 # If the forward read has better or equal quality, use that
@@ -327,11 +333,11 @@ class SeqPair():
             
         return composite_seq, composite_qual, potential_counts
     
-    def build_composite_alignment(self):
+    def build_composite_alignment(self, qual_thresh):
         """Builds a composite sequence regardless of alignment type."""
         # Complicated composite if this is paired end
         if self.is_paired_post_alignment_qc():
-            return self.build_paired_composite_alignment()
+            return self.build_paired_composite_alignment(qual_thresh)
         
         # Simple composite if this is not paired end
         else:
@@ -342,7 +348,7 @@ class SeqPair():
         
         # Pull the composite alignment for the sequence
         composite_sequence, composite_qual, potential_counts =\
-                                    self.build_composite_alignment()
+                                    self.build_composite_alignment(qual_thresh)
 
         # Create matrices in which to store counts
         bp_counts = np.zeros([6, ref_len], dtype = int)
