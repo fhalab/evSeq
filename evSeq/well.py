@@ -360,9 +360,13 @@ class Well():
             # Update flags
             flags.append("#PARENT#")
             
-            # Get the mean read depth and frequency over all positions.
-            average_counts_by_position = int(np.mean(total_count_array))
-            self.average_freq_by_pos = np.mean(np.max(unit_freq_array, axis = 0))            
+            # Identify the positions without 0s.
+            non_zero_pos_mask = (total_count_array != 0)
+            
+            # Get the mean read depth and frequency over all non-zero positions.
+            self.parent_counts = int(np.mean(total_count_array[non_zero_pos_mask]))
+            max_freq_by_pos = np.max(unit_freq_array, axis = 0)
+            self.parent_freq = np.mean(max_freq_by_pos[non_zero_pos_mask])
             
             # Create an output dataframe and return
             output_df = pd.DataFrame(
@@ -372,8 +376,8 @@ class Well():
                     self.well, 
                     "#PARENT#",
                     "#PARENT#",
-                    self.average_freq_by_pos,
-                    average_counts_by_position,
+                    self.parent_freq,
+                    self.parent_counts,
                     " -- ".join(flags)
                 ]],
                 columns=columns
@@ -515,16 +519,13 @@ class Well():
         # Get the counts for the paired alignment seqpairs
         paired_alignment_counts = all_counts[paired_alignment_inds]
         
-        # Get the mean read depth over all positions.
-        average_counts_by_position = int(np.mean(paired_alignment_counts.sum(axis = (0, 1))))
-        
         # If there are no variable positions, return wild type with the average number of counts
         if n_positions == 0:
             
             # Create a dataframe and return
             return pd.DataFrame([[self.index_plate, self.plate_nickname, self.well,
-                                  "#PARENT#", "#PARENT#", 0, self.average_freq_by_pos,
-                                  average_counts_by_position, reference_sequence, 
+                                  "#PARENT#", "#PARENT#", 0, self.parent_freq,
+                                  self.parent_counts, reference_sequence, 
                                   "#PARENT#"]],
                                 columns = columns)
 
