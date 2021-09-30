@@ -59,6 +59,8 @@ class Well():
         
         self._all_bp_counts = None
         self._all_aa_counts = None
+        
+        self.unpaired_run = False
 
     def calculate_expected_arrays(self):
         """Calculates the expected reference amino acid and base sequences."""
@@ -313,10 +315,11 @@ class Well():
         expectation_array,
         unit_array,
         unit_type,
-        variable_thresh,
         pos_offset
     ):
         """Analyzes and reports unpaired counts."""
+        # Record that we have run the unpaired analysis
+        self.unpaired_run = True
         
         # Define output columns
         unit_pos = f"{unit_type}Position" # Create a name for the unit position
@@ -357,8 +360,9 @@ class Well():
             # Update flags
             flags.append("#PARENT#")
             
-            # Get the mean read depth over all positions.
+            # Get the mean read depth and frequency over all positions.
             average_counts_by_position = int(np.mean(total_count_array))
+            self.average_freq_by_pos = np.mean(np.max(unit_freq_array, axis = 0))            
             
             # Create an output dataframe and return
             output_df = pd.DataFrame(
@@ -368,7 +372,7 @@ class Well():
                     self.well, 
                     "#PARENT#",
                     "#PARENT#",
-                    1 - variable_thresh,
+                    self.average_freq_by_pos,
                     average_counts_by_position,
                     " -- ".join(flags)
                 ]],
@@ -437,7 +441,7 @@ class Well():
         
         return output_df, max_by_position
 
-    def analyze_unpaired_counts(self, variable_thresh):
+    def analyze_unpaired_counts(self):
         """Generates the unpaired analysis outputs for both basepairs
         and amino acids.
         """
@@ -452,7 +456,6 @@ class Well():
                 self.variable_bp_type,
                 BP_ARRAY,
                 "Bp",
-                variable_thresh,
                 self.bp_ind_start
             )
         
@@ -466,7 +469,6 @@ class Well():
                 self.variable_aa_type,
                 AA_ARRAY,
                 "Aa",
-                variable_thresh,
                 self.aa_ind_start
             )
 
@@ -476,11 +478,12 @@ class Well():
         all_counts,
         unit_array,
         reference_sequence,
-        variable_thresh,
         variable_count,
         pos_offset
     ):
         """Analyzes and reports paired counts."""
+        # Make sure we have analyzed unpaired results
+        assert self.unpaired_run, "Must run unpaired analysis first"
         
         # Define output columns
         columns = ("IndexPlate", "Plate", "Well", "VariantCombo", "SimpleCombo",
@@ -490,7 +493,8 @@ class Well():
         # If there are no usable reads, return a dead dataframe
         if not self.usable_reads:
             return pd.DataFrame([[self.index_plate, self.plate_nickname, self.well,
-                                  "#DEAD#", "#DEAD#", 0, 0, 0, "#DEAD#", "Too few usable reads"]], columns = columns)
+                                  "#DEAD#", "#DEAD#", 0, 0, len(self.non_dud_alignments),
+                                  "#DEAD#", "Too few usable reads"]], columns = columns)
         
         # Get the number of positions
         n_positions = len(variable_positions)            
@@ -519,8 +523,9 @@ class Well():
             
             # Create a dataframe and return
             return pd.DataFrame([[self.index_plate, self.plate_nickname, self.well,
-                                  "#PARENT#", "#PARENT#", 0, 1 - variable_thresh,
-                                  average_counts_by_position, reference_sequence, "No variable positions detected"]],
+                                  "#PARENT#", "#PARENT#", 0, self.average_freq_by_pos,
+                                  average_counts_by_position, reference_sequence, 
+                                  "#PARENT#"]],
                                 columns = columns)
 
         # Get the positions with variety
@@ -539,8 +544,8 @@ class Well():
             
             # Create a dataframe and return
             return pd.DataFrame([[self.index_plate, self.plate_nickname, self.well,
-                                  "#DEAD#", "#DEAD#", 0, 0,
-                                  n_passing, "#DEAD#", "Too few paired reads pass QC"]],
+                                  "#DEAD#", "#DEAD#", 0, 0, n_passing, "#DEAD#", 
+                                  "Too few paired reads pass QC"]],
                                 columns = columns)
             
         # Replace all instances where we have a count of 2 with 1. Counting at 
@@ -605,7 +610,7 @@ class Well():
         # Convert output to a dataframe.
         return pd.DataFrame(output, columns=columns)
                            
-    def analyze_paired_counts(self, variable_thresh, variable_count):
+    def analyze_paired_counts(self, variable_count):
         """Analyzes the paired data for both amino acids and basepairs"""
         self._paired_bp_output = \
             self.analyze_paired_counts_generic(
@@ -613,7 +618,6 @@ class Well():
                 self.all_bp_counts,
                 BP_ARRAY,
                 self.reference_sequence,
-                variable_thresh,
                 variable_count,
                 self.bp_ind_start
             )
@@ -624,7 +628,6 @@ class Well():
                 self.all_aa_counts,
                 AA_ARRAY,
                 self.reference_sequence_aa,
-                variable_thresh,
                 variable_count,
                 self.aa_ind_start
             )

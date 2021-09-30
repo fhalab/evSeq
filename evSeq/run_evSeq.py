@@ -188,11 +188,12 @@ def process_well(
         # Identify variable positions
         freq_warning = well.identify_variable_positions(variable_thresh)
 
-    # Analyze reads with decoupled counts
-    well.analyze_unpaired_counts(variable_thresh)
+    # Analyze reads with decoupled counts. This must be done before addressing
+    # unpaired counts.
+    well.analyze_unpaired_counts()
 
     # Analyze reads with coupled counts
-    well.analyze_paired_counts(variable_thresh, variable_count)
+    well.analyze_paired_counts(variable_count)
 
     # If we are returning alignments, generate them
     if return_alignments:
