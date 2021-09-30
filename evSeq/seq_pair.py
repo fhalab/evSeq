@@ -73,23 +73,31 @@ class SeqPair():
             if self.r_len < length_filter or self._r_average_q < average_q_cutoff:
                 self._use_r = False
 
-    def align(self, reference):
+    def align(self, reference, alignment_kwargs):
         """Align forward and reverse reads to a reference sequence."""
         
         # Make a pairwise alignment. Only align the reads we are using.
         if self.is_paired():
-            self._f_alignment = evseq_align(reference, self.f_adapterless.seq)
-            self._r_alignment = evseq_align(reference, self.r_adapterless.seq)
+            self._f_alignment = evseq_align(reference, 
+                                            self.f_adapterless.seq,
+                                            **alignment_kwargs)
+            self._r_alignment = evseq_align(reference, 
+                                            self.r_adapterless.seq,
+                                            **alignment_kwargs)
             
         # If we are only using forward read, handle this here
         elif self.use_f:
-            self._f_alignment = evseq_align(reference, self.f_adapterless.seq)
+            self._f_alignment = evseq_align(reference, 
+                                            self.f_adapterless.seq,
+                                            **alignment_kwargs)
             self._r_alignment = None
             
         # If we are only using reverse read, handle this here
         elif self.use_r:
             self._f_alignment = None
-            self._r_alignment = evseq_align(reference, self.r_adapterless.seq)
+            self._r_alignment = evseq_align(reference, 
+                                            self.r_adapterless.seq,
+                                            **alignment_kwargs)
             
         else:
             raise AssertionError("No reads to align in reference.")

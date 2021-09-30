@@ -42,7 +42,11 @@ Read Analysis:
     average_q_cutoff: {cl_args["average_q_cutoff"]}
     bp_q_cutoff: {cl_args["bp_q_cutoff"]}
     length_cutoff: {cl_args["length_cutoff"]}
-
+    match_score: {cl_args["match_score"]}
+    mismatch_penalty: {cl_args["mismatch_penalty"]}
+    gap_open_penalty: {cl_args["gap_open_penalty"]}
+    gap_extension_penalty: {cl_args["gap_extension_penalty"]}
+    
 Position Identification:
     variable_thresh: {cl_args["variable_thresh"]}
     variable_count: {cl_args["variable_count"]}

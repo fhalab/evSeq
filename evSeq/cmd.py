@@ -81,6 +81,26 @@ def main():
                                    required=False,
                                    default=0.9,
                                    type=float)
+    params_args_group.add_argument("--match_score",
+                                   help = "The bonus given to matching bases in an alignment score. Default = 1.",
+                                   required = False,
+                                   default = 1,
+                                   type = int)
+    params_args_group.add_argument("--mismatch_penalty",
+                                   help = "The penalty given to mismatching bases in an alignment score. Default = 0.",
+                                   required = False,
+                                   default = 0,
+                                   type = int)
+    params_args_group.add_argument("--gap_open_penalty",
+                                   help = "The penalty given to opening a gap in an alignment score. Default = 3.",
+                                   required = False,
+                                   default = 3,
+                                   type = int)
+    params_args_group.add_argument("--gap_extension_penalty",
+                                   help = "The penalty given to extending a gap in an alignment score. Default = 1.",
+                                   required = False,
+                                   default = 1,
+                                   type = int)
 
     # Add a group containing arguments used for identifying variable positions
     variable_group = parser.add_argument_group("Position Identification",

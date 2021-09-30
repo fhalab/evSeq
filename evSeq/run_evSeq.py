@@ -159,7 +159,11 @@ def process_well(
     return_alignments=False,
     bp_q_cutoff=30,
     variable_thresh=0.1,
-    variable_count=1
+    variable_count=1,
+    match = None,
+    mismatch = None,
+    open_penalty = None,
+    extend = None
 ):
     """Processes a single well."""
     
@@ -167,7 +171,10 @@ def process_well(
     freq_warning = ""
     
     # Align
-    well.align()
+    well.align({"match": match,
+                "mismatch": mismatch,
+                "open_penalty": open_penalty,
+                "extend": extend})
 
     # Analyze alignments. 
     has_reads = well.analyze_alignments(bp_q_cutoff, variable_count)
@@ -291,7 +298,11 @@ def run_evSeq(cl_args, tqdm_fn=tqdm.tqdm):
                                       bp_q_cutoff = cl_args["bp_q_cutoff"],
                                       return_alignments = cl_args["return_alignments"],
                                       variable_thresh = cl_args["variable_thresh"],
-                                      variable_count = cl_args["variable_count"])
+                                      variable_count = cl_args["variable_count"],
+                                      match = cl_args["match_score"],
+                                      mismatch = -cl_args["mismatch_penalty"],
+                                      open_penalty = -cl_args["gap_open_penalty"],
+                                      extend = -cl_args["gap_extension_penalty"])
         
     # Multiprocess to handle wells
     with Pool(cl_args["jobs"]) as p:

@@ -131,14 +131,14 @@ class Well():
                 self._expected_variable_aa_positions[position_counter] = int((codon[0] - self.frame_dist) / 3)
                 position_counter += 1
 
-    def align(self):
+    def align(self, alignment_kwargs):
         """Makes pairwise and runs qc on pairwise alignments and then
         identifies usable and paired alignments.
         """
         
         # Run alignment on all seqpairs
         for seqpair in self.all_seqpairs:
-            seqpair.align(self.reference_sequence)
+            seqpair.align(self.reference_sequence, alignment_kwargs)
             seqpair.qc_alignments()
         
         # Identify seqpairs that have at least one read passing alignment QC
