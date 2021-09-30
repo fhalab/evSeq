@@ -97,8 +97,10 @@ class FakeRefseq():
         # Remove the last and next-to-last elements of f from r. This makes sure
         # that neither forward nor reverse captures the edge cases. We do this
         # to not worry about writing separate code for counting bases.
-        self.reverse_readable_aas.remove(last_f_el)
-        self.forward_readable_aas.remove(first_r_el)
+        if last_f_el in self.reverse_readable_aas:
+            self.reverse_readable_aas.remove(last_f_el)
+        if first_r_el in self.forward_readable_aas:
+            self.forward_readable_aas.remove(first_r_el)
                 
         # Get all mutable positions
         mutable_aa_inds = self.forward_readable_aas + self.reverse_readable_aas
