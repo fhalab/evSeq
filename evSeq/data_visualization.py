@@ -350,7 +350,7 @@ def plot_read_qual(counts):
 ### SEQUENCE-FUNCTION PLOTTING ###
 def combine_seq_func_data(
     data_df,
-    evseq_output_dir
+    output_counts_dir
 ):
     """Function to combine evSeq data with function data to generate
     sequence-function pairs.
@@ -358,9 +358,11 @@ def combine_seq_func_data(
     Inputs:
     -------
     data_df: DataFrame
-        DataFrame containing function/activity data.
-    evseq_output_dir: path (str)
-        Path to the location of the evSeqOutput directory corresponding
+        DataFrame containing function/activity data. Can also be a path
+        to a csv file that can be directly read in as a ready-to-go
+        pandas DataFrame.
+    output_counts_dir: path (str)
+        Path to the location of the OutputCounts directory corresponding
         to the variants used to obtain function data.
 
     Returns:
@@ -369,12 +371,44 @@ def combine_seq_func_data(
         Cleaned, merged sequence-function data containing all columns
         from data_df and the evSeq output file.
     """
+    # Confirm that data is dataframe; if path, try to read csv
+    if not isinstance(data_df, pd.DataFrame):
+        if isinstance(data_df, str):
+            if data_df.split('.')[-1] != 'csv':
+                raise NotImplementedError(
+                    'This code does not read non-csv files. Import to '
+                    'DataFrame first.'
+                )
+            else:
+                try:
+                    data_df = pd.read_csv(data_df)
+                except:
+                    # naked exception because we just want to suggest an
+                    # initial pandas import if it fails any way
+                    raise ValueError(
+                        'Could not read in file. Import to DataFrame first.'
+                    )
 
     # If the well column of the data_df is not zero-padded, pad it
     data_df['Well'] = data_df['Well'].apply(ns.parsers.pad)
 
     # Read in the results of evSeq
-    seq_df = pd.read_csv(evseq_output_dir+'AminoAcids_Decoupled_Max.csv')
+    output_counts_dir = os.path.normpath(output_counts_dir)
+    path = os.path.join(output_counts_dir, 'AminoAcids_Decoupled_Max.csv')
+    if not os.path.exists(path):
+        if os.path.basename(output_counts_dir) != 'OutputCounts':
+            raise ValueError(
+                'Could not find AminoAcids_Decoupled_Max.csv file. You may '
+                'not be properly routing to the OutputCounts directory. Please '
+                'check your path for the "output_counts_dir" input.'
+            )
+        else:
+            raise ValueError(
+                'Could not find AminoAcids_Decoupled_Max.csv file. Please '
+                'check your path for the "output_counts_dir" input.'
+            )
+
+    seq_df = pd.read_csv(path)
     
     # Find wells that have multiple mutations since this only works for
     # single-mutant libraries
@@ -394,11 +428,11 @@ def combine_seq_func_data(
     )
     
     # Remove dead sequencing wells
-    seq_df = seq_df.loc[(seq_df['Flag'] != '#DEAD#')].copy()
+    seq_df = seq_df.loc[(seq_df['Flags'] != '#DEAD#')].copy()
 
     # Remove sequencing wells with a flag
     # allow wells w/ 'Unexpected Variation' if MutCount is 1
-    inds = (seq_df['Flag'].isna()) | ((seq_df['Flag'] == 'Unexpected Variation') & (seq_df['MutCount'] < 2))
+    inds = (seq_df['Flags'].isna()) | ((seq_df['Flags'] == 'Unexpected Variation') & (seq_df['MutCount'] < 2))
 
     seq_df = seq_df.loc[inds].copy()
 
@@ -755,9 +789,32 @@ def plot_SSM_activities(
     # Set up dictionary for sorting meaningfully within the plotting loop
     sort = {}
 
+    if known is not None:
+        if known not in df.columns:
+            raise ValueError(
+                f'Input for known ("{known}") not found in DataFrame '
+                f'columns. Options are: \n'
+                f'\t{list(df.columns)}'
+            )
+    if variant is not None:
+        if variant not in df[known].unique():
+            raise ValueError(
+                f'Could not find variant key "{variant}" in the known column '
+                f'"{known}" of the DataFrame; options are: \n'
+                f'\t{df[known].unique()}'
+            )
+
     # If user passes a standard, use it as key for value 0 so that it
     # displays first on the plot
     if standard is not None:
+        # Confirm it is in the known column
+        if standard not in df[known].unique():
+            raise ValueError(
+                f'Could not find standard "{standard}" in the known column '
+                f'"{known}" of the DataFrame; options are: \n'
+                f'\t{df[known].unique()}'
+            )
+
         standard_string = standard
         sort[standard_string] = 0
         
