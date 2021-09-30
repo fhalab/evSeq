@@ -170,13 +170,15 @@ class FakeWell():
         # Add indels. 
         for read_target in target_f_read:
 
-            # Set targets
+            # Set targets. We need to leave some space at the end of reads to
+            # eliminate the chance that we randomly add bases that work (we are
+            # randomly creating sequences)
             if read_target:
-                mutable_positions = self.refseq.forward_readable_aas[:-1] 
+                mutable_positions = self.refseq.forward_readable_aas[:-3] 
                 indel_reads = f_indel_reads
                 indel_qs = f_indel_qs
             else:
-                mutable_positions = self.refseq.reverse_readable_aas[1:]
+                mutable_positions = self.refseq.reverse_readable_aas[3:]
                 indel_reads = r_indel_reads
                 indel_qs = r_indel_qs
 
