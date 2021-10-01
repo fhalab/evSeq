@@ -83,13 +83,22 @@ class FakeRefseq():
         # allow mutations at the first and last positions during testing (this is
         # because insertions end up randomly placed as the aligned prefs to add
         # a base or two to get better alignment)
-        max_readable_aa_ind_f = min(readable_f_window, self.refseq_len)
-        min_readable_aa_ind_r = max(self.refseq_len - readable_r_window, 0)
+        self.max_readable_aa_ind_f = min(readable_f_window, self.refseq_len)
+        self.min_readable_aa_ind_r = max(self.refseq_len - readable_r_window, 0)
         
         # Define the readable positions in each direction
-        self.forward_readable_aas = list(range(0, max_readable_aa_ind_f))
-        self.reverse_readable_aas = list(range(min_readable_aa_ind_r, self.refseq_len))
+        self.forward_readable_aas = list(range(0, self.max_readable_aa_ind_f))
+        self.reverse_readable_aas = list(range(self.min_readable_aa_ind_r, self.refseq_len))
+                
+        # Get the set of indices that is captured by both the forward and reverse reads
+        self.double_count_inds = set(self.forward_readable_aas) & set(self.reverse_readable_aas)
         
+        # Get the og mutable inds
+        self.og_mutable = np.array(
+            list(set(self.forward_readable_aas + self.reverse_readable_aas)),
+            dtype = int
+        )
+                
         # Remove the last element from the forward and first from the reverse.
         last_f_el = self.forward_readable_aas.pop()
         first_r_el = self.reverse_readable_aas.pop(0)
@@ -101,7 +110,7 @@ class FakeRefseq():
             self.reverse_readable_aas.remove(last_f_el)
         if first_r_el in self.forward_readable_aas:
             self.forward_readable_aas.remove(first_r_el)
-                
+        
         # Get all mutable positions
         mutable_aa_inds = self.forward_readable_aas + self.reverse_readable_aas
                 
@@ -113,9 +122,6 @@ class FakeRefseq():
         # Checks on the mutable inds
         all_possible_inds = set(range(self.refseq_len))
         assert mutable_aa_set.issubset(all_possible_inds)
-        
-        # Get the set of indices that is captured by both the forward and reverse reads
-        self.double_count_inds = set(self.forward_readable_aas) & set(self.reverse_readable_aas)
         
     def assign_qualities(self, min_q_allowed):
         """
