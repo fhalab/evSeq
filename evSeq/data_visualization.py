@@ -15,11 +15,19 @@ from bokeh.models import HoverTool
 import ninetysix as ns
 
 from .util.logging import log_warning
+import warnings
 
 # because the ninetysix package sets bokeh as the backend, we don't set it here
 # otherwise we would need:
 # hv.extension('bokeh')
 hv.renderer('bokeh')
+
+# Create a quick way of warning regardless of if evSeq is running
+def warn(message):
+    try:
+        log_warning(message)
+    except NameError:
+        warnings.warn(message)
 
 #### Heatmap ####
 def generate_platemaps(
@@ -71,7 +79,7 @@ def generate_platemaps(
         df = max_combo_df.loc[max_combo_df.Plate == plate].copy()
     
         # generate a holoviews plot
-        hm_dict[plate] = _make_platemap(df, title=plate, cmap=cmap)
+        hm_dict[plate] = _make_platemap(df, title=plate, cmap=cmap)  
 
     # make logseqdepth column
     max_combo_df['logseqdepth'] = np.log(
@@ -86,19 +94,36 @@ def generate_platemaps(
     # Set the center
     center = np.log(10)
 
+    add_min = False
+    if max_combo_df['logseqdepth'].min() >= center:
+        # log warning that this plate was incredible
+        warn(
+            'NOT A SINGLE PLATE HAD A SEQUENCING DEPTH < 10!!! '
+            'PLEASE EMAIL US HOW YOU ACCOMPLISHED THIS FEAT. '
+            'We are incredibly impressed.'
+        )
+        add_min = True
+
     # Adjust if it is greater than max of data (avoids ValueError)
     if max_combo_df['logseqdepth'].max() <= center:
 
         # Log a warning
-        log_warning(f"All wells associated with {plate} have a read depth <=10. "
-                    "Be careful comparing heatmaps between this plate and others. "
-                    "Be careful using this data; sequencing was not good.")
+        warn(f"All wells in all plates have a read depth <=10. "
+              "Be careful using this data; sequencing was not good.")
 
         # Adjust the center
         center = max_combo_df['logseqdepth'].median()
 
-    # set color levels
-    color_levels = ns.viz._center_colormap(df['logseqdepth'], center)
+    # center colormap
+    if not add_min:
+        color_levels = ns.viz._center_colormap(
+            max_combo_df['logseqdepth'], center
+        )
+    else:
+        color_levels = ns.viz._center_colormap(
+            list(max_combo_df['logseqdepth']) + [np.log(1)],
+            center
+        )
 
     # Uniform color levels
     for _hm in hm_dict.values():
@@ -149,19 +174,34 @@ def _make_platemap(df, title, cmap=None):
     # Set the center
     center = np.log(10)
 
+    add_min = False
+    if df['logseqdepth'].min() >= center:
+        # log warning that this plate was incredible
+        warn(
+            f'No wells with sequencing depth < 10 in plate {title}; '
+            'honestly congrats.'
+        )
+        add_min = True
+
     # Adjust if it is greater than max of data (avoids ValueError)
     if df['logseqdepth'].max() <= center:
 
         # Log a warning
-        log_warning(f"All wells associated with {title} have a read depth <=10. "
-                    "Be careful comparing heatmaps between this plate and others. "
-                    "Be careful using this data; sequencing was not good.")
+        warn(f"All wells associated with {title} have a read depth <=10. "
+              "Be careful comparing heatmaps between this plate and others. "
+              "Be careful using this data; sequencing was not good.")
 
         # Adjust the center
         center = df['logseqdepth'].median()
 
     # center colormap
-    color_levels = ns.viz._center_colormap(df['logseqdepth'], center)
+    if not add_min:
+        color_levels = ns.viz._center_colormap(df['logseqdepth'], center)
+    else:
+        color_levels = ns.viz._center_colormap(
+            list(df['logseqdepth']) + [np.log(1)],
+            center
+        )
 
     # Get heights
     n_rows = len(df['Row'].unique())
