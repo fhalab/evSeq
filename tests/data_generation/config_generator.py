@@ -36,7 +36,7 @@ class Config():
         # average_q_cutoff, bp_q_cutoff, length_cutoff, variable_thresh, and
         # variable_count
         self.bp_q_cutoff = test_glob.NP_RNG.integers(MIN_BP_QUAL_CUTOFF, MAX_BP_QUAL_CUTOFF)
-        max_global_qual_cutoff = max(self.bp_q_cutoff, MAX_GLOBAL_QUAL_CUTOFF)
+        max_global_qual_cutoff = min(self.bp_q_cutoff, MAX_GLOBAL_QUAL_CUTOFF)
         self.average_q_cutoff = test_glob.NP_RNG.integers(MIN_GLOBAL_QUAL_CUTOFF, max_global_qual_cutoff)
         self.length_cutoff = test_glob.NP_RNG.uniform(MIN_SEQLEN_CUTOFF, MAX_SEQLEN_CUTOFF)
         self.variable_thresh = test_glob.NP_RNG.uniform(MIN_VARIABLE_THRESH, MAX_VARIABLE_THRESH)
@@ -46,5 +46,5 @@ class Config():
         # mutagenesis windows for the amino acids, which encompasses the last amino acids
         # captured in full by the readlength. 
         for refseq in self.refseqs:
-            refseq.assign_qualities(self.average_q_cutoff + 1)
+            refseq.assign_qualities(self.bp_q_cutoff)
             refseq.define_refseq_windows(self.readlength)
