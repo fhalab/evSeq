@@ -8,7 +8,6 @@ def evseq_align(reference, query,
                 open_penalty = None, extend = None):
     
     # Redefine biopython aligment function (this is just for code neatness)
-    warnings.warn("Changed gap open penalty")
     return pairwise2.align.globalms(reference, query, 
                                     match, mismatch,
                                     open_penalty, extend,
