@@ -239,15 +239,15 @@ def format_and_save_outputs(well_results, saveloc, return_alignments):
         # Save the dataframe
         output_df.to_csv(os.path.join(saveloc, "OutputCounts", savename), index=False)
         
-    # Generate heatmaps from the Combos_Coupled_Max dataframe
-    heatmaps = generate_platemaps(max_outs[-1])
-    save_platemap_to_file(heatmaps, saveloc)
-
     # Loop over and save all alignments if asked to do so
     if return_alignments:
         for savename, savestr in unpacked_output[-2]:
             with open(savename, "w") as f:
                 f.write(savestr)   
+        
+    # Generate heatmaps from the Combos_Coupled_Max dataframe
+    heatmaps = generate_platemaps(max_outs[-1])
+    save_platemap_to_file(heatmaps, saveloc)
                 
     # Report all warnings
     for warning in unpacked_output[-1]:
