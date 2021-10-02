@@ -15,10 +15,10 @@ from gooey import GooeyParser
 from time import strftime
 
 # Import evseq functions
-from .globals import N_CPUS
-from .input_processing import build_output_dirs
-from .logging import log_init, log_info
-from ..run_evSeq import run_evSeq
+from .util.globals import N_CPUS
+from .util.input_processing import build_output_dirs
+from .util.logging import log_init, log_info
+from evSeq.run_evSeq import run_evSeq
     
 # Get the working directory
 CWD = os.getcwd()

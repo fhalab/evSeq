@@ -1,5 +1,4 @@
 from Bio import pairwise2
-import warnings
 
 # Redefine the BioPython aligment function so that we can quicky change
 # parameters later

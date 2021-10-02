@@ -10,7 +10,7 @@ from gooey import Gooey
 
 # Get evSeq code
 import evSeq
-from evSeq.util.interfaces import execute_evseq
+from evSeq.interfaces import execute_evseq
 
 # Get the path to evSeq repo
 evSeq_path = os.path.dirname(os.path.dirname(os.path.abspath(evSeq.__file__)))

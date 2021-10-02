@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # Run evSeq
-from evSeq.util.interfaces import execute_evseq
+from evSeq.interfaces import execute_evseq
 def main():
     execute_evseq()
     
