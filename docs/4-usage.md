@@ -141,6 +141,10 @@ There are a number of flags and optional arguments that can be passed for `evSeq
 | `average_q_cutoff` | Argument | During initial sequencing QC, `evSeq` will discard any sequence with an average quality score below this value. The default value is 25. |
 | `bp_q_cutoff` | Argument | Bases with a q-score below this value are ignored when counting the number of sequences aligned at each position. For the coupled outputs (see below), counts are only returned if all bases in the combination pass. The default value is 30. |
 | `length_cutoff` | Argument | During initial sequencing QC, `evSeq` will discard any sequence with an read with total length below `length_cutoff * read_length`. The default value is `0.9`. |
+| `match_score` | Argument | When making an alignment, matching bases add this value to the score. The default value is 1. |
+| `mismatch_penalty` | Argument | When making an alignment, mis-matching bases subtract this value from the score. The default value is 0. |
+| `gap_open_penalty` | Argument | When making an alignment, opening a gap subtracts this value from the score. The default value is 3. |
+| `gap_extension_penalty` | Argument | When making an alignment, extending a gap subtracts this value from the score. The default value is 1. |
 | **Position Identification** |
 | `variable_thresh` | Argument | This argument sets the threshold that determines whether or not a position is variable. In other words, if a position contains a non-reference sequence sequence at a given position at a fraction greater than `variable_thresh`, then it is a variable position. The default is `0.2`. Setting this value lower makes `evSeq` more sensitive to variation, while setting it higher makes it less sensitive. A value of 1, for instance, would find no variable positions. |
 | `variable_count` | Argument | This sets the count threshold for identifying "dead" wells. If a well has fewer sequences that pass QC than this value, then it is considered "dead". The default value is 10 (meaning only wells with fewer than 10 sequences are dead). |
