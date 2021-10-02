@@ -52,8 +52,13 @@ class FakeWell():
         else:
             self.dud_well = False
             variant_abundances, minimum_reads_per_variant = abundances
-            self.variants = [FakeVariant(self, abundance, minimum_reads_per_variant) for
-                             abundance in variant_abundances]
+            
+            # Dud well if any variants have 0 counts
+            if any(abundance <= 0 for abundance in variant_abundances):
+                self.dud_well = True
+            else:
+                self.variants = [FakeVariant(self, abundance, minimum_reads_per_variant) for
+                                abundance in variant_abundances]
          
     def assign_n_variants(self):
         """
@@ -174,11 +179,11 @@ class FakeWell():
             # eliminate the chance that we randomly add bases that work (we are
             # randomly creating sequences)
             if read_target:
-                mutable_positions = self.refseq.forward_readable_aas[:-3] 
+                mutable_positions = self.refseq.forward_readable_aas[:-5] 
                 indel_reads = f_indel_reads
                 indel_qs = f_indel_qs
             else:
-                mutable_positions = self.refseq.reverse_readable_aas[3:]
+                mutable_positions = self.refseq.reverse_readable_aas[5:]
                 indel_reads = r_indel_reads
                 indel_qs = r_indel_qs
 
@@ -242,7 +247,8 @@ class FakeWell():
                                                                         bad_seq_copy,
                                                                         bad_seq_qual,
                                                                         bad_seq_qual,
-                                                                        f"{self.platename}_{self.wellname}_lowq_{i}")
+                                                                        f"{self.platename}_{self.wellname}_lowq_{i}",
+                                                                        low_q = True)
             
         return forward_bad_q, reverse_bad_q
     
@@ -298,15 +304,16 @@ class FakeWell():
                           full_rev_bp,
                           full_forward_q, 
                           full_rev_q, 
-                          read_id):
+                          read_id,
+                          low_q = False):
         """
         Sequences and qs should be in the order we expect to see them in the fastq (e.g,
         the reverse complement should be taken of the forward seq before going into
         this function)
         """
         # Get the start sequences and qualities
-        start_f_seq, start_f_q = self.build_start_seq_f()
-        start_r_seq, start_r_q = self.build_start_seq_r()
+        start_f_seq, start_f_q = self.build_start_seq_f(low_q = low_q)
+        start_r_seq, start_r_q = self.build_start_seq_r(low_q = low_q)
         
         # Build the start sequences for the forward and reverse reads.
         # We need the reverse complement of the reverse primer
@@ -333,7 +340,7 @@ class FakeWell():
         
         return r1, r2
     
-    def build_start_seq_f(self):
+    def build_start_seq_f(self, low_q = False):
         """
         Returns the sequence and qualities for the forward primer, adapter, barcode,
         and frameshift as we would see them in a fastq file
@@ -352,9 +359,14 @@ class FakeWell():
         ))
         assert len(quals) == len(forward_read_start)
         
+        # If this is for low-q, then adjust qualities
+        if low_q:
+            quals = test_glob.NP_RNG.integers(0, self.config.average_q_cutoff,
+                                              size = len(quals))        
+        
         return forward_read_start, ord_to_chr(quals)
         
-    def build_start_seq_r(self):
+    def build_start_seq_r(self, low_q = False):
         """
         Returns the sequence and qualities for the reverse primer, adapter, barcode,
         and frameshift as we would see them in a fastq file
@@ -373,6 +385,11 @@ class FakeWell():
         ))
         
         assert len(quals) == len(reverse_read_start)
+        
+        # If this is for low-q, then adjust qualities
+        if low_q:
+            quals = test_glob.NP_RNG.integers(0, self.config.average_q_cutoff,
+                                              size = len(quals))
         
         return reverse_read_start, ord_to_chr(quals)
     
@@ -419,22 +436,7 @@ class FakeWell():
             self.refseq.bp_ind_start,
             self.refseq.aa_ind_start
         )
-        
-    
-    def build_output_counts(self):
-        """
-        Builds output files for the different `OutputCounts`
-        """
-        pass
-        
-    
-    def murder_well(self):
-        """
-        With some frequency, screws up the variants in a well to force a DEAD variant.
-        """
-        pass
-
-    
+            
     @staticmethod
     def calculate_maximum_reads_ind(total_reads_available, total_variants, minimum_reads_per_variant):
         
