@@ -1,7 +1,7 @@
 # Installation
 For non-programmers and those unfamiliar with [Anaconda](https://www.anaconda.com/) or [GitHub](https://www.github.com), see the [programing basics page](2-basics.md) for information on how to set up your computer environment to run `evSeq`.
 ## Installing from GitHub with the conda environment
-The recommended way to install `evSeq` invloves cloning the reopsitory from GitHub and then creating the [`conda` environment](https://conda.io/projects/conda/en/latest/user-guide/concepts/environments.html) from the included `evSeq.yml` file, as follows:
+The recommended way to install `evSeq` invloves cloning the repository from GitHub and then creating the [`conda` environment](https://conda.io/projects/conda/en/latest/user-guide/concepts/environments.html) from the included `evSeq.yml` file. Open a terminal window and navigate to the folder where you want to install `evSeq` (using the `cd` command to change directories as needed), then, in a terminal window, enter the following:
 ```
 git clone https://github.com/fhalab/evSeq.git
 cd evSeq
@@ -11,9 +11,7 @@ conda env create -f envs/evSeq.yml
 This will create an environment with the correct dependencies and versions.
 
 ### Future-proofing evSeq
-If, for whatever reason, one of the packages that `evSeq` depends on makes an update that breaks the software, we have provided another environment named `evSeq_exact.yml`. This installs all of the exact versions of the dependencies used at the time of writing, where all `evSeq` functionality has been developed/tested. Install it in the same way as above (`conda env create -f envs/evSeq_extact.yml`), and it will be installed. Although the file name is different, the environment name remains `evSeq` and all other commands can be followed.
-
-If your conda complains about an environment already being named `evSeq`, just run `conda env remove -n evSeq`. If conda further complains about you currently being in that environment, deactivate it (`conda deactivate`) and then re-run the command.
+If, for whatever reason, one of the packages that `evSeq` depends on makes an update that breaks the software, we have provided another environment named `evSeq_exact.yml`. This installs all of the exact versions of the dependencies used at the time of writing, where all `evSeq` functionality has been developed/tested. Install it in the same way as above (`conda env create -f envs/evSeq_extact.yml`), and it will be installed. 
 
 ### Using the evSeq environment
 This environment can subsequently be activated any time you want to run `evSeq` from the command line with:

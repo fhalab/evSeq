@@ -1,21 +1,23 @@
 # evSeq
 ### *No sequence-function pair left behind.*
 
-Every Variant Sequencing (`evSeq`) is a library preparation and analysis protocol that **slots neatly into existing workflows to enable extremely low-cost, massively parallel sequencing of protein variants**. Designed for heterologously expressed protein variants arrayed in 96-well plates (or similar), this workflow enables **sequencing all variants** produced during a protein engineering or biochemical mutagenesis experiment at a cost of **cents per variant**, even for labs that do not have expertise in or access to next-generation sequencing (NGS) technology.
+Every Variant Sequencing (`evSeq`) is a library preparation and analysis protocol that **slots neatly into existing workflows to enable extremely low-cost, massively parallel sequencing of protein variants**. Designed for heterologously expressed protein variants arrayed in 96-well plates (or similar), this workflow enables **sequencing all variants** from targetted mutagenesis libraries produced during a protein engineering or biochemical mutagenesis experiment at a cost of **cents per variant**, even for labs that do not have expertise in or access to next-generation sequencing (NGS) technology.
 
 ### Read the Paper!
 This repository accompanies the work ["evSeq: Cost-Effective Amplicon Sequencing of Every Variant in Protein Mutant Libraries"](LINK_TO_PAPER). If you use this tool, please [cite us](LINK_TO_PAGE_WITH_CITATION_FORMATS).
 
 ### Read the Docs!
-Navigate to [individual pages below](#documentation) or [start at the overview](0-theory.md).
+Find detailed documentation at the [individual pages linked below](#documentation) or [start at the overview](0-theory.md).
 
 #### Quick links to common resources:
+
 ##### Biology
 - [Inner Primer Design](1-lib_prep.md#inner-primer-design)
 - [PCR Protocol](1-lib_prep.md#pcr-protocol)
 - [PCR Product Purification](1-lib_prep.md#pcr-product-purification)
 
 ##### Computation
+- [Installation](3-installation.md)
 - [The `refseq` file](4-usage.md#the-refseq-file)
 - [`OutputCounts`](5-outputs.html#OutputCounts)
 - [Running `evSeq` in a Jupyter Notebook](8-full_demo.html)
@@ -39,9 +41,9 @@ Navigate to [individual pages below](#documentation) or [start at the overview](
 
 Due to the two-primer, culture-based PCR methodology employed by `evSeq`, only a new pair of inner primers needs to be ordered when targeting new regions/sequences and no DNA isolation needs to be performed.
 
-**B)** Once the sequences are returned by the NGS provider, the computational workup can be performed on a standard laptop by users with little-to-no computational experience.
+Once the sequences are returned by the NGS provider, the computational workup can be performed on a standard laptop by users with little-to-no computational experience.
 
-The amplicons prepared with `evSeq` can yield nearly 1000 high-quality protein variant sequences for the just cost of the multiplexed NGS run (typically ~$100 from commercial sequencing providers).
+The amplicons prepared with `evSeq` can yield nearly 1000 high-quality protein variant sequences for the just cost of the multiplexed NGS run (typically ~$100 from commercial sequencing providers, likely lower for in-house providers).
 
 #### Construct and visualize sequence-function pairs
 ![SeqFunc](assets/figure3.png)
@@ -103,3 +105,4 @@ Below are a collection of Jupyter Notebooks (rendered as documents) with example
 - [Poor results but good quality sequencing](9-troubleshooting.md#poor-results-but-good-quality-sequencing)
 - [Windows: `CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'`](9-troubleshooting.md#windows-commandnotfounderror-your-shell-has-not-been-properly-configured-to-use-conda-activate)
 - [macOS: `PermissionError: [Errno 1] Operation not permitted`](9-troubleshooting.md#macos-permissionerror-errno-1-operation-not-permitted)
+- [Linux: `CondaEnvException: Pip failed`](9-troubleshooting.md#linux-condaenvexception-pip-failed)

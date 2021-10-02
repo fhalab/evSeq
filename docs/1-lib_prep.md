@@ -8,12 +8,13 @@ The general protocol is as follows:
     - The reads do not need to overlap nor does the entire amplicon need to be sequenced.
     - These primers should include the appropriate `evSeq` adapter sequences as well (shown in blue above and specified [here](#adapters)).
 2. Use culture from a 96-well plate outgrowth (an "overnight" culture) to perform a 96-well PCR with these primers. [Jump to PCR Protocol.](#pcr-protocol)
+    - Multiple 96-well plates can be combined in a single `evSeq` run.
     - The plasmid within the cells in each culture will act as the template for the PCR.
     - After initial amplicon generation (~10 cycles), add the `evSeq` barcode primers to append plate- and well-specific barcodes to each amplicon.
 3. Pool each well of the PCR plate together, purify, and then send for a paired-end NGS run. [Jump to PCR Product Purification.](#pcr-product-purification)
     - Multiple purified `evSeq` samples can be further pooled together if using different pairs of `evSeq` dual-index barcode plates (barcode plates DI01–DI08). This further spreads the NGS reads (and cost) among more variants, allowing up to 768 wells to be sequenced in a single multiplexed NGS experiment.
     - Each plate should be purified individually, then their concentrations normalized and then pooled together as a single sample.
-4. Work up the .fastq files with the `evSeq` software, which maps the barcodes back their their original plate-well positions. [Jump to the Computation resources.](index.md#computation)
+4. Work up the .fastq files with the `evSeq` software, which maps the barcodes back to their original plate-well positions. [Jump to the Computation resources.](index.md#computation)
 
 ## Dual-Index Barcode Plates
 Barcoded amplicons are mapped back to wells using their forward and reverse (dual-indexed) barcode sequences. To reduce costs, `evSeq` uses only two plates of unique barcode (or "outer") primers—one for the forward primers and one for the reverse—which are combined in different ways to create eight possible dual-indexed (DI) primer plates.
@@ -137,7 +138,7 @@ If optimizing the two-step PCR with the barcode primers, follow the thermal cycl
 | 2 | 95 | 20 s |
 | 3 | TD 63 -> 53 | 20 s |
 | 4 | 68 | 30 s |
-| 5 | Return to 2, 30x |
+| 5 | Return to 2, 29x |
 | 6 | 4 | Hold |
 
 #### Gel analysis
@@ -157,25 +158,25 @@ The library preparation protocol follows:
 4. Seal the plates with thermalcycler-safe PCR film.
 5. Place the plates in thermalcyclers on the below conditions. "TD" means [touchdown](https://www.neb.com/faqs/0001/01/01/what-is-touchdown-pcr).
 
-| Step | Temp (°C)| Time |
-|:-----|-----|------|
-| 1 | 95 | 5 min |
-| 2 | 95 | 20 s |
-| 3 | TD 63 -> 53 | 20 s |
-| 4 | 68 | 30 s |
-| 5 | Return to 2, 9x |
-| 6 | 4 | Hold |
+    | Step | Temp (°C)| Time |
+    |:-----|-----|------|
+    | 1 | 95 | 5 min |
+    | 2 | 95 | 20 s |
+    | 3 | TD 63 -> 53 | 20 s |
+    | 4 | 68 | 30 s |
+    | 5 | Return to 2, 9x |
+    | 6 | 4 | Hold |
 
 6. Once the cycles have finished, stamp (i.e., A01 primers into A01 PCR, A02 primers into A02 PCR, etc.) 2 µL of a pre-prepared 1 µM dual-indexed barcode plate into each reaction of the half-skirted plate. For each plate that will be submitted as a single sequencing sample, you must use a different dual-indexed plate. At maximum you may submit 8 plates (one each of `DI01`–`DI08`) at a time given the default `evSeq` protocol.
 7. After adding the barcode primers, seal the plate with thermalcycler-safe PCR film, place the plates in thermalcyclers, and run on the below conditions:
 
-| Step | Temp (°C)| Time |
-|:-----|-----|------|
-| 7 | 95 | 20 s |
-| 8 | 68 | 50 s |
-| 9 | Return to 6, 24x |
-| 10 | 68 | 5 min |
-| 11 | 4 | Hold |
+    | Step | Temp (°C)| Time |
+    |:-----|-----|------|
+    | 7 | 95 | 20 s |
+    | 8 | 68 | 50 s |
+    | 9 | Return to 6, 24x |
+    | 10 | 68 | 5 min |
+    | 11 | 4 | Hold |
 
 8. Once the reactions finish, if not immediately moving on to the next step, put them on ice.
 
@@ -192,7 +193,7 @@ The library preparation protocol follows:
 9. For each pool of variants, identify the desired band and excise it. Perform gel extraction (this method was developed using a [Zymoclean Gel DNA Recovery Kit](https://www.zymoresearch.com/collections/zymoclean-gel-dna-recovery-kits)). Elution should be in ddH2O.
 10. Measure the DNA concentration of each gel-extracted sample.
 11. Finally, use the calculator found [here](https://github.com/fhalab/evSeq/blob/master/lib_prep_tools/LibDilCalculator.xlsx?raw=true) to create 15 µL at 5 ng/µL of combined pool of DNA of each of the plate samples. This is the sample that you will submit to multiplexed next-generation sequencing.
-    1.  This is standard for multiplexed MiSeq runs, but your NGS provider may request different numbers, in which case you should follow their requests.
+    1.  Your NGS provider may request different numbers, in which case you should follow their requests.
 
 Finally, submit your samples and then work up the returned data using the provided [Computational software](index.md#computation).
 
