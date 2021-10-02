@@ -1,7 +1,7 @@
 # Import needed directories
 import os.path
-from multiprocessing import cpu_count
 import numpy as np
+from multiprocessing import cpu_count
 
 # Get the number of CPUs available on the computer
 N_CPUS = cpu_count()
