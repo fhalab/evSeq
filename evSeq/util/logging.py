@@ -1,7 +1,8 @@
 # Import third party modules
 import os.path
+import warnings
 
-# # Import functions
+# Import functions
 from .globals import LOG_FILENAME
 
 # Write a function to log all cl_args passed in from each run
@@ -99,7 +100,7 @@ def log_warning(w):
     write_to_log(m)
     
     # Print the warning
-    print(w)
+    warnings.warn(w)
 
 # Write a function that logs any critical error encountered during the run
 def log_error(e):
