@@ -126,6 +126,4 @@ DECOUPLED_AA_COL_NAMES = (
 )
 
 # Save location for test runs
-SAVELOC = os.path.join(GLOBALS_DIR, "../test_data")
-if not os.path.isdir(SAVELOC):
-    os.mkdir(SAVELOC)
+SAVELOC = os.path.join(GLOBALS_DIR, "..", "test_data")

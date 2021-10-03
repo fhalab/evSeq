@@ -218,7 +218,6 @@ class FakeRun():
         # Loop over all positions and variants. For each mutated position, record the 
         # counts, the AA identity, the position, and any flags.
         all_pos_results = []
-        n_variants = len(well.variants)
         for pos in all_positions:
 
             # Create output containers
@@ -229,7 +228,7 @@ class FakeRun():
             flag = "Unexpected Variation" if pos not in nnn_positions else np.nan
 
             # Loop over all variants
-            for variant_ind, variant in enumerate(well.variants):
+            for variant in well.variants:
 
                 # Gather the AA id at the mutated position along with the expected 
                 # counts
