@@ -17,7 +17,7 @@ from time import strftime
 # Import evseq functions
 from .util.globals import N_CPUS
 from .util.input_processing import build_output_dirs
-from .util.logging import log_init, log_info
+from .util.logging import log_init, log_info, log_warning
 from evSeq.run_evSeq import run_evSeq
     
 # Get the working directory
@@ -255,6 +255,11 @@ def execute_evseq(gui = False):
     # except Exception as e:
     #    log_error(f"\nUnhandled exception encountered: '{e}'")
 
+    # Warn users that base outputs are experimental and have not been validated
+    log_warning("Run completed. Note that the nucleotide outputs are experimental "
+                "and have not been validated. The amino acid outputs have been "
+                "validated, however.")
+
     # Log that we have successfully completed the run
-    log_info("Run completed. Log may contain warnings.")
+    # log_info("Run completed. Log may contain warnings.")
    
