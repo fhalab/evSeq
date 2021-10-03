@@ -85,7 +85,7 @@ MAX_DUD_READS = 11
 Q_SCORE_BASE = 33
 
 # How many mutations can be next to each other at max?
-MAX_BORDERING_MUTS = 3
+MAX_BORDERING_MUTS = 2
 
 # Allowed nucleotides
 ALLOWED_NUCLEOTIDES = ("A", "T", "C", "G")
