@@ -5,7 +5,7 @@ in the stress testing.
 """
 # Import required evSeq machinery
 from .data_generation.globals import SAVELOC
-from .data_generation.stress_tests import test_aa
+from .data_generation.stress_tests import run_aa_stress_test
 
 # Import 3rd party code
 import os
@@ -29,7 +29,7 @@ def test_aa_checker():
     n_expected_failures = len(combined_platewells)
 
     # Run the comparison
-    test_out = test_aa(testdf_1, testdf_2)
+    test_out = run_aa_stress_test(testdf_1, testdf_2)
 
     # Make sure we have as many fails as expected
     assert not test_out[0]

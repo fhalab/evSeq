@@ -53,7 +53,7 @@ def check_well_is_parent(well, all_mutated_positions, nnn_positions):
     # Not a parent if nothing else was triggered
     return False    
 
-def test_aa(expected_out, true_out):
+def run_aa_stress_test(expected_out, true_out):
     
     # Get the unique plates and wells between the two. 
     expected_platewell = {tuple(platewell) for platewell in 

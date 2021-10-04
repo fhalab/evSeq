@@ -20,6 +20,9 @@ dependencies:
   - jupyter
   - jupyterlab
 
+  # Pytest for testing
+  - pytest
+
   # pip>=21.1 for in-tree-build
   - pip>=21.1
   

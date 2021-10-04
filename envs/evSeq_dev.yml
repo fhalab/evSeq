@@ -20,6 +20,9 @@ dependencies:
   - jupyter
   - jupyterlab
 
+  # Pytest for testing
+  - pytest
+
   # pip
   - pip
   

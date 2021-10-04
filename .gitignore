@@ -2,6 +2,13 @@
 *evSeqOutput/ 
 evSeqLog.log
 
+# Doc dev stuff
+docs/.bundle
+docs/vendor/
+
+# Test data
+tests/test_data/
+
 # Site stuff
 _site
 Gemfile*
