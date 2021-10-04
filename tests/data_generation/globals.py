@@ -125,5 +125,18 @@ DECOUPLED_AA_COL_NAMES = (
     "Flags"
 )
 
+COUPLED_AA_COL_NAMES = (
+    "IndexPlate",
+    "Plate",
+    "Well",
+    "VariantCombo",
+    "SimpleCombo",
+    "VariantsFound",
+    "AlignmentFrequency",
+    "WellSeqDepth",
+    "VariantSequence",
+    "Flags"
+)
+
 # Save location for test runs
 SAVELOC = os.path.join(GLOBALS_DIR, "..", "test_data")

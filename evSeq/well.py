@@ -555,7 +555,7 @@ class Well():
         # Determine instances where all variable positions have 2 counts. Check
         # to see if there are any situations where all positions have double counts
         # for a given read
-        double_count_positions = passing_qc == 2
+        double_count_positions = (passing_qc == 2)
         passing_qc_all_double_count = np.all(
             np.any(double_count_positions, axis = 1),
             axis = 1)
@@ -564,7 +564,7 @@ class Well():
         # Replace all instances where we have a count of 2 with 1. This is to 
         # binarize our sequences, allowing us to count them in a vectorized fashion
         # using numpy
-        passing_qc[passing_qc == 2] = 1
+        passing_qc[double_count_positions] = 1
         assert np.all(np.logical_or(passing_qc == 1, passing_qc == 0)), "Unexpected number of counts"
 
         # Get the unique sequences that all passed QC
