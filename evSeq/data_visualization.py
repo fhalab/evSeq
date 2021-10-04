@@ -219,6 +219,10 @@ def _make_platemap(df, title, cmap=None):
 
     hover = HoverTool(tooltips=tooltips)
 
+    def hook(plot, element):
+        plot.handles['y_range'].factors = list('HGFEDCBA')
+        plot.handles['x_range'].factors = [str(value) for value in range(1,13)]
+
     # generate the heatmap
     hm = hv.HeatMap(
         df,
@@ -243,7 +247,8 @@ def _make_platemap(df, title, cmap=None):
         colorbar_opts=dict(
             title='LogSeqDepth',
             background_fill_alpha=0
-        )
+        ),
+        hooks=[hook]
     )
 
     # function to bin the alignment frequencies into more relevant groupings
@@ -335,7 +340,6 @@ def _make_platemap(df, title, cmap=None):
         text_font_size=label_fontsize,
         **opts
     )
-
     # return formatted final plot
     return (hm*boxes*labels).opts(frame_height=550,
                                   frame_width=550 * 3 // 2,
