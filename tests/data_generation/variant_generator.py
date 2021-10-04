@@ -140,9 +140,6 @@ class FakeVariant():
         buffer_region = self.total_counts - self.minimum_reads_allowed
         n_combos_destroyed = test_glob.NP_RNG.integers(buffer_region) if buffer_region > 0 else 0
 
-        # Get the expected number of both bp and aa combinations
-        self.expected_combo_counts = self.total_counts - n_combos_destroyed 
-
         # Decide which reads will have noise added.
         read_inds = np.arange(self.total_counts)
         noisy_reads = test_glob.NP_RNG.choice(read_inds, 
@@ -190,6 +187,15 @@ class FakeVariant():
                                      self.total_counts)
         expected_bp_counts = np.full(self.well.refseq.codon_refseq_len, 
                                      self.total_counts)
+        
+        # Check to see if all mutant positions are in the double count region.
+        # If they are, then we expect 2x total combos as there are counts. 
+        # Otherwise, it is 1x
+        expected_combo_counts = self.total_counts
+        all_double_count_check = all(mutated_pos in self.well.refseq.double_count_inds
+                                     for mutated_pos in self.mutated_positions)
+        if all_double_count_check and (len(self.mutated_positions) > 0):
+            expected_combo_counts *= 2            
 
         # Double positions in the counts where we have overlap 
         for mutant_pos in self.well.refseq.double_count_inds:
@@ -202,7 +208,7 @@ class FakeVariant():
             for bp_ind in range(bp_start_ind, bp_start_ind + 3):
                 expected_bp_counts[bp_ind] *= 2
 
-        return expected_aa_counts, expected_bp_counts
+        return expected_aa_counts, expected_bp_counts, expected_combo_counts
         
     def incorporate_noisy_positions(self):
         """
@@ -213,7 +219,9 @@ class FakeVariant():
         noisy_reads, noisy_positions, noisy_bases_by_noisy_pos = self.id_noisy_positions()
 
         # Build expected output counts for amino acids and bases
-        self.expected_aa_counts, self.expected_bp_counts = self.build_expected_count_arrays()
+        (self.expected_aa_counts,
+         self.expected_bp_counts,
+         self.expected_combo_counts) = self.build_expected_count_arrays()
         
         # Create two quality score arrays. One is for the forward read and the other
         # is for the reverse reads
@@ -225,6 +233,10 @@ class FakeVariant():
         # Add noise to positions. Adjust counts and qualities accordingly.
         for noisy_read, noisy_position_array, noisy_bp_array in \
             zip(noisy_reads, noisy_positions, noisy_bases_by_noisy_pos):
+
+            # Keep track of the maximum count adjustment. This is how much we will
+            # take off of the combo counts
+            max_count_adj = 0
 
             # Loop over all positions and adjust basepair quality as appropriate
             for noisy_pos, noisy_base_set in zip(noisy_position_array, noisy_bp_array):
@@ -284,6 +296,12 @@ class FakeVariant():
                     # Adjust the counts. 
                     self.expected_bp_counts[actual_base_ind] -= count_adj    
                 self.expected_aa_counts[noisy_pos] -= count_adj
+                
+                # Record the maximum count adjustment
+                max_count_adj = max(max_count_adj, count_adj)
+                
+            # Update the combo counts
+            self.expected_combo_counts -= max_count_adj
                                         
         # If any of the the qualities have an average below the average allowed,
         # this becomes a dud well
@@ -329,13 +347,6 @@ class FakeVariant():
                                                                    variant_name)
 
         return fastq_r1, fastq_r2        
-    
-    def build_output_counts(self):
-        """
-        Builds output files for the different `OutputCounts`
-        """
-        
-        pass  
     
     def build_variable_region(self, include_nnn):
         """

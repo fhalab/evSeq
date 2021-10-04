@@ -4,7 +4,13 @@ Contains the wrapper for making a synthetic evSeq run for stress testing.
 # Import evSeq objects
 from .config_generator import Config
 from .well_generator import FakeWell
-from .globals import REFSEQ_COL_NAMES, INDEX_DF, SAVELOC, DECOUPLED_AA_COL_NAMES
+from .globals import (
+    REFSEQ_COL_NAMES,
+    INDEX_DF,
+    SAVELOC,
+    DECOUPLED_AA_COL_NAMES,
+    COUPLED_AA_COL_NAMES
+    )
 from .stress_tests import calculate_parent_counts, check_well_is_parent
 
 # Import 3rd party modules
@@ -268,8 +274,78 @@ class FakeRun():
         return all_pos_results
 
     # Build the expected coupled results
-    def _build_expected_coupled_aa(self, well, all_positions, is_parent):
-        pass           
+    def _build_expected_coupled_aa(self, well, nnn_positions, all_positions, is_parent):
+        
+        # If this is a parent well, format as appropriate
+        if is_parent:
+            
+            return [[
+                well.platename,
+                well.platenickname,
+                well.wellname,
+                "#PARENT#",
+                "#PARENT#",
+                0,
+                1.0,
+                calculate_parent_counts(well),
+                "".join(well.refseq.aa_refseq),
+                "#PARENT#"
+            ]]
+                
+        # Get a sorted list of all positions. 
+        all_positions_sorted = sorted(list(all_positions))
+
+        # Identify indices where the aa is (1) the same as the parent for all variants,
+        # and (2) not an "NNN" position, continue. Remove these from the variant pool
+        # as evSeq will not find it.
+        no_use_positions = []
+        for pos in all_positions_sorted:
+            same_as_ref_check = all(variant.base_mut_aa_seq[pos] == well.refseq.aa_refseq[pos]
+                                    for variant in well.variants)
+            if (pos not in nnn_positions) and same_as_ref_check:
+                no_use_positions.append(pos)
+        no_use_positions = set(no_use_positions)
+                
+        adjusted_positions = [pos + well.refseq.aa_ind_start
+                            for pos in all_positions_sorted
+                            if pos not in no_use_positions]
+            
+            
+        # Get variant counts and frequencies
+        combo_counts = [variant.expected_combo_counts for variant in well.variants]
+        total_counts = sum(combo_counts)
+        frequencies = combo_counts / total_counts
+            
+        # Loop over all variants
+        well_res = [None] * len(well.variants)
+        for i, variant in enumerate(well.variants):
+            
+            # Grab the amino acid identities for both the variant and reference
+            # at all positions. 
+            all_ref_aas = [None] * len(all_positions_sorted)
+            all_variant_aas = all_ref_aas.copy()
+            for j, pos in enumerate(all_positions_sorted):
+                all_ref_aas[j] = "?" if pos in nnn_positions else well.refseq.aa_refseq[pos]
+                all_variant_aas[j] = variant.base_mut_aa_seq[pos]
+            
+            # Build the variant combo
+            variant_combo = "_".join([f"{ref_aa}{pos}{mut_aa}" for ref_aa, pos, mut_aa in
+                                    zip(all_ref_aas, adjusted_positions, all_variant_aas)])
+                
+            # Build the expected outputs
+            well_res[i] = [
+                well.platename,
+                well.platenickname,
+                well.wellname,
+                variant_combo,
+                "".join(all_variant_aas),
+                len(adjusted_positions),
+                frequencies[i],
+                total_counts,
+                "".join(variant.base_mut_aa_seq)
+            ] 
+            
+        return well_res
     
     def build_expected_aa(self):
     
@@ -278,6 +354,7 @@ class FakeRun():
 
         # Create a list for storing expected results
         expected_decoupled_aa = []
+        expected_coupled_aa = []
 
         # Loop over all wells
         for well in self.wells:
@@ -303,17 +380,23 @@ class FakeRun():
             )
             
             # Build the expected coupled results
-            self._build_expected_coupled_aa(well, all_positions, is_parent)
+            expected_coupled_aa.extend(
+                self._build_expected_coupled_aa(well, nnn_positions, all_positions, is_parent)
+            )
                             
         # Format the output
-        expected_aa_df = pd.DataFrame(expected_decoupled_aa,
-                                      columns = DECOUPLED_AA_COL_NAMES)
+        expected_decoupled_aa_df = pd.DataFrame(expected_decoupled_aa,
+                                                columns = DECOUPLED_AA_COL_NAMES)
+        expected_coupled_aa_df = pd.DataFrame(expected_coupled_aa,
+                                              columns = COUPLED_AA_COL_NAMES)
 
         # Sort results
-        expected_aa_df.sort_values(by = ["IndexPlate", "Well", "AaPosition", "Aa"],
-                                  inplace = True)
-
-        return expected_aa_df
+        expected_decoupled_aa_df.sort_values(by = ["IndexPlate", "Well", "AaPosition", "Aa"],
+                                             inplace = True)
+        expected_coupled_aa_df.sort_values(by = ["IndexPlate", "Well", "AlignmentFrequency"],
+                                           inplace = True)
+        
+        return expected_decoupled_aa_df, expected_coupled_aa_df
 
     @property
     def refseq_saveloc(self):

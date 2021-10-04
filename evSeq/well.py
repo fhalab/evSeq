@@ -536,7 +536,10 @@ class Well():
         # at least one count. This works because amino acids are only counted
         # if they pass QC: for all to pass QC they must all have a count at
         # some position
-        all_pos_at_least_one_count = np.all(variable_position_counts.sum(axis=1) >= 1, axis = 1)
+        assert np.all(variable_position_counts <= 2), "Too many counts somehow."
+        all_pos_at_least_one_count = np.all(
+            np.any(variable_position_counts >= 1, axis=1), 
+            axis = 1)
         passing_qc = variable_position_counts[all_pos_at_least_one_count].copy()
         
         # If too few pass QC, return a dead dataframe
@@ -549,17 +552,40 @@ class Well():
                                   "Too few paired reads pass QC"]],
                                 columns = columns)
             
-        # Replace all instances where we have a count of 2 with 1. Counting at 
-        # this stage is by combo, so we don't worry about the sequencing depth
-        # of individual positions
-        passing_qc[passing_qc == 2] = 1
+        # Determine instances where all variable positions have 2 counts. Check
+        # to see if there are any situations where all positions have double counts
+        # for a given read
+        double_count_positions = (passing_qc == 2)
+        passing_qc_all_double_count = np.all(
+            np.any(double_count_positions, axis = 1),
+            axis = 1)
+        assert len(passing_qc_all_double_count.shape) == 1
+            
+        # Replace all instances where we have a count of 2 with 1. This is to 
+        # binarize our sequences, allowing us to count them in a vectorized fashion
+        # using numpy
+        passing_qc[double_count_positions] = 1
         assert np.all(np.logical_or(passing_qc == 1, passing_qc == 0)), "Unexpected number of counts"
 
         # Get the unique sequences that all passed QC
-        unique_binary_combos, unique_counts = np.unique(passing_qc, axis = 0, return_counts = True)
+        (unique_binary_combos,
+         inverse_unique_indices,
+         unique_counts) = np.unique(passing_qc, 
+                                    axis = 0,
+                                    return_inverse = True,
+                                    return_counts = True)
 
-        # We cannot have more counts than paired seqpairs
+        # We cannot have more counts than paired seqpairs, nor more double count
+        # checks than there are reads
         assert unique_counts.max() <= len(paired_alignment_inds), "Counting error"
+        assert len(passing_qc_all_double_count) == len(inverse_unique_indices)
+        
+        # For any read where all positions were double-counted, increment
+        # the number of counts by 1 for the associated combination. 
+        for is_full_double_count, count_ind in \
+            zip(passing_qc_all_double_count, inverse_unique_indices):
+                if is_full_double_count:
+                    unique_counts[count_ind] += 1            
         
         # Get a frequency array
         seq_depth = unique_counts.sum()
