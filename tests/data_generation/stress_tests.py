@@ -1,9 +1,21 @@
 """
 Contains the functions needed for running and evaluating stress tests.
 """
+# Import evSeq stuff
+import tests.data_generation.globals as test_glob
+from .globals import SAVELOC
+from .run_generator import FakeRun
+
 # Import 3rd party code
+import os
+import random
 import itertools
+import pickle
+import shutil
 import numpy as np
+import pandas as pd
+from glob import glob
+
 
 # Calculates expected counts for a parent well
 def calculate_parent_counts(well):
@@ -84,7 +96,7 @@ def run_aa_stress_test(expected_out, true_out):
         len_true_out = len(limited_true_out)
         assert (len_expected_out > 0) and (len_true_out > 0)
         if len_expected_out != len_true_out:
-            error_reports.append(f"Mismatched number of entries for {plate}-{well}")
+            error_reports.append((limited_expected_out.copy(), limited_true_out.copy()))
             bad_platewells.append((plate, well))
             continue
             
@@ -128,3 +140,87 @@ def run_aa_stress_test(expected_out, true_out):
     # Evaluate how many bad platewells were found.
     successful_test = (len(bad_platewells) == 0)
     return successful_test, bad_platewells, error_reports
+
+def build_new_dir(new_dir):
+    if not os.path.isdir(new_dir):
+        os.mkdir(new_dir)
+
+def compare_datasets(expected_out, true_out, flavor, counter):
+    
+    # Test the two dataframes from each set to make sure they agree
+    test_passed, bad_platewells, reports = run_aa_stress_test(expected_out, true_out)
+    
+    # Note success if all tests passed
+    if test_passed:
+        print(f"All {flavor} tests passed for seed: {counter}")
+
+    # Save the error reports if there were any
+    else:
+        # Report errors
+        for plate, well in bad_platewells:
+            print(f"Errors found for {flavor} {plate}-{well} with seed {counter}.")
+
+        # Save the messed up components
+        error_loc = os.path.join(SAVELOC, "ErrorReports")
+        build_new_dir(error_loc)
+
+        error_loc = os.path.join(error_loc, flavor)
+        build_new_dir(error_loc)
+
+        with open(os.path.join(error_loc, f"{counter}.pkl"), "wb") as f:
+            pickle.dump([bad_platewells, reports], f)
+            
+    return test_passed
+
+def run_evseq_stress_test(detailed, include_nnn, 
+                          keep_output = False, seed = 0):
+    
+    # Run until we break something
+    counter = seed
+    while True:
+                
+        # Update the global RNG to match the counter (for reproducbility)
+        test_glob.RANDOM_SEED = counter
+        test_glob.NP_RNG = np.random.default_rng(counter)
+        test_glob.RANDOM_RNG = random.Random(counter)
+    
+        # Build a test run and the associated output files
+        test_run = FakeRun(detailed = detailed)
+        test_run.build_fastq()
+        test_run.build_refseq(include_nnn)
+
+        # Run evSeq on the generated data
+        test_run.run_evseq()
+
+        # Get the expected outputs
+        expected_decoupled, expected_coupled = test_run.build_expected_aa()
+
+        # Get the true outputs. Sort the true output in the same
+        # way the expected was sorted.
+        most_recent_run_path = sorted(glob(os.path.join(SAVELOC, "evSeqOutput", "*")))[-1]
+        true_decoupled = pd.read_csv(os.path.join(most_recent_run_path, "OutputCounts", 
+                                                  "AminoAcids_Decoupled_All.csv"))
+        true_coupled = pd.read_csv(os.path.join(most_recent_run_path, "OutputCounts",
+                                                "AminoAcids_Coupled_All.csv"))
+        
+        true_decoupled.sort_values(by = ["IndexPlate", "Well", "AaPosition", "Aa"],
+                             inplace = True)
+        true_coupled.sort_values(by = ["IndexPlate", "Well", "AlignmentFrequency", "SimpleCombo"],
+                                 inplace = True)
+        
+        # Test the two dataframes from each set to make sure they agree
+        uncoupled_passed = compare_datasets(expected_decoupled,
+                                            true_decoupled,
+                                            "Uncoupled",
+                                            counter)
+        coupled_passed = compare_datasets(expected_coupled,
+                                          true_coupled,
+                                          "Coupled",
+                                          counter)
+        
+        # If both tests passed, delete output
+        if uncoupled_passed and coupled_passed and not keep_output:
+            shutil.rmtree(most_recent_run_path)
+            
+        # Update the counter
+        counter += 1

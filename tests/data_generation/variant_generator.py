@@ -139,6 +139,9 @@ class FakeVariant():
         # added to them. This number must fall above the minimum counts required.
         buffer_region = self.total_counts - self.minimum_reads_allowed
         n_combos_destroyed = test_glob.NP_RNG.integers(buffer_region) if buffer_region > 0 else 0
+        
+        # Get the number of combos surviving pre-rescued
+        self.n_combos_pre_rescue = self.total_counts - n_combos_destroyed
 
         # Decide which reads will have noise added.
         read_inds = np.arange(self.total_counts)
@@ -147,18 +150,31 @@ class FakeVariant():
                                     replace = False)
         noisy_reads.sort()
 
-        # Determine options for noisy positions.
+        # The edges of double count regions cannot be used for noise.
         if len(self.well.refseq.double_count_inds) != 0:
             forbidden_noisy_aas = {min(self.well.refseq.double_count_inds), 
                                    max(self.well.refseq.double_count_inds)}
         else:
             forbidden_noisy_aas = set()
+            
+        # WT positions cannot be used for noise either
+        forbidden_noisy_aas = forbidden_noisy_aas | {pos for pos, mut_aa in 
+                                                     zip(self.mutated_positions, self.variable_aas)
+                                                     if self.well.refseq.aa_refseq[pos] == mut_aa}
+            
+        # Get a final set of allowed positions
         noisened_position_options = np.array([pos for pos in self.mutated_positions
                                               if pos not in forbidden_noisy_aas])
 
         # Determine how many noisy positions per read. 
         n_noisey_per_read = int(len(noisened_position_options) * 
                                 test_glob.NP_RNG.uniform(MIN_NOISE_PERC, MAX_NOISE_PERC))
+        
+        # If there are no noisy positions per read, we have not lost any combos,
+        # and we return early
+        if n_noisey_per_read == 0:
+            self.n_combos_pre_rescue = self.total_counts
+            return None
 
         # Decide which amino acids within each read will have noise added.
         # Do not add noise to codons within 1 of the double overlap region.
@@ -188,14 +204,14 @@ class FakeVariant():
         expected_bp_counts = np.full(self.well.refseq.codon_refseq_len, 
                                      self.total_counts)
         
-        # Check to see if all mutant positions are in the double count region.
-        # If they are, then we expect 2x total combos as there are counts. 
-        # Otherwise, it is 1x
-        expected_combo_counts = self.total_counts
-        all_double_count_check = all(mutated_pos in self.well.refseq.double_count_inds
-                                     for mutated_pos in self.mutated_positions)
-        if all_double_count_check and (len(self.mutated_positions) > 0):
-            expected_combo_counts *= 2            
+        # # Check to see if all mutant positions are in the double count region.
+        # # If they are, then we expect 2x total combos as there are counts. 
+        # # Otherwise, it is 1x
+        # expected_combo_counts = self.total_counts
+        # all_double_count_check = all(mutated_pos in self.well.refseq.double_count_inds
+        #                              for mutated_pos in self.mutated_positions)
+        # if all_double_count_check and (len(self.mutated_positions) > 0):
+        #     expected_combo_counts *= 2            
 
         # Double positions in the counts where we have overlap 
         for mutant_pos in self.well.refseq.double_count_inds:
@@ -208,7 +224,8 @@ class FakeVariant():
             for bp_ind in range(bp_start_ind, bp_start_ind + 3):
                 expected_bp_counts[bp_ind] *= 2
 
-        return expected_aa_counts, expected_bp_counts, expected_combo_counts
+        # return expected_aa_counts, expected_bp_counts, expected_combo_counts
+        return expected_aa_counts, expected_bp_counts
         
     def incorporate_noisy_positions(self):
         """
@@ -216,12 +233,14 @@ class FakeVariant():
         to get them to these counts
         """
         # Identify noisy reads, positions, and nucleotides
-        noisy_reads, noisy_positions, noisy_bases_by_noisy_pos = self.id_noisy_positions()
+        noisy_output = self.id_noisy_positions()
 
         # Build expected output counts for amino acids and bases
+        # (self.expected_aa_counts,
+        #  self.expected_bp_counts,
+        #  self.expected_combo_counts) = self.build_expected_count_arrays()
         (self.expected_aa_counts,
-         self.expected_bp_counts,
-         self.expected_combo_counts) = self.build_expected_count_arrays()
+         self.expected_bp_counts) = self.build_expected_count_arrays()
         
         # Create two quality score arrays. One is for the forward read and the other
         # is for the reverse reads
@@ -229,16 +248,20 @@ class FakeVariant():
                                (self.total_counts, 1))
         self.r_quals = self.f_quals.copy()
         bad_qual_q = self.well.config.bp_q_cutoff - 1
-
-        # Add noise to positions. Adjust counts and qualities accordingly.
-        for noisy_read, noisy_position_array, noisy_bp_array in \
-            zip(noisy_reads, noisy_positions, noisy_bases_by_noisy_pos):
-
-            # Keep track of the maximum count adjustment. This is how much we will
-            # take off of the combo counts
-            max_count_adj = 0
+        
+        # Set a counter for the number of rescued combos
+        self.n_combos_rescued = 0
+        
+        # Only continue past here if we have actual noisy reads.
+        if noisy_output is None:
+            return
+        
+        # Add noise to positions. Adjust counts and qualities accordingly. Record
+        # the number of rescued combos.
+        for noisy_read, noisy_position_array, noisy_bp_array in zip(*noisy_output):
 
             # Loop over all positions and adjust basepair quality as appropriate
+            read_rescued = True # By default we assume the read is rescued
             for noisy_pos, noisy_base_set in zip(noisy_position_array, noisy_bp_array):
 
                 # Determine count adjustment for the position
@@ -251,7 +274,7 @@ class FakeVariant():
                 # mutate the low-quality codon again (this should never be counted, providing
                 # a test to make sure that we are appropriately ignoring codons)
                 rescue = (double_count_pos and (test_glob.NP_RNG.uniform() < RESCUE_FREQ))
-
+                
                 # Get the base index for the noisy position
                 noisy_base_index_zero = noisy_pos * 3
 
@@ -287,6 +310,9 @@ class FakeVariant():
 
                     # Otherwise, we adjust both quality arrays and make no changes to sequence
                     else:
+                        
+                        # Note that we did not rescue the position. The read is gone
+                        read_rescued = False
 
                         # Set quality to be 2 less than the minimum existing quality in
                         # the array of q-scores.
@@ -296,12 +322,10 @@ class FakeVariant():
                     # Adjust the counts. 
                     self.expected_bp_counts[actual_base_ind] -= count_adj    
                 self.expected_aa_counts[noisy_pos] -= count_adj
-                
-                # Record the maximum count adjustment
-                max_count_adj = max(max_count_adj, count_adj)
-                
-            # Update the combo counts
-            self.expected_combo_counts -= max_count_adj
+                                
+            # Update how many combos were rescued
+            if read_rescued:
+                self.n_combos_rescued += 1
                                         
         # If any of the the qualities have an average below the average allowed,
         # this becomes a dud well

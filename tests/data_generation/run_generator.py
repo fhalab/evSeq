@@ -298,42 +298,71 @@ class FakeRun():
         # Identify indices where the aa is (1) the same as the parent for all variants,
         # and (2) not an "NNN" position, continue. Remove these from the variant pool
         # as evSeq will not find it.
-        no_use_positions = []
+        filtered_positions = []
         for pos in all_positions_sorted:
             same_as_ref_check = all(variant.base_mut_aa_seq[pos] == well.refseq.aa_refseq[pos]
                                     for variant in well.variants)
-            if (pos not in nnn_positions) and same_as_ref_check:
-                no_use_positions.append(pos)
-        no_use_positions = set(no_use_positions)
-                
+            if not ((pos not in nnn_positions) and same_as_ref_check):
+                filtered_positions.append(pos)
+        
+        # See if all positions are in the double count region
+        all_pos_double_count = all(pos in well.refseq.double_count_inds
+                                   for pos in filtered_positions)
+        
+        # Calculate the number of expected combos. If all positions are in the
+        # double count region, then we expect two counts for all combos that did
+        # not have noise added to them; otherwise we expect one count. We except
+        # one count for combos with noise added that were then rescued
+        combo_count_multiplier = 2 if all_pos_double_count else 1
+        combo_counts = [variant.n_combos_pre_rescue * combo_count_multiplier + variant.n_combos_rescued
+                        for variant in well.variants]
+        
+        # Get the expected positions adjusted for the start amino acid
         adjusted_positions = [pos + well.refseq.aa_ind_start
-                            for pos in all_positions_sorted
-                            if pos not in no_use_positions]
-            
-            
-        # Get variant counts and frequencies
-        combo_counts = [variant.expected_combo_counts for variant in well.variants]
+                              for pos in filtered_positions]
+                    
+        # Get variant counts and frequencies. Note that for variants with no
+        # counts, if all positions are in the double count region, we double the
+        # number of expected counts (this number is assumed to represent the
+        # total number of counts in a variant, and because expected combo counts
+        # are made in isolation, we assume single count combos by default)
+        # combo_counts = [variant.expected_combo_counts * 2 
+        #                 if ((len(variant.mutated_positions) == 0) and all_pos_double_count)
+        #                 else variant.expected_combo_counts
+        #                 for variant in well.variants]
+        # combo_counts = [variant.expected_combo_counts for variant in well.variants]
         total_counts = sum(combo_counts)
         frequencies = combo_counts / total_counts
             
         # Loop over all variants
-        well_res = [None] * len(well.variants)
+        variant_to_ind = {} # Stores variant combos so that we can map identical ones back
+        well_res = []
+        well_pos_counter = 0
         for i, variant in enumerate(well.variants):
             
             # Grab the amino acid identities for both the variant and reference
             # at all positions. 
-            all_ref_aas = [None] * len(all_positions_sorted)
+            all_ref_aas = [None] * len(filtered_positions)
             all_variant_aas = all_ref_aas.copy()
-            for j, pos in enumerate(all_positions_sorted):
+            for j, pos in enumerate(filtered_positions):
                 all_ref_aas[j] = "?" if pos in nnn_positions else well.refseq.aa_refseq[pos]
                 all_variant_aas[j] = variant.base_mut_aa_seq[pos]
             
             # Build the variant combo
             variant_combo = "_".join([f"{ref_aa}{pos}{mut_aa}" for ref_aa, pos, mut_aa in
                                     zip(all_ref_aas, adjusted_positions, all_variant_aas)])
+            
+            # If this variant combo has been seen before, we need to add the 
+            # frequency to what we observed. We do not make a new entry.
+            if variant_combo in variant_to_ind:
+                previous_ind = variant_to_ind[variant_combo]
+                well_res[previous_ind][6] += frequencies[i]
+                continue
+            else:
+                variant_to_ind[variant_combo] = well_pos_counter
                 
             # Build the expected outputs
-            well_res[i] = [
+            well_res.append([
                 well.platename,
                 well.platenickname,
                 well.wellname,
@@ -342,8 +371,12 @@ class FakeRun():
                 len(adjusted_positions),
                 frequencies[i],
                 total_counts,
-                "".join(variant.base_mut_aa_seq)
-            ] 
+                "".join(variant.base_mut_aa_seq),
+                np.nan
+            ])
+            
+            # Increment the counter
+            well_pos_counter += 1
             
         return well_res
     
@@ -393,7 +426,7 @@ class FakeRun():
         # Sort results
         expected_decoupled_aa_df.sort_values(by = ["IndexPlate", "Well", "AaPosition", "Aa"],
                                              inplace = True)
-        expected_coupled_aa_df.sort_values(by = ["IndexPlate", "Well", "AlignmentFrequency"],
+        expected_coupled_aa_df.sort_values(by = ["IndexPlate", "Well", "AlignmentFrequency", "SimpleCombo"],
                                            inplace = True)
         
         return expected_decoupled_aa_df, expected_coupled_aa_df
