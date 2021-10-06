@@ -490,7 +490,7 @@ class SeqPair():
         
     # Check to see if we have no alignments that pass
     def is_dud_post_alignment_qc(self):
-        if not(self.use_f_alignment or self.use_r_alignment):
+        if not (self.use_f_alignment or self.use_r_alignment):
             return True
         else:
             return False
