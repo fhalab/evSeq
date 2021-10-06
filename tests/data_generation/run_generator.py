@@ -321,16 +321,7 @@ class FakeRun():
         adjusted_positions = [pos + well.refseq.aa_ind_start
                               for pos in filtered_positions]
                     
-        # Get variant counts and frequencies. Note that for variants with no
-        # counts, if all positions are in the double count region, we double the
-        # number of expected counts (this number is assumed to represent the
-        # total number of counts in a variant, and because expected combo counts
-        # are made in isolation, we assume single count combos by default)
-        # combo_counts = [variant.expected_combo_counts * 2 
-        #                 if ((len(variant.mutated_positions) == 0) and all_pos_double_count)
-        #                 else variant.expected_combo_counts
-        #                 for variant in well.variants]
-        # combo_counts = [variant.expected_combo_counts for variant in well.variants]
+        # Get variant counts and frequencies. 
         total_counts = sum(combo_counts)
         frequencies = combo_counts / total_counts
             

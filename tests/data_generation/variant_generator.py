@@ -9,7 +9,6 @@ from tests.data_generation.globals import (
 from tests.data_generation.custom_codon_table import CODON_TABLE, ALLOWED_AAS
 
 # Import 3rd party modules
-import warnings
 import numpy as np
 from copy import deepcopy
 
@@ -202,16 +201,7 @@ class FakeVariant():
         expected_aa_counts = np.full(self.well.refseq.refseq_len, 
                                      self.total_counts)
         expected_bp_counts = np.full(self.well.refseq.codon_refseq_len, 
-                                     self.total_counts)
-        
-        # # Check to see if all mutant positions are in the double count region.
-        # # If they are, then we expect 2x total combos as there are counts. 
-        # # Otherwise, it is 1x
-        # expected_combo_counts = self.total_counts
-        # all_double_count_check = all(mutated_pos in self.well.refseq.double_count_inds
-        #                              for mutated_pos in self.mutated_positions)
-        # if all_double_count_check and (len(self.mutated_positions) > 0):
-        #     expected_combo_counts *= 2            
+                                     self.total_counts)    
 
         # Double positions in the counts where we have overlap 
         for mutant_pos in self.well.refseq.double_count_inds:
@@ -236,9 +226,6 @@ class FakeVariant():
         noisy_output = self.id_noisy_positions()
 
         # Build expected output counts for amino acids and bases
-        # (self.expected_aa_counts,
-        #  self.expected_bp_counts,
-        #  self.expected_combo_counts) = self.build_expected_count_arrays()
         (self.expected_aa_counts,
          self.expected_bp_counts) = self.build_expected_count_arrays()
         
