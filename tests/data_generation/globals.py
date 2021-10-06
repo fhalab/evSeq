@@ -138,5 +138,9 @@ COUPLED_AA_COL_NAMES = (
     "Flags"
 )
 
+# Get columns we will use for sorting
+DECOUPLED_SORT_COLS = ["IndexPlate", "Well", "AaPosition", "Aa"]
+COUPLED_SORT_COLS = ["IndexPlate", "Well", "AlignmentFrequency", "SimpleCombo"]
+
 # Save location for test runs
 SAVELOC = os.path.join(GLOBALS_DIR, "..", "test_data")

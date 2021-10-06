@@ -544,7 +544,7 @@ class Well():
         
         # If too few pass QC, return a dead dataframe
         n_passing = len(passing_qc)
-        if  n_passing < variable_count:
+        if n_passing < variable_count:
             
             # Create a dataframe and return
             return pd.DataFrame([[self.index_plate, self.plate_nickname, self.well,

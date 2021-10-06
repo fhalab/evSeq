@@ -5,6 +5,8 @@ Contains the wrapper for making a synthetic evSeq run for stress testing.
 from .config_generator import Config
 from .well_generator import FakeWell
 from .globals import (
+    COUPLED_SORT_COLS,
+    DECOUPLED_SORT_COLS,
     REFSEQ_COL_NAMES,
     INDEX_DF,
     SAVELOC,
@@ -460,12 +462,6 @@ class FakeRun():
                                                 columns = DECOUPLED_AA_COL_NAMES)
         expected_coupled_aa_df = pd.DataFrame(expected_coupled_aa,
                                               columns = COUPLED_AA_COL_NAMES)
-
-        # Sort results
-        expected_decoupled_aa_df.sort_values(by = ["IndexPlate", "Well", "AaPosition", "Aa"],
-                                             inplace = True)
-        expected_coupled_aa_df.sort_values(by = ["IndexPlate", "Well", "AlignmentFrequency", "SimpleCombo"],
-                                           inplace = True)
         
         return expected_decoupled_aa_df, expected_coupled_aa_df
 
