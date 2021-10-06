@@ -16,55 +16,6 @@ import numpy as np
 import pandas as pd
 from glob import glob
 
-
-# Calculates expected counts for a parent well
-def calculate_parent_counts(well):
-    
-    # Get the complete expected counts across the readable region
-    total_counts = np.zeros(well.refseq.refseq_len)
-    for variant in well.variants:
-        total_counts += variant.expected_aa_counts    
-    
-    # Get the number of codons added due to the length of the forward and
-    # reverse primers/frameshifts
-    added_len_f = well.refseq.primer_seed_len_f + well.refseq.frameshift_front
-    added_len_r = well.refseq.primer_seed_len_r + well.refseq.frameshift_back
-    n_added_codons = added_len_f // 3 + added_len_r // 3    
-        
-    # Get total counts
-    usual_counts = np.sum(total_counts[well.refseq.og_mutable])
-    added_codon_counts = n_added_codons * sum(variant.total_counts for variant in well.variants)
-    total_counts = usual_counts + added_codon_counts
-    
-    # Get the mean number of counts
-    return int(total_counts / (n_added_codons + len(well.refseq.og_mutable)))
-
-def check_well_is_parent(well, all_mutated_positions, nnn_positions):
-    
-    # If there are nnn positions, this cannot be a parent seq
-    if len(nnn_positions) > 0:
-        return False
-    
-    # If there are no mutated positions, this is a parent well
-    if len(all_mutated_positions) == 0:
-        return True
-        
-    # Get the reference sequence for the variants
-    parent_seq = well.refseq.aa_refseq
-
-    # Loop over all variants and check to see if all mutated
-    # positions match the parent
-    parent_checks = [all(variant.base_mut_aa_seq[pos] == parent_seq[pos]
-                         for pos in all_mutated_positions)
-                    for variant in well.variants]
-    
-    # If all variants are parent, this is a parent well
-    if all(parent_checks):
-        return True
-    
-    # Not a parent if nothing else was triggered
-    return False    
-
 def run_aa_stress_test(expected_out, true_out):
     
     # Get the unique plates and wells between the two. 
@@ -179,6 +130,9 @@ def run_evseq_stress_test(detailed, include_nnn,
     counter = seed
     while True:
                 
+        # Report what we're working on
+        print(f"Working on tests for seed {counter}...")
+                
         # Update the global RNG to match the counter (for reproducbility)
         test_glob.RANDOM_SEED = counter
         test_glob.NP_RNG = np.random.default_rng(counter)
@@ -222,5 +176,6 @@ def run_evseq_stress_test(detailed, include_nnn,
         if uncoupled_passed and coupled_passed and not keep_output:
             shutil.rmtree(most_recent_run_path)
             
-        # Update the counter
+        # Update the counter and print a line break for the next test
         counter += 1
+        print("\n")
