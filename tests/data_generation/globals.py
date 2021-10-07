@@ -87,6 +87,9 @@ Q_SCORE_BASE = 33
 # How many mutations can be next to each other at max?
 MAX_BORDERING_MUTS = 2
 
+# How frequently do we convert a good well into a dead well?
+DEAD_WELL_FREQ = 0.1
+
 # Allowed nucleotides
 ALLOWED_NUCLEOTIDES = ("A", "T", "C", "G")
 

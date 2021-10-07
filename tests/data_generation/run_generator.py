@@ -5,8 +5,8 @@ Contains the wrapper for making a synthetic evSeq run for stress testing.
 from .config_generator import Config
 from .well_generator import FakeWell
 from .globals import (
-    COUPLED_SORT_COLS,
-    DECOUPLED_SORT_COLS,
+    DEAD_WELL_FREQ,
+    NP_RNG,
     REFSEQ_COL_NAMES,
     INDEX_DF,
     SAVELOC,
@@ -43,6 +43,10 @@ def calculate_parent_counts(well):
     return int(total_counts / (n_added_codons + len(well.refseq.og_mutable)))
 
 def check_well_is_parent(well, all_mutated_positions, nnn_positions):
+    
+    # If the well is dead, this cannot be a parent seq
+    if well.dead_well:
+        return False
     
     # If there are nnn positions, this cannot be a parent seq
     if len(nnn_positions) > 0:
@@ -167,15 +171,13 @@ class FakeRun():
             well.f_barcode = row.FBC
             well.r_barcode = row.RBC
             
+            # With some probability, turn a good well into a DEAD well.
+            if not well.dud_well and (NP_RNG.uniform() < DEAD_WELL_FREQ):
+                well.kill_well()
+            
             # Record
             self.wells[i] = well
-            
-    def build_output_counts(self):
-        """
-        Builds output files for the different `OutputCounts`
-        """
-        pass
-    
+                
     def run_evseq(self):
         """
         Wraps the evSeq command line interface to run the program with
@@ -267,8 +269,25 @@ class FakeRun():
                 "#PARENT#",
                 1.0, # We expect 100% alignment frequency given how we wrote the test code
                 calculate_parent_counts(well),
-                "#PARENT#",                    
-            ]]
+                "#PARENT#",
+                ]]
+            
+        # If the well is dead, return as much
+        if well.dead_well:
+            
+            # The number of remaining variants will be the well depth.
+            remaining_vars = well.total_reads if well.local_dead else well.n_dead_reads
+            
+            return [[
+                well.platename,
+                well.platenickname,
+                well.wellname,
+                "#DEAD#",
+                "#DEAD#",
+                0,
+                remaining_vars,
+                "#DEAD#"
+                ]]
 
         # Loop over all positions and variants. For each mutated position, record the 
         # counts, the AA identity, the position, and any flags.
@@ -340,7 +359,28 @@ class FakeRun():
                 "".join(well.refseq.aa_refseq),
                 "#PARENT#"
             ]]
-                
+            
+        # If this is a dead well, format as appropriate
+        if well.dead_well:
+            
+            # The number of reads remaining and the flag depend on how the well
+            # was killed
+            reads_remaining = well.total_reads if well.local_dead else well.n_dead_reads
+    
+            # Format the output
+            return [[
+                well.platename,
+                well.platenickname,
+                well.wellname,
+                "#DEAD#",
+                "#DEAD#",
+                0,
+                0,
+                reads_remaining,
+                "#DEAD#",
+                "Too few usable reads"                
+                ]]
+                            
         # Get a sorted list of all positions. 
         all_positions_sorted = sorted(list(all_positions))
 

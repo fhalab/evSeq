@@ -163,7 +163,7 @@ def run_aa_stress_test(expected_out, true_out, true_out_max):
         len_true_out = len(limited_true_out)
         assert (len_expected_out > 0) and (len_true_out > 0)
         if len_expected_out != len_true_out:
-            bad_dfs = (limited_expected_out.copy(), limited_true_out.copy())
+            bad_dfs = (limited_true_out.copy(), limited_expected_out.copy())
             error_reports.append(bad_dfs)
             bad_platewells.append((plate, well))
             max_error_reports.append(bad_dfs)
@@ -247,7 +247,7 @@ def run_evseq_stress_test(detailed, include_nnn,
         test_run = FakeRun(detailed = detailed)
         test_run.build_fastq()
         test_run.build_refseq(include_nnn)
-
+        
         # Run evSeq on the generated data
         # test_run.run_evseq()
 

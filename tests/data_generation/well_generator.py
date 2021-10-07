@@ -5,7 +5,7 @@ import tests.data_generation.globals as test_glob
 from tests.data_generation.globals import (
     ALLOWED_NUCLEOTIDES, MAX_N_READS, MIN_N_READS, MAX_N_VARIANTS, 
     MIN_N_VARIANTS, MIN_DUD_READS, MAX_DUD_READS, MIN_INDELS_ADDED,
-    MAX_INDELS_ADDED, MAX_QUAL_ALLOWED, 
+    MAX_INDELS_ADDED, MAX_QUAL_ALLOWED,
 )
 
 # Import evSeq globals needed for testing
@@ -19,7 +19,6 @@ from .variant_generator import FakeVariant
 
 # Import 3rd party modules
 import numpy as np
-import warnings
 
 # Class that holds information for a test well
 class FakeWell():
@@ -28,6 +27,9 @@ class FakeWell():
         # Assign the config and reference sequence objects as instance variables
         self.config = config
         self.refseq = reference_sequence
+        
+        # By default, the well is not dead
+        self.dead_well = False
         
         # Create plate, well, and barcode variables as a placeholder.
         # This will be filled when the well is passed with others to
@@ -59,6 +61,64 @@ class FakeWell():
             else:
                 self.variants = [FakeVariant(self, abundance, minimum_reads_per_variant) for
                                 abundance in variant_abundances]
+                
+    def kill_well(self):
+        """
+        Takes what was a good well and converts it to a "#DEAD#" well. This is always
+        handled by modifying the quality scores of the variants. There are a few
+        ways that a well can be considered DEAD:
+        1. Make it so that there are less usable reads than the variable count
+        2. Make it so that all variable positions have 0 counts. We can do this
+           by dropping the basepair threshold. 
+        """
+        # Note that this is indeed a dead well
+        self.dead_well = True
+        
+        # Get all mutated positions among all variants.
+        all_mutated = []
+        for variant in self.variants:
+            all_mutated.extend(variant.mutated_positions)
+        unique_mutated = np.array(list(set(all_mutated)))
+        unique_mutated.sort()
+        
+        # Decide which option to use. Global means option 1, local means 
+        # option 2. We can only take the local option if our well actually has
+        # variants in it.
+        if ((test_glob.NP_RNG.uniform() < 0.5) and (len(unique_mutated) > 0)):
+            self.global_dead = False
+            self.local_dead = True
+        else:
+            self.global_dead = True
+            self.local_dead = False
+                        
+        # If we are going the global route:
+        if self.global_dead:
+            
+            # Decide how many usable reads are kept in total among variants
+            self.n_dead_reads = test_glob.NP_RNG.integers(0, self.config.variable_count)
+            reads_to_kill = self.total_reads - self.n_dead_reads
+            
+            # Kill variants until we hit the number of reads to kill
+            for variant in self.variants:
+                
+                # Determine how many reads to kill. If the variant has less counts
+                # than the total remaining to kill, we kill all reads
+                if variant.total_counts <= reads_to_kill:
+                    variant.kill_global(variant.total_counts)
+                    reads_to_kill -= variant.total_counts
+                    
+                # Otherwise, we kill the variant with the remaining number of
+                # reads
+                else:
+                    variant.kill_global(reads_to_kill)                
+            
+        # If we are going the local route:
+        else:
+            
+            # For each variant, convert the uniquely mutated positions to have
+            # poor quality
+            for variant in self.variants:
+                variant.kill_local(unique_mutated)
          
     def assign_n_variants(self):
         """

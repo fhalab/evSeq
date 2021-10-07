@@ -11,6 +11,7 @@ from tests.data_generation.custom_codon_table import CODON_TABLE, ALLOWED_AAS
 # Import 3rd party modules
 import numpy as np
 from copy import deepcopy
+import warnings
 
 # Create a class that holds all relevant information for a variant
 class FakeVariant():
@@ -316,12 +317,45 @@ class FakeVariant():
                                         
         # If any of the the qualities have an average below the average allowed,
         # this becomes a dud well
-        forward_test = (np.any(self.f_quals.mean(axis = 1) < 
-                               self.well.config.average_q_cutoff))
-        reverse_test = (np.any(self.r_quals.mean(axis = 1) < 
-                               self.well.config.average_q_cutoff))
-        if forward_test or reverse_test:
-            self.well.dud_well = True
+        self.check_quality_integrity()
+            
+    def kill_global(self, n_reads_to_kill):
+        """
+        Lowers the quality scores of all reads except `n_remaining` below the
+        global quality threshold.
+        """
+        # Randomly sample bad qualities. 
+        bad_f_quals = test_glob.NP_RNG.integers(0, self.well.config.average_q_cutoff,
+                                                size = (n_reads_to_kill, self.f_quals.shape[1]))
+        bad_r_quals = test_glob.NP_RNG.integers(0, self.well.config.average_q_cutoff,
+                                                size = (n_reads_to_kill, self.f_quals.shape[1]))
+        
+        # Replace the quality scores
+        self.f_quals[:n_reads_to_kill] = bad_f_quals
+        self.r_quals[:n_reads_to_kill] = bad_r_quals
+        
+    def kill_local(self, unique_mutated):
+        """
+        Sends all aa positions given by `unique_mutated` to have 0 counts. This
+        is done by tanking their qualities in both directions.
+        """
+        # Get the bad quality. This is just one below the cutoff. 
+        bad_q = self.well.config.bp_q_cutoff - 1
+        
+        # Expand the unique_mutated array to cover codons instead of amino acids
+        base_codon = unique_mutated * 3
+        codon_array = np.concatenate([
+            base_codon,
+            base_codon + 1,
+            base_codon + 2
+        ])
+        
+        # Set the qualities lower for all reads.
+        self.f_quals[:, codon_array] = bad_q
+        self.r_quals[:, codon_array] = bad_q
+        
+        # If we dropped qualities too much, this is now a dud well.
+        self.check_quality_integrity()
         
     def build_perfect_reads(self, variant_id):
         """
@@ -378,3 +412,14 @@ class FakeVariant():
             new_refseq + 
             self.well.refseq.frameshift_bp_back
             )
+        
+    def check_quality_integrity(self):
+        """
+        Confirms that the mean quality scores of our well is acceptable.
+        """
+        forward_test = (np.any(self.f_quals.mean(axis = 1) < 
+                               self.well.config.average_q_cutoff))
+        reverse_test = (np.any(self.r_quals.mean(axis = 1) < 
+                               self.well.config.average_q_cutoff))
+        if forward_test or reverse_test:
+            self.well.dud_well = True
