@@ -25,6 +25,10 @@ class FakeVariant():
         self.total_counts = counts
         self.minimum_reads_allowed = minimum_reads_allowed
         
+        # Make an array that tells us whether or not we forced reads to be 
+        # destroyed by dropping their qualities. By default, this is all False.
+        self.killed_by_global_low_q = np.zeros(self.total_counts, dtype = bool)
+        
         # Don't move forward if there are no counts
         self.no_counts = (counts == 0)
         
@@ -328,11 +332,14 @@ class FakeVariant():
         bad_f_quals = test_glob.NP_RNG.integers(0, self.well.config.average_q_cutoff,
                                                 size = (n_reads_to_kill, self.f_quals.shape[1]))
         bad_r_quals = test_glob.NP_RNG.integers(0, self.well.config.average_q_cutoff,
-                                                size = (n_reads_to_kill, self.f_quals.shape[1]))
+                                                size = (n_reads_to_kill, self.r_quals.shape[1]))
         
         # Replace the quality scores
         self.f_quals[:n_reads_to_kill] = bad_f_quals
         self.r_quals[:n_reads_to_kill] = bad_r_quals
+        
+        # Note which reads were killed by low q
+        self.killed_by_global_low_q[:n_reads_to_kill] = True
         
     def kill_local(self, unique_mutated):
         """
@@ -383,13 +390,18 @@ class FakeVariant():
             
             assert len(full_forward_bp) == len(full_rev_bp)    
             
+            # Note if the read was destroyed by dropping quality. If so, we need
+            # to adjust the qualities of the seed sequences as well
+            killed_by_global_q_drop = self.killed_by_global_low_q[i]
+            
             # Record fastq entries
             variant_name = f"{self.well.platename}_{self.well.wellname}_variant{variant_id}_{i}"
             fastq_r1[i], fastq_r2[i] = self.well.build_fastq_entry(full_forward_bp,
                                                                    full_rev_bp,
                                                                    full_forward_q,
                                                                    full_rev_q,
-                                                                   variant_name)
+                                                                   variant_name,
+                                                                   low_q = killed_by_global_q_drop)
 
         return fastq_r1, fastq_r2        
     
