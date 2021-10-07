@@ -1,6 +1,7 @@
 # Import evSeq dependencies
 from Bio.Seq import reverse_complement
-from .util.globals import (ADAPTER_F, ADAPTER_R, BP_TO_IND, AA_TO_IND,
+from .util.globals import (ADAPTER_F, ADAPTER_R, BARCODE_LENGTH, BP_TO_IND,
+                           AA_TO_IND, ADAPTER_LENGTH_R, ADAPTER_LENGTH_F,
                            CODON_TABLE, AA_TO_IND, BP_ARRAY, AA_ARRAY)
 
 # Import other required modules
@@ -12,7 +13,7 @@ from Bio import SeqIO, pairwise2
 class Well():
     
     # Initialization assigns attributes, reference sequences, and sequence pairs
-    def __init__(self, seqpairs, refseq_df_info, save_dir):
+    def __init__(self, seqpairs, refseq_df_info, save_dir, read_length):
         
         # Assign the sequence pairs as an attribute, unpack the refseq info,
         # and store the expected variable basepair positions as attirbutes
@@ -35,6 +36,11 @@ class Well():
         
         # Get the number of aas in the reference sequence
         self._n_aas = (self.ref_len - self.frame_dist) // 3
+        
+        # Determine whether or not the reads will overlap in this well
+        readable_distance = (2 * (read_length - BARCODE_LENGTH) - 
+                             ADAPTER_LENGTH_F - ADAPTER_LENGTH_R)
+        self.read_overlap = (readable_distance >= self.ref_len)
         
         # Calculate the expected count frequencies for both basepairs and
         # amino acids assuming no sequencing errors and no changes to reference
@@ -321,6 +327,9 @@ class Well():
         # Record that we have run the unpaired analysis
         self.unpaired_run = True
         
+        # By default the run is not dead from zero gaps
+        self.dead_from_zero_gaps = False
+        
         # Define output columns
         unit_pos = f"{unit_type}Position" # Create a name for the unit position
         columns = ("IndexPlate", "Plate", "Well",  unit_pos, unit_type,
@@ -345,6 +354,31 @@ class Well():
         if not self.usable_reads:
             return dead_df, dead_df
         
+        # If we have any non-gap positions with 0 counts, this is a dead well.
+        # This means that if we have overlapping reads, we expect no discontinuity
+        # in the non-zero positions. If there are overlapping reads, we expect
+        # only a single discontinuity
+        assert len(total_count_array.shape) == 1
+        non_zero_pos_mask = (total_count_array != 0) # Mask of positions without zero
+        non_zero_positions = np.argwhere(non_zero_pos_mask).flatten() # Positions without zero
+        non_zero_positions.sort()
+        consecutive_diffs = np.ediff1d(non_zero_positions)
+        n_zero_gaps = 0
+        for diff in consecutive_diffs:
+            if diff > 1:
+                n_zero_gaps += 1
+                
+        # Check to see if we have gaps of 0 counts
+        if n_zero_gaps > 0:
+            
+            # We are okay with a single gap only if the forward and reverse reads
+            # do not overlap
+            if n_zero_gaps == 1 and not self.read_overlap:
+                pass
+            else:
+                self.dead_from_zero_gaps = True
+                return dead_df, dead_df
+        
         # If there are no forward or reverse reads in the well, then throw a 
         # flag as a warning to the user
         flags = []
@@ -359,9 +393,6 @@ class Well():
             
             # Update flags
             flags.append("#PARENT#")
-            
-            # Identify the positions without 0s.
-            non_zero_pos_mask = (total_count_array != 0)
             
             # Get the mean read depth and frequency over all non-zero positions.
             self.parent_counts = int(np.mean(total_count_array[non_zero_pos_mask]))
@@ -495,7 +526,7 @@ class Well():
                    "VariantSequence", "Flags")
         
         # If there are no usable reads, return a dead dataframe
-        if not self.usable_reads:
+        if (not self.usable_reads) or self.dead_from_zero_gaps:
             return pd.DataFrame([[self.index_plate, self.plate_nickname, self.well,
                                   "#DEAD#", "#DEAD#", 0, 0, len(self.non_dud_alignments),
                                   "#DEAD#", "Too few usable reads"]], columns = columns)
@@ -679,6 +710,10 @@ class Well():
         bad_r_seeds = [False for seq in seqs]
 
         for i, seq in enumerate(seqs):
+            
+            # Do nothing if this is a dead well. 
+            if seq == "#DEAD#":
+                continue
 
             # Check forward seed
             if seq[:len(f_seed)] != f_seed:
@@ -740,6 +775,11 @@ class Well():
 
         # Remove this from each
         for i, seq in enumerate(aa_seqs):
+            
+            # Do nothing if this is a dead well. 
+            if seq == "#DEAD#":
+                continue
+            
             # Remove f_seed amino acids
             seq = seq[seed_aa_len:]
 

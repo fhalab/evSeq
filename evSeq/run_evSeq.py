@@ -123,10 +123,9 @@ def qc_seqpairs(
     # Eliminate any duds, which are those seqpairs with both a forward and a reverse that failed qc
     no_duds = tuple(filter(lambda x: not x.is_dud(), all_seqpairs))
     
-    return no_duds
+    return no_duds, read_length
 
-
-def assign_seqpairs_to_well(filtered_seqpairs, bc_to_ref_plate_well, savedir):
+def assign_seqpairs_to_well(filtered_seqpairs, bc_to_ref_plate_well, savedir, read_length):
     """Assigning seqpairs to a well."""
 
     # Loop over all seqpairs and assign to wells
@@ -150,7 +149,7 @@ def assign_seqpairs_to_well(filtered_seqpairs, bc_to_ref_plate_well, savedir):
             well_pairs[well_id] = [pair]
             
     # Now build and return the well objects
-    return [Well(pair, bc_to_ref_plate_well[well_id], savedir) 
+    return [Well(pair, bc_to_ref_plate_well[well_id], savedir, read_length) 
             for well_id, pair in well_pairs.items()] 
 
 
@@ -275,14 +274,15 @@ def run_evSeq(cl_args, tqdm_fn=tqdm.tqdm):
         return
     
     # Run QC on the seqpairs
-    filtered_seqpairs = qc_seqpairs(all_seqpairs, cl_args["read_length"],
-                                    cl_args["length_cutoff"], 
-                                    cl_args["average_q_cutoff"])
+    filtered_seqpairs, read_length = qc_seqpairs(all_seqpairs, cl_args["read_length"],
+                                                 cl_args["length_cutoff"], 
+                                                 cl_args["average_q_cutoff"])
     
     # Assign seqpairs to a well
     all_wells = assign_seqpairs_to_well(filtered_seqpairs, 
                                         bc_to_ref_plate_well,
-                                        cl_args["output"])
+                                        cl_args["output"],
+                                        read_length)
     
     # Save the fastq files
     if cl_args["keep_parsed_fastqs"] or cl_args["only_parse_fastqs"]:
