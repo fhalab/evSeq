@@ -6,13 +6,13 @@ from .config_generator import Config
 from .well_generator import FakeWell
 from .globals import (
     DEAD_WELL_FREQ,
-    NP_RNG,
     REFSEQ_COL_NAMES,
     INDEX_DF,
     SAVELOC,
     DECOUPLED_AA_COL_NAMES,
     COUPLED_AA_COL_NAMES
     )
+import tests.data_generation.globals as test_glob
 
 # Import 3rd party modules
 import os
@@ -172,7 +172,7 @@ class FakeRun():
             well.r_barcode = row.RBC
             
             # With some probability, turn a good well into a DEAD well.
-            if not well.dud_well and (NP_RNG.uniform() < DEAD_WELL_FREQ):
+            if not well.dud_well and (test_glob.NP_RNG.uniform() < DEAD_WELL_FREQ):
                 well.kill_well()
             
             # Record

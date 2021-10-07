@@ -5,7 +5,7 @@ import tests.data_generation.globals as test_glob
 from tests.data_generation.globals import (
     ALLOWED_NUCLEOTIDES, MAX_N_READS, MIN_N_READS, MAX_N_VARIANTS, 
     MIN_N_VARIANTS, MIN_DUD_READS, MAX_DUD_READS, MIN_INDELS_ADDED,
-    MAX_INDELS_ADDED, MAX_QUAL_ALLOWED,
+    MAX_INDELS_ADDED, MAX_QUAL_ALLOWED, MIN_VARIABLE_COUNT,
 )
 
 # Import evSeq globals needed for testing
@@ -95,7 +95,8 @@ class FakeWell():
         if self.global_dead:
             
             # Decide how many usable reads are kept in total among variants
-            self.n_dead_reads = test_glob.NP_RNG.integers(0, self.config.variable_count)
+            self.n_dead_reads = test_glob.NP_RNG.integers(MIN_VARIABLE_COUNT - 1,
+                                                          self.config.variable_count)
             reads_to_kill = self.total_reads - self.n_dead_reads
             
             # Kill variants until we hit the number of reads to kill

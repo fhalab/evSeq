@@ -52,8 +52,9 @@ FRAMESHIFT_MAX = 3
 # Bounds on position identification
 MIN_VARIABLE_THRESH = 0.01
 MAX_VARIABLE_THRESH = 0.3
-MIN_VARIABLE_COUNT = 1
+MIN_VARIABLE_COUNT = 2
 MAX_VARIABLE_COUNT = 21
+assert MIN_VARIABLE_COUNT > 1 # We cannot have it at 1 or 0 for data generation to work
 
 # Number of variants in a well
 MIN_N_VARIANTS = 1
@@ -143,7 +144,7 @@ COUPLED_AA_COL_NAMES = (
 
 # Get columns we will use for sorting
 DECOUPLED_SORT_COLS = ["IndexPlate", "Well", "AaPosition", "Aa"]
-COUPLED_SORT_COLS = ["IndexPlate", "Well", "AlignmentFrequency", "SimpleCombo"]
+COUPLED_SORT_COLS = ["IndexPlate", "Well", "SimpleCombo", "AlignmentFrequency"]
 
 # Save location for test runs
 SAVELOC = os.path.join(GLOBALS_DIR, "..", "test_data")

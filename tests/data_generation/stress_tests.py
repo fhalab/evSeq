@@ -247,7 +247,7 @@ def run_evseq_stress_test(detailed, include_nnn,
         test_run = FakeRun(detailed = detailed)
         test_run.build_fastq()
         test_run.build_refseq(include_nnn)
-        
+
         # Run evSeq on the generated data
         test_run.run_evseq()
 
