@@ -1,4 +1,6 @@
 # Troubleshooting
+For any issues that are not covered below, please reach out to us for assistance. Issues with the software should be reported on GitHub [here](https://github.com/fhalab/evSeq/issues); we also have a forum on GitHub for discussing questions/problems with running the evSeq protocol (both computational and wet-lab) that can be found [here](https://github.com/fhalab/evSeq/discussions/).
+
 ## Poor reverse read quality
 If your forward read quality is excellent but your reverse read quality is very poor, this can ruin your `Coupled` output files. While you can still get useful information from the forward reads in the `Decoupled` output files, this issue usually comes from library preparation and should be fixed as soon as possible.
 

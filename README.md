@@ -16,8 +16,10 @@ For detailed information and interactive walkthroughs, [read the docs at the `ev
 - [PCR Product Purification](https://fhalab.github.io/evSeq/1-lib_prep.html#pcr-product-purification)
 
 ##### Computation
-- [The `refseq` file](https://fhalab.github.io/evSeq/4-usage.html#the-refseq-file)
-- [`OutputCounts`](https://fhalab.github.io/evSeq/5-outputs.html#OutputCounts)
+- [Inputs](https://fhalab.github.io/evSeq/4-usage.html)
+    - [The `refseq` file](https://fhalab.github.io/evSeq/4-usage.html#the-refseq-file)
+- [Outputs](https://fhalab.github.io/evSeq/5-outputs.html)
+    - [`OutputCounts`](https://fhalab.github.io/evSeq/5-outputs.html#OutputCounts)
 - [Running `evSeq` in a Jupyter Notebook](https://fhalab.github.io/evSeq/8-full_demo.html)
 
 ##### [Troubleshooting](https://fhalab.github.io/evSeq/9-troubleshooting.md)
