@@ -249,7 +249,7 @@ def run_evseq_stress_test(detailed, include_nnn,
         test_run.build_refseq(include_nnn)
         
         # Run evSeq on the generated data
-        # test_run.run_evseq()
+        test_run.run_evseq()
 
         # Get the expected outputs
         expected_decoupled, expected_coupled = test_run.build_expected_aa()
