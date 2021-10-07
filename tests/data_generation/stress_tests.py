@@ -257,10 +257,14 @@ def run_evseq_stress_test(detailed, include_nnn,
         # Get the true outputs. 
         most_recent_run_path = sorted(glob(os.path.join(SAVELOC, "evSeqOutput", "*")))[-1]
         count_path = os.path.join(most_recent_run_path, "OutputCounts")
-        true_decoupled = pd.read_csv(os.path.join(count_path, "AminoAcids_Decoupled_All.csv"))
-        true_coupled = pd.read_csv(os.path.join(count_path, "AminoAcids_Coupled_All.csv"))
-        true_decoupled_max = pd.read_csv(os.path.join(count_path, "AminoAcids_Decoupled_Max.csv"))
-        true_coupled_max = pd.read_csv(os.path.join(count_path, "AminoAcids_Coupled_Max.csv"))
+        true_decoupled = pd.read_csv(os.path.join(count_path, "AminoAcids_Decoupled_All.csv"),
+                                     keep_default_na = False, na_values = "")
+        true_coupled = pd.read_csv(os.path.join(count_path, "AminoAcids_Coupled_All.csv"),
+                                   keep_default_na = False, na_values = "")
+        true_decoupled_max = pd.read_csv(os.path.join(count_path, "AminoAcids_Decoupled_Max.csv"),
+                                         keep_default_na = False, na_values = "")
+        true_coupled_max = pd.read_csv(os.path.join(count_path, "AminoAcids_Coupled_Max.csv"),
+                                       keep_default_na = False, na_values = "")
         
         # Test the two dataframes from each set to make sure they agree
         uncoupled_passed = compare_datasets(expected_decoupled,
