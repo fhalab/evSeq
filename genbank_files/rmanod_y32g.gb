@@ -1,4 +1,4 @@
-LOCUS       RmaNOD_Y32G             5802 bp ds-DNA     circular     18-SEP-2021
+LOCUS       RmaNOD_Y32G             5802 bp ds-DNA     circular     08-OCT-2021
 DEFINITION  .
 FEATURES             Location/Qualifiers
      primer_bind     2373..2392
@@ -19,11 +19,11 @@ FEATURES             Location/Qualifiers
                      /label="S28M31_Const-R"
                      /ApEinfo_revcolor=#9eafd2
                      /ApEinfo_fwdcolor=#9eafd2
-     misc_feature    2516..2536
+     misc_feature    2515..2536
                      /label="evSeq Forward Seed"
                      /ApEinfo_revcolor=#b1ff67
                      /ApEinfo_fwdcolor=#b1ff67
-     misc_feature    2516..2658
+     misc_feature    2515..2658
                      /label="evSeq Reference Seq"
                      /ApEinfo_revcolor=#c7b0e3
                      /ApEinfo_fwdcolor=#c7b0e3
@@ -35,6 +35,10 @@ FEATURES             Location/Qualifiers
                      /label="VariantFragment"
                      /ApEinfo_revcolor=#9eafd2
                      /ApEinfo_fwdcolor=#9eafd2
+     misc_feature    2537..2639
+                     /label="VariableRegion"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
      misc_feature    complement(2592..2646)
                      /label="Q52L56-DegeneratePrimerRegion"
                      /ApEinfo_revcolor=#faac61
@@ -126,8 +130,8 @@ ORIGIN
      2341 cgtagaggat cgagatctcg atcccgcgaa attaatacga ctcactatag gggaattgtg
      2401 agcggataac aattcccctc tagaaataat tttgtttaac tttaagaagg agatatacat
      2461 ATGGCGCCGA CCCTGTCGGA ACAGACCCGT CAGTTGGTAC GTGCGTCTGT GCCTGCACTG
-     2521 CAGAAACACT CAGTCGCTAT TAGCGCCACG ATGGGTCGGC TGCTTTTCGA ACGGTATCCC
-     2581 GAAACGCGGA GCTTGTTTGA ACTTCCTGAG AGACAGATAC ACAAGCTTGC GTCGGCCCTG
+     2521 CAGAAACACT CAGTCGCTAT TagcGCCACG atgGGTCGGC TGCTTTTCGA ACGGTATCCC
+     2581 GAAACGCGGA GCTTGTTTGA ACTTCCTGAG AGAcagATAC ACAAGcttGC GTCGGCCCTG
      2641 TTGGCCTACG CCCGTAGTAT CGACAACCCA TCGGCGTTAC AGGCGGCCAT CCGCCGCATG
      2701 GTGCTTTCCC ACGCACGCGC AGGAGTGCAG GCCGTCCATT ATCCGCTGGT TTGGGAATGT
      2761 TTGAGAGACG CTATAAAAGA AGTCCTGGGC CCGGATGCCA CCGAGACCCT TCTGCAGGCG
