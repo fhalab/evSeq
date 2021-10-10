@@ -9,7 +9,6 @@ as well as execution code that is shared between the GUI and CLI parsers.
 import os
 import argparse
 import tqdm
-import warnings
 
 from gooey import GooeyParser
 from time import strftime
@@ -17,7 +16,7 @@ from time import strftime
 # Import evseq functions
 from .util.globals import N_CPUS
 from .util.input_processing import build_output_dirs
-from .util.logging import log_init, log_info, log_warning
+from .util.logging import log_init, log_info, log_error
 from evSeq.run_evSeq import run_evSeq
     
 # Get the working directory
@@ -249,17 +248,11 @@ def execute_evseq(gui = False):
         tqdm_fn = tqdm.tqdm
         
     # Run evSeq
-    # try:
-    warnings.warn("You took off unhandled exceptions")
-    run_evSeq(CL_ARGS, tqdm_fn)
-    # except Exception as e:
-    #    log_error(f"\nUnhandled exception encountered: '{e}'")
-
-    # Warn users that base outputs are experimental and have not been validated
-    log_warning("Run completed. Note that the nucleotide outputs are experimental "
-                "and have not been validated. The amino acid outputs have been "
-                "validated, however.")
+    try:
+        run_evSeq(CL_ARGS, tqdm_fn)
+    except Exception as e:
+       log_error(f"\nUnhandled exception encountered: '{e}'")
 
     # Log that we have successfully completed the run
-    # log_info("Run completed. Log may contain warnings.")
+    log_info("Run completed. Log may contain warnings.")
    
