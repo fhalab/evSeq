@@ -298,7 +298,7 @@ def find_codons_variable_positions(refseq, inframe_bp, plate, well):
             variable_counter += 1
 
     # Convert to an array. Make sure everything is sorted.
-    variable_positions = np.array(variable_positions)
+    variable_positions = np.array(variable_positions, dtype = int)
     variable_positions.sort()
 
     # Make sure that all variable positions are "N" and that we found the appropriate

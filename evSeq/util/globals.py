@@ -71,3 +71,6 @@ IND_TO_AA = {val: key for key, val in AA_TO_IND.items()}
 
 # Get an array of all allowed amino acids indexed by `AA_TO_IND`
 AA_ARRAY = np.array([IND_TO_AA[i] for i in range(len(IND_TO_AA))])
+
+# Precision for floating point numbers
+FLOAT_PREC = np.float32

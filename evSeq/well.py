@@ -2,7 +2,7 @@
 from Bio.Seq import reverse_complement
 from .util.globals import (ADAPTER_F, ADAPTER_R, BARCODE_LENGTH, BP_TO_IND,
                            AA_TO_IND, ADAPTER_LENGTH_R, ADAPTER_LENGTH_F,
-                           CODON_TABLE, AA_TO_IND, BP_ARRAY, AA_ARRAY)
+                           CODON_TABLE, AA_TO_IND, BP_ARRAY, AA_ARRAY, FLOAT_PREC)
 
 # Import other required modules
 import os
@@ -71,12 +71,12 @@ class Well():
     def calculate_expected_arrays(self):
         """Calculates the expected reference amino acid and base sequences."""
         # Create arrays for storing expected results. 
-        self._expected_bps = np.zeros([6, self.ref_len], dtype = int)
-        self._expected_aas = np.zeros([23, self.n_aas], dtype = int)
+        self._expected_bps = np.zeros([6, self.ref_len], dtype = FLOAT_PREC)
+        self._expected_aas = np.zeros([23, self.n_aas], dtype = FLOAT_PREC)
                 
         # Loop over the reference sequence and record expected basepairs
         for bp_ind, bp in enumerate(self.reference_sequence):
-            self._expected_bps[BP_TO_IND[bp], bp_ind] += 1
+            self._expected_bps[BP_TO_IND[bp], bp_ind] += 1.0
 
         # Caculate last readable bp for translation
         last_readable_bp = self.frame_dist + self.n_aas * 3
@@ -90,14 +90,14 @@ class Well():
             expected_aa = "?" if codon not in CODON_TABLE else CODON_TABLE[codon]
 
             # Record and increment counter
-            self._expected_aas[AA_TO_IND[expected_aa], aa_counter] += 1
+            self._expected_aas[AA_TO_IND[expected_aa], aa_counter] += 1.0
             aa_counter += 1
             
         # Make sure we are not double counting and that we are counting everything
-        bp_test = np.sum(self.expected_bps, axis = 0)
-        aa_test = np.sum(self.expected_aas, axis = 0)
-        assert np.all(bp_test == 1), "Expected bp calculation is wrong"
-        assert np.all(aa_test == 1), "Expected aa calculation is wrong"
+        bp_test = np.sum(self.expected_bps, axis = 0, dtype = FLOAT_PREC)
+        aa_test = np.sum(self.expected_aas, axis = 0, dtype = FLOAT_PREC)
+        assert np.all(bp_test == 1.0), "Expected bp calculation is wrong"
+        assert np.all(aa_test == 1.0), "Expected aa calculation is wrong"
         
         # Calculate and store the amino acid reference sequence
         aa_ref_inds = np.argwhere(np.transpose(self.expected_aas == 1))[:, 1]
@@ -163,8 +163,8 @@ class Well():
             return False
         
         # Create matrices in which to store counts
-        self._all_bp_counts = np.zeros([n_non_duds, 6, self.ref_len], dtype=int)
-        self._all_aa_counts = np.zeros([n_non_duds, 23, self.n_aas], dtype=int)
+        self._all_bp_counts = np.zeros([n_non_duds, 6, self.ref_len], dtype=np.uint8)
+        self._all_aa_counts = np.zeros([n_non_duds, 23, self.n_aas], dtype=np.uint8)
         
         # Loop over all non-dud seqpairs and record counts for each aa and sequence
         for pair_ind, seqpair in enumerate(self.non_dud_alignments):
@@ -191,10 +191,10 @@ class Well():
         # position. For both the aa and bp count matrices, the last row is the
         # gap character.
         # The gap character is ignored when generating counts
-        by_unit_counts = count_array[:, :-1].sum(axis=0)
+        by_unit_counts = count_array[:, :-1].sum(axis=0, dtype = np.uint32)
     
         # Now get the total counts at each position
-        by_position_counts = by_unit_counts.sum(axis=0)
+        by_position_counts = by_unit_counts.sum(axis=0, dtype = np.uint32)
 
         # Convert counts for each unit at each position to frequency for
         # each unit at each position. Return 0 if the by_position counts
@@ -202,8 +202,9 @@ class Well():
         by_unit_frequency = np.divide(
             by_unit_counts,
             by_position_counts,
-            out=np.zeros_like(by_unit_counts, dtype=float),
-            where=(by_position_counts != 0)
+            out=np.zeros_like(by_unit_counts, dtype=FLOAT_PREC),
+            where=(by_position_counts != 0),
+            dtype = FLOAT_PREC
         )
         
         # If not keeping gaps, return the by position counts as well as the
@@ -235,8 +236,8 @@ class Well():
 
         # Assert that it is all 1 or 0
         total_length = len(total_frequencies)
-        assert np.all(np.logical_or(np.isclose(total_frequencies, np.ones(total_length)),
-                                    np.isclose(total_frequencies, np.zeros(total_length))))
+        assert np.all(np.logical_or(np.isclose(total_frequencies, np.ones(total_length, dtype = FLOAT_PREC)),
+                                    np.isclose(total_frequencies, np.zeros(total_length, dtype = FLOAT_PREC))))
 
         # The only way we can have a total frequency of 0 is if we are in a gap
         # region. 
@@ -274,7 +275,7 @@ class Well():
                                        for var in all_found])
         
         # Calculate what percentage of possibly mutated positions are variable
-        total_possible_positions = sum(np.logical_not(gap_positions))
+        total_possible_positions = np.sum(np.logical_not(gap_positions))
         n_variable_positions = len(all_found)
         percentage_mutated = n_variable_positions / total_possible_positions
         assert percentage_mutated <= 1
@@ -395,7 +396,8 @@ class Well():
             flags.append("#PARENT#")
             
             # Get the mean read depth and frequency over all non-zero positions.
-            self.parent_counts = int(np.mean(total_count_array[non_zero_pos_mask]))
+            self.parent_counts = int(np.mean(total_count_array[non_zero_pos_mask]),
+                                     dtype = FLOAT_PREC)
             max_freq_by_pos = np.max(unit_freq_array, axis = 0)
             self.parent_freq = np.mean(max_freq_by_pos[non_zero_pos_mask])
             
@@ -635,7 +637,7 @@ class Well():
             unique_combo = unit_array[index_profile[:, 1]]
 
             # Make sure the output is sorted
-            assert np.all(np.diff(unique_position_array)), "Output not sorted"
+            assert np.all(np.diff(unique_position_array) > 0), "Output not sorted"
 
             # Construct a sequence based on the reference
             # Construct a combo name based on the combo and position
@@ -706,8 +708,8 @@ class Well():
         r_seed = self.refseq_df_info['RPrimer'].replace(ADAPTER_R, '')
         r_seed = reverse_complement(r_seed)
 
-        bad_f_seeds = [False for seq in seqs]
-        bad_r_seeds = [False for seq in seqs]
+        bad_f_seeds = np.array([False for _ in seqs])
+        bad_r_seeds = np.array([False for _ in seqs])
 
         for i, seq in enumerate(seqs):
             
@@ -739,13 +741,13 @@ class Well():
         r_warn = "Unexpected variation in reverse primer seed."
         both_warn = "Unexpected variation in forward and reverse primer seed -- questionable sequencing."
 
-        if sum(bad_f_seeds) > 0:
+        if np.sum(bad_f_seeds) > 0:
             for i, bad in enumerate(bad_f_seeds):
                 if bad:
                     if flags[i] is None:
                         flags[i] = f_warn
 
-        if sum(bad_r_seeds) > 0:
+        if np.sum(bad_r_seeds) > 0:
             for i, bad in enumerate(bad_r_seeds):
                 if bad:
                     if flags is None:

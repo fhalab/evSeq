@@ -180,8 +180,10 @@ class SeqPair():
         reflength = len(self.f_alignment.seqA)
         forward_seq = self.f_alignment.seqB
         reverse_seq = self.r_alignment.seqB
-        forward_qual = np.array(self.f_adapterless.letter_annotations["phred_quality"])
-        reverse_qual = np.array(self.r_adapterless.letter_annotations["phred_quality"])
+        forward_qual = np.array(self.f_adapterless.letter_annotations["phred_quality"],
+                                dtype = np.uint8)
+        reverse_qual = np.array(self.r_adapterless.letter_annotations["phred_quality"],
+                                dtype = np.uint8)
 
         # Get the end of the f read. If it goes all the way to the end of the reference
         # sequence, then the first non-f character is the length of the sequence
@@ -197,7 +199,7 @@ class SeqPair():
         # a potential count of 1. If we have overlapping forward and reverse 
         # reads, then there is the potential to have a count of 2 if the forward
         # and reverse agree
-        potential_counts = np.ones(reflength, dtype = int)
+        potential_counts = np.ones(reflength, dtype = np.uint8)
 
         # See if the forward and reverse overlap. If they don't overlap. Then the composite
         # is just the forward DNA + dashes + reverse DNA
@@ -214,8 +216,9 @@ class SeqPair():
             # Build the composite quality. The quality scores are not extended for the
             # alignment, and so map directly to the pulled sequences.
             composite_qual = np.concatenate((forward_qual,
-                                             np.full(n_dashes, np.inf),
-                                             reverse_qual))
+                                             np.full(n_dashes, 0, dtype = np.uint8),
+                                             reverse_qual),
+                                            dtype = np.uint8)
 
         # Otherwise, take the sequence with the highest quality in the overlapping region
         else:
@@ -247,7 +250,7 @@ class SeqPair():
 
             # Build the composite middle sequence and quality
             middle_seq = [None] * middle_size
-            middle_qual = np.zeros(middle_size, dtype = int)
+            middle_qual = np.zeros(middle_size, dtype = np.uint8)
             quality_comparison = np.greater_equal(middle_f_qual, middle_r_qual)
             count_inds = np.arange(first_r_char_ind, post_forward_dash_ind)
             for i in range(middle_size):
@@ -275,7 +278,8 @@ class SeqPair():
 
             # Build the overall composite sequence and qualities. 
             composite_seq = "".join((only_f_seq, "".join(middle_seq), only_r_seq))
-            composite_qual = np.concatenate((only_f_qual, middle_qual, only_r_qual))
+            composite_qual = np.concatenate((only_f_qual, middle_qual, only_r_qual),
+                                            dtype = np.uint8)
             
         # Check to be sure lengths are correct
         assert reflength == len(composite_seq)
@@ -297,7 +301,7 @@ class SeqPair():
             
             # Get the potnetial counts. It's just "1" for the length of the
             # reference sequence. 
-            potential_counts = np.ones(composite_length, dtype = int)
+            potential_counts = np.ones(composite_length, dtype = np.uint8)
             
             # The composite sequence is just the aligned sequence
             composite_seq = self.f_alignment.seqB
@@ -305,11 +309,12 @@ class SeqPair():
             # The qualities continue after the alignment. Add as many zeros as 
             # there are differences between existing qualities and the end of
             # the sequence
-            forward_qual = self.f_adapterless.letter_annotations["phred_quality"]
+            forward_qual = np.array(self.f_adapterless.letter_annotations["phred_quality"],
+                                    dtype = np.uint8)
             composite_qual = np.concatenate((
                 forward_qual,
-                np.full(composite_length - len(forward_qual), np.inf)
-            ))
+                np.full(composite_length - len(forward_qual), 0, dtype = np.uint8)
+            ), dtype = np.uint8)
             
         else:
             
@@ -319,7 +324,7 @@ class SeqPair():
             
             # Get the potnetial counts. It's just "1" for the length of the
             # reference sequence. 
-            potential_counts = np.ones(composite_length, dtype = int)
+            potential_counts = np.ones(composite_length, dtype = np.uint8)
             
             # The composite sequence is just the aligned sequence
             composite_seq = self.r_alignment.seqB
@@ -327,13 +332,13 @@ class SeqPair():
             # The qualities must be before the alignment. Prepend as many zeros
             # as there are differences between existing qualities and the 
             # end of the sequence
-            reverse_qual = (self.r_adapterless
-                                .letter_annotations["phred_quality"])
+            reverse_qual = np.array(self.r_adapterless.letter_annotations["phred_quality"],
+                                    dtype = np.uint8)
 
             composite_qual = np.concatenate((
-                np.full(composite_length - len(reverse_qual), np.inf),
+                np.full(composite_length - len(reverse_qual), 0, dtype = np.uint8),
                 reverse_qual
-            ))
+            ), dtype = np.uint8)
             
         # Assert that everything is the expected length
         assert composite_length == len(composite_seq)
@@ -358,9 +363,10 @@ class SeqPair():
         composite_sequence, composite_qual, potential_counts =\
                                     self.build_composite_alignment(qual_thresh)
 
-        # Create matrices in which to store counts
-        bp_counts = np.zeros([6, ref_len], dtype = int)
-        aa_counts = np.zeros([23, n_aas], dtype = int)
+        # Create matrices in which to store counts. Uint8 is fine, as we will never
+        # see a number higher than 2 in these arrays.
+        bp_counts = np.zeros([6, ref_len], dtype = np.uint8)
+        aa_counts = np.zeros([23, n_aas], dtype = np.uint8)
 
         # Loop over the composite sequence up to the in-frame part
         base_ind = -1 # Initilaize for the case where inframe_ind is 0
@@ -376,7 +382,7 @@ class SeqPair():
         aa_counter = 0
         record_aa = True
         codon = [None] * 3
-        codon_counts = np.zeros(3, dtype = int)
+        codon_counts = np.zeros(3, dtype = np.uint8)
         codon_counter = 0
         
         # Loop over the remaining sequence that is in frame
@@ -430,15 +436,15 @@ class SeqPair():
                 aa_counter += 1
                 record_aa = True
                 codon = [None] * 3
-                codon_counts = np.zeros(3, dtype = int)
+                codon_counts = np.zeros(3, dtype = np.uint8)
                 codon_counter = 0
                 
             
         # Run a check on the count. A sum across the 0th axis should
         # return all ones and zeros, as we should never count two bases or two
         # amino acids in one position
-        bp_test = np.sum(bp_counts, axis = 0)
-        aa_test = np.sum(aa_counts, axis = 0)
+        bp_test = np.sum(bp_counts, axis = 0, dtype = np.uint8)
+        aa_test = np.sum(aa_counts, axis = 0, dtype = np.uint8)
         assert np.all(np.logical_or(np.logical_or(bp_test == 2, bp_test == 1), bp_test == 0)), f"Overcounting bases: {np.max(bp_test)}"
         assert np.all(np.logical_or(np.logical_or(aa_test == 2, aa_test == 1), aa_test == 0)), f"Overcounting amino acids: {np.max(aa_test)}"
             
