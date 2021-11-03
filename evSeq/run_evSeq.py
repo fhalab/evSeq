@@ -315,8 +315,8 @@ def run_evSeq(cl_args, tqdm_fn=tqdm.tqdm):
         # For Gooey (non-tqdm) progress
         simple = True if tqdm_fn.__name__ == 'blank' else False
         if simple:
-            processed_well_results = [_ for _ in all_wells]
-            for i, processed_well_result in enumerate(iterator, 1):
+            processed_well_results = [None]*len(all_wells)
+            for i, processed_well_result in enumerate(iterator):
                 processed_well_results[i] = processed_well_result
                 percent = int(100*(i / len(all_wells)))
                 print(f"Progress: {percent}%")
