@@ -1,6 +1,6 @@
 """
 Test to confirm that evSeq/util/index_map.csv maps correctly to the
-sequences listed in lib_prep_tools/evSeq_barcode_primer_seqs.csv
+sequences listed in lib_prep_tools/IdtOrderForm.xlsx
 """
 from pathlib import Path
 import os
@@ -18,7 +18,7 @@ NXT_I7_R = 'GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG'
 root = str(Path(os.path.abspath(evSeq.__file__)).parents[1])
 PRIMER_SEQS_PATH = os.path.join(root,
                                 'lib_prep_tools',
-                                'evSeq_barcode_primer_seqs.csv')
+                                'IdtOrderForm.xlsx')
 INDEX_PATH = os.path.join(root, 'evSeq', 'util', 'index_map.csv')
     
 
@@ -27,7 +27,14 @@ def test_barcode_primer_file():
     for Nextera NGS prep and for evSeq analysis.
     """
     # Import seqs and names
-    primer_df = pd.read_csv(PRIMER_SEQS_PATH)
+    primer_df = pd.concat([
+        pd.read_excel(PRIMER_SEQS_PATH,
+                        sheet_name='FBC',
+                        engine='openpyxl'),
+        pd.read_excel(PRIMER_SEQS_PATH,
+                        sheet_name='RBC',
+                        engine='openpyxl')
+    ]).reset_index(drop=True)
 
     # Create empty list to check
     bad_seqs = []
@@ -62,7 +69,14 @@ def test_pairings():
 def test_mappings():
     """Confirms that primer combinations are mapped correctly to barcodes."""
     # Import data
-    primer_df = pd.read_csv(PRIMER_SEQS_PATH)
+    primer_df = pd.concat([
+        pd.read_excel(PRIMER_SEQS_PATH,
+                        sheet_name='FBC',
+                        engine='openpyxl'),
+        pd.read_excel(PRIMER_SEQS_PATH,
+                        sheet_name='RBC',
+                        engine='openpyxl')
+    ]).reset_index(drop=True)
     index_df = pd.read_csv(INDEX_PATH)
 
     # If test_barcode_file() passed, create new column with barcodes
