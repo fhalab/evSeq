@@ -1,5 +1,5 @@
 # Theoretical Overview
-![Overview](assets/figure2.png)
+![Overview](assets/figure1.png)
 
 `evSeq` is an amplicon sequencing procedure designed to make the data in a routine multiplexed NGS experiment go further. This is useful for situations that only call for tens of reads to confidently describe protein variant populations in a single well, where the hundreds of thousands of reads from this type of experiment are unnecessary.
 

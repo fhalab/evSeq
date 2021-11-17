@@ -26,8 +26,10 @@ Find detailed documentation at the [individual pages linked below](#documentatio
 
 ### General Overview
 #### The `evSeq` workflow
-![Workflow](assets/figure2.png)
-**A)** All that's required to perform the `evSeq` laboratory procedure is:
+![Workflow](assets/figure1.png)
+**A)** `evSeq` amplifies out a region of interest that contains variability, attaches well-specific barcodes and adapters, and is ready for NGS.
+
+**B)** All that's required to perform the `evSeq` laboratory procedure is:
 
 - a 96-well thermalcycler
 - standard PCR reagents and materials
@@ -41,12 +43,12 @@ Find detailed documentation at the [individual pages linked below](#documentatio
 
 Due to the two-primer, culture-based PCR methodology employed by `evSeq`, only a new pair of inner primers needs to be ordered when targeting new regions/sequences and no DNA isolation needs to be performed.
 
-Once the sequences are returned by the NGS provider, the computational workup can be performed on a standard laptop by users with little-to-no computational experience.
+**C)** Once the sequences are returned by the NGS provider, the computational workup can be performed on a standard laptop by users with little-to-no computational experience.
 
 The amplicons prepared with `evSeq` can yield nearly 1000 high-quality protein variant sequences for the just cost of the multiplexed NGS run (typically ~$100 from commercial sequencing providers, likely lower for in-house providers).
 
 #### Construct and visualize sequence-function pairs
-![SeqFunc](assets/figure3.png)
+![SeqFunc](assets/figure2.png)
 Sequencing eight site-saturation libraries (768 wells) in a single `evSeq` run and combining this with activity data to create low-cost sequence-function data. **A)** Enzyme and active-site structure highlighting mutated residues. **B)** Heatmap of the number of identified variants/mutations ("counts") for each position mutated ("library") from processed `evSeq` data. **C)** Heatmap of the average activity ("normalized rate") for each variant/mutation in each library. **D)** Counts for a single library, also showing the number of unidentified wells. **E)** Activity for a single library, showing biological replicates. (Inset displays the mutated residue in this library.)
 
 ## Documentation

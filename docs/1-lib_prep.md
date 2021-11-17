@@ -1,5 +1,6 @@
 # Library Preparation
-![Library Preparation](assets/figure1.png)
+![Two-tage PCR](assets/figure1a.png)
+![Full workflow](assets/figure1b.png)
 ## General Protocol
 The general protocol is as follows:
 1. Design and order primers that flank your region-of-interest and will generate a NGS-suitable amplicon. [Jump to Inner Primer Design](#inner-primer-design) for more details, but the general design constraints are listed below.
@@ -196,6 +197,8 @@ The library preparation protocol follows:
     1.  Your NGS provider may request different numbers, in which case you should follow their requests.
 
 Finally, submit your samples and then work up the returned data using the provided [Computational software](index.md#computation).
+
+![Computational workflow](assets/figure1c.png)
 
 ---
 
