@@ -1,4 +1,4 @@
-LOCUS       evSeq_genbank_full_Tm9D 6534 bp ds-DNA     circular     08-OCT-2021
+LOCUS       evSeq_genbank_full_Tm9D 6534 bp ds-DNA     circular     17-NOV-2021
 DEFINITION  .
 FEATURES             Location/Qualifiers
      CDS             313..972
@@ -22,7 +22,7 @@ FEATURES             Location/Qualifiers
      primer          complement(4986..5032)
                      /label="105_r"
                      /note="sequence: AGCAATGATACGGGTTTTGCCCATTAGTTTTGCCAGCAGAACCTGGC"
-     primer          4993..5022
+     primer          5000..5022
                      /label="evSeq_102_f"
                      /note="sequence: CACCCAAGACCACTCTCCGGGCAAAACTAATGGGCAAAACCCG"
      primer          5012..5053
@@ -76,7 +76,7 @@ FEATURES             Location/Qualifiers
      primer          5606..5640
                      /label="301_f"
                      /note="sequence: TCCGCTGGCCTGGACNNNTCCGGTGTCGGTCCGGA"
-     primer          complement(5633..5654)
+     primer          complement(5633..5652)
                      /label="evSeq_304_r"
                      /note="sequence: CGGTGTGCGAAGTAGGTGCCAATAGGCGTGTTCCGGACC"
      CDS             5894..5911
