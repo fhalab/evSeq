@@ -15,6 +15,13 @@ If your plate seems to contain good quality reads but mostly dead wells, and you
 - Run `evSeq` with the `--keep_parsed_fastqs` or `--only_parse_fastqs` flag to confirm that they match your reference sequence information.
 - Run `evSeq` with the `--return_alignments` flag to see where the alignment of each read to your reference sequence is failing.
 
+## Progress bar not showing up in Jupyter
+This is likely because you do not have the `ipywidgets` extension enabled. Run the below command:
+
+```
+jupyter nbextension enable --py widgetsnbextension
+```
+
 ## Windows: `CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'`
 On Windows, you may receive the below error the first time you try to activate an environment:
 ```
