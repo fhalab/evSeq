@@ -4,7 +4,7 @@
 Every Variant Sequencing (`evSeq`) is a library preparation and analysis protocol that **slots neatly into existing workflows to enable extremely low-cost, massively parallel sequencing of protein variants**. Designed for heterologously expressed protein variants arrayed in 96-well plates (or similar), this workflow enables **sequencing all variants** from targetted mutagenesis libraries produced during a protein engineering or biochemical mutagenesis experiment at a cost of **cents per variant**, even for labs that do not have expertise in or access to next-generation sequencing (NGS) technology.
 
 ### Read the Paper!
-This repository accompanies the work ["evSeq: Cost-Effective Amplicon Sequencing of Every Variant in Protein Mutant Libraries"](LINK_TO_PAPER). If you use this tool, please [cite us](LINK_TO_PAGE_WITH_CITATION_FORMATS).
+This repository accompanies the work ["evSeq: Cost-Effective Amplicon Sequencing of Every Variant in a Protein Library"](LINK_TO_PAPER). If you use this tool, please [cite us](LINK_TO_PAGE_WITH_CITATION_FORMATS).
 
 ### Read the Docs!
 Find detailed documentation at the [individual pages linked below](#documentation) or [start at the overview](0-theory.md).
