@@ -52,3 +52,12 @@ Once `evSeq` is installed and your environment is suitable, you should [confirm 
 *Next page: [Running `evSeq`](4-usage.md).*
 
 *Back to the [main page](index.md).*
+
+# Updating
+By default, `evSeq` is installed in non-dev mode. This means that changes to the code base on your computer will not be reflected come run-time. If you want an editable version of `evSeq`, install with the `evSeq_dev` environment (note, however, that this environment does not set exact versions of dependencies like `evSeq_exact`). We recommend installing in non-dev mode (i.e., using the `evSeq_exact` environment). To update `evSeq` when installed in a non-dev environment, the environment must be recreated. The below commands will update `evSeq`. First, navigate the evSeq repository folder via command line and enter the below commands:
+
+```
+git pull
+conda remove -n evSeq_exact --all
+conda env create -f envs/evSeq_exact
+```
