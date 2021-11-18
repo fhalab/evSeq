@@ -52,13 +52,13 @@ The amplicons prepared with `evSeq` can yield nearly 1000 high-quality protein v
 Sequencing eight site-saturation libraries (768 wells) in a single `evSeq` run and combining this with activity data to create low-cost sequence-function data. **A)** Enzyme and active-site structure highlighting mutated residues. **B)** Heatmap of the number of identified variants/mutations ("counts") for each position mutated ("library") from processed `evSeq` data. **C)** Heatmap of the average activity ("normalized rate") for each variant/mutation in each library. **D)** Counts for a single library, also showing the number of unidentified wells. **E)** Activity for a single library, showing biological replicates. (Inset displays the mutated residue in this library.)
 
 ### Installation
-*RECOMMENDED.* Use the `evSeq_exact` environment:
+*RECOMMENDED.* Use the `evSeq` environment:
 ```
 git clone https://github.com/fhalab/evSeq.git
 cd evSeq
-conda env create -f envs/evSeq_exact.yml
+conda env create -f envs/evSeq.yml
 ```
-`evSeq` is then installed inside the environment and can be run as described below when the `evSeq_exact` environment is active.
+`evSeq` is then installed inside the environment and can be run as described below when the `evSeq` environment is active.
 
 This also installs a shortcut to the GUI on your Desktop (which can then be moved, e.g., to an Applications folder) which will run `evSeq` in the proper environment simply with a double click (see [below](#gui)).
 
@@ -69,18 +69,19 @@ pip install evSeq
 The correct packages should be automatically installed and a GUI shortcut is also made, but this is not guaranteed to work as you update your packages/dependencies in the future.
 
 ### Updating
-By default, `evSeq` is installed in non-dev mode. This means that changes to the code base on your computer will not be reflected come run-time. If you want an editable version of `evSeq`, install with the `evSeq_dev` environment (note, however, that this environment does not set exact versions of dependencies like `evSeq_exact`). We recommend installing in non-dev mode (i.e., using the `evSeq_exact` environment). To update `evSeq` when installed in a non-dev environment, the environment must be recreated. The below commands will update `evSeq`. First, navigate the evSeq repository folder via command line and enter the below commands:
+By default, `evSeq` is installed in non-dev mode. This means that changes to the code base on your computer will not be reflected come run-time. If you want an editable version of `evSeq`, install with the `evSeq_dev` environment (note, however, that this environment does not set exact versions of dependencies like `evSeq`). We recommend installing in non-dev mode (i.e., using the `evSeq` environment). Finally, we also provide the `evSeq_general` environment file which is similar to `evSeq_dev` but does not install an editable version of `evSeq`. To update `evSeq` when installed in a non-dev environment, the environment must be recreated. The below commands will update `evSeq`. First, navigate the evSeq repository folder via command line and enter the below commands:
 
 ```
 git pull
-conda remove -n evSeq_exact --all
-conda env create -f envs/evSeq_exact.yml
+conda remove -n evSeq --all
+conda env create -f envs/evSeq.yml
 ```
 
 ### Usage
 #### Command Line
 Thanks to `setuptools` `entry_points`, `evSeq` can be accessed from the command line after installation as if it were added to `PATH` by running:
 ```
+conda activate evSeq
 evSeq refseq folder --OPTIONAL_ARGS ARG_VALUE --FLAGS
 ```
 where `refseq` is the .csv file containing information about the experiment described above and `folder` is the directory that contains the raw `.fastq` files (.gz or unzipped) for the experiment.

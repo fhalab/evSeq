@@ -52,6 +52,7 @@ setup(
     install_requires=[
         'numpy',
         'pandas',
+        'openpyxl',
         'biopython',
         'tqdm',
         'scipy',
