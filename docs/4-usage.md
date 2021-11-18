@@ -10,7 +10,7 @@ General info on running `evSeq` from the command line can be found [below](#comm
 
 First, you will need to activate your conda environment (if using it) with
 ```
-conda activate evSeq
+conda activate evSeq_exact
 ```
 To run the example files, first navigate to the `examples` folder of the `evSeq` repository:
 ```
@@ -56,14 +56,14 @@ evSeq -h
 ```
 or see [below](#optional-arguments).
 
-*Note:* You must be in the environment in which `evSeq` was installed or this will not be accessible. If you installed the `evSeq` environment, run
+*Note:* You must be in the environment in which `evSeq` was installed or this will not be accessible. If you installed the `evSeq_exact` environment, run
 ```
-conda activate evSeq
+conda activate evSeq_exact
 ```
 to activate it.
 
 ### GUI
-Upon installation, `evSeq` automatically installs a shortcut onto your Desktop that will launch the `evSeq` GUI with a double-click. If `evSeq` was installed in the `evSeq` environment, the GUI will always run from that environment without you needing to activate it.
+Upon installation, `evSeq` automatically installs a shortcut onto your Desktop that will launch the `evSeq` GUI with a double-click. If `evSeq` was installed in the `evSeq_exact` environment, the GUI will always run from that environment without you needing to activate it.
 
 The GUI is designed for use by non-programming experts. If you are comfortable with a command line interface, that is the recommended way to use `evSeq`. If using the GUI, make sure you check the log file after each run to check for warnings or errors encountered. See details on the log file [here](5-outputs.html#evSeqLog).
 
