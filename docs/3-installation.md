@@ -13,7 +13,7 @@ This will create an environment with the correct dependencies and versions.
 ### Using the evSeq environment
 This environment can subsequently be activated any time you want to run `evSeq` from the command line with:
 ```
-conda activate evSeq_exact
+conda activate evSeq
 ```
 and deactivated with
 ```
