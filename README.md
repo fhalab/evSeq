@@ -51,13 +51,13 @@ The amplicons prepared with `evSeq` can yield nearly 1000 high-quality protein v
 Sequencing eight site-saturation libraries (768 wells) in a single `evSeq` run and combining this with activity data to create low-cost sequence-function data. **A)** Enzyme and active-site structure highlighting mutated residues. **B)** Heatmap of the number of identified variants/mutations ("counts") for each position mutated ("library") from processed `evSeq` data. **C)** Heatmap of the average activity ("normalized rate") for each variant/mutation in each library. **D)** Counts for a single library, also showing the number of unidentified wells. **E)** Activity for a single library, showing biological replicates. (Inset displays the mutated residue in this library.)
 
 ### Installation
-*RECOMMENDED.* Use the `evSeq` environment:
+*RECOMMENDED.* Use the `evSeq_exact` environment:
 ```
 git clone https://github.com/fhalab/evSeq.git
 cd evSeq
-conda env create -f envs/evSeq.yml
+conda env create -f envs/evSeq_exact.yml
 ```
-`evSeq` is then installed inside the environment and can be run as described below when the `evSeq` environment is active.
+`evSeq` is then installed inside the environment and can be run as described below when the `evSeq_exact` environment is active.
 
 This also installs a shortcut to the GUI on your Desktop (which can then be moved, e.g., to an Applications folder) which will run `evSeq` in the proper environment simply with a double click (see [below](#gui)).
 
