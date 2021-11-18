@@ -74,7 +74,7 @@ By default, `evSeq` is installed in non-dev mode. This means that changes to the
 ```
 git pull
 conda remove -n evSeq_exact --all
-conda env create -f envs/evSeq_exact
+conda env create -f envs/evSeq_exact.yml
 ```
 
 ### Usage
