@@ -23,7 +23,7 @@ For detailed information and interactive walkthroughs, [read the docs at the `ev
     - [`OutputCounts`](https://fhalab.github.io/evSeq/5-outputs.html#OutputCounts)
 - [Running `evSeq` in a Jupyter Notebook](https://fhalab.github.io/evSeq/8-full_demo.html)
 
-##### [Troubleshooting](https://fhalab.github.io/evSeq/9-troubleshooting.md)
+##### [Troubleshooting](https://fhalab.github.io/evSeq/9-troubleshooting.html)
 
 ### The `evSeq` workflow
 ![Workflow](docs/assets/figure1.png)
