@@ -34,6 +34,6 @@ This is a security issue for software being run on macOS, and can be solved by f
 
 ## Linux: `CondaEnvException: Pip failed`
 If you are running on a Linux distribution and see the error `CondaEnvException: Pip failed` during `conda install`, it is likely an issue with the wxPython installation. To confirm that this is a wxPython problem, look up a few lines from the bottom of the traceback -- if you see the line `No package 'gtk+-3.0' found` above a few lines beginning with `***`, then this is a wxPython installation problem. Documentation on the challenges of installing wxPython on Linux can be found [here](https://wxpython.org/blog/2017-08-17-builds-for-linux-with-pip/index.html) and [here](https://github.com/wxWidgets/Phoenix/issues/1831). As a quick fix, you may be able to run `sudo apt-get install build-essential libgtk-3-dev` (modified as appropriate for installing packages on different distributions) before re-attempting installation.
----
 
+---
 *Back to the [main page](index.md).*
