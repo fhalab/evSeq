@@ -60,7 +60,7 @@ or see [below](#optional-arguments).
 ```
 conda activate evSeq
 ```
-to activate it.
+to activate it before running.
 
 ### GUI
 Upon installation, `evSeq` automatically installs a shortcut onto your Desktop that will launch the `evSeq` GUI with a double-click. If `evSeq` was installed in the `evSeq` environment, the GUI will always run from that environment without you needing to activate it.

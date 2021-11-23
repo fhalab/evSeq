@@ -35,13 +35,14 @@ For detailed information and interactive walkthroughs, [read the docs at the `ev
 - [PCR Product Purification](https://fhalab.github.io/evSeq/1-lib_prep.html#pcr-product-purification)
 
 ##### Computation
+- [Installation](https://fhalab.github.io/evSeq/3-installation.html)
 - [Inputs](https://fhalab.github.io/evSeq/4-usage.html)
     - [The `refseq` file](https://fhalab.github.io/evSeq/4-usage.html#the-refseq-file)
 - [Outputs](https://fhalab.github.io/evSeq/5-outputs.html)
     - [`OutputCounts`](https://fhalab.github.io/evSeq/5-outputs.html#OutputCounts)
 - [Running `evSeq` in a Jupyter Notebook](https://fhalab.github.io/evSeq/8-full_demo.html)
 
-##### [Troubleshooting](https://fhalab.github.io/evSeq/9-troubleshooting.md)
+##### [Troubleshooting](https://fhalab.github.io/evSeq/9-troubleshooting.html)
 
 ### The `evSeq` workflow
 ![Workflow](docs/assets/figure1.png)
@@ -63,7 +64,7 @@ Due to the two-primer, culture-based PCR methodology employed by `evSeq`, only a
 
 **C)** Once the sequences are returned by the NGS provider, the computational workup can be performed on a standard laptop by users with little-to-no computational experience.
 
-The amplicons prepared with `evSeq` can yield nearly 1000 high-quality protein variant sequences for the just cost of the multiplexed NGS run (typically ~$100 from commercial sequencing providers and even less from in-house providers).
+The amplicons prepared with `evSeq` can yield nearly 1000 high-quality protein variant sequences for just the cost of the multiplexed NGS run (typically ~$100 from commercial sequencing providers and much less from in-house providers).
 
 ### Construct and visualize sequence-function pairs
 ![SeqFunc](docs/assets/figure2.png)
@@ -86,10 +87,20 @@ pip install evSeq
 ```
 The correct packages should be automatically installed and a GUI shortcut is also made, but this is not guaranteed to work as you update your packages/dependencies in the future.
 
+### Updating
+By default, `evSeq` is installed in non-dev mode. This means that changes to the code base on your computer will not be reflected come run-time. If you want an editable version of `evSeq`, install with the `evSeq_dev` environment (note, however, that this environment does not set exact versions of dependencies like the `evSeq` environment). We recommend installing in non-dev mode (i.e., using the `evSeq` environment). Finally, we also provide the `evSeq_general` environment file which is similar to `evSeq_dev` but does not install an editable version of `evSeq`. To update `evSeq` when installed in a non-dev environment, the environment must be recreated. The below commands will update `evSeq`. First, navigate the evSeq repository folder via command line and enter the below commands:
+
+```
+git pull
+conda remove -n evSeq --all
+conda env create -f envs/evSeq.yml
+```
+
 ### Usage
 #### Command Line
 Thanks to `setuptools` `entry_points`, `evSeq` can be accessed from the command line after installation as if it were added to `PATH` by running:
 ```
+conda activate evSeq
 evSeq refseq folder --OPTIONAL_ARGS ARG_VALUE --FLAGS
 ```
 where `refseq` is the .csv file containing information about the experiment described above and `folder` is the directory that contains the raw `.fastq` files (.gz or unzipped) for the experiment.

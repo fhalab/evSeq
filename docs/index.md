@@ -64,7 +64,7 @@ Due to the two-primer, culture-based PCR methodology employed by `evSeq`, only a
 
 **C)** Once the sequences are returned by the NGS provider, the computational workup can be performed on a standard laptop by users with little-to-no computational experience.
 
-The amplicons prepared with `evSeq` can yield nearly 1000 high-quality protein variant sequences for the just cost of the multiplexed NGS run (typically ~$100 from commercial sequencing providers, likely lower for in-house providers).
+The amplicons prepared with `evSeq` can yield nearly 1000 high-quality protein variant sequences for just the cost of the multiplexed NGS run (typically ~$100 from commercial sequencing providers, likely lower for in-house providers).
 
 #### Construct and visualize sequence-function pairs
 ![SeqFunc](assets/figure2.png)
@@ -124,6 +124,7 @@ Below are a collection of Jupyter Notebooks (rendered as documents) with example
 ### Troubleshooting
 - [Poor reverse read quality](9-troubleshooting.md#poor-reverse-read-quality)
 - [Poor results but good quality sequencing](9-troubleshooting.md#poor-results-but-good-quality-sequencing)
+- [Progress bar not showing up in Jupyter](9-troubleshooting.md#progress-bar-not-showing-up-in-jupyter)
 - [Windows: `CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'`](9-troubleshooting.md#windows-commandnotfounderror-your-shell-has-not-been-properly-configured-to-use-conda-activate)
 - [macOS: `PermissionError: [Errno 1] Operation not permitted`](9-troubleshooting.md#macos-permissionerror-errno-1-operation-not-permitted)
 - [Linux: `CondaEnvException: Pip failed`](9-troubleshooting.md#linux-condaenvexception-pip-failed)
