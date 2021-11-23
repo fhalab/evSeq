@@ -5,25 +5,6 @@ Every Variant Sequencing (`evSeq`) is a library preparation and analysis protoco
 
 ### Read the Paper!
 This repository accompanies the work ["evSeq: Cost-Effective Amplicon Sequencing of Every Variant in Protein Mutant Libraries"](https://doi.org/10.1101/2021.11.18.469179).
-<details>
-<summary>If you use this tool, please cite us:</summary>
-
-```
-TY  - JOUR  
-T1  - evSeq: Cost-Effective Amplicon Sequencing of Every Variant in a Protein Library  
-JF  - bioRxiv  
-DO  - 10.1101/2021.11.18.469179  
-SP  - 2021.11.18.469179  
-AU  - Wittmann, Bruce J.  
-AU  - Johnston, Kadina E.  
-AU  - Almhjell, Patrick J.  
-AU  - Arnold, Frances H.  
-Y1  - 2021/01/01  
-UR  - http://biorxiv.org/content/early/2021/11/19/2021.11.18.469179.abstract  
-N2  - Widespread availability of protein sequence-fitness data would revolutionize both our biochemical understanding of proteins and our ability to engineer them. Unfortunately, even though thousands of protein variants are generated and evaluated for fitness during a typical protein engineering campaign, most are never sequenced, leaving a wealth of potential sequence-fitness information untapped. This largely stems from the fact that sequencing is unnecessary for many protein engineering strategies; the added cost and effort of sequencing is thus unjustified. Here, we present every variant sequencing (evSeq), an efficient protocol for sequencing a variable region within every variant gene produced during a protein engineering campaign at a cost of cents per variant. Execution of evSeq is simple, requires no sequencing experience to perform, relies only on resources and services typically available to biology labs, and slots neatly into existing protein engineering workflows. Analysis of evSeq data is likewise made simple by its accompanying software (found at github.com/fhalab/evSeq, documentation at fhalab.github.io/evSeq), which can be run on a personal laptop and was designed to be accessible to users with no computational experience. Low-cost and easy to use, evSeq makes collection of extensive protein variant sequence-fitness data practical.
-```
-
-</details>
 
 ### Read the Docs!
 Find detailed documentation at the [individual pages linked below](#documentation) or [start at the overview](0-theory.md).
