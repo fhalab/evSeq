@@ -108,4 +108,5 @@ Below are a collection of Jupyter Notebooks (rendered as documents) with example
 - [Progress bar not showing up in Jupyter](9-troubleshooting.md#progress-bar-not-showing-up-in-jupyter)
 - [Windows: `CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'`](9-troubleshooting.md#windows-commandnotfounderror-your-shell-has-not-been-properly-configured-to-use-conda-activate)
 - [macOS: `PermissionError: [Errno 1] Operation not permitted`](9-troubleshooting.md#macos-permissionerror-errno-1-operation-not-permitted)
+- [macOS: `xcrun` Error](9-troubleshooting.md#macos-xcrun-error)
 - [Linux: `CondaEnvException: Pip failed`](9-troubleshooting.md#linux-condaenvexception-pip-failed)
