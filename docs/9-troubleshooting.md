@@ -1,5 +1,5 @@
 # Troubleshooting
-For any issues that are not covered below, please reach out to us for assistance. Issues with the software should be reported on GitHub [here](https://github.com/fhalab/evSeq/issues); we also have a forum on GitHub for discussing questions/problems with running the evSeq protocol (both computational and wet-lab) that can be found [here](https://github.com/fhalab/evSeq/discussions/).
+For any issues that are not covered below, please reach out to us for assistance. Issues with the software should be reported on GitHub [here](https://github.com/fhalab/evSeq/issues); we also have a forum on GitHub for discussing questions/problems with running the `evSeq` protocol (both computational and wet-lab) that can be found [here](https://github.com/fhalab/evSeq/discussions/).
 
 ## Poor reverse read quality
 If your forward read quality is excellent but your reverse read quality is very poor, this can ruin your `Coupled` output files. While you can still get useful information from the forward reads in the `Decoupled` output files, this issue usually comes from library preparation and should be fixed as soon as possible.
@@ -32,6 +32,19 @@ The error can be fixed by entering the command
 conda init bash
 ```
 and then repeating the `conda activate` command. This step should fix the error permanently.
+
+## Windows: The GUI Will Not Open
+Double clicking on the desktop application should open the GUI. If it does not and you are running Windows, the issue is likely caused by one of two things:
+
+1. Most commonly, this is caused by Anaconda not being in your PATH environment variable. The easiest fix is to start over by reinstalling Anaconda and making sure to check the box that adds it to your PATH environment variable. Note that the default install on Windows does *not* add Anaconda to your path, and so you will need to pay special attention to the options you select during Anaconda install. **Warning: Reinstalling Anaconda will remove any environments that you have saved already (so you may want to look into alternate solutions if you've had Anaconda on your system for a while).** Once you have reinstalled Anaconda, you can follow the [evSeq installation instructions](3-installation.md#installing-from-github-with-the-conda-environment) to reinstall `evSeq`. An alternate option to reinstalling is to manually add Anaconda to your PATH variable; you should talk to someone with programming experience to accomplish this, however. 
+
+2. We have also seen this problem when users install `evSeq` through Windows Command Prompt rather than Git Bash. Instructions for opening Git Bash are [here](2-basics.md#opening-a-terminal-window). To solve this problem, you will first need to remove the `evSeq` conda environment. This can be accomplished by entering the below into a Git Bash terminal:
+
+```
+conda env remove -n evSeq
+```
+
+Then, follow the [evSeq installation instructions](3-installation.md#installing-from-github-with-the-conda-environment) to reinstall `evSeq` using Git Bash rather than Command Prompt.
 
 ## macOS: `PermissionError: [Errno 1] Operation not permitted`
 Any time after upgrading to a newer macOS, you might randomly find that `evSeq` has stopped working and gives `PermissionError: [Errno 1] Operation not permitted`.

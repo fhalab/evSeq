@@ -1,7 +1,9 @@
 # Installation
 For non-programmers and those unfamiliar with [Anaconda](https://www.anaconda.com/) or [GitHub](https://www.github.com), see the [programing basics page](2-basics.md) for information on how to set up your computer environment to run `evSeq`.
+
 ## Installing from GitHub with the conda environment
-The recommended way to install `evSeq` invloves cloning the repository from GitHub and then creating the [`conda` environment](https://conda.io/projects/conda/en/latest/user-guide/concepts/environments.html) from the included `evSeq.yml` file. Open a terminal window and navigate to the folder where you want to install `evSeq` (using the `cd` command to change directories as needed), then, in a terminal window, enter the following:
+The recommended way to install `evSeq` involves cloning the repository from GitHub and then creating the [`conda` environment](https://conda.io/projects/conda/en/latest/user-guide/concepts/environments.html) from the included `evSeq.yml` file. Open a terminal window (see [here](2-basics.md#opening-a-terminal-window) for instructions on opening a terminal window in Mac and Windows -- Windows users ***must*** use Git Bash) and navigate to the folder where you want to install `evSeq` (using the `cd` command to change directories as needed), then, in a terminal window, enter the following:
+
 ```
 git clone https://github.com/fhalab/evSeq.git
 cd evSeq

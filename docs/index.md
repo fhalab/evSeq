@@ -107,6 +107,7 @@ Below are a collection of Jupyter Notebooks (rendered as documents) with example
 - [Poor results but good quality sequencing](9-troubleshooting.md#poor-results-but-good-quality-sequencing)
 - [Progress bar not showing up in Jupyter](9-troubleshooting.md#progress-bar-not-showing-up-in-jupyter)
 - [Windows: `CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'`](9-troubleshooting.md#windows-commandnotfounderror-your-shell-has-not-been-properly-configured-to-use-conda-activate)
+- [Windows: The GUI Will Not Open](9-troubleshooting.md#windows-the-gui-will-not-open)
 - [macOS: `PermissionError: [Errno 1] Operation not permitted`](9-troubleshooting.md#macos-permissionerror-errno-1-operation-not-permitted)
 - [macOS: `xcrun` Error](9-troubleshooting.md#macos-xcrun-error)
 - [Linux: `CondaEnvException: Pip failed`](9-troubleshooting.md#linux-condaenvexception-pip-failed)
