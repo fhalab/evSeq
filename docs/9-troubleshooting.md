@@ -63,5 +63,12 @@ To fix this, install `xcode` by running the below in the terminal:
 ## Linux: `CondaEnvException: Pip failed`
 If you are running on a Linux distribution and see the error `CondaEnvException: Pip failed` during `conda install`, it is likely an issue with the wxPython installation. To confirm that this is a wxPython problem, look up a few lines from the bottom of the traceback -- if you see the line `No package 'gtk+-3.0' found` above a few lines beginning with `***`, then this is a wxPython installation problem. Documentation on the challenges of installing wxPython on Linux can be found [here](https://wxpython.org/blog/2017-08-17-builds-for-linux-with-pip/index.html) and [here](https://github.com/wxWidgets/Phoenix/issues/1831). As a quick fix, you may be able to run `sudo apt-get install build-essential libgtk-3-dev` (modified as appropriate for installing packages on different distributions) before re-attempting installation.
 
+## .fastq parsing options
+
+We added some functions to the util functions of evSeq that will enable workarounds to some of the current issues with evSeq. See [examples](https://github.com/fhalab/evSeq/blob/master/examples/10-fastq_parsing.ipynb) on GitHub. In the future we anticipate making these options for the evSeq software during runtime.
+
+`trim_fastqs` - takes a folder input (location of fastq files to trime) and an integer (default 150) to trim returned reads to. Reads shorter than the specified length will be left unchanged. Outputs a folder holding the trimmed .fastq files.
+`downsample_fastqs` - takes a folder input (location of fastq files to trime) and an integer (default 100,000) which is the number of reads to include in the downsampled fastq. Outputs a folder holding the downsampled .fastq files.
+
 ---
 *Back to the [main page](index.md).*
