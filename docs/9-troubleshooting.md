@@ -65,7 +65,7 @@ If you are running on a Linux distribution and see the error `CondaEnvException:
 
 ## .fastq parsing options
 
-We added some functions to the util functions of evSeq that will enable workarounds to some of the current issues with evSeq. See [examples](https://github.com/fhalab/evSeq/blob/master/examples/10-fastq_parsing.ipynb) on GitHub. In the future we anticipate making these options for the evSeq software during runtime.
+We added some functions to the util functions of evSeq that will enable workarounds to some of the current issues with evSeq. See [examples](https://github.com/fhalab/evSeq/blob/fastq_utils/examples/10-fastq_parsing.ipynb) on GitHub. In the future we anticipate making these options for the evSeq software during runtime.
 
 `trim_fastqs` - takes a folder input (location of fastq files to trime) and an integer (default 150) to trim returned reads to. Reads shorter than the specified length will be left unchanged. Outputs a folder holding the trimmed .fastq files.
 `downsample_fastqs` - takes a folder input (location of fastq files to trime) and an integer (default 100,000) which is the number of reads to include in the downsampled fastq. Outputs a folder holding the downsampled .fastq files.
