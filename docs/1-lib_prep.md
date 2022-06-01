@@ -20,7 +20,7 @@ The general protocol is as follows:
 ## Dual-Index Barcode Plates
 Barcoded amplicons are mapped back to wells using their forward and reverse (dual-indexed) barcode sequences. To reduce costs, `evSeq` uses only two plates of unique barcode (or "outer") primers—one for the forward primers and one for the reverse—which are combined in different ways to create eight possible dual-indexed (DI) primer plates.
 
-The sequences in each well of the Forward and Reverse barcode (FBC and RBC, respectively) plates can be found [on this sheet](https://github.com/fhalab/evSeq/blob/master/lib_prep_tools/evSeq_barcode_primer_seqs.csv).
+The sequences in each well of the Forward and Reverse barcode (FBC and RBC, respectively) plates can be found [on this sheet](https://github.com/fhalab/evSeq/blob/master/lib_prep_tools/IdtOrderForm.xlsx).
 
 Each of the eight DI plates are created by combining the FBC rows with a different set of RBC rows according to the following scheme:
 1. Every DI plate is stamped (A01 -> A01, etc.) directly with the FBC plate.
